@@ -112,7 +112,8 @@ public class Main extends Application {
 
 
         //Setting the text to be added.
-        text.setText("Welcome Keira");
+        text.setText("Welcome Keira" +"\n"+timeofdaychecker.timeofdaychecker());
+
 
 
 
