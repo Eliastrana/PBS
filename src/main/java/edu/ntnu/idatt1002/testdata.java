@@ -1,4 +1,4 @@
-package piechart.src.main.java.edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002;
 import java.util.HashMap;
 
 public class testdata {
