@@ -41,7 +41,7 @@ public class Main extends Application {
         //stage.setWidth(500);
         //stage.setHeight(500);
 
-
+        //Nammenamm det funker!
 
         Pane pane = new StackPane();
         GridPane grid = new GridPane();
