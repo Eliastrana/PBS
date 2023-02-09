@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002;
 
+import java.awt.*;
 import java.util.HashMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -7,12 +8,11 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane.*;
 import javafx.scene.Node;
 import javafx.scene.Group;
 import javafx.geometry.Bounds;
@@ -43,30 +43,20 @@ public class Main extends Application {
 
         //Nammenamm det funker!
 
-        Pane pane = new StackPane();
-        GridPane grid = new GridPane();
-        Pane mainPane = new StackPane();
-
-
-
-
+        BorderPane borderPane = new BorderPane();
+        ScrollPane scrollPane = new ScrollPane();
 
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = createData2();
 
-
         final DoughnutChart chart = new DoughnutChart(pieChartData);
         final DoughnutChart chart2 = new DoughnutChart(pieChartData2);
-
 
         stage.setTitle("Total balance");
         stage.show();
 
         stage.setTitle("Expenses");
         stage.show();
-
-
-
 
         HBox hbox = new HBox(2);
         for (int i = 1; i<3; i++) {
@@ -78,28 +68,13 @@ public class Main extends Application {
             }
             hbox.getChildren().add(new DoughnutChart(pieData));
         }
-        pane.getChildren().add(hbox);
-
-        //stage.setScene(scene);
-        //stage.show();
-
-        //Scene scene = new Scene(new StackPane(chart));
-        //stage.setScene(scene);
-        //stage.show();
-
-        //Scene scene2 = new Scene(new StackPane(chart2));
-        //stage.setScene(scene2);
-        //stage.show();
-
+        borderPane.setCenter(hbox);
 
         /**
          * Her er test av font
          */
         //Creating a Text object
         Text text = new Text();
-
-        grid.setAlignment(Pos.TOP_LEFT);
-
 
         //Setting font to the text
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
@@ -110,23 +85,21 @@ public class Main extends Application {
         //text.setX(20);
         //text.setY(700);
 
-
         //Setting the text to be added.
         text.setText("Welcome Keira" +"\n"+timeofdaychecker.timeofdaychecker());
-
-
 
 
         //Creating a Group object
 
         //Creating a scene object
-        grid.getChildren().add(text);
+        borderPane.setTop(text);
+        borderPane.setAlignment(text, Pos.TOP_LEFT);
+
         //Setting title to the Stage
         stage.setTitle("Setting Font to the text");
 
-        mainPane.getChildren().addAll(grid, pane);
 
-        Scene scene = new Scene(mainPane, 1000, 700);
+        Scene scene = new Scene(borderPane, 1000, 700);
 
 
         //Adding scene to the stage
