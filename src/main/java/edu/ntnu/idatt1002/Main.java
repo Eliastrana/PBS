@@ -27,9 +27,6 @@ public class Main extends Application {
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = createData2();
 
-        final DoughnutChart chart = new DoughnutChart(pieChartData);
-        final DoughnutChart chart2 = new DoughnutChart(pieChartData2);
-
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
 
@@ -43,27 +40,26 @@ public class Main extends Application {
         text2.setFill(Color.LIGHTGREEN);
         borderPane.setAlignment(text2, Pos.BASELINE_LEFT);
 
-
         HBox hbox2 = new HBox(2);
 
         Text textSavings = new Text("Total savings");
         textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-        borderPane.setAlignment(textSavings, Pos.CENTER);
         hbox2.getChildren().add(textSavings);
 
         Text textSpending = new Text("Monthly spending");
         textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-        borderPane.setAlignment(textSpending, Pos.CENTER);
         hbox2.getChildren().add(textSpending);
 
         Text text3 = new Text("Scrolling funker");
         text3.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 80));
-        borderPane.setAlignment(text3, Pos.CENTER);
         hbox2.getChildren().add(text3);
 
         VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
+        vboxSavings.setAlignment(Pos.CENTER);
         VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
+        vboxSpending.setAlignment(Pos.CENTER);
         HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
+        hboxPieLayout.setAlignment(Pos.CENTER);
 
         VBox vbox = new VBox(text,text2, hboxPieLayout, text3);
 
