@@ -1,47 +1,25 @@
 package edu.ntnu.idatt1002;
 
-import java.awt.*;
-import java.util.HashMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.ScrollPane.*;
-import javafx.scene.Node;
-import javafx.scene.Group;
-import javafx.geometry.Bounds;
-
-
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main extends Application {
 
     @Override public void start(Stage stage) {
         stage.setTitle("Bank");
         stage.setWidth(1000);
-        stage.setHeight(600);
-
-       // Text text = new Text();
-
-       // text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
-        //text.setX(50);
-       // text.setY(130);
-        //text.setText("Welcome Keira");
-
-        //stage.show();
-
-        //stage.setTitle("Expenses");
-        //stage.setWidth(500);
-        //stage.setHeight(500);
-
-        //Nammenamm det funker!
+        stage.setHeight(700);
 
         BorderPane borderPane = new BorderPane();
         ScrollPane scrollPane = new ScrollPane();
@@ -52,74 +30,56 @@ public class Main extends Application {
         final DoughnutChart chart = new DoughnutChart(pieChartData);
         final DoughnutChart chart2 = new DoughnutChart(pieChartData2);
 
-        stage.setTitle("Total balance");
-        stage.show();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(false);
 
-        stage.setTitle("Expenses");
-        stage.show();
+        Text text = new Text("Welcome Keira");
+        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 80));
+        borderPane.setAlignment(text, Pos.BASELINE_LEFT);
 
-        HBox hbox = new HBox(2);
-        for (int i = 1; i<3; i++) {
-            ObservableList pieData;
-            if (i == 1) {
-                pieData = pieChartData;
-            } else {
-                pieData = pieChartData2;
-            }
-            hbox.getChildren().add(new DoughnutChart(pieData));
-        }
-        borderPane.setCenter(hbox);
-
-        /**
-         * Her er test av font
-         */
-        //Creating a Text object
-        Text text = new Text();
-
-        //Setting font to the text
-        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
-
-        //setting the position of the text
-        text.setWrappingWidth(1000);
-
-        //text.setX(20);
-        //text.setY(700);
-
-        //Setting the text to be added.
-        text.setText("Welcome Keira" +"\n"+timeofdaychecker.timeofdaychecker());
+        Text text2 = new Text(timeofdaychecker.timeofdaychecker()+"\n");
+        text2.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 60));
+        text2.setLineSpacing(0);
+        text2.setFill(Color.LIGHTGREEN);
+        borderPane.setAlignment(text2, Pos.BASELINE_LEFT);
 
 
-        //Creating a Group object
+        HBox hbox2 = new HBox(2);
 
-        //Creating a scene object
-        borderPane.setTop(text);
-        borderPane.setAlignment(text, Pos.TOP_LEFT);
+        Text textSavings = new Text("Total savings");
+        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        borderPane.setAlignment(textSavings, Pos.CENTER);
+        hbox2.getChildren().add(textSavings);
 
-        //Setting title to the Stage
-        stage.setTitle("Setting Font to the text");
+        Text textSpending = new Text("Monthly spending");
+        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        borderPane.setAlignment(textSpending, Pos.CENTER);
+        hbox2.getChildren().add(textSpending);
 
+        Text text3 = new Text("Scrolling funker");
+        text3.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 80));
+        borderPane.setAlignment(text3, Pos.CENTER);
+        hbox2.getChildren().add(text3);
 
-        Scene scene = new Scene(borderPane, 1000, 700);
+        VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
+        VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
+        HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
 
+        VBox vbox = new VBox(text,text2, hboxPieLayout, text3);
 
-        //Adding scene to the stage
+        scrollPane.setContent(vbox);
+        borderPane.setCenter(scrollPane);
+
+        Scene scene = new Scene(borderPane, 1000, 2000);
         stage.setScene(scene);
-
-        //Displaying the contents of the stage
         stage.show();
-
-        /**
-         * Her stopper test av font
-         */
-
     }
-
 
     private ObservableList<PieChart.Data> createData() {
         return FXCollections.observableArrayList(
                 new PieChart.Data("Card", 13),
                 new PieChart.Data("Checkings", 25),
-                new PieChart.Data("Savings", 10),
+                new PieChart.Data("Savings", 80),
                 new PieChart.Data("abc", 10));
 
     }
