@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -13,6 +14,9 @@ import javafx.scene.text.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.HashMap;
+import javafx.scene.control.Button;
+
+import static edu.ntnu.idatt1002.testdata.getItem;
 
 public class Main extends Application {
 
@@ -56,12 +60,42 @@ public class Main extends Application {
 
         VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
         vboxSavings.setAlignment(Pos.CENTER);
+
         VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
         vboxSpending.setAlignment(Pos.CENTER);
+
         HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
         hboxPieLayout.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(text,text2, hboxPieLayout, text3);
+        HBox hboxMeny = new HBox(2);
+
+
+        Button overview = new Button("Overview");
+        overview.setOnAction(e -> {
+            System.out.println("open overview");
+        });
+        hboxMeny.getChildren().add(overview);
+
+        Button transfer = new Button("Transfer");
+        transfer.setOnAction(e -> {
+            System.out.println("open Transfer");
+        });
+        hboxMeny.getChildren().add(transfer);
+
+        Button pay = new Button("Pay");
+        pay.setOnAction(e -> {
+            System.out.println("open Pay");
+        });
+        hboxMeny.getChildren().add(pay);
+
+        Button more = new Button("More");
+        more.setOnAction(e -> {
+            System.out.println("open More");
+        });
+        hboxMeny.getChildren().add(more);
+
+
+        VBox vbox = new VBox(text,text2, hboxPieLayout, text3, hboxMeny);
 
         scrollPane.setContent(vbox);
         borderPane.setCenter(scrollPane);
@@ -73,17 +107,16 @@ public class Main extends Application {
 
     private ObservableList<PieChart.Data> createData() {
         return FXCollections.observableArrayList(
-                new PieChart.Data("Card", 13),
-                new PieChart.Data("Checkings", 25),
-                new PieChart.Data("Savings", 80),
-                new PieChart.Data("abc", 10));
+                new PieChart.Data("Card", 2000),
+                new PieChart.Data("Checkings",8000 ),
+                new PieChart.Data("Savings", 26000));
 
     }
 
     private ObservableList<PieChart.Data> createData2() {
         return FXCollections.observableArrayList(
                 new PieChart.Data("Rent" + 1000 + " kr", 13),
-                new PieChart.Data("Food", 25),
+                new PieChart.Data(prices.getItem(), 25),
                 new PieChart.Data("Shopping", 10),
                 new PieChart.Data("Cava", 50),
                 new PieChart.Data("Transportation", 22));

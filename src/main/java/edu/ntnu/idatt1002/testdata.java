@@ -9,4 +9,9 @@ public class testdata {
         testHMap.put("Hewdawdlo", 12.5);
         testHMap.put("Hwadawdlo", 103.5);
     }
+
+    public static String getItem(){
+        return "Item: " + prices.getName() + prices.getPrice();
+    }
+
 }

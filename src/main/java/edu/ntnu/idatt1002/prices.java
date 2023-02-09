@@ -3,37 +3,43 @@ package edu.ntnu.idatt1002;
 public class prices
 
 {
-    private String name;
-    private double price;
+    private static String name;
+    private static double price;
 
     private int category;
 
 
     public prices(String name, double price) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
+        this.name = "Hamburger";
+        this.price = 1000;
+        this.category = 1;
 
     }
 
-    public String getName() {
-        return name;
+    public static String getItem() {
+        return getName() +": "+ getPrice()+" kr";
+    }
+
+    public static String getName() {
+        return "Mat";
+    }
+    public static double getPrice() {
+        return 968.5;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void getCategory(int category) {
-        this.category = category;
+    public static int getCategory(int category) {
+        return category;
     }
+
     public void setCategory(int category) {
         this.category = category;
     }
 
-    public double getPrice() {
-        return price;
-    }
+
 
     public void setPrice(double price) {
         this.price = price;
