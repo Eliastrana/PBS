@@ -1,5 +1,7 @@
 package edu.ntnu.idatt1002;
 
+import static edu.ntnu.idatt1002.Category.FOOD;
+
 public class prices
 
 {
@@ -12,7 +14,7 @@ public class prices
     public prices(String name, double price) {
         this.name = "Hamburger";
         this.price = 1000;
-        this.category = 1;
+        this.category = FOOD.getCategory();
 
     }
 
@@ -46,6 +48,13 @@ public class prices
     }
 
 
+    public int getCategory() {
+        return this.category;
+    }
+
+    public Enum<Category> getCategoryNumber() {
+        return Category.getCategoryNumber(category);
+    }
 
     @Override
     public String toString() {

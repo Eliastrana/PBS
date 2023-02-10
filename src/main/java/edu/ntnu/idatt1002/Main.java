@@ -71,31 +71,50 @@ public class Main extends Application {
 
 
         Button overview = new Button("Overview");
+        overview.setStyle("-fx-background-color: #62de7c; ");
+        overview.setStyle("-fx-border-width\n: 200; ");
+        overview.setStyle("-fx-border-heigth\n: 30; ");
+        overview.setStyle("-fx-font-size\n: 40; ");
         overview.setOnAction(e -> {
             System.out.println("open overview");
         });
         hboxMeny.getChildren().add(overview);
 
+
         Button transfer = new Button("Transfer");
+        transfer.setStyle("-fx-background-color: #62de7c; ");
+        transfer.setStyle("-fx-border-width\n: 200; ");
+        transfer.setStyle("-fx-border-heigth\n: 50; ");
+        transfer.setStyle("-fx-font-size\n: 40; ");
         transfer.setOnAction(e -> {
             System.out.println("open Transfer");
         });
         hboxMeny.getChildren().add(transfer);
 
         Button pay = new Button("Pay");
+        pay.setStyle("-fx-background-color: #62de7c; ");
+        pay.setStyle("-fx-border-width\n: 200; ");
+        pay.setStyle("-fx-border-heigth\n: 50; ");
+        pay.setStyle("-fx-font-size\n: 40; ");
         pay.setOnAction(e -> {
             System.out.println("open Pay");
         });
         hboxMeny.getChildren().add(pay);
 
         Button more = new Button("More");
+        more.setStyle("-fx-background-color: #62de7c; ");
+        more.setStyle("-fx-border-width\n: 200; ");
+        more.setStyle("-fx-border-heigth\n: 50; ");
+        more.setStyle("-fx-font-size\n: 40; ");
         more.setOnAction(e -> {
             System.out.println("open More");
         });
+
         hboxMeny.getChildren().add(more);
+        hboxMeny.setAlignment(Pos.CENTER);
 
 
-        VBox vbox = new VBox(text,text2, hboxPieLayout, text3, hboxMeny);
+        VBox vbox = new VBox(hboxMeny, text,text2, hboxPieLayout, text3);
 
         scrollPane.setContent(vbox);
         borderPane.setCenter(scrollPane);
