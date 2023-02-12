@@ -74,9 +74,10 @@ public class Main extends Application {
         payButton.setOnAction(event -> {
             System.out.println("opening pay window");
             VBox payVBox = new VBox();
-            payVBox.getChildren().add(new Label("This is the pay page"));
+            payVBox.getChildren().add(new Label(Pay.payText()));
             Scene transferScene = new Scene(payVBox, 800, 600);
             borderPane.setCenter(transferScene.getRoot());
+
         });
         topMenu.getChildren().add(payButton);
         borderPane.setTop(topMenu);
