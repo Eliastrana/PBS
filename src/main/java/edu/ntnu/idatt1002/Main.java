@@ -63,6 +63,42 @@ public class Main extends Application {
             transferVBox.getChildren().add(new Label("This is the transfer page"));
             Scene transferScene = new Scene(transferVBox, 800, 600);
             borderPane.setCenter(transferScene.getRoot());
+
+            Text transferBetweenAccounts = new Text("Transfer between accounts:");
+            transferBetweenAccounts.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 60));
+            borderPane.setAlignment(transferBetweenAccounts, Pos.CENTER_LEFT);
+            transferVBox.getChildren().add(transferBetweenAccounts);
+
+            HBox transferBewteenAccounts = new HBox();
+            transferVBox.getChildren().add(transferBewteenAccounts);
+            transferBewteenAccounts.setAlignment(Pos.CENTER);
+
+
+            ObservableList<String> firstChoice =
+                    FXCollections.observableArrayList(
+                            "Card",
+                            "Savings",
+                            "Checking"
+                    );
+
+            final ComboBox leftTransfer = new ComboBox(firstChoice);
+            transferBewteenAccounts.getChildren().add(leftTransfer);
+            leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+
+
+            ObservableList<String> secondChoice =
+                    FXCollections.observableArrayList(
+                            "Card",
+                            "Savings",
+                            "Checking"
+                    );
+
+            final ComboBox rightTransfer = new ComboBox(secondChoice);
+            transferBewteenAccounts.getChildren().add(rightTransfer);
+            rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+
+
+
         });
         topMenu.getChildren().add(transferButton);
         borderPane.setTop(topMenu);

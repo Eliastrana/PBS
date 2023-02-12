@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002;
 
 import com.sun.javafx.menu.MenuItemBase;
+import com.sun.javafx.scene.control.InputField;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,5 +23,7 @@ public static String payWindow() {
 public static String payText() {
     return "Money is cheap";
 }
+
+
 
 }
