@@ -43,7 +43,7 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         borderPane.setTop(menuBar);
         HBox topMenu = new HBox();
-        topMenu.setAlignment(Pos.CENTER);
+        topMenu.setAlignment(Pos.TOP_LEFT);
 
 
         Button overviewButton = new Button("Overview");
@@ -72,6 +72,7 @@ public class Main extends Application {
 
         Button payButton = new Button("Pay");
         payButton.setOnAction(event -> {
+            //Pay.payWindow();
             System.out.println("opening pay window");
             VBox payVBox = new VBox();
             payVBox.getChildren().add(new Label(Pay.payText()));
@@ -142,6 +143,9 @@ public class Main extends Application {
         Text text3 = new Text("Add new expense");
         text3.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 45));
         newExpenseTitle.setAlignment(Pos.CENTER);
+        newExpenseTitle.getChildren().add(text3);
+
+
 
         HBox hboxAddExpenseCategory = new HBox(2);
 
@@ -186,14 +190,15 @@ public class Main extends Application {
         names.setPromptText("Enter name");
         hboxAddExpenseName.getChildren().add(names);
 
+
+        HBox hboxConfirmExpense = new HBox(2);
         Button confirmExpense = new Button("Confirm");
-        confirmExpense.setStyle("-fx-background-color: #62de7c; ");
-        confirmExpense.setStyle("-fx-border-width\n: 200; ");
-        confirmExpense.setStyle("-fx-border-heigth\n: 50; ");
-        confirmExpense.setStyle("-fx-font-size\n: 40; ");
         confirmExpense.setOnAction(e -> {
             System.out.println("Purchase confirmed");
         });
+        confirmExpense.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        hboxConfirmExpense.getChildren().add(confirmExpense);
+        hboxConfirmExpense.setAlignment(Pos.CENTER);
 
 
         VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace, newExpenseTitle, hboxAddExpenseCategory, hboxAddExpensePrice, hboxAddExpenseName, confirmExpense);
