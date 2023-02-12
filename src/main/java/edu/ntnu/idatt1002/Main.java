@@ -3,6 +3,8 @@ package edu.ntnu.idatt1002;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -14,6 +16,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.HashMap;
 import javafx.scene.control.Button;
+
+import javax.swing.*;
 
 import static edu.ntnu.idatt1002.testdata.getItem;
 
@@ -34,52 +38,67 @@ public class Main extends Application {
 
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
+        Scene scene = new Scene(borderPane, 1000, 2000);
 
-        //First hbox with menu buttons
-        HBox hboxMeny = new HBox(2);
+        MenuBar menuBar = new MenuBar();
+        borderPane.setTop(menuBar);
+        HBox topMenu = new HBox();
+        topMenu.setAlignment(Pos.CENTER);
 
-        Button overview = new Button("Overview");
-        overview.setStyle("-fx-background-color: #62de7c; ");
-        overview.setStyle("-fx-border-width\n: 200; ");
-        overview.setStyle("-fx-border-heigth\n: 30; ");
-        overview.setStyle("-fx-font-size\n: 40; ");
-        overview.setOnAction(e -> {
-            System.out.println("open overview");
+
+        Button overviewButton = new Button("Overview");
+        overviewButton.setOnAction(event -> {
+            System.out.println("open overview window");
         });
-        hboxMeny.getChildren().add(overview);
+        topMenu.getChildren().add(overviewButton);
+        borderPane.setTop(topMenu);
+        overviewButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
 
-        Button transfer = new Button("Transfer");
-        transfer.setStyle("-fx-background-color: #62de7c; ");
-        transfer.setStyle("-fx-border-width\n: 200; ");
-        transfer.setStyle("-fx-border-heigth\n: 50; ");
-        transfer.setStyle("-fx-font-size\n: 40; ");
-        transfer.setOnAction(e -> {
-            System.out.println("open Transfer");
+
+        Button transferButton = new Button("Transfer");
+        transferButton.setOnAction(event -> {
+            System.out.println("open transfer window");
+            VBox transferVBox = new VBox();
+            transferVBox.getChildren().add(new Label("This is the transfer page"));
+            Scene transferScene = new Scene(transferVBox, 800, 600);
+            borderPane.setCenter(transferScene.getRoot());
         });
-        hboxMeny.getChildren().add(transfer);
+        topMenu.getChildren().add(transferButton);
+        borderPane.setTop(topMenu);
+        transferButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
-        Button pay = new Button("Pay");
-        pay.setStyle("-fx-background-color: #62de7c; ");
-        pay.setStyle("-fx-border-width\n: 200; ");
-        pay.setStyle("-fx-border-heigth\n: 50; ");
-        pay.setStyle("-fx-font-size\n: 40; ");
-        pay.setOnAction(e -> {
-            System.out.println("open Pay");
+
+
+        Button payButton = new Button("Pay");
+        payButton.setOnAction(event -> {
+            System.out.println("opening pay window");
+            VBox payVBox = new VBox();
+            payVBox.getChildren().add(new Label("This is the pay page"));
+            Scene transferScene = new Scene(payVBox, 800, 600);
+            borderPane.setCenter(transferScene.getRoot());
         });
-        hboxMeny.getChildren().add(pay);
+        topMenu.getChildren().add(payButton);
+        borderPane.setTop(topMenu);
+        payButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
-        Button more = new Button("More");
-        more.setStyle("-fx-background-color: #62de7c; ");
-        more.setStyle("-fx-border-width\n: 200; ");
-        more.setStyle("-fx-border-heigth\n: 50; ");
-        more.setStyle("-fx-font-size\n: 40; ");
-        more.setOnAction(e -> {
-            System.out.println("open More");
+
+
+        Button moreButton = new Button("More");
+        moreButton.setOnAction(event -> {
+            System.out.println("opening more window");
+            VBox moreVBox = new VBox();
+            moreVBox.getChildren().add(new Label("This is the more page"));
+            Scene transferScene = new Scene(moreVBox, 800, 600);
+            borderPane.setCenter(transferScene.getRoot());
         });
+        topMenu.getChildren().add(moreButton);
+        borderPane.setTop(topMenu);
+        moreButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
-        hboxMeny.getChildren().add(more);
-        hboxMeny.setAlignment(Pos.CENTER);
+
+
+
 
         //Welcome text
 
@@ -176,14 +195,17 @@ public class Main extends Application {
         });
 
 
-        VBox vbox = new VBox(hboxMeny, text,text2, hboxPieLayout,emptySpace, newExpenseTitle, hboxAddExpenseCategory, hboxAddExpensePrice, hboxAddExpenseName, confirmExpense);
+        VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace, newExpenseTitle, hboxAddExpenseCategory, hboxAddExpensePrice, hboxAddExpenseName, confirmExpense);
 
         scrollPane.setContent(vbox);
         borderPane.setCenter(scrollPane);
 
-        Scene scene = new Scene(borderPane, 1000, 2000);
         stage.setScene(scene);
         stage.show();
+
+
+
+
     }
 
     private ObservableList<PieChart.Data> createData() {
