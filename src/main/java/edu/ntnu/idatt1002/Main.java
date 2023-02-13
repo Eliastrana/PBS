@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -23,6 +24,10 @@ import static edu.ntnu.idatt1002.testdata.*;
 
 public class Main extends Application {
 
+
+
+
+
     @Override public void start(Stage stage) {
 
         //Establish frame
@@ -35,6 +40,8 @@ public class Main extends Application {
 
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = createData2();
+
+
 
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
@@ -88,9 +95,18 @@ public class Main extends Application {
             hboxPieLayout.setAlignment(Pos.CENTER);
 
 
+            HBox currentAccountStatusTextFormat = new HBox();
+            currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
+
+            Text currentAccountStatusText = new Text("Current account status");
+            currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+            currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
 
-            VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace);
+
+
+            VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace, currentAccountStatusTextFormat);
+
 
             scrollPane.setContent(vbox);
             borderPane.setCenter(scrollPane);
@@ -122,6 +138,12 @@ public class Main extends Application {
             transferBewteenAccounts.setAlignment(Pos.CENTER);
 
 
+            Text transferfrom = new Text("Transfer from:");
+            transferfrom.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+            transferBewteenAccounts.getChildren().add(transferfrom);
+
+
+
             ObservableList<String> firstChoice =
                     FXCollections.observableArrayList(
                             "Card",
@@ -134,6 +156,11 @@ public class Main extends Application {
             leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
 
+            Text transferto = new Text(" to: ");
+            transferto.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+            transferBewteenAccounts.getChildren().add(transferto);
+
+
             ObservableList<String> secondChoice =
                     FXCollections.observableArrayList(
                             "Card",
@@ -144,6 +171,27 @@ public class Main extends Application {
             final ComboBox rightTransfer = new ComboBox(secondChoice);
             transferBewteenAccounts.getChildren().add(rightTransfer);
             rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+
+
+            HBox transferBewteenAccountsAmount = new HBox();
+            transferVBox.getChildren().add(transferBewteenAccountsAmount);
+
+            transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
+
+            Text selectAmount = new Text("Select transfer amount: ");
+            selectAmount.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+            transferBewteenAccountsAmount.getChildren().add(selectAmount);
+            transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
+
+
+            TextField priceEntry = new TextField();
+            priceEntry.setPromptText("Enter price");
+            transferBewteenAccountsAmount.getChildren().add(priceEntry);
+
+            Button confirmTransfer = new Button("Confirm");
+            transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
+            confirmTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 25px;");
+
 
 
         });
@@ -307,7 +355,43 @@ public class Main extends Application {
         HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
         hboxPieLayout.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace );
+
+        //TABLE
+        ObservableList<TableColumn> leftTable = FXCollections.observableArrayList();
+        TableColumn leftColumn1 = new TableColumn("Account: ");
+        leftColumn1.setMinWidth(100);
+        TableColumn leftColumn2 = new TableColumn("Total amount: ");
+        leftColumn2.setMinWidth(100);
+
+
+        TableView table = new TableView();
+        table.getColumns().addAll(leftTable);
+
+
+        leftTable.addAll(leftColumn1, leftColumn2);
+
+
+        ObservableList<TableColumn> rightTable = FXCollections.observableArrayList();
+        TableColumn rightColumn1 = new TableColumn("Purchase: ");
+        rightColumn1.setMinWidth(100);
+        TableColumn rightColumn2 = new TableColumn("Price: ");
+        rightColumn2.setMinWidth(100);
+
+        rightTable.addAll(rightColumn1, rightColumn2);
+
+        TableView leftTableView = new TableView();
+        leftTableView.getColumns().addAll(leftTable);
+
+        TableView rightTableView = new TableView();
+        rightTableView.getColumns().addAll(rightTable);
+
+        vboxSavings.getChildren().add(leftTableView);
+        vboxSpending.getChildren().add(rightTableView);
+
+
+
+        //MAIN VBOX
+        VBox vbox = new VBox(text,text2, hboxPieLayout,emptySpace);
 
         scrollPane.setContent(vbox);
         borderPane.setCenter(scrollPane);
@@ -351,5 +435,6 @@ public class Main extends Application {
 
         launch(args);
     }
+
 
 }
