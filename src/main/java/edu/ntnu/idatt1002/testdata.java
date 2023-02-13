@@ -7,19 +7,19 @@ import java.util.Map;
 public class testdata {
     public static ArrayList<Expense> transportation;
     public static ArrayList<Expense> rent;
-    public static HashMap<String, Double> testHMap;
+    public static HashMap<String, Double> accounts;
+
     public static void createTransportation(){
         transportation = new ArrayList<Expense>();
     }
+
     public static void createRent(){
         rent = new ArrayList<Expense>();
     }
-    public static void createHashmap(){
-        testHMap = new HashMap<String, Double>();
-        testHMap.put("Transportation", getTotalExpenses(transportation));
-        testHMap.put("Rent", getTotalExpenses(rent));
-    }
 
+    public static void createAccountsHashmap(){
+        accounts = new HashMap<String, Double>();
+    }
 
     public static void addToArrayList(Expense expense, ArrayList<Expense> aList){
         aList.add(expense);
@@ -32,24 +32,30 @@ public class testdata {
         }
         return totalExpense;
     }
-    public static double getValue() {
-        Iterator<Map.Entry<String, Double>> iterator = testHMap.entrySet().iterator();
-        Double Value = 0.0;
-        if (iterator.hasNext()) {
-            Map.Entry<String, Double> firstEntry = iterator.next();
-            Value = firstEntry.getValue();
-        }
-        return 0.0;
+
+    public static void addAccount(String accountName, double accountBalance){
+        accounts.put(accountName, accountBalance);
     }
-    public static String getKey() {
-        Iterator<Map.Entry<String, Double>> iterator = testHMap.entrySet().iterator();
-        String key = "";
-        if (iterator.hasNext()) {
-            Map.Entry<String, Double> firstEntry = iterator.next();
-            key = String.valueOf(firstEntry.getValue());
-        }
-        return key;
-    }
+
+//    public static double getValue() {
+//        Iterator<Map.Entry<String, Double>> iterator = testHMap.entrySet().iterator();
+//        Double Value = 0.0;
+//        if (iterator.hasNext()) {
+//            Map.Entry<String, Double> firstEntry = iterator.next();
+//            Value = firstEntry.getValue();
+//        }
+//        return 0.0;
+//    }
+
+//    public static String getKey() {
+//        Iterator<Map.Entry<String, Double>> iterator = testHMap.entrySet().iterator();
+//        String key = "";
+//        if (iterator.hasNext()) {
+//            Map.Entry<String, Double> firstEntry = iterator.next();
+//            key = String.valueOf(firstEntry.getValue());
+//        }
+//        return key;
+//    }
 
     public static String getItem(){
         return "Item: " + prices.getName() + prices.getPrice();
