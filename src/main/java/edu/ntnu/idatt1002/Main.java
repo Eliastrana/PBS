@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
 
 import javax.swing.*;
 
-import static edu.ntnu.idatt1002.testdata.getItem;
+import static edu.ntnu.idatt1002.testdata.*;
 
 public class Main extends Application {
 
@@ -262,7 +262,8 @@ public class Main extends Application {
         return FXCollections.observableArrayList(
                 new PieChart.Data("Rent" + 1000 + " kr", 13),
                 new PieChart.Data(prices.getItem(), 25),
-                new PieChart.Data("Shopping", 10),
+                new PieChart.Data("Transportation", testdata.getValue()),
+                new PieChart.Data("Rent", testdata.getTotalExpenses(rent)),
                 new PieChart.Data("Cava", 50),
                 new PieChart.Data("Transportation", 22));
 
@@ -270,7 +271,13 @@ public class Main extends Application {
     }
     //testdata.itemList();
     public static void main(String[] args) {
-        HashMap<String, Double> items = new HashMap<>();
+        testdata.createTransportation();
+        testdata.createRent();
+        testdata.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
+        testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
+        testdata.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
+        testdata.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
+        testdata.createHashmap();
 
         launch(args);
     }

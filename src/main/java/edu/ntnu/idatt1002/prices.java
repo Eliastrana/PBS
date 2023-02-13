@@ -11,7 +11,7 @@ public class prices
     private int category;
 
 
-    public prices(String name, double price) {
+    public prices() {
         this.name = "Hamburger";
         this.price = 1000;
         this.category = FOOD.getCategory();
