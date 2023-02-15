@@ -21,7 +21,7 @@ public class PieChart {
         return FXCollections.observableArrayList(
                 new javafx.scene.chart.PieChart.Data("Rent" + 1000 + " kr", 13),
                 new javafx.scene.chart.PieChart.Data(prices.getItem(), 25),
-                new javafx.scene.chart.PieChart.Data("Transportation", testdata.getValue()),
+                //new javafx.scene.chart.PieChart.Data("Transportation", testdata.getValue()),
                 new javafx.scene.chart.PieChart.Data("Rent", testdata.getTotalExpenses(rent)),
                 new javafx.scene.chart.PieChart.Data("Cava", 50),
                 new javafx.scene.chart.PieChart.Data("Transportation", 22));

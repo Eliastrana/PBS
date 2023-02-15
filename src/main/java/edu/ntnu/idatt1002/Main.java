@@ -19,7 +19,7 @@ public class Main extends Application {
         testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
         testdata.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
         testdata.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
-        testdata.createHashmap();
+        //testdata.createHashmap();
 
         //This launches the start method, that again opens the start-page in the GUI class
         launch(args);
