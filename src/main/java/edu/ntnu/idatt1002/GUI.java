@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -91,32 +92,35 @@ public class GUI extends Application {
         currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
-        ObservableList<TableColumn> leftTable = FXCollections.observableArrayList();
-        TableColumn leftColumn1 = new TableColumn("Account: ");
-        leftColumn1.setMinWidth(100);
-        TableColumn leftColumn2 = new TableColumn("Total amount: ");
-        leftColumn2.setMinWidth(100);
+        //LeftTable
+        TableView<Expense> leftTable = new TableView<>();
+        TableColumn<Expense, String> leftColumn1 = new TableColumn<>("Name: ");
+        leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableView table = new TableView();
-        table.getColumns().addAll(leftTable);
+        TableColumn<Expense, Double> leftColumn2 = new TableColumn<>("Price: ");
+        leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        leftTable.addAll(leftColumn1, leftColumn2);
+        leftTable.getColumns().addAll(leftColumn1, leftColumn2);
 
-        ObservableList<TableColumn> rightTable = FXCollections.observableArrayList();
-        TableColumn rightColumn1 = new TableColumn("Purchase: ");
-        rightColumn1.setMinWidth(100);
-        TableColumn rightColumn2 = new TableColumn("Price: ");
-        rightColumn2.setMinWidth(100);
+        leftTable.getItems().addAll(transportation);
 
-        rightTable.addAll(rightColumn1, rightColumn2);
+        vboxSavings.getChildren().add(leftTable);
 
-        TableView leftTableView = new TableView();
-        leftTableView.getColumns().addAll(leftTable);
+        //TODO vboxSpending.getChildren().add(rightTable);
 
-        TableView rightTableView = new TableView();
-        rightTableView.getColumns().addAll(rightTable);
-        vboxSavings.getChildren().add(leftTableView);
-        vboxSpending.getChildren().add(rightTableView);
+        //RightTable
+        TableView<Expense> rightTable = new TableView<>();
+        TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
+        rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
+        rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        rightTable.getColumns().addAll(rightColumn1, rightColumn2);
+
+        rightTable.getItems().addAll(rent);
+
+        vboxSpending.getChildren().add(rightTable);
 
 
         topMenu(primaryStage);
