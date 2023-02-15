@@ -14,12 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javafx.scene.control.Button;
 
 import javax.swing.*;
@@ -321,31 +316,22 @@ public class Main extends Application {
         stage.show();
 
     }
-//    public void addToAccountsPieChart(){
-//        int i = 1;
-//        List<Double> values = new ArrayList<>(accounts.values());
-//        Double accountBalance = values.get(i);
-//        for (Map.Entry<String, Double> entry : accounts.entrySet()) {
-//            if (entry.getValue().equals(accountBalance)) {
-//                String accountName = entry.getKey();
-//                new PieChart.Data(accountName, accountBalance);
-//                break;
-//            }
-//        }
-//    }
+
     //THE FIRST PIE
     private ObservableList<PieChart.Data> createData() {
-        PieChart.Data heawm = new PieChart.Data("heawm", 15);
         return FXCollections.observableArrayList(
-                heawm);
-        }   //testing ways to create piechart
+                new PieChart.Data("Card", 2000),
+                new PieChart.Data("Checkings",8000 ),
+                new PieChart.Data("Savings", 26000));
+
+    }
 
     //THE SECOND PIE
     private ObservableList<PieChart.Data> createData2() {
         return FXCollections.observableArrayList(
                 new PieChart.Data("Rent" + 1000 + " kr", 13),
                 new PieChart.Data(prices.getItem(), 25),
-                new PieChart.Data("Transportation", testdata.getTotalExpenses(rent)),
+                new PieChart.Data("Transportation", testdata.getValue()),
                 new PieChart.Data("Rent", testdata.getTotalExpenses(rent)),
                 new PieChart.Data("Cava", 50),
                 new PieChart.Data("Transportation", 22));
@@ -361,9 +347,7 @@ public class Main extends Application {
         testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
         testdata.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
         testdata.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
-        testdata.createAccountsHashmap();
-        testdata.addAccount("BLABLABLA", 15000);
-        testdata.addAccount("BLABLA123A", 15000);
+        testdata.createHashmap();
 
         launch(args);
     }
