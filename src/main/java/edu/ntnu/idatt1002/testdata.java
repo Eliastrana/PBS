@@ -6,12 +6,42 @@ import java.util.Map;
 
 public class testdata {
     public static ArrayList<Expense> transportation;
+
+    public static ArrayList<Expense> entertainment;
+    public static ArrayList<Expense> clothing;
+
     public static ArrayList<Expense> rent;
+
+    public static ArrayList<Expense> other;
+
+    public static ArrayList<Expense> food;
+
+
+
     public static HashMap<String, Double> accounts;
 
     public static void createTransportation(){
         transportation = new ArrayList<Expense>();
     }
+
+    public static void createEntertainment(){
+        entertainment = new ArrayList<Expense>();
+    }
+
+    public static void createClothing(){
+        clothing = new ArrayList<Expense>();
+    }
+
+    public static void createOther(){
+        other = new ArrayList<Expense>();
+    }
+
+    public static void createFood(){
+        food = new ArrayList<Expense>();
+    }
+
+
+
 
     public static void createRent(){
         rent = new ArrayList<Expense>();

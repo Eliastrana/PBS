@@ -15,10 +15,17 @@ public class Main extends Application {
     public static void main(String[] args) {
         testdata.createTransportation();
         testdata.createRent();
+        testdata.createEntertainment();
+        testdata.createClothing();
+        testdata.createOther();
+        testdata.createFood();
+
         testdata.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
         testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
         testdata.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
         testdata.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
+
+
         //testdata.createHashmap();
         //hei
         //testdata.addAccount("test", 100);
