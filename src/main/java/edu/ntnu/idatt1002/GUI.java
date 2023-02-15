@@ -17,11 +17,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import static edu.ntnu.idatt1002.testdata.*;
+
 public class GUI extends Application {
 
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
     //The buttons are added to every single page individually, but they should be a separate entity
+
+
+
+
 
     //PAGE 1
     @Override
@@ -293,6 +301,15 @@ public class GUI extends Application {
         addExpenseVBox.getChildren().add(hboxAddExpenseCategory);
 
 
+
+
+        //Utregningsmetode
+
+        //ChoiceBox<String> choiceBox = new ChoiceBox<>(options);
+
+
+
+
         HBox hboxAddExpensePrice = new HBox(2);
         hboxAddExpensePrice.setAlignment(Pos.CENTER);
 
@@ -321,14 +338,43 @@ public class GUI extends Application {
         addExpenseVBox.getChildren().add(hboxAddExpenseName);
 
         HBox hboxConfirmExpense = new HBox(2);
+
+
         Button confirmExpense = new Button("Confirm");
+
+
+
         confirmExpense.setOnAction(e -> {
+            String selectedOption = (String) categoryMenu.getValue();
+            if (selectedOption.equals("Entertainment")){
+                testdata.addToArrayList(new Expense("Saaw", 500, 1), entertainment);
+            } else if (selectedOption.equals("Food")){
+                testdata.addToArrayList(new Expense("Saaw", 500, 1), food);
+            } else if (selectedOption.equals("Transportation")){
+                testdata.addToArrayList(new Expense("Saaw", 500, 1), transportation);
+            } else if (selectedOption.equals("Clothing")){
+                testdata.addToArrayList(new Expense("Saaw", 500, 1), clothing);
+            } else if (selectedOption.equals("Other")){
+                testdata.addToArrayList(new Expense("Saaw", 500, 1), other);
+            } else {
+                System.out.println("Error");
+            }
+
             System.out.println("Purchase confirmed");
+            System.out.println("Category: " + selectedOption);
+
+
         });
+
+
         confirmExpense.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
         hboxConfirmExpense.getChildren().add(confirmExpense);
         hboxConfirmExpense.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(hboxConfirmExpense);
+
+
+
+
 
 
         VBox vbox = new VBox(topMenu(primaryStage), addExpenseVBox);
@@ -340,6 +386,7 @@ public class GUI extends Application {
         primaryStage.show();
 
     }
+
 
     //PAGE 5
     public void moreWindow(Stage primaryStage){
