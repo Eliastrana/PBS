@@ -19,16 +19,17 @@ import javafx.stage.Stage;
 
 public class GUI extends Application {
 
+    //Each page has its own method, all the buttons are in the same method.
+    //The buttons are then connected to the methods that open the pages.
+    //The buttons are added to every single page individually, but they should be a separate entity
+
+    //PAGE 1
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-
 
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
-
-
 
         BorderPane borderPane = new BorderPane();
         ScrollPane scrollPane = new ScrollPane();
@@ -55,7 +56,6 @@ public class GUI extends Application {
 
 
         HBox hbox2 = new HBox(2);
-
         Text textSavings = new Text("Total savings");
         textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSavings);
@@ -76,14 +76,12 @@ public class GUI extends Application {
         HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
         hboxPieLayout.setAlignment(Pos.CENTER);
 
-
         HBox currentAccountStatusTextFormat = new HBox();
         currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
         Text currentAccountStatusText = new Text("Current account status");
         currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
-
 
         ObservableList<TableColumn> leftTable = FXCollections.observableArrayList();
         TableColumn leftColumn1 = new TableColumn("Account: ");
@@ -95,7 +93,6 @@ public class GUI extends Application {
         table.getColumns().addAll(leftTable);
 
         leftTable.addAll(leftColumn1, leftColumn2);
-
 
         ObservableList<TableColumn> rightTable = FXCollections.observableArrayList();
         TableColumn rightColumn1 = new TableColumn("Purchase: ");
@@ -127,7 +124,7 @@ public class GUI extends Application {
 
     }
 
-
+    //PAGE 2
     public void transferWindow(Stage primaryStage){
 
         primaryStage.setTitle("Bank");
@@ -221,6 +218,7 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
+    //PAGE 3
     public void payWindow(Stage primaryStage){
 
 
@@ -248,7 +246,7 @@ public class GUI extends Application {
 
     }
 
-
+    //PAGE 4
     public void addExpenseWindow(Stage primaryStage){
 
         primaryStage.setTitle("Bank");
@@ -343,6 +341,7 @@ public class GUI extends Application {
 
     }
 
+    //PAGE 5
     public void moreWindow(Stage primaryStage){
 
         primaryStage.setTitle("Bank");
@@ -369,6 +368,7 @@ public class GUI extends Application {
 
 
 
+    //TOP MENU
     public HBox topMenu(Stage primaryStage){
 
         BorderPane borderPane = new BorderPane();
@@ -379,6 +379,7 @@ public class GUI extends Application {
         primaryStage.show();
 
 
+        //BUTTON 1
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
@@ -392,7 +393,7 @@ public class GUI extends Application {
         topMenu.getChildren().add(overviewButton);
 
 
-
+        //BUTTON 2
         Button transferButton = new Button("Transfer");
         transferButton.setOnAction(event -> {
             try {
@@ -406,7 +407,7 @@ public class GUI extends Application {
         transferButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
         topMenu.getChildren().add(transferButton);
 
-
+        //BUTTON 3
         Button payButton = new Button("Pay");
         payButton.setOnAction(event -> {
             try {
@@ -420,7 +421,7 @@ public class GUI extends Application {
         payButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
         topMenu.getChildren().add(payButton);
 
-
+        //BUTTON 4
         Button addExpenseButton = new Button("Add Expense");
         addExpenseButton.setOnAction(event -> {
             try {
@@ -434,7 +435,7 @@ public class GUI extends Application {
         addExpenseButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
         topMenu.getChildren().add(addExpenseButton);
 
-
+        //BUTTON 5
         Button moreButton = new Button("More");
         moreButton.setOnAction(event -> {
             try {
@@ -449,8 +450,5 @@ public class GUI extends Application {
 
         return topMenu;
     }
-
-
-
 
 }

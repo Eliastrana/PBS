@@ -7,6 +7,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+
+//THIS CLASS IS CURRENTLY USELESS
 public class MenuNavigation {
 
     GUI gui = new GUI();
