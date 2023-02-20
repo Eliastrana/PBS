@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,6 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static edu.ntnu.idatt1002.testdata.*;
@@ -40,8 +43,13 @@ public class GUI extends Application {
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
 
+
         BorderPane borderPane = new BorderPane();
         ScrollPane scrollPane = new ScrollPane();
+
+        borderPane.setStyle("-fx-background-color: #CED0CE;");
+        scrollPane.setStyle("-fx-background-color: #CED0CE;");
+
 
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
@@ -50,17 +58,22 @@ public class GUI extends Application {
         ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
 
 
+
+
         System.out.println("open overview window");
-        Text text = new Text("Welcome Keira, test");
-        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 80));
+        Text text = new Text("Welcome Keira");
+        text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
         borderPane.setAlignment(text, Pos.BASELINE_LEFT);
+        text.setStyle("-fx-fill: #3F403F");
 
         //Time of day text
         Text text2 = new Text(timeofdaychecker.timeofdaychecker()+"\n");
-        text2.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 60));
+        text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
         text2.setLineSpacing(0);
         text2.setFill(Color.LIGHTGREEN);
         borderPane.setAlignment(text2, Pos.BASELINE_LEFT);
+        text2.setStyle("-fx-fill: #9FB8AD");
+
 
 
 
@@ -135,6 +148,24 @@ public class GUI extends Application {
         primaryStage.show();
 
     }
+
+
+    public VBox createLayout(Stage primaryStage) {
+
+        // create the top menu
+        HBox topMenu = topMenu(primaryStage);
+
+        // create the panes
+        Pane pane1 = new Pane();
+        Pane pane2 = new Pane();
+
+        // create a VBox to hold the topMenu and the panes
+        VBox layout = new VBox();
+        layout.getChildren().addAll(topMenu, pane1, pane2);
+
+        return layout;
+    }
+
 
     //PAGE 2
     public void transferWindow(Stage primaryStage){
@@ -271,6 +302,7 @@ public class GUI extends Application {
 
         System.out.println("open expense window");
         VBox addExpenseVBox = new VBox();
+        addExpenseVBox.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
         Scene transferScene = new Scene(addExpenseVBox, 800, 600);
         borderPane.setCenter(transferScene.getRoot());
@@ -281,6 +313,13 @@ public class GUI extends Application {
         newExpenseTitle.setAlignment(Pos.CENTER);
         newExpenseTitle.getChildren().add(text3);
         addExpenseVBox.getChildren().add(newExpenseTitle);
+
+
+        DatePicker datePicker = new DatePicker();
+        datePicker.setValue(LocalDate.now());
+        addExpenseVBox.getChildren().add(datePicker);
+
+
 
 
 
@@ -426,8 +465,12 @@ public class GUI extends Application {
         MenuBar menuBar = new MenuBar();
         borderPane.setTop(menuBar);
         HBox topMenu = new HBox();
-        topMenu.setAlignment(Pos.TOP_LEFT);
+        topMenu.setAlignment(Pos.TOP_CENTER);
         primaryStage.show();
+
+        topMenu.setSpacing(20);
+        topMenu.setPadding(new Insets(20, 20, 20, 20));
+
 
 
         //BUTTON 1
@@ -440,7 +483,7 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        overviewButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        overviewButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
         topMenu.getChildren().add(overviewButton);
 
 
@@ -455,7 +498,7 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        transferButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        transferButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
         topMenu.getChildren().add(transferButton);
 
         //BUTTON 3
@@ -469,7 +512,7 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        payButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        payButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
         topMenu.getChildren().add(payButton);
 
         //BUTTON 4
@@ -483,7 +526,7 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        addExpenseButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        addExpenseButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
         topMenu.getChildren().add(addExpenseButton);
 
         //BUTTON 5
@@ -496,7 +539,7 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        moreButton.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        moreButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
         topMenu.getChildren().add(moreButton);
 
         return topMenu;
