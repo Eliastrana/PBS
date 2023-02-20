@@ -23,6 +23,7 @@ public class Main extends Application {
         testdata.createAccountsHashmap();
         testdata.addAccount("Sparekonto", 15000);
         testdata.addAccount("Reisekonto", 10000);
+        testdata.transferBetweenAccounts("Sparekonto", "Reisekonto", 5000);
 
         testdata.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
         testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);

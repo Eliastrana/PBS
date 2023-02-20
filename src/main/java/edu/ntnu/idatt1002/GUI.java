@@ -200,15 +200,9 @@ public class GUI extends Application {
         transferBewteenAccounts.getChildren().add(transferfrom);
 
 
+        ComboBox<String> leftTransfer = new ComboBox<>();
+        leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
 
-        ObservableList<String> firstChoice =
-                FXCollections.observableArrayList(
-                        "Card",
-                        "Savings",
-                        "Checking"
-                );
-
-        final ComboBox leftTransfer = new ComboBox(firstChoice);
         transferBewteenAccounts.getChildren().add(leftTransfer);
         leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
@@ -218,14 +212,9 @@ public class GUI extends Application {
         transferBewteenAccounts.getChildren().add(transferto);
 
 
-        ObservableList<String> secondChoice =
-                FXCollections.observableArrayList(
-                        "Card",
-                        "Savings",
-                        "Checking"
-                );
+        ComboBox<String> rightTransfer = new ComboBox<>();
+        rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
 
-        final ComboBox rightTransfer = new ComboBox(secondChoice);
         transferBewteenAccounts.getChildren().add(rightTransfer);
         rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
 
@@ -246,9 +235,17 @@ public class GUI extends Application {
         transferBewteenAccountsAmount.getChildren().add(priceEntry);
 
         Button confirmTransfer = new Button("Confirm");
+
+        confirmTransfer.setOnAction(e -> {
+            String removeFromAccount = (String) leftTransfer.getValue();
+            String addToAccount = (String) rightTransfer.getValue();
+            String tempText = priceEntry.getText();
+            double amountToAdd = Double.parseDouble(tempText);
+            testdata.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+        });
+
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
         confirmTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 25px;");
-
 
         VBox vbox = new VBox(topMenu(primaryStage), transferVBox);
 

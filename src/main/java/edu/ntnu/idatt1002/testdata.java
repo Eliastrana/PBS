@@ -72,6 +72,19 @@ public class testdata {
         return accounts;
     }
 
+    public static void setAccounts(HashMap<String, Double> accounts) {
+        testdata.accounts = accounts;
+    }
+
+    public static void transferBetweenAccounts(String removeFromAccount, String addToAccount, double amount){
+        if (accounts.get(removeFromAccount)-amount < 0){
+            amount = 0;
+            System.out.println("Invalid input");
+        }
+        accounts.put(removeFromAccount, accounts.get(removeFromAccount)-amount);
+        accounts.put(addToAccount, accounts.get(addToAccount)+amount);
+    }
+
 //    public static double getValue() {
 //        Iterator<Map.Entry<String, Double>> iterator = testHMap.entrySet().iterator();
 //        Double Value = 0.0;
