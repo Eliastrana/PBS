@@ -386,16 +386,20 @@ public class GUI extends Application {
 
         confirmExpense.setOnAction(e -> {
             String selectedOption = (String) categoryMenu.getValue();
+            String name = String.valueOf(pickName);
+            String tempText = prices.getText();
+            double price = Double.parseDouble(tempText);
+
             if (selectedOption.equals("Entertainment")){
-                testdata.addToArrayList(new Expense("Saaw", 500, 1), entertainment);
+                testdata.addToArrayList(new Expense(name, price, 1), entertainment);
             } else if (selectedOption.equals("Food")){
-                testdata.addToArrayList(new Expense("Saaw", 500, 1), food);
+                testdata.addToArrayList(new Expense(name, price, 1), food);
             } else if (selectedOption.equals("Transportation")){
-                testdata.addToArrayList(new Expense("Saaw", 500, 1), transportation);
+                testdata.addToArrayList(new Expense(name, price, 1), transportation);
             } else if (selectedOption.equals("Clothing")){
-                testdata.addToArrayList(new Expense("Saaw", 500, 1), clothing);
+                testdata.addToArrayList(new Expense(name, price, 1), clothing);
             } else if (selectedOption.equals("Other")){
-                testdata.addToArrayList(new Expense("Saaw", 500, 1), other);
+                testdata.addToArrayList(new Expense(name, price, 1), other);
             } else {
                 System.out.println("Error");
             }
