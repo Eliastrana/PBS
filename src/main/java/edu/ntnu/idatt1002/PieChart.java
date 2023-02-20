@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static edu.ntnu.idatt1002.testdata.*;
@@ -18,11 +19,24 @@ public class PieChart {
 
     private Stage primaryStage;
 
-    static ObservableList<javafx.scene.chart.PieChart.Data> createData() {
-        return FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Card", 2000),
-                new javafx.scene.chart.PieChart.Data("Checkings", 8000),
-                new javafx.scene.chart.PieChart.Data("Savings", 26000));
+//    static ObservableList<javafx.scene.chart.PieChart.Data> createData() {
+////        return FXCollections.observableArrayList(
+////                new javafx.scene.chart.PieChart.Data("Card", 2000),
+////                new javafx.scene.chart.PieChart.Data("Checkings", 8000),
+////                new javafx.scene.chart.PieChart.Data("Savings", 26000));
+////    }
+    public static ObservableList<javafx.scene.chart.PieChart.Data> createData(){
+//        ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
+//        for (Map.Entry<String, Double> entry : accounts.entrySet()) {
+//            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey(), entry.getValue()));
+//        }
+//        javafx.scene.chart.PieChart pieChart = new javafx.scene.chart.PieChart(pieChartData);
+//        return (ObservableList<javafx.scene.chart.PieChart.Data>) pieChart;
+        ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (Map.Entry<String, Double> entry : accounts.entrySet()) {
+            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+        return pieChartData;
     }
 
     // THE SECOND PIE
