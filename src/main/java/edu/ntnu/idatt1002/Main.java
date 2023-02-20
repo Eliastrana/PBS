@@ -10,6 +10,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         GUI gui = new GUI();
         gui.start(stage);
+
     }
 
     public static void main(String[] args) {
