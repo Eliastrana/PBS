@@ -64,7 +64,12 @@ public class testdata {
     }
 
     public static void addAccount(String accountName, double accountBalance){
-        accounts.put(accountName, accountBalance);
+        Account newAccount = new Account(accountName, accountBalance);
+        accounts.put(newAccount.getAccountName(), newAccount.getAccountBalance());
+    }
+
+    public static HashMap<String, Double> getAccounts() {
+        return accounts;
     }
 
 //    public static double getValue() {
