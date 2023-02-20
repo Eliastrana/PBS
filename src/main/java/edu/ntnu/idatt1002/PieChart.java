@@ -35,12 +35,12 @@ public class PieChart {
     }
 
     // New method for changing the color of the pie chart wheel
-    public static void changePieChartColor(javafx.scene.chart.PieChart chart, Color color) {
-        ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = chart.getData();
-        for (javafx.scene.chart.PieChart.Data data : pieChartData) {
-            data.getNode().setStyle("-fx-pie-color: " + color.toString().replace("0x", "#") + ";");
-        }
-    }
+//    public static void changePieChartColor(javafx.scene.chart.PieChart chart, Color color) {
+//        ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = chart.getData();
+//        for (javafx.scene.chart.PieChart.Data data : pieChartData) {
+//            data.getNode().setStyle("-fx-pie-color: " + color.toString().replace("0x", "#") + ";");
+//        }
+//    }
 
 
 }

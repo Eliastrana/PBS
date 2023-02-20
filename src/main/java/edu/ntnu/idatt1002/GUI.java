@@ -29,12 +29,10 @@ public class GUI extends Application {
 
     private StackPane overviewWindow = new StackPane(); {
 
-        //edu.ntnu.idatt1002.PieChart myPieChart = new edu.ntnu.idatt1002.PieChart();
-        //myPieChart.changePieChartColor(new PieChart(createData()), Color.BLACK);
-
 
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
+
 
         System.out.println("open overview window");
         Text text = new Text("Welcome Keira");
