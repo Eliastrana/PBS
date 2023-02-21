@@ -26,6 +26,7 @@ public class GUI extends Application {
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
     //The buttons are added to every single page individually, but they should be a separate entity
+    //Each window is a StackPane, and the buttons are added to the StackPane
 
     private StackPane overviewWindow = new StackPane(); {
 
