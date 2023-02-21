@@ -9,20 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
-import java.util.concurrent.atomic.AtomicReference;
 
+import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.testdata.*;
 
 public class GUI extends Application {
@@ -30,59 +26,36 @@ public class GUI extends Application {
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
     //The buttons are added to every single page individually, but they should be a separate entity
+    //Each window is a StackPane, and the buttons are added to the StackPane
+
+    private StackPane overviewWindow = new StackPane(); {
 
 
-
-
-
-    //PAGE 1
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-        primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
-
-
-        BorderPane borderPane = new BorderPane();
-        ScrollPane scrollPane = new ScrollPane();
-
-        borderPane.setStyle("-fx-background-color: #CED0CE;");
-        scrollPane.setStyle("-fx-background-color: #CED0CE;");
-
-
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(false);
-
-        ObservableList<PieChart.Data> pieChartData = edu.ntnu.idatt1002.PieChart.createData();
+        ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
-
-
 
 
         System.out.println("open overview window");
         Text text = new Text("Welcome Keira");
         text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
-        borderPane.setAlignment(text, Pos.BASELINE_LEFT);
         text.setStyle("-fx-fill: #3F403F");
 
         //Time of day text
-        Text text2 = new Text(timeofdaychecker.timeofdaychecker()+"\n");
+        Text text2 = new Text(timeofdaychecker.timeofdaychecker() + "\n");
         text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
         text2.setLineSpacing(0);
         text2.setFill(Color.LIGHTGREEN);
-        borderPane.setAlignment(text2, Pos.BASELINE_LEFT);
         text2.setStyle("-fx-fill: #9FB8AD");
-
-
 
 
         HBox hbox2 = new HBox(2);
         Text textSavings = new Text("Total savings");
+        textSavings.setStyle("-fx-fill: #3F403F");
         textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSavings);
 
         Text textSpending = new Text("Monthly spending");
+        textSpending.setStyle("-fx-fill: #3F403F");
         textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSpending);
 
@@ -136,61 +109,25 @@ public class GUI extends Application {
         vboxSpending.getChildren().add(rightTable);
 
 
-        topMenu(primaryStage);
+        //topMenu(primaryStage);
 
-        VBox vbox = new VBox(topMenu(primaryStage),text,text2, hboxPieLayout,emptySpace, currentAccountStatusTextFormat);
+        VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat);
 
-        Scene scene = new Scene(borderPane);
-        scrollPane.setContent(vbox);
-        borderPane.setCenter(scrollPane);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        overviewWindow.getChildren().add(vbox);
 
     }
-
-
-    public VBox createLayout(Stage primaryStage) {
-
-        // create the top menu
-        HBox topMenu = topMenu(primaryStage);
-
-        // create the panes
-        Pane pane1 = new Pane();
-        Pane pane2 = new Pane();
-
-        // create a VBox to hold the topMenu and the panes
-        VBox layout = new VBox();
-        layout.getChildren().addAll(topMenu, pane1, pane2);
-
-        return layout;
-    }
-
-
-    //PAGE 2
-    public void transferWindow(Stage primaryStage){
-
-        primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
-
-
-        topMenu(primaryStage);
-        BorderPane borderPane = new BorderPane();
-        ScrollPane scrollPane = new ScrollPane();
+    private StackPane transferWindow = new StackPane(); {
 
         System.out.println("open transfer window");
         VBox transferVBox = new VBox();
-        transferVBox.getChildren().add(new Label("This is the transfer page"));
-        Scene transferScene = new Scene(transferVBox, 800, 600);
-        borderPane.setCenter(transferScene.getRoot());
 
         Text transferBetweenAccounts = new Text("Transfer between accounts:");
-        transferBetweenAccounts.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 60));
-        borderPane.setAlignment(transferBetweenAccounts, Pos.CENTER_LEFT);
+        transferBetweenAccounts.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
+        transferBetweenAccounts.setStyle("-fx-fill: #3F403F");
         transferVBox.getChildren().add(transferBetweenAccounts);
 
         HBox transferBewteenAccounts = new HBox();
+        transferBewteenAccounts.setSpacing(20);
         transferVBox.getChildren().add(transferBewteenAccounts);
         transferBewteenAccounts.setAlignment(Pos.CENTER);
 
@@ -198,30 +135,25 @@ public class GUI extends Application {
         Text transferfrom = new Text("Transfer from:");
         transferfrom.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
         transferBewteenAccounts.getChildren().add(transferfrom);
-
-
         ComboBox<String> leftTransfer = new ComboBox<>();
         leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-
         transferBewteenAccounts.getChildren().add(leftTransfer);
-        leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
 
 
         Text transferto = new Text(" to: ");
         transferto.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
         transferBewteenAccounts.getChildren().add(transferto);
-
-
         ComboBox<String> rightTransfer = new ComboBox<>();
         rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-
         transferBewteenAccounts.getChildren().add(rightTransfer);
-        rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
+        rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 2em;");
 
 
         HBox transferBewteenAccountsAmount = new HBox();
+        transferBewteenAccountsAmount.setSpacing(20);
+        transferBewteenAccountsAmount.setPadding(new Insets(40, 40, 40, 40));
         transferVBox.getChildren().add(transferBewteenAccountsAmount);
-
         transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
 
         Text selectAmount = new Text("Select transfer amount: ");
@@ -235,6 +167,8 @@ public class GUI extends Application {
         transferBewteenAccountsAmount.getChildren().add(priceEntry);
 
         Button confirmTransfer = new Button("Confirm");
+        confirmTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+
 
         confirmTransfer.setOnAction(e -> {
             String removeFromAccount = (String) leftTransfer.getValue();
@@ -245,64 +179,29 @@ public class GUI extends Application {
         });
 
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
-        confirmTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 25px;");
-
-        VBox vbox = new VBox(topMenu(primaryStage), transferVBox);
-
-
-        Scene scene = new Scene(borderPane);
-        scrollPane.setContent(vbox);
-        borderPane.setCenter(scrollPane);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
-    //PAGE 3
-    public void payWindow(Stage primaryStage){
+        VBox vbox = new VBox(transferVBox);
+        vbox.setPadding(new Insets(40, 40, 40, 40));
+        transferWindow.getChildren().add(vbox);
+    };
+    private StackPane payWindow = new StackPane();{
 
 
-
-        primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
-
-
-        BorderPane borderPane = new BorderPane();
-        ScrollPane scrollPane = new ScrollPane();
         System.out.println("opening pay window");
         VBox payVBox = new VBox();
         payVBox.getChildren().add(new Label(Pay.payText()));
-        Scene transferScene = new Scene(payVBox, 800, 600);
-        borderPane.setCenter(transferScene.getRoot());
 
-        VBox vbox = new VBox(topMenu(primaryStage), payVBox);
-        Scene scene = new Scene(borderPane);
-        scrollPane.setContent(vbox);
-        borderPane.setCenter(scrollPane);
+        VBox vbox = new VBox(payVBox);
+        payWindow.getChildren().add(vbox);
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
     }
+    private StackPane addExpenseWindow = new StackPane();{
 
-    //PAGE 4
-    public void addExpenseWindow(Stage primaryStage){
-
-        primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
-
-
-        BorderPane borderPane = new BorderPane();
-        ScrollPane scrollPane = new ScrollPane();
 
         System.out.println("open expense window");
         VBox addExpenseVBox = new VBox();
         addExpenseVBox.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
-        Scene transferScene = new Scene(addExpenseVBox, 800, 600);
-        borderPane.setCenter(transferScene.getRoot());
 
         HBox newExpenseTitle = new HBox(2);
         Text text3 = new Text("Add new expense");
@@ -311,14 +210,9 @@ public class GUI extends Application {
         newExpenseTitle.getChildren().add(text3);
         addExpenseVBox.getChildren().add(newExpenseTitle);
 
-
         DatePicker datePicker = new DatePicker();
         datePicker.setValue(LocalDate.now());
         addExpenseVBox.getChildren().add(datePicker);
-
-
-
-
 
         HBox hboxAddExpenseCategory = new HBox(2);
 
@@ -339,16 +233,6 @@ public class GUI extends Application {
         hboxAddExpenseCategory.getChildren().add(categoryMenu);
         hboxAddExpenseCategory.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(hboxAddExpenseCategory);
-
-
-
-
-        //Utregningsmetode
-
-        //ChoiceBox<String> choiceBox = new ChoiceBox<>(options);
-
-
-
 
         HBox hboxAddExpensePrice = new HBox(2);
         hboxAddExpensePrice.setAlignment(Pos.CENTER);
@@ -383,7 +267,6 @@ public class GUI extends Application {
         Button confirmExpense = new Button("Confirm");
 
 
-
         confirmExpense.setOnAction(e -> {
             String selectedOption = (String) categoryMenu.getValue();
             String name = String.valueOf(pickName);
@@ -410,57 +293,66 @@ public class GUI extends Application {
 
         });
 
-
         confirmExpense.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
         hboxConfirmExpense.getChildren().add(confirmExpense);
         hboxConfirmExpense.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(hboxConfirmExpense);
 
-
-
-
-
-
-        VBox vbox = new VBox(topMenu(primaryStage), addExpenseVBox);
-        Scene scene = new Scene(borderPane);
-        scrollPane.setContent(vbox);
-        borderPane.setCenter(scrollPane);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        VBox vbox = new VBox(addExpenseVBox);
+        addExpenseWindow.getChildren().add(vbox);
 
     }
+    private StackPane moreWindow = new StackPane();{
 
-
-    //PAGE 5
-    public void moreWindow(Stage primaryStage){
-
-        primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
-        BorderPane borderPane = new BorderPane();
-        ScrollPane scrollPane = new ScrollPane();
 
         System.out.println("opening more window");
         VBox moreVBox = new VBox();
         moreVBox.getChildren().add(new Label("This is the more page"));
-        Scene transferScene = new Scene(moreVBox, 800, 600);
-        borderPane.setCenter(transferScene.getRoot());
 
-        VBox vbox = new VBox(topMenu(primaryStage), moreVBox);
-        Scene scene = new Scene(borderPane);
-        scrollPane.setContent(vbox);
-        borderPane.setCenter(scrollPane);
+        VBox vbox = new VBox(moreVBox);
+        moreWindow.getChildren().add(vbox);
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+
 
     }
 
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Bank");
+        primaryStage.setWidth(1000);
+        primaryStage.setHeight(700);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(false);
+        BorderPane borderPane = new BorderPane();
+
+        borderPane.setStyle("-fx-background-color: #E6E8E6;");
+        scrollPane.setStyle("-fx-background-color: #E6E8E6;");
+        scrollPane.setContent(borderPane);
+
+        Scene scene = new Scene(scrollPane);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        overviewWindow.setVisible(true);
+        transferWindow.setVisible(false);
+        payWindow.setVisible(false);
+        addExpenseWindow.setVisible(false);
+        moreWindow.setVisible(false);
+
+        StackPane root = new StackPane();
+
+        root.getChildren().addAll(overviewWindow, transferWindow, payWindow, addExpenseWindow, moreWindow);
+        borderPane.setTop(topMenu(primaryStage));
+        borderPane.setCenter(root);
+
+
+    }
 
     //TOP MENU
-    public HBox topMenu(Stage primaryStage){
+    public HBox topMenu(Stage primaryStage) {
 
         BorderPane borderPane = new BorderPane();
         MenuBar menuBar = new MenuBar();
@@ -473,12 +365,16 @@ public class GUI extends Application {
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
 
-
         //BUTTON 1
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
-                start(primaryStage);
+
+                overviewWindow.setVisible(true);
+                transferWindow.setVisible(false);
+                payWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                moreWindow.setVisible(false);
                 System.out.println("overview button pressed");
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -492,7 +388,12 @@ public class GUI extends Application {
         Button transferButton = new Button("Transfer");
         transferButton.setOnAction(event -> {
             try {
-                transferWindow(primaryStage);
+                overviewWindow.setVisible(false);
+                transferWindow.setVisible(true);
+                payWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                moreWindow.setVisible(false);
+
                 System.out.println("transfer button pressed");
 
             } catch (Exception e) {
@@ -506,7 +407,13 @@ public class GUI extends Application {
         Button payButton = new Button("Pay");
         payButton.setOnAction(event -> {
             try {
-                payWindow(primaryStage);
+                overviewWindow.setVisible(false);
+                transferWindow.setVisible(false);
+                payWindow.setVisible(true);
+                addExpenseWindow.setVisible(false);
+                moreWindow.setVisible(false);
+
+
                 System.out.println("Pay button pressed");
 
             } catch (Exception e) {
@@ -520,7 +427,14 @@ public class GUI extends Application {
         Button addExpenseButton = new Button("Add Expense");
         addExpenseButton.setOnAction(event -> {
             try {
-                addExpenseWindow(primaryStage);
+
+                overviewWindow.setVisible(false);
+                transferWindow.setVisible(false);
+                payWindow.setVisible(false);
+                addExpenseWindow.setVisible(true);
+                moreWindow.setVisible(false);
+
+
                 System.out.println("add expense button pressed");
 
             } catch (Exception e) {
@@ -534,7 +448,13 @@ public class GUI extends Application {
         Button moreButton = new Button("More");
         moreButton.setOnAction(event -> {
             try {
-                moreWindow(primaryStage);
+
+                overviewWindow.setVisible(false);
+                transferWindow.setVisible(false);
+                payWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                moreWindow.setVisible(true);
+
                 System.out.println("more button pressed");
             } catch (Exception e) {
                 throw new RuntimeException(e);

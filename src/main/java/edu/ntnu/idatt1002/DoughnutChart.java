@@ -10,6 +10,8 @@ import javafx.scene.shape.Circle;
 
 public class DoughnutChart extends PieChart {
     private final Circle innerCircle;
+    //private final PieChart pieChart;
+
 
     public DoughnutChart(ObservableList<Data> pieData) {
         super(pieData);
@@ -21,7 +23,24 @@ public class DoughnutChart extends PieChart {
         innerCircle.setFill(Color.WHITESMOKE);
         innerCircle.setStroke(Color.WHITE);
         innerCircle.setStrokeWidth(3);
+
+        //pieChart = new PieChart(pieData);
+
+        //changePieChartColor(pieData);
+
     }
+
+//    public static void changePieChartColor(ObservableList<Data> pieData) {
+//        final String[] pieColors = new String[] {"#3F403F", "#475841", "#9FB8AD", "#CED0CE", "#E6E8E6"};
+//
+//        for (int i = 0; i < pieData.size(); i++) {
+//            PieChart.Data data = pieData.get(i);
+//            Node node = data.getNode();
+//            String color = pieColors[i % pieColors.length];
+//            node.setStyle("-fx-pie-color: " + color + ";");
+//        }
+//    }
+
 
     @Override
     protected void layoutChartChildren(double top, double left, double contentWidth, double contentHeight) {
