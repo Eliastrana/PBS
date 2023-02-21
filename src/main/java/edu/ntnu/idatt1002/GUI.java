@@ -382,8 +382,6 @@ public class GUI extends Application {
 
         Button confirmExpense = new Button("Confirm");
 
-
-
         confirmExpense.setOnAction(e -> {
             String selectedOption = (String) categoryMenu.getValue();
             String name = String.valueOf(pickName);
