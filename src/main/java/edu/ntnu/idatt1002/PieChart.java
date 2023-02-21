@@ -14,6 +14,9 @@ public class PieChart {
 
     GUI gui = new GUI();
 
+
+    private Stage primaryStage;
+
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData(){
         ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Map.Entry<String, Double> entry : accounts.entrySet()) {
