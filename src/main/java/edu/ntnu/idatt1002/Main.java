@@ -36,6 +36,7 @@ public class Main extends Application {
         //hei
         //testdata.addAccount("test", 100);
         //This launches the start method, that again opens the start-page in the GUI class
+        //testdata.addAccount("test", 100);
         launch(args);
     }
 

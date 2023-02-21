@@ -1,4 +1,5 @@
 package edu.ntnu.idatt1002;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,7 +16,6 @@ public class testdata {
     public static ArrayList<Expense> other;
 
     public static ArrayList<Expense> food;
-
 
 
     public static HashMap<String, Double> accounts;
