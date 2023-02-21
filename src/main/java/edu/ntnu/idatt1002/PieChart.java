@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Map;
@@ -10,9 +11,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import static edu.ntnu.idatt1002.testdata.*;
 
 public class PieChart {
-
-   
-
 
     GUI gui = new GUI();
 
@@ -27,7 +25,6 @@ public class PieChart {
         return pieChartData;
     }
 
-    // THE SECOND PIE
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
         return FXCollections.observableArrayList(
                 new javafx.scene.chart.PieChart.Data("Rent" , testdata.getTotalExpenses(rent)),
@@ -38,6 +35,15 @@ public class PieChart {
                 new javafx.scene.chart.PieChart.Data("Food", testdata.getTotalExpenses(food)),
                 new javafx.scene.chart.PieChart.Data("Other", testdata.getTotalExpenses(other)));
 
-
     }
+
+    // New method for changing the color of the pie chart wheel
+//    public static void changePieChartColor(javafx.scene.chart.PieChart chart, Color color) {
+//        ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = chart.getData();
+//        for (javafx.scene.chart.PieChart.Data data : pieChartData) {
+//            data.getNode().setStyle("-fx-pie-color: " + color.toString().replace("0x", "#") + ";");
+//        }
+//    }
+
+
 }

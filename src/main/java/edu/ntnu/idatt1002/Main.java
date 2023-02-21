@@ -10,6 +10,8 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         GUI gui = new GUI();
         gui.start(stage);
+
+
     }
 
     public static void main(String[] args) {
@@ -34,6 +36,7 @@ public class Main extends Application {
         //hei
         //testdata.addAccount("test", 100);
         //This launches the start method, that again opens the start-page in the GUI class
+        //testdata.addAccount("test", 100);
         launch(args);
     }
 
