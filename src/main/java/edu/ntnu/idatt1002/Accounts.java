@@ -22,4 +22,12 @@ public class Accounts {
         accounts.put(removeFromAccount, accounts.get(removeFromAccount)-amount);
         accounts.put(addToAccount, accounts.get(addToAccount)+amount);
     }
+
+    public static void addToAccount(String accountName, double amount){
+        if (amount < 0){
+            amount = 0;
+            System.out.println("Invalid input");
+        }
+        accounts.put(accountName, accounts.get(accountName)+amount);
+    }
 }

@@ -52,16 +52,16 @@ public class GUI extends Application {
         HBox hbox2 = new HBox(2);
         Text textSavings = new Text("Total savings");
         textSavings.setStyle("-fx-fill: #3F403F");
-        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSavings);
 
         Text textSpending = new Text("Monthly spending");
         textSpending.setStyle("-fx-fill: #3F403F");
-        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSpending.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSpending);
 
         Text emptySpace = new Text("\n");
-        emptySpace.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
         vboxSavings.setAlignment(Pos.CENTER);
@@ -76,7 +76,7 @@ public class GUI extends Application {
         currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
         Text currentAccountStatusText = new Text("Current account status");
-        currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        currentAccountStatusText.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
         currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
         //LeftTable
@@ -224,7 +224,7 @@ public class GUI extends Application {
 
 
         Text transferfrom = new Text("Transfer from:");
-        transferfrom.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+        transferfrom.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
         transferBewteenAccounts.getChildren().add(transferfrom);
         ComboBox<String> leftTransfer = new ComboBox<>();
         leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
@@ -233,7 +233,7 @@ public class GUI extends Application {
 
 
         Text transferto = new Text(" to: ");
-        transferto.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+        transferto.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
         transferBewteenAccounts.getChildren().add(transferto);
         ComboBox<String> rightTransfer = new ComboBox<>();
         rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
@@ -248,7 +248,7 @@ public class GUI extends Application {
         transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
 
         Text selectAmount = new Text("Select transfer amount: ");
-        selectAmount.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
+        selectAmount.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
         transferBewteenAccountsAmount.getChildren().add(selectAmount);
         transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
 
@@ -269,7 +269,51 @@ public class GUI extends Application {
             transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
         });
 
-        transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
+        Text registerIncome = new Text("Register new income:");
+        registerIncome.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
+        registerIncome.setStyle("-fx-fill: #3F403F");
+        transferVBox.getChildren().add(registerIncome);
+
+        HBox registerIncomeHBox = new HBox();
+        registerIncomeHBox.setSpacing(20);
+        transferVBox.getChildren().add(registerIncomeHBox);
+        registerIncomeHBox.setAlignment(Pos.CENTER);
+
+        Text incomeTo = new Text("Choose the account for registering income:");
+        incomeTo.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
+        registerIncomeHBox.getChildren().add(incomeTo);
+        ComboBox<String> incomeAccount = new ComboBox<>();
+        incomeAccount.setItems(FXCollections.observableArrayList(accounts.keySet()));
+        registerIncomeHBox.getChildren().add(incomeAccount);
+        incomeAccount.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
+
+        HBox registerAmount = new HBox();
+        registerAmount.setSpacing(20);
+        registerAmount.setPadding(new Insets(40, 40, 40, 40));
+        transferVBox.getChildren().add(registerAmount);
+        registerAmount.setAlignment(Pos.CENTER);
+
+        Text selectAmountIncome = new Text("Select transfer amount: ");
+        selectAmountIncome.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
+        registerAmount.getChildren().add(selectAmountIncome);
+        registerAmount.setAlignment(Pos.CENTER);
+
+        TextField amountIncome = new TextField();
+        amountIncome.setPromptText("Enter price");
+        registerAmount.getChildren().add(amountIncome);
+
+        Button confirmIncome = new Button("Confirm");
+        confirmIncome.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+
+
+        confirmIncome.setOnAction(e -> {
+            String inncomeAccountName = (String) incomeAccount.getValue();
+            String tempText = amountIncome.getText();
+            double amountToAdd = Double.parseDouble(tempText);
+            addToAccount(inncomeAccountName, amountToAdd);
+        });
+
+        registerAmount.getChildren().add(confirmIncome);
         VBox vbox = new VBox(transferVBox);
         vbox.setPadding(new Insets(40, 40, 40, 40));
         transferWindow.getChildren().add(vbox);
