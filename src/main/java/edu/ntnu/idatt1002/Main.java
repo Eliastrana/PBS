@@ -2,7 +2,7 @@ package edu.ntnu.idatt1002;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import static edu.ntnu.idatt1002.testdata.*;
+import static edu.ntnu.idatt1002.Expenses.*;
 
 public class Main extends Application {
 
@@ -15,22 +15,22 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        testdata.createTransportation();
-        testdata.createRent();
-        testdata.createEntertainment();
-        testdata.createClothing();
-        testdata.createOther();
-        testdata.createFood();
+        Expenses.createTransportation();
+        Expenses.createRent();
+        Expenses.createEntertainment();
+        Expenses.createClothing();
+        Expenses.createOther();
+        Expenses.createFood();
 
-        testdata.createAccountsHashmap();
-        testdata.addAccount("Sparekonto", 15000);
-        testdata.addAccount("Reisekonto", 10000);
-        testdata.transferBetweenAccounts("Sparekonto", "Reisekonto", 5000);
+        Accounts.createAccountsHashmap();
+        Accounts.addAccount("Sparekonto", 15000);
+        Accounts.addAccount("Reisekonto", 10000);
+        Accounts.transferBetweenAccounts("Sparekonto", "Reisekonto", 5000);
 
-        testdata.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
-        testdata.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
-        testdata.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
-        testdata.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
+        Expenses.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
+        Expenses.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
+        Expenses.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
+        Expenses.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
 
         //testdata.createHashmap();
         //hei
