@@ -266,8 +266,7 @@ public class GUI extends Application {
             String addToAccount = (String) rightTransfer.getValue();
             String tempText = priceEntry.getText();
             double amountToAdd = Double.parseDouble(tempText);
-            Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
-            System.out.println("Confirm transfer button pressed");
+            transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
         });
 
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
