@@ -23,9 +23,9 @@ public class Main extends Application {
         Expenses.createFood();
 
         Accounts.createAccountsHashmap();
-        Accounts.addAccount("Sparekonto", 15000);
-        Accounts.addAccount("Reisekonto", 10000);
-        Accounts.transferBetweenAccounts("Sparekonto", "Reisekonto", 5000);
+        Accounts.addAccount("Card", 15000);
+        Accounts.addAccount("Savings", 10000);
+        Accounts.addAccount("Checkings", 10000);
 
         Expenses.addToArrayList(new Expense("awdwad", 15.0, 1), transportation);
         Expenses.addToArrayList(new Expense("awdawdsw", 20.0, 1), transportation);
