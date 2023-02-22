@@ -31,9 +31,11 @@ public class GUI extends Application {
     //Each window is a StackPane, and the buttons are added to the StackPane
     //The StackPane is then added to the scene, and the scene is added to the stage
 
-    private void testofmethod(){
+    private void overviewWindow(){
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
+
+        //BarChartSample barChart = new BarChartSample();
 
 
         System.out.println("open overview window");
@@ -52,16 +54,16 @@ public class GUI extends Application {
         HBox hbox2 = new HBox(2);
         Text textSavings = new Text("Total savings");
         textSavings.setStyle("-fx-fill: #3F403F");
-        textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSavings);
 
         Text textSpending = new Text("Monthly spending");
         textSpending.setStyle("-fx-fill: #3F403F");
-        textSpending.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSpending);
 
         Text emptySpace = new Text("\n");
-        emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        emptySpace.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
         vboxSavings.setAlignment(Pos.CENTER);
@@ -75,9 +77,6 @@ public class GUI extends Application {
         HBox currentAccountStatusTextFormat = new HBox();
         currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
-        Text currentAccountStatusText = new Text("Current account status");
-        currentAccountStatusText.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
-        currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
         //LeftTable
         TableView<Expense> leftTable = new TableView<>();
@@ -110,102 +109,23 @@ public class GUI extends Application {
         vboxSpending.getChildren().add(rightTable);
 
 
+        Text currentAccountStatusText = new Text("Current account status");
+        currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
+
+        //barChart.start();
+
+
         //topMenu(primaryStage);
 
         VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat);
 
-        overviewWindow.getChildren().add(vbox);
+        overviewWindowStackPane.getChildren().add(vbox);
 
     }
 
-    private StackPane overviewWindow = new StackPane(); {
-
-
-        testofmethod();
-//        ObservableList<PieChart.Data> pieChartData = createData();
-//        ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
-//
-//
-//        System.out.println("open overview window");
-//        Text text = new Text("Welcome Keira");
-//        text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
-//        text.setStyle("-fx-fill: #3F403F");
-//
-//        //Time of day text
-//        Text text2 = new Text(timeofdaychecker.timeofdaychecker() + "\n");
-//        text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
-//        text2.setLineSpacing(0);
-//        text2.setFill(Color.LIGHTGREEN);
-//        text2.setStyle("-fx-fill: #9FB8AD");
-//
-//
-//        HBox hbox2 = new HBox(2);
-//        Text textSavings = new Text("Total savings");
-//        textSavings.setStyle("-fx-fill: #3F403F");
-//        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-//        hbox2.getChildren().add(textSavings);
-//
-//        Text textSpending = new Text("Monthly spending");
-//        textSpending.setStyle("-fx-fill: #3F403F");
-//        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-//        hbox2.getChildren().add(textSpending);
-//
-//        Text emptySpace = new Text("\n");
-//        emptySpace.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-//
-//        VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
-//        vboxSavings.setAlignment(Pos.CENTER);
-//
-//        VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
-//        vboxSpending.setAlignment(Pos.CENTER);
-//
-//        HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
-//        hboxPieLayout.setAlignment(Pos.CENTER);
-//
-//        HBox currentAccountStatusTextFormat = new HBox();
-//        currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
-//
-//        Text currentAccountStatusText = new Text("Current account status");
-//        currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
-//        currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
-//
-//        //LeftTable
-//        TableView<Expense> leftTable = new TableView<>();
-//        TableColumn<Expense, String> leftColumn1 = new TableColumn<>("Name: ");
-//        leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
-//
-//        TableColumn<Expense, Double> leftColumn2 = new TableColumn<>("Price: ");
-//        leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
-//
-//        leftTable.getColumns().addAll(leftColumn1, leftColumn2);
-//
-//        leftTable.getItems().addAll(transportation);
-//
-//        vboxSavings.getChildren().add(leftTable);
-//
-//        //TODO vboxSpending.getChildren().add(rightTable);
-//
-//        //RightTable
-//        TableView<Expense> rightTable = new TableView<>();
-//        TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
-//        rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
-//
-//        TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
-//        rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
-//
-//        rightTable.getColumns().addAll(rightColumn1, rightColumn2);
-//
-//        rightTable.getItems().addAll(rent);
-//
-//        vboxSpending.getChildren().add(rightTable);
-//
-//
-//        //topMenu(primaryStage);
-//
-//        VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat);
-//
-//        overviewWindow.getChildren().add(vbox);
-
+    private StackPane overviewWindowStackPane = new StackPane(); {
+        overviewWindow();
     }
     private StackPane transferWindow = new StackPane(); {
 
@@ -266,7 +186,8 @@ public class GUI extends Application {
             String addToAccount = (String) rightTransfer.getValue();
             String tempText = priceEntry.getText();
             double amountToAdd = Double.parseDouble(tempText);
-            transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+            Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+            System.out.println("Confirm transfer button pressed");
         });
 
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
@@ -342,20 +263,20 @@ public class GUI extends Application {
 
         HBox newExpenseTitle = new HBox(2);
         Text text3 = new Text("Add new expense");
-        text3.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 45));
-        newExpenseTitle.setAlignment(Pos.CENTER);
-        newExpenseTitle.getChildren().add(text3);
-        addExpenseVBox.getChildren().add(newExpenseTitle);
+        text3.setStyle("-fx-fill: #3F403F");
+        text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
         DatePicker datePicker = new DatePicker();
         datePicker.setValue(LocalDate.now());
-        addExpenseVBox.getChildren().add(datePicker);
+        datePicker.setShowWeekNumbers(true);
+        datePicker.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
         HBox hboxAddExpenseCategory = new HBox(2);
 
         Text pickCategory = new Text("Pick a category: ");
-        pickCategory.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        hboxAddExpenseCategory.getChildren().add(pickCategory);
+        pickCategory.setStyle("-fx-fill: #3F403F");
+        pickCategory.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+
 
         ObservableList<String> options =
                 FXCollections.observableArrayList(
@@ -366,42 +287,39 @@ public class GUI extends Application {
                         "Other"
                 );
 
-        final ComboBox categoryMenu = new ComboBox(options);
-        hboxAddExpenseCategory.getChildren().add(categoryMenu);
-        hboxAddExpenseCategory.setAlignment(Pos.CENTER);
-        addExpenseVBox.getChildren().add(hboxAddExpenseCategory);
 
-        HBox hboxAddExpensePrice = new HBox(2);
-        hboxAddExpensePrice.setAlignment(Pos.CENTER);
+        final ComboBox categoryMenu = new ComboBox(options);
+        categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+
 
 
         Text pickPrice = new Text("Pick a price: ");
-        pickPrice.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        hboxAddExpensePrice.getChildren().add(pickPrice);
+        pickPrice.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        pickPrice.setStyle("-fx-fill: #3F403F");
+        pickPrice.setStyle("-fx-padding: 20px;");
+
 
         TextField prices = new TextField();
         prices.setPromptText("Enter price");
-        hboxAddExpensePrice.getChildren().add(prices);
+        prices.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-        addExpenseVBox.getChildren().add(hboxAddExpensePrice);
 
-        HBox hboxAddExpenseName = new HBox(2);
-        hboxAddExpenseName.setAlignment(Pos.CENTER);
 
         Text pickName = new Text("Pick a name: ");
-        pickName.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        hboxAddExpenseName.getChildren().add(pickName);
+        pickName.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        pickName.setStyle("-fx-fill: #3F403F");
+        pickName.setStyle("-fx-padding: 20px;");
 
         TextField names = new TextField();
         names.setPromptText("Enter name");
-        hboxAddExpenseName.getChildren().add(names);
+        names.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-        addExpenseVBox.getChildren().add(hboxAddExpenseName);
 
-        HBox hboxConfirmExpense = new HBox(2);
+
 
 
         Button confirmExpense = new Button("Confirm");
+        confirmExpense.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
 
         confirmExpense.setOnAction(e -> {
@@ -430,12 +348,38 @@ public class GUI extends Application {
 
         });
 
-        confirmExpense.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;");
-        hboxConfirmExpense.getChildren().add(confirmExpense);
-        hboxConfirmExpense.setAlignment(Pos.CENTER);
-        addExpenseVBox.getChildren().add(hboxConfirmExpense);
 
-        VBox vbox = new VBox(addExpenseVBox);
+
+
+        HBox title = new HBox(text3);
+        title.setAlignment(Pos.CENTER);
+        title.setSpacing(40);
+
+        VBox categoryNamePrice = new VBox(pickCategory, categoryMenu, pickPrice, prices, pickName, names);
+        categoryNamePrice.setPadding(new Insets(25));
+        categoryNamePrice.setSpacing(20);
+        categoryNamePrice.setAlignment(Pos.TOP_LEFT);
+
+        VBox calendar = new VBox(datePicker);
+
+        calendar.setAlignment(Pos.TOP_LEFT);
+        calendar.setSpacing(20);
+        calendar.setPadding(new Insets(25));
+
+
+
+
+        HBox dateAndInput = new HBox(categoryNamePrice, calendar);
+        dateAndInput.setAlignment(Pos.CENTER);
+        dateAndInput.setPadding(new Insets(15));
+
+
+        VBox dateAndInputAndConfirm = new VBox(title, dateAndInput, confirmExpense);
+        dateAndInputAndConfirm.setAlignment(Pos.CENTER);
+
+
+
+        VBox vbox = new VBox(dateAndInputAndConfirm);
         addExpenseWindow.getChildren().add(vbox);
 
     }
@@ -473,7 +417,7 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        overviewWindow.setVisible(true);
+        overviewWindowStackPane.setVisible(true);
         transferWindow.setVisible(false);
         payWindow.setVisible(false);
         addExpenseWindow.setVisible(false);
@@ -481,7 +425,7 @@ public class GUI extends Application {
 
         StackPane root = new StackPane();
 
-        root.getChildren().addAll(overviewWindow, transferWindow, payWindow, addExpenseWindow, moreWindow);
+        root.getChildren().addAll(overviewWindowStackPane, transferWindow, payWindow, addExpenseWindow, moreWindow);
         borderPane.setTop(topMenu(primaryStage));
         borderPane.setCenter(root);
 
@@ -490,9 +434,9 @@ public class GUI extends Application {
 
     private void updatePane() {
         // update the contents of the paneToUpdate
-            overviewWindow.getChildren().clear();
+            overviewWindowStackPane.getChildren().clear();
 
-            testofmethod();
+            overviewWindow();
 
     }
 
@@ -516,12 +460,12 @@ public class GUI extends Application {
         overviewButton.setOnAction(event -> {
             try {
 
-                overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
+                overviewWindowStackPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         updatePane();
                     }});
 
-                overviewWindow.setVisible(true);
+                overviewWindowStackPane.setVisible(true);
                 transferWindow.setVisible(false);
                 payWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
@@ -539,7 +483,7 @@ public class GUI extends Application {
         Button transferButton = new Button("Transfer");
         transferButton.setOnAction(event -> {
             try {
-                overviewWindow.setVisible(false);
+                overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(true);
                 payWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
@@ -558,7 +502,7 @@ public class GUI extends Application {
         Button payButton = new Button("Pay");
         payButton.setOnAction(event -> {
             try {
-                overviewWindow.setVisible(false);
+                overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
                 payWindow.setVisible(true);
                 addExpenseWindow.setVisible(false);
@@ -579,7 +523,7 @@ public class GUI extends Application {
         addExpenseButton.setOnAction(event -> {
             try {
 
-                overviewWindow.setVisible(false);
+                overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
                 payWindow.setVisible(false);
                 addExpenseWindow.setVisible(true);
@@ -600,7 +544,7 @@ public class GUI extends Application {
         moreButton.setOnAction(event -> {
             try {
 
-                overviewWindow.setVisible(false);
+                overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
                 payWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
