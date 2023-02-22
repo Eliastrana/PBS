@@ -34,6 +34,4 @@ public class Expense {
     public void setCategory(int category) {
         this.category = category;
     }
-
-
 }
