@@ -19,7 +19,9 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 
 import static edu.ntnu.idatt1002.PieChart.createData;
-import static edu.ntnu.idatt1002.testdata.*;
+import static edu.ntnu.idatt1002.Expenses.*;
+import static edu.ntnu.idatt1002.Accounts.*;
+
 
 public class GUI extends Application {
 
@@ -264,7 +266,7 @@ public class GUI extends Application {
             String addToAccount = (String) rightTransfer.getValue();
             String tempText = priceEntry.getText();
             double amountToAdd = Double.parseDouble(tempText);
-            testdata.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+            Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
             System.out.println("Confirm transfer button pressed");
         });
 
@@ -364,15 +366,15 @@ public class GUI extends Application {
             double price = Double.parseDouble(tempText);
 
             if (selectedOption.equals("Entertainment")){
-                testdata.addToArrayList(new Expense(name, price, 1), entertainment);
+                Expenses.addToArrayList(new Expense(name, price, 1), entertainment);
             } else if (selectedOption.equals("Food")){
-                testdata.addToArrayList(new Expense(name, price, 1), food);
+                Expenses.addToArrayList(new Expense(name, price, 1), food);
             } else if (selectedOption.equals("Transportation")){
-                testdata.addToArrayList(new Expense(name, price, 1), transportation);
+                Expenses.addToArrayList(new Expense(name, price, 1), transportation);
             } else if (selectedOption.equals("Clothing")){
-                testdata.addToArrayList(new Expense(name, price, 1), clothing);
+                Expenses.addToArrayList(new Expense(name, price, 1), clothing);
             } else if (selectedOption.equals("Other")){
-                testdata.addToArrayList(new Expense(name, price, 1), other);
+                Expenses.addToArrayList(new Expense(name, price, 1), other);
             } else {
                 System.out.println("Error");
             }
