@@ -29,9 +29,7 @@ public class GUI extends Application {
     //Each window is a StackPane, and the buttons are added to the StackPane
     //The StackPane is then added to the scene, and the scene is added to the stage
 
-    private StackPane overviewWindow = new StackPane(); {
-
-
+    private void testofmethod(){
         ObservableList<PieChart.Data> pieChartData = createData();
         ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
 
@@ -117,6 +115,96 @@ public class GUI extends Application {
         overviewWindow.getChildren().add(vbox);
 
     }
+
+    private StackPane overviewWindow = new StackPane(); {
+
+
+        testofmethod();
+//        ObservableList<PieChart.Data> pieChartData = createData();
+//        ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
+//
+//
+//        System.out.println("open overview window");
+//        Text text = new Text("Welcome Keira");
+//        text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
+//        text.setStyle("-fx-fill: #3F403F");
+//
+//        //Time of day text
+//        Text text2 = new Text(timeofdaychecker.timeofdaychecker() + "\n");
+//        text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
+//        text2.setLineSpacing(0);
+//        text2.setFill(Color.LIGHTGREEN);
+//        text2.setStyle("-fx-fill: #9FB8AD");
+//
+//
+//        HBox hbox2 = new HBox(2);
+//        Text textSavings = new Text("Total savings");
+//        textSavings.setStyle("-fx-fill: #3F403F");
+//        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+//        hbox2.getChildren().add(textSavings);
+//
+//        Text textSpending = new Text("Monthly spending");
+//        textSpending.setStyle("-fx-fill: #3F403F");
+//        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+//        hbox2.getChildren().add(textSpending);
+//
+//        Text emptySpace = new Text("\n");
+//        emptySpace.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+//
+//        VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
+//        vboxSavings.setAlignment(Pos.CENTER);
+//
+//        VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
+//        vboxSpending.setAlignment(Pos.CENTER);
+//
+//        HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
+//        hboxPieLayout.setAlignment(Pos.CENTER);
+//
+//        HBox currentAccountStatusTextFormat = new HBox();
+//        currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
+//
+//        Text currentAccountStatusText = new Text("Current account status");
+//        currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+//        currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
+//
+//        //LeftTable
+//        TableView<Expense> leftTable = new TableView<>();
+//        TableColumn<Expense, String> leftColumn1 = new TableColumn<>("Name: ");
+//        leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+//
+//        TableColumn<Expense, Double> leftColumn2 = new TableColumn<>("Price: ");
+//        leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+//
+//        leftTable.getColumns().addAll(leftColumn1, leftColumn2);
+//
+//        leftTable.getItems().addAll(transportation);
+//
+//        vboxSavings.getChildren().add(leftTable);
+//
+//        //TODO vboxSpending.getChildren().add(rightTable);
+//
+//        //RightTable
+//        TableView<Expense> rightTable = new TableView<>();
+//        TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
+//        rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+//
+//        TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
+//        rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+//
+//        rightTable.getColumns().addAll(rightColumn1, rightColumn2);
+//
+//        rightTable.getItems().addAll(rent);
+//
+//        vboxSpending.getChildren().add(rightTable);
+//
+//
+//        //topMenu(primaryStage);
+//
+//        VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat);
+//
+//        overviewWindow.getChildren().add(vbox);
+
+    }
     private StackPane transferWindow = new StackPane(); {
 
         System.out.println("open transfer window");
@@ -177,6 +265,7 @@ public class GUI extends Application {
             String tempText = priceEntry.getText();
             double amountToAdd = Double.parseDouble(tempText);
             testdata.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+            System.out.println("Confirm transfer button pressed");
         });
 
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
@@ -352,6 +441,15 @@ public class GUI extends Application {
 
     }
 
+    private void updatePane() {
+        // update the contents of the paneToUpdate
+            overviewWindow.getChildren().clear();
+
+            testofmethod();
+
+    }
+
+
     //TOP MENU
     public HBox topMenu(Stage primaryStage) {
 
@@ -370,6 +468,11 @@ public class GUI extends Application {
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
+
+                overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        updatePane();
+                    }});
 
                 overviewWindow.setVisible(true);
                 transferWindow.setVisible(false);
@@ -466,5 +569,8 @@ public class GUI extends Application {
 
         return topMenu;
     }
+
+
+// register a ChangeListener with the StackPane's visibleProperty
 
 }
