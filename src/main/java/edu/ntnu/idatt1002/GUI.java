@@ -269,6 +269,8 @@ public class GUI extends Application {
             transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
         });
 
+        transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
+
         Text registerIncome = new Text("Register new income:");
         registerIncome.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
         registerIncome.setStyle("-fx-fill: #3F403F");
