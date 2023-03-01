@@ -18,4 +18,9 @@ public class timeofdaychecker {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return timeofdaychecker();
+    }
 }

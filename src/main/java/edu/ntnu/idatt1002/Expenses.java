@@ -1,9 +1,5 @@
 package edu.ntnu.idatt1002;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Expenses {
     public static ArrayList<Expense> transportation;
@@ -18,6 +14,7 @@ public class Expenses {
 
     public static ArrayList<Expense> food;
     public static ArrayList<ArrayList> allLists;
+    public static ArrayList<Expense> allExpenses;
 
     public static void createTransportation(){
         transportation = new ArrayList<Expense>();
@@ -41,6 +38,17 @@ public class Expenses {
 
     public static void createRent(){
         rent = new ArrayList<Expense>();
+    }
+
+    public static ArrayList<Expense> createAllExpenses(){
+        allExpenses = new ArrayList<Expense>();
+        allExpenses.addAll(transportation);
+        allExpenses.addAll(entertainment);
+        allExpenses.addAll(clothing);
+        allExpenses.addAll(other);
+        allExpenses.addAll(food);
+        allExpenses.addAll(rent);
+        return allExpenses;
     }
 
     public static void createAllAlist(){

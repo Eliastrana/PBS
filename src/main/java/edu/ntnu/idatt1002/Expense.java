@@ -1,11 +1,16 @@
 package edu.ntnu.idatt1002;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Expense {
     private String name;
     private double price;
     private int category;
 
-    Expense(String name, double price, int category){
+    private LocalTime date;
+
+    Expense(String name, double price, int category, LocalTime date){
         this.name = name;
         this.price = price;
         this.category = category;
@@ -19,6 +24,14 @@ public class Expense {
         return price;
     }
 
+    public int getCategory() {
+        return category;
+    }
+
+    public LocalTime getDate() {
+        return date;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -27,11 +40,12 @@ public class Expense {
         this.price = price;
     }
 
-    public int getCategory() {
-        return category;
-    }
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public void setDate(LocalTime date) {
+        this.date = date;
     }
 }

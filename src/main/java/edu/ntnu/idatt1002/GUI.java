@@ -17,6 +17,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.Expenses.*;
@@ -107,9 +110,12 @@ public class GUI extends Application {
         TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
         rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        rightTable.getColumns().addAll(rightColumn1, rightColumn2);
+        TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
+        rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        rightTable.getItems().addAll(rent);
+        rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3);
+
+        rightTable.getItems().addAll(Expenses.createAllExpenses());
 
         vboxSpending.getChildren().add(rightTable);
 
@@ -330,22 +336,22 @@ public class GUI extends Application {
 
         confirmExpense.setOnAction(e -> {
             String selectedOption = (String) categoryMenu.getValue();
-            String name = String.valueOf(names); //endret denne fra pickName til names
+            String name = names.getText();
             String tempText = prices.getText();
             double price = Double.parseDouble(tempText); //det er en error her
 
             if (selectedOption.equals("Entertainment")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), entertainment);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), entertainment);
             } else if (selectedOption.equals("Food")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), food);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), food);
             } else if (selectedOption.equals("Transportation")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), transportation);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), transportation);
             } else if (selectedOption.equals("Clothing")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), clothing);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), clothing);
             } else if (selectedOption.equals("Other")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), other);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), other);
             } else if (selectedOption.equals("Rent")) {
-                Expenses.addToArrayList(new Expense(name, price, 1), rent);
+                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), rent);
             } else {
                 System.out.println("Error");
             }
