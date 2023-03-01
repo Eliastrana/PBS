@@ -23,6 +23,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+import static edu.ntnu.idatt1002.Incomes.*;
 import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.Expenses.*;
 import static edu.ntnu.idatt1002.Accounts.*;
@@ -94,16 +95,19 @@ public class GUI extends Application {
 
 
         //LeftTable
-        TableView<Expense> leftTable = new TableView<>();
-        TableColumn<Expense, String> leftColumn1 = new TableColumn<>("Name: ");
+        TableView<Income> leftTable = new TableView<>();
+        TableColumn<Income, String> leftColumn1 = new TableColumn<>("Name: ");
         leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<Expense, Double> leftColumn2 = new TableColumn<>("Price: ");
+        TableColumn<Income, Double> leftColumn2 = new TableColumn<>("Price: ");
         leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        leftTable.getColumns().addAll(leftColumn1, leftColumn2);
+        TableColumn<Income, LocalDate> leftColumn3 = new TableColumn<>("Date: ");
+        leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        //leftTable.getItems().addAll();
+        leftTable.getColumns().addAll(leftColumn1, leftColumn2, leftColumn3);
+
+        leftTable.getItems().addAll(Incomes.createAllIncomes());
 
         vboxSavings.getChildren().add(leftTable);
 
@@ -145,7 +149,6 @@ public class GUI extends Application {
     private StackPane overviewWindowStackPane = new StackPane(); {
         overviewWindow();
     }
-
     private StackPane transferWindow = new StackPane(); {
 
         System.out.println("open transfer window");
@@ -315,7 +318,6 @@ public class GUI extends Application {
 
         final ComboBox categoryMenu = new ComboBox(options);
         categoryMenu.setPromptText("Pick a category");
-
         categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
         TextField prices = new TextField();

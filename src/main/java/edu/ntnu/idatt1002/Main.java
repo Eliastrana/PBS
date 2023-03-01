@@ -27,6 +27,7 @@ public class Main extends Application {
         Expenses.createClothing();
         Expenses.createOther();
         Expenses.createFood();
+        Incomes.createIncomes();
 
         Accounts.createAccountsHashmap();
         Accounts.addAccount("Card", 15000);
