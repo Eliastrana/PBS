@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static edu.ntnu.idatt1002.Accounts.accounts;
+import static edu.ntnu.idatt1002.Accounts.getTotalOfAccount;
 import static edu.ntnu.idatt1002.Expenses.*;
 
 public class PieChart {
@@ -21,19 +22,19 @@ public class PieChart {
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData(){
         ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Map.Entry<String, Double> entry : accounts.entrySet()) {
-            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey(), entry.getValue()));
+            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey() + ": \n" + getTotalOfAccount(entry.getKey()), entry.getValue()));
         }
         return pieChartData;
     }
 
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
         return FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Rent" , Expenses.getTotalExpenses(rent)),
-                new javafx.scene.chart.PieChart.Data("Transportation", Expenses.getTotalExpenses(transportation)),
-                new javafx.scene.chart.PieChart.Data("Clothing", Expenses.getTotalExpenses(clothing)),
-                new javafx.scene.chart.PieChart.Data("Entertainment", Expenses.getTotalExpenses(entertainment)),
-                new javafx.scene.chart.PieChart.Data("Food", Expenses.getTotalExpenses(food)),
-                new javafx.scene.chart.PieChart.Data("Other", Expenses.getTotalExpenses(other)));
+                new javafx.scene.chart.PieChart.Data("Rent: " + getTotalExpenses(rent) , Expenses.getTotalExpenses(rent)),
+                new javafx.scene.chart.PieChart.Data("Transportation: " + getTotalExpenses(transportation), Expenses.getTotalExpenses(transportation)),
+                new javafx.scene.chart.PieChart.Data("Clothing: " + getTotalExpenses(clothing), Expenses.getTotalExpenses(clothing)),
+                new javafx.scene.chart.PieChart.Data("Entertainment: " + getTotalExpenses(entertainment), Expenses.getTotalExpenses(entertainment)),
+                new javafx.scene.chart.PieChart.Data("Food: " + getTotalExpenses(food), Expenses.getTotalExpenses(food)),
+                new javafx.scene.chart.PieChart.Data("Other: " + getTotalExpenses(other), Expenses.getTotalExpenses(other)));
 
     }
 
