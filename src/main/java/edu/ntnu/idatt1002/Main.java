@@ -2,6 +2,11 @@ package edu.ntnu.idatt1002;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 import static edu.ntnu.idatt1002.Expenses.*;
 
 public class Main extends Application {
@@ -14,7 +19,8 @@ public class Main extends Application {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+
         Expenses.createTransportation();
         Expenses.createRent();
         Expenses.createEntertainment();

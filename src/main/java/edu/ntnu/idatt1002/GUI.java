@@ -25,6 +25,11 @@ import static edu.ntnu.idatt1002.Accounts.*;
 
 public class GUI extends Application {
 
+
+
+
+
+
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
     //The buttons are added to every single page individually, but they should be a separate entity
@@ -273,13 +278,14 @@ public class GUI extends Application {
 
         HBox hboxAddExpenseCategory = new HBox(2);
 
-        Text pickCategory = new Text("Pick a category: ");
-        pickCategory.setStyle("-fx-fill: #3F403F");
-        pickCategory.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+//        Text pickCategory = new Text("Pick a category: ");
+//        pickCategory.setStyle("-fx-fill: #3F403F");
+//        pickCategory.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
 
         ObservableList<String> options =
                 FXCollections.observableArrayList(
+                        "rent",
                         "Food",
                         "Transportation",
                         "Clothing",
@@ -289,14 +295,14 @@ public class GUI extends Application {
 
 
         final ComboBox categoryMenu = new ComboBox(options);
-        categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+        categoryMenu.setPromptText("Pick a category");
+        categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
 
-
-        Text pickPrice = new Text("Pick a price: ");
-        pickPrice.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        pickPrice.setStyle("-fx-fill: #3F403F");
-        pickPrice.setStyle("-fx-padding: 20px;");
+//        Text pickPrice = new Text("Pick a price: ");
+//        pickPrice.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+//        pickPrice.setStyle("-fx-fill: #3F403F");
+//        pickPrice.setStyle("-fx-padding: 20px;");
 
 
         TextField prices = new TextField();
@@ -305,10 +311,10 @@ public class GUI extends Application {
 
 
 
-        Text pickName = new Text("Pick a name: ");
-        pickName.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        pickName.setStyle("-fx-fill: #3F403F");
-        pickName.setStyle("-fx-padding: 20px;");
+//        Text pickName = new Text("Pick a name: ");
+//        pickName.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
+//        pickName.setStyle("-fx-fill: #3F403F");
+//        pickName.setStyle("-fx-padding: 20px;");
 
         TextField names = new TextField();
         names.setPromptText("Enter name");
@@ -324,20 +330,22 @@ public class GUI extends Application {
 
         confirmExpense.setOnAction(e -> {
             String selectedOption = (String) categoryMenu.getValue();
-            String name = String.valueOf(pickName);
+            String name = String.valueOf(names); //endret denne fra pickName til names
             String tempText = prices.getText();
-            double price = Double.parseDouble(tempText);
+            double price = Double.parseDouble(tempText); //det er en error her
 
-            if (selectedOption.equals("Entertainment")){
+            if (selectedOption.equals("Entertainment")) {
                 Expenses.addToArrayList(new Expense(name, price, 1), entertainment);
-            } else if (selectedOption.equals("Food")){
+            } else if (selectedOption.equals("Food")) {
                 Expenses.addToArrayList(new Expense(name, price, 1), food);
-            } else if (selectedOption.equals("Transportation")){
+            } else if (selectedOption.equals("Transportation")) {
                 Expenses.addToArrayList(new Expense(name, price, 1), transportation);
-            } else if (selectedOption.equals("Clothing")){
+            } else if (selectedOption.equals("Clothing")) {
                 Expenses.addToArrayList(new Expense(name, price, 1), clothing);
-            } else if (selectedOption.equals("Other")){
+            } else if (selectedOption.equals("Other")) {
                 Expenses.addToArrayList(new Expense(name, price, 1), other);
+            } else if (selectedOption.equals("Rent")) {
+                Expenses.addToArrayList(new Expense(name, price, 1), rent);
             } else {
                 System.out.println("Error");
             }
@@ -345,7 +353,11 @@ public class GUI extends Application {
             System.out.println("Purchase confirmed");
             System.out.println("Category: " + selectedOption);
 
+            categoryMenu.setValue(null);
+            names.setText(null);
+            prices.setText(null);
 
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
         });
 
 
@@ -355,7 +367,14 @@ public class GUI extends Application {
         title.setAlignment(Pos.CENTER);
         title.setSpacing(40);
 
-        VBox categoryNamePrice = new VBox(pickCategory, categoryMenu, pickPrice, prices, pickName, names);
+        VBox categoryNamePrice = new VBox(//pickCategory,
+                categoryMenu,
+                //pickPrice,
+                prices,
+                //pickName,
+                names);
+
+
         categoryNamePrice.setPadding(new Insets(25));
         categoryNamePrice.setSpacing(20);
         categoryNamePrice.setAlignment(Pos.TOP_LEFT);
