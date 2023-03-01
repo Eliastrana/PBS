@@ -38,6 +38,8 @@ public class Main extends Application {
         Expenses.addToArrayList(new Expense("awdlkasnem", 100, 1), rent);
         Expenses.addToArrayList(new Expense("awdlkasnem", 50, 1), rent);
 
+        Expenses.createAllAlist();
+
         //testdata.createHashmap();
         //hei
         //testdata.addAccount("test", 100);

@@ -17,6 +17,7 @@ public class Expenses {
     public static ArrayList<Expense> other;
 
     public static ArrayList<Expense> food;
+    public static ArrayList<ArrayList> allLists;
 
     public static void createTransportation(){
         transportation = new ArrayList<Expense>();
@@ -42,6 +43,15 @@ public class Expenses {
         rent = new ArrayList<Expense>();
     }
 
+    public static void createAllAlist(){
+        allLists = new ArrayList<ArrayList>();
+        allLists.add(rent);
+        allLists.add(transportation);
+        allLists.add(clothing);
+        allLists.add(other);
+        allLists.add(food);
+        allLists.add(entertainment);
+    }
 
     public static void addToArrayList(Expense expense, ArrayList<Expense> aList){
         aList.add(expense);
