@@ -52,12 +52,12 @@ public class GUI extends Application {
 
 
         HBox hbox2 = new HBox(2);
-        Text textSavings = new Text("Total savings");
+        Text textSavings = new Text("Total savings: " + getTotalOfAllAccounts());
         textSavings.setStyle("-fx-fill: #3F403F");
         textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSavings);
 
-        Text textSpending = new Text("Monthly spending");
+        Text textSpending = new Text("Monthly spending: " + getExpensesOfAllCategories());
         textSpending.setStyle("-fx-fill: #3F403F");
         textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         hbox2.getChildren().add(textSpending);

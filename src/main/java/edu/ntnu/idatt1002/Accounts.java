@@ -30,4 +30,14 @@ public class Accounts {
         }
         accounts.put(accountName, accounts.get(accountName)+amount);
     }
+    public static double getTotalOfAccount(String accountName){
+        return accounts.get(accountName);
+    }
+    public static double getTotalOfAllAccounts(){
+        double total = 0;
+        for (Double value : accounts.values()) {
+            total += value;
+        }
+        return total;
+    }
 }

@@ -54,4 +54,9 @@ public class Expenses {
         }
         return totalExpense;
     }
+    public static double getExpensesOfAllCategories(){
+        double totalExpense = 0;
+        totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent) + getTotalExpenses(food) + getTotalExpenses(other) + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
+        return totalExpense;
+    }
 }
