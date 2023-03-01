@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static edu.ntnu.idatt1002.Incomes.*;
 import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.Expenses.*;
 import static edu.ntnu.idatt1002.Accounts.*;
@@ -89,16 +90,19 @@ public class GUI extends Application {
 
 
         //LeftTable
-        TableView<Expense> leftTable = new TableView<>();
-        TableColumn<Expense, String> leftColumn1 = new TableColumn<>("Name: ");
+        TableView<Income> leftTable = new TableView<>();
+        TableColumn<Income, String> leftColumn1 = new TableColumn<>("Name: ");
         leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TableColumn<Expense, Double> leftColumn2 = new TableColumn<>("Price: ");
+        TableColumn<Income, Double> leftColumn2 = new TableColumn<>("Price: ");
         leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        leftTable.getColumns().addAll(leftColumn1, leftColumn2);
+        TableColumn<Income, LocalDate> leftColumn3 = new TableColumn<>("Date: ");
+        leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        //leftTable.getItems().addAll();
+        leftTable.getColumns().addAll(leftColumn1, leftColumn2, leftColumn3);
+
+        leftTable.getItems().addAll(Incomes.createAllIncomes());
 
         vboxSavings.getChildren().add(leftTable);
 
@@ -251,6 +255,8 @@ public class GUI extends Application {
             String tempText = amountIncome.getText();
             double amountToAdd = Double.parseDouble(tempText);
             addToAccount(inncomeAccountName, amountToAdd);
+            Incomes.addToArrayList(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()), incomes);
+            //Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
             System.out.println("Confirm income button pressed");
             SoundPlayer.play("src/main/resources/16bitconfirm.wav");
             incomeAccount.setValue(null);
