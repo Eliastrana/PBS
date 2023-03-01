@@ -18,6 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.Expenses.*;
 import static edu.ntnu.idatt1002.Accounts.*;
@@ -140,6 +145,7 @@ public class GUI extends Application {
     private StackPane overviewWindowStackPane = new StackPane(); {
         overviewWindow();
     }
+
     private StackPane transferWindow = new StackPane(); {
 
         System.out.println("open transfer window");
@@ -309,6 +315,7 @@ public class GUI extends Application {
 
         final ComboBox categoryMenu = new ComboBox(options);
         categoryMenu.setPromptText("Pick a category");
+
         categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
         TextField prices = new TextField();
@@ -325,39 +332,49 @@ public class GUI extends Application {
 
 
         confirmExpense.setOnAction(e -> {
-            String selectedOption = (String) categoryMenu.getValue();
-            String name = names.getText();
-            String tempText = prices.getText();
 
-            LocalDate date = datePicker.getValue();
-            System.out.println("Selected date: " + date);
+            if (categoryMenu.getValue() == null) {
+                SoundPlayer.play("src/main/resources/error.wav");
+                System.out.println("No category selected");
+                AlertWindow.emptyFieldAlert();
 
-            double price = Double.parseDouble(tempText); //det er en error her
 
-            if (selectedOption.equals("Entertainment")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
-            } else if (selectedOption.equals("Food")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), food);
-            } else if (selectedOption.equals("Transportation")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), transportation);
-            } else if (selectedOption.equals("Clothing")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), clothing);
-            } else if (selectedOption.equals("Other")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), other);
-            } else if (selectedOption.equals("Rent")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), rent);
             } else {
-                System.out.println("Error");
+                String selectedOption = (String) categoryMenu.getValue();
+                String name = names.getText();
+                String tempText = prices.getText();
+
+                LocalDate date = datePicker.getValue();
+                System.out.println("Selected date: " + date);
+
+                double price = Double.parseDouble(tempText); //det er en error her
+
+                if (selectedOption.equals("Entertainment")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
+                } else if (selectedOption.equals("Food")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), food);
+                } else if (selectedOption.equals("Transportation")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), transportation);
+                } else if (selectedOption.equals("Clothing")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), clothing);
+                } else if (selectedOption.equals("Other")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), other);
+                } else if (selectedOption.equals("Rent")) {
+                    Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), rent);
+                } else {
+                    System.out.println("Error");
+                }
+
+                System.out.println("Purchase confirmed");
+                System.out.println("Category: " + selectedOption);
+
+                //This clears the textfields and plays the confirmation sound
+                categoryMenu.setValue(null);
+                categoryMenu.setPromptText("Pick a category");
+                names.setText(null);
+                prices.setText(null);
+                SoundPlayer.play("src/main/resources/16bitconfirm.wav");
             }
-
-            System.out.println("Purchase confirmed");
-            System.out.println("Category: " + selectedOption);
-
-            //This clears the textfields and plays the confirm sound
-            categoryMenu.setValue(null);
-            names.setText(null);
-            prices.setText(null);
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
         });
 
 
