@@ -29,12 +29,12 @@ public class PieChart {
 
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
         return FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Rent: " + getTotalExpenses(rent) , Expenses.getTotalExpenses(rent)),
-                new javafx.scene.chart.PieChart.Data("Transportation: " + getTotalExpenses(transportation), Expenses.getTotalExpenses(transportation)),
-                new javafx.scene.chart.PieChart.Data("Clothing: " + getTotalExpenses(clothing), Expenses.getTotalExpenses(clothing)),
-                new javafx.scene.chart.PieChart.Data("Entertainment: " + getTotalExpenses(entertainment), Expenses.getTotalExpenses(entertainment)),
-                new javafx.scene.chart.PieChart.Data("Food: " + getTotalExpenses(food), Expenses.getTotalExpenses(food)),
-                new javafx.scene.chart.PieChart.Data("Other: " + getTotalExpenses(other), Expenses.getTotalExpenses(other)));
+                new javafx.scene.chart.PieChart.Data("Rent: " +"\n"+ getTotalExpenses(rent) , Expenses.getTotalExpenses(rent)),
+                new javafx.scene.chart.PieChart.Data("Transportation: " +"\n"+ getTotalExpenses(transportation), Expenses.getTotalExpenses(transportation)),
+                new javafx.scene.chart.PieChart.Data("Clothing: " +"\n"+ getTotalExpenses(clothing), Expenses.getTotalExpenses(clothing)),
+                new javafx.scene.chart.PieChart.Data("Entertainment: " +"\n"+ getTotalExpenses(entertainment), Expenses.getTotalExpenses(entertainment)),
+                new javafx.scene.chart.PieChart.Data("Food: " +"\n"+ getTotalExpenses(food), Expenses.getTotalExpenses(food)),
+                new javafx.scene.chart.PieChart.Data("Other: " +"\n"+ getTotalExpenses(other), Expenses.getTotalExpenses(other)));
 
     }
 

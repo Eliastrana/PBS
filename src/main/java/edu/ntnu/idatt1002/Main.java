@@ -33,10 +33,7 @@ public class Main extends Application {
         Accounts.addAccount("Savings", 10000);
         Accounts.addAccount("Checkings", 10000);
 
-        Expenses.addToArrayList(new Expense("awdwad", 15.0, 1, timeofdaychecker.time), transportation);
-        Expenses.addToArrayList(new Expense("awdawdsw", 20.0, 1, timeofdaychecker.time), transportation);
-        Expenses.addToArrayList(new Expense("awdlkasnem", 100, 1, timeofdaychecker.time), rent);
-        Expenses.addToArrayList(new Expense("awdlkasnem", 50, 1, timeofdaychecker.time), rent);
+
 
         Expenses.createAllAlist();
 

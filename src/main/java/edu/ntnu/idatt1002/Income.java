@@ -1,10 +1,10 @@
 package edu.ntnu.idatt1002;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class Expense {
+public class Income {
+
     private String name;
     private double price;
     private int category;
@@ -13,7 +13,7 @@ public class Expense {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //String date = dateUnformatted.format(formatter);
 
-    Expense(String name, double price, int category, LocalDate date){
+    Income(String name, double price, int category, LocalDate date){
         this.name = name;
         this.price = price;
         this.category = category;

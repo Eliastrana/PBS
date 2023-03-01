@@ -11,10 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -60,18 +57,22 @@ public class GUI extends Application {
 
 
         HBox hbox2 = new HBox(2);
-        Text textSavings = new Text("Total savings: " + getTotalOfAllAccounts());
+
+        Text textSavings = new Text("Total savings: " +"\n"+ getTotalOfAllAccounts());
+        textSavings.setTextAlignment(TextAlignment.CENTER);
         textSavings.setStyle("-fx-fill: #3F403F");
-        textSavings.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
         hbox2.getChildren().add(textSavings);
 
-        Text textSpending = new Text("Monthly spending: " + getExpensesOfAllCategories());
+        Text textSpending = new Text("Monthly spending: " +"\n"+ getExpensesOfAllCategories());
+        textSpending.setTextAlignment(TextAlignment.CENTER);
+
         textSpending.setStyle("-fx-fill: #3F403F");
-        textSpending.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+        textSpending.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
         hbox2.getChildren().add(textSpending);
 
         Text emptySpace = new Text("\n");
-        emptySpace.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
         VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
         vboxSavings.setAlignment(Pos.CENTER);
@@ -81,6 +82,7 @@ public class GUI extends Application {
 
         HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
         hboxPieLayout.setAlignment(Pos.CENTER);
+        hboxPieLayout.setSpacing(50);
 
         HBox currentAccountStatusTextFormat = new HBox();
         currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
@@ -96,7 +98,7 @@ public class GUI extends Application {
 
         leftTable.getColumns().addAll(leftColumn1, leftColumn2);
 
-        leftTable.getItems().addAll(transportation);
+        //leftTable.getItems().addAll();
 
         vboxSavings.getChildren().add(leftTable);
 
@@ -199,6 +201,10 @@ public class GUI extends Application {
             double amountToAdd = Double.parseDouble(tempText);
             Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
             System.out.println("Confirm transfer button pressed");
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+            leftTransfer.setValue(null);
+            rightTransfer.setValue(null);
+            priceEntry.setText(null);
         });
 
         transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
@@ -245,12 +251,21 @@ public class GUI extends Application {
             String tempText = amountIncome.getText();
             double amountToAdd = Double.parseDouble(tempText);
             addToAccount(inncomeAccountName, amountToAdd);
+            System.out.println("Confirm income button pressed");
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+            incomeAccount.setValue(null);
+            amountIncome.setText(null);
         });
 
         registerAmount.getChildren().add(confirmIncome);
         VBox vbox = new VBox(transferVBox);
         vbox.setPadding(new Insets(40, 40, 40, 40));
         transferWindow.getChildren().add(vbox);
+
+
+
+
+
     };
     private StackPane payWindow = new StackPane();{
 
@@ -272,7 +287,6 @@ public class GUI extends Application {
         addExpenseVBox.setAlignment(Pos.CENTER);
         addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
 
-        HBox newExpenseTitle = new HBox(2);
         Text text3 = new Text("Add new expense");
         text3.setStyle("-fx-fill: #3F403F");
         text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
@@ -282,16 +296,9 @@ public class GUI extends Application {
         datePicker.setShowWeekNumbers(true);
         datePicker.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
-        HBox hboxAddExpenseCategory = new HBox(2);
-
-//        Text pickCategory = new Text("Pick a category: ");
-//        pickCategory.setStyle("-fx-fill: #3F403F");
-//        pickCategory.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
-
-
         ObservableList<String> options =
                 FXCollections.observableArrayList(
-                        "rent",
+                        "Rent",
                         "Food",
                         "Transportation",
                         "Clothing",
@@ -304,30 +311,13 @@ public class GUI extends Application {
         categoryMenu.setPromptText("Pick a category");
         categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-
-//        Text pickPrice = new Text("Pick a price: ");
-//        pickPrice.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
-//        pickPrice.setStyle("-fx-fill: #3F403F");
-//        pickPrice.setStyle("-fx-padding: 20px;");
-
-
         TextField prices = new TextField();
         prices.setPromptText("Enter price");
         prices.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-
-
-//        Text pickName = new Text("Pick a name: ");
-//        pickName.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
-//        pickName.setStyle("-fx-fill: #3F403F");
-//        pickName.setStyle("-fx-padding: 20px;");
-
         TextField names = new TextField();
         names.setPromptText("Enter name");
         names.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
-
-
-
 
 
         Button confirmExpense = new Button("Confirm");
@@ -338,20 +328,24 @@ public class GUI extends Application {
             String selectedOption = (String) categoryMenu.getValue();
             String name = names.getText();
             String tempText = prices.getText();
+
+            LocalDate date = datePicker.getValue();
+            System.out.println("Selected date: " + date);
+
             double price = Double.parseDouble(tempText); //det er en error her
 
             if (selectedOption.equals("Entertainment")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), entertainment);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
             } else if (selectedOption.equals("Food")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), food);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), food);
             } else if (selectedOption.equals("Transportation")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), transportation);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), transportation);
             } else if (selectedOption.equals("Clothing")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), clothing);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), clothing);
             } else if (selectedOption.equals("Other")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), other);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), other);
             } else if (selectedOption.equals("Rent")) {
-                Expenses.addToArrayList(new Expense(name, price, 1, timeofdaychecker.time), rent);
+                Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), rent);
             } else {
                 System.out.println("Error");
             }
@@ -359,14 +353,12 @@ public class GUI extends Application {
             System.out.println("Purchase confirmed");
             System.out.println("Category: " + selectedOption);
 
+            //This clears the textfields and plays the confirm sound
             categoryMenu.setValue(null);
             names.setText(null);
             prices.setText(null);
-
             SoundPlayer.play("src/main/resources/16bitconfirm.wav");
         });
-
-
 
 
         HBox title = new HBox(text3);
