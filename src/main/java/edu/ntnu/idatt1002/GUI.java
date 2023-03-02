@@ -5,7 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,7 +27,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.chart.XYChart;
 
+import static edu.ntnu.idatt1002.AlertWindow.emptyFieldAlert;
 import static edu.ntnu.idatt1002.Incomes.*;
 import static edu.ntnu.idatt1002.PieChart.createData;
 import static edu.ntnu.idatt1002.Expenses.*;
@@ -31,11 +37,6 @@ import static edu.ntnu.idatt1002.Accounts.*;
 
 
 public class GUI extends Application {
-
-
-
-
-
 
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
@@ -64,7 +65,6 @@ public class GUI extends Application {
 
 
         HBox hbox2 = new HBox(2);
-
         Text textSavings = new Text("Total savings: " +"\n"+ getTotalOfAllAccounts());
         textSavings.setTextAlignment(TextAlignment.CENTER);
         textSavings.setStyle("-fx-fill: #3F403F");
@@ -136,8 +136,30 @@ public class GUI extends Application {
         currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
-        //barChart.start();
 
+        //TESTING BARCHART
+
+//        HBox barcharts = new HBox();
+//
+//        CategoryAxis xAxis = new CategoryAxis();
+//        NumberAxis yAxis = new NumberAxis();
+//        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+//        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+//        series1.setName("Series 1");
+//        series1.getData().add(new XYChart.Data<>("Category 1", 10));
+//        series1.getData().add(new XYChart.Data<>("Category 2", 20));
+//        series1.getData().add(new XYChart.Data<>("Category 3", 30));
+//        barChart.getData().addAll(series1);
+//        barChart.setTitle("Bar Chart Example");
+//        xAxis.setLabel("Categories");
+//        yAxis.setLabel("Values");
+//        barChart.setStyle("-fx-background-color: #F4F4F4");
+//        series1.getNode().setStyle("-fx-bar-fill: #0099FF");
+//
+//        barcharts.getChildren().add(barChart);
+
+
+        //END OF TEST OF BARCHART
 
         //topMenu(primaryStage);
 
@@ -147,9 +169,12 @@ public class GUI extends Application {
 
     }
 
+    //This stackPane holds the method of the overview window, this is done so that it is easier to
+    //refresh the overview window.
     private StackPane overviewWindowStackPane = new StackPane(); {
         overviewWindow();
     }
+
     private StackPane transferWindow = new StackPane(); {
 
         System.out.println("open transfer window");
@@ -293,6 +318,7 @@ public class GUI extends Application {
     private StackPane addExpenseWindow = new StackPane();{
 
 
+
         System.out.println("open expense window");
         VBox addExpenseVBox = new VBox();
         addExpenseVBox.setAlignment(Pos.CENTER);
@@ -318,8 +344,11 @@ public class GUI extends Application {
                 );
 
 
+
         final ComboBox categoryMenu = new ComboBox(options);
-        categoryMenu.setPromptText("Pick a category");
+
+        String originalPromptText = "Pick a category";
+        categoryMenu.setPromptText(originalPromptText);
         categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
         TextField prices = new TextField();
@@ -338,6 +367,7 @@ public class GUI extends Application {
         confirmExpense.setOnAction(e -> {
 
             if (categoryMenu.getValue() == null) {
+                emptyFieldAlert();
                 SoundPlayer.play("src/main/resources/error.wav");
                 System.out.println("No category selected");
             } else {
@@ -367,8 +397,14 @@ public class GUI extends Application {
                 System.out.println("Category: " + selectedOption);
 
                 //This clears the textfields and plays the confirmation sound
+                //categoryMenu.setValue(null);
+                //categoryMenu.setPromptText("Pick a category");
+                //categoryMenu.getSelectionModel().clearSelection();
+
+
                 categoryMenu.setValue(null);
-                categoryMenu.setPromptText("Pick a category");
+                categoryMenu.setPromptText(originalPromptText);
+
                 names.setText(null);
                 prices.setText(null);
                 SoundPlayer.play("src/main/resources/16bitconfirm.wav");
@@ -429,6 +465,8 @@ public class GUI extends Application {
 
     }
 
+
+    //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
     @Override
     public void start(Stage primaryStage) throws Exception {
