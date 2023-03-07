@@ -19,10 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -473,14 +470,14 @@ public class GUI extends Application {
         Button exportToExcell = new Button("Export to Excel");
         exportToExcell.setOnAction(e -> {
             System.out.println("Exporting to Excel");
-//            try {
-//                ExcelExporter.exportToExcel();
-//            } catch (IOException ioException) {
-//                ioException.printStackTrace();
-//            }
+            try {
+                ExcelExporter.exportToExcel();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
-        VBox vbox = new VBox(moreVBox);
+        VBox vbox = new VBox(moreVBox, exportToExcell);
         moreWindow.getChildren().add(vbox);
 
 

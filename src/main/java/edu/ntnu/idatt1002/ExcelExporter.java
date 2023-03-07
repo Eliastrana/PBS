@@ -8,10 +8,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExcelExporter {
-    String inputFile = "src/main/resources/logger.txt";
+    static String inputFile = "src/main/resources/logger.txt";
     String outputFile = "output.xlsx";
 
-    public void exportToExcel() throws FileNotFoundException {
+    public static void exportToExcel() throws FileNotFoundException {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
              Workbook workbook = new XSSFWorkbook()) {
 
