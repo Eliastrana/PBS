@@ -473,7 +473,16 @@ public class GUI extends Application {
         Button exportToExcell = new Button("Export to Excel");
         exportToExcell.setOnAction(e -> {
             System.out.println("Exporting to Excel");
-            ExcelExporter.exportToExcel();
+            try {
+                ExcelExporter.exportToExcel();
+                ExcelExporter.convertToPdf();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (DocumentException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         VBox vbox = new VBox(moreVBox, exportToExcell);
