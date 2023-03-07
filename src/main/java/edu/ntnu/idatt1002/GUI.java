@@ -470,8 +470,20 @@ public class GUI extends Application {
         VBox moreVBox = new VBox();
         moreVBox.getChildren().add(new Label("This is the more page"));
 
+        Button exportToExcell = new Button("Export to Excel");
+        exportToExcell.setOnAction(e -> {
+            System.out.println("Exporting to Excel");
+//            try {
+//                ExcelExporter.exportToExcel();
+//            } catch (IOException ioException) {
+//                ioException.printStackTrace();
+//            }
+        });
+
         VBox vbox = new VBox(moreVBox);
         moreWindow.getChildren().add(vbox);
+
+
 
 
 
