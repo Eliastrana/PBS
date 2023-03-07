@@ -471,12 +471,16 @@ public class GUI extends Application {
         moreVBox.getChildren().add(new Label("This is the more page"));
 
         Button exportToExcell = new Button("Export to Excel");
+        exportToExcell.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
         exportToExcell.setOnAction(e -> {
             System.out.println("Exporting to Excel");
             ExcelExporter.exportToExcel();
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
         });
 
         VBox vbox = new VBox(moreVBox, exportToExcell);
+        vbox.setAlignment(Pos.TOP_CENTER);
         moreWindow.getChildren().add(vbox);
 
 
