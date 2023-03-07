@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002;
 
+import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,17 +13,20 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -471,6 +475,8 @@ public class GUI extends Application {
         moreVBox.getChildren().add(new Label("This is the more page"));
 
         Button exportToExcell = new Button("Export to Excel");
+        exportToExcell.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+
         exportToExcell.setOnAction(e -> {
             System.out.println("Exporting to Excel");
             try {
@@ -483,9 +489,21 @@ public class GUI extends Application {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    File myFile = new File("src/main/resources/output.pdf");
+                    Desktop.getDesktop().open(myFile);
+                } catch (IOException ex) {
+                    // no application registered for PDFs
+                }
+            }
+
         });
 
         VBox vbox = new VBox(moreVBox, exportToExcell);
+        vbox.setAlignment(Pos.TOP_CENTER);
         moreWindow.getChildren().add(vbox);
 
 

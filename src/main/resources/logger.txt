@@ -1,3 +1,16 @@
 Food,ababa,2023-03-07,1500.0
+Food,dfgh,2023-03-07,3456.0
+Food,ghj,2023-03-07,-678.0
 Food,walkdms,2023-03-07,1500.0
 Transportation,smws,2023-03-07,1234.0
+Transportation,Atb Kort,2023-03-07,234.0
+Food,asdf,2023-03-07,123.0
+Transportation,wqer,2023-03-07,1234.0
+Clothing,hjk,2023-03-07,6.0
+Entertainment,hjk,2023-03-07,9.0
+Transportation,buss,2023-03-07,145.0
+Transportation,taxi,2023-03-07,300.0
+Rent,campus,2023-03-07,7000.0
+Other,gucci,2023-03-09,4000.0
+Transportation,atb,2023-03-07,234.0
+Transportation,Maxi Taxi,2023-03-07,6000.0
