@@ -18,6 +18,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -395,6 +400,12 @@ public class GUI extends Application {
 
                 System.out.println("Purchase confirmed");
                 System.out.println("Category: " + selectedOption);
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources", "logger.txt"), true))) {
+                    writer.write(selectedOption + "," + name + "," + date + "," + price + "\n");
+                } catch (IOException f) {
+                    System.err.println("Error writing to file: " + f.getMessage());
+                }
 
                 //This clears the textfields and plays the confirmation sound
                 //categoryMenu.setValue(null);
