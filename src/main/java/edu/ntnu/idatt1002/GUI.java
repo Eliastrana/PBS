@@ -478,7 +478,7 @@ public class GUI extends Application {
         exportToExcell.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
         exportToExcell.setOnAction(e -> {
-            System.out.println("Exporting to Excel");
+            System.out.println("Exporting to PDF");
             try {
                 ExcelExporter.exportToExcel();
                 ExcelExporter.convertToPdf();
@@ -489,7 +489,6 @@ public class GUI extends Application {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
             if (Desktop.isDesktopSupported()) {
                 try {
@@ -499,6 +498,8 @@ public class GUI extends Application {
                     // no application registered for PDFs
                 }
             }
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
 
         });
 
