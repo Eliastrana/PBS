@@ -419,6 +419,7 @@ public class GUI extends Application {
                 names.setText(null);
                 prices.setText(null);
                 SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
             }
         });
 
