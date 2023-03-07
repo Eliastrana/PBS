@@ -1,1 +1,3 @@
 Food,ababa,2023-03-07,1500.0
+Food,walkdms,2023-03-07,1500.0
+Transportation,smws,2023-03-07,1234.0

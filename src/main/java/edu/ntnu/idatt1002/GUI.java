@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002;
 
+import com.itextpdf.text.DocumentException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -472,7 +473,12 @@ public class GUI extends Application {
             System.out.println("Exporting to Excel");
             try {
                 ExcelExporter.exportToExcel();
+                ExcelExporter.convertToPdf();
             } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (DocumentException ex) {
+                throw new RuntimeException(ex);
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
