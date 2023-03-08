@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -46,6 +47,10 @@ public class GUI extends Application {
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
+        overviewWindowStackPane.getStylesheets().add("/style.css");
+
+        Image icon = new Image("icon.png");
+        primaryStage.getIcons().add(icon);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
@@ -261,6 +266,8 @@ public class GUI extends Application {
         });
         bankStatementButton.setStyle(buttonStyle);
         topMenu.getChildren().add(bankStatementButton);
+
+        topMenu.getStylesheets().add("/style.css");
 
         return topMenu;
     }
