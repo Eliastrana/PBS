@@ -20,3 +20,4 @@ Rent,test,2023-03-08,123.0
 Food,fae,2023-03-08,234.0
 Entertainment,tset,2023-03-08,344.0
 Food,halla,2023-03-08,123.0
+Rent,rtyu,2023-03-08,5678.0
