@@ -15,7 +15,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
+import javafx.scene.text.Font;
 
+import java.awt.*;
 import java.time.LocalDate;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
@@ -34,7 +36,8 @@ public class Overview {
     System.out.println("open overview window");
     Text text = new Text("Welcome Keira");
     text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
-    text.setStyle("-fx-fill: #3F403F");
+    text.setStyle("-fx-fill: #3F403F; -fx-stroke: #3F403F; -fx-stroke-width: 1px; -fx-padding: 200");
+
 
     //Time of day text
     Text text2 = new Text(timeofdaychecker.timeofdaychecker() + "\n");

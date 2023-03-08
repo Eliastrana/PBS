@@ -58,3 +58,32 @@
 //
 //
 //
+
+//DETTE SKAL I FRONTEND
+
+
+//TESTING BARCHART
+
+//        HBox barcharts = new HBox();
+//
+//        CategoryAxis xAxis = new CategoryAxis();
+//        NumberAxis yAxis = new NumberAxis();
+//        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+//        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+//        series1.setName("Series 1");
+//        series1.getData().add(new XYChart.Data<>("Category 1", 10));
+//        series1.getData().add(new XYChart.Data<>("Category 2", 20));
+//        series1.getData().add(new XYChart.Data<>("Category 3", 30));
+//        barChart.getData().addAll(series1);
+//        barChart.setTitle("Bar Chart Example");
+//        xAxis.setLabel("Categories");
+//        yAxis.setLabel("Values");
+//        barChart.setStyle("-fx-background-color: #F4F4F4");
+//        series1.getNode().setStyle("-fx-bar-fill: #0099FF");
+//
+//        barcharts.getChildren().add(barChart);
+
+
+//END OF TEST OF BARCHART
+
+//topMenu(primaryStage);

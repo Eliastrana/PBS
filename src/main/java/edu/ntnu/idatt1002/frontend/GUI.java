@@ -28,8 +28,16 @@ public class GUI extends Application {
     public StackPane overviewWindowStackPane = new StackPane(new VBox(Overview.overviewView()));
     private StackPane transferWindow = new StackPane(new VBox(Transfer.transferView()));
     private StackPane payWindow = new StackPane(new VBox(Pay.payPane()));
+
+    private StackPane reportWindow = new StackPane(new VBox(Report.reportView()));
     private StackPane addExpenseWindow = new StackPane(new VBox(AddExpense.expanseView()));
-    private StackPane moreWindow = new StackPane(new VBox(Settings.settingsView()));
+
+    private StackPane settingsWindow = new StackPane(new VBox(Settings.settingsView()));
+
+    private StackPane budgetWindow = new StackPane(new VBox(Budget.budgetView()));
+
+    private StackPane bankStatementWindow = new StackPane(new VBox(BankStatement.bankStatementView()));
+
 
 
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
@@ -55,13 +63,16 @@ public class GUI extends Application {
 
         overviewWindowStackPane.setVisible(true);
         transferWindow.setVisible(false);
-        payWindow.setVisible(false);
         addExpenseWindow.setVisible(false);
-        moreWindow.setVisible(false);
+        reportWindow.setVisible(false);
+        settingsWindow.setVisible(false);
+        budgetWindow.setVisible(false);
+        bankStatementWindow.setVisible(false);
+
 
         StackPane root = new StackPane();
 
-        root.getChildren().addAll(overviewWindowStackPane, transferWindow, payWindow, addExpenseWindow, moreWindow);
+        root.getChildren().addAll(overviewWindowStackPane, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
         borderPane.setTop(topMenu(primaryStage));
         borderPane.setCenter(root);
     }
@@ -89,6 +100,10 @@ public class GUI extends Application {
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
 
+        String buttonStyle= "-fx-font-size: 15px; -fx-min-width: 115px; -fx-min-height: 40px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;";
+
+        //overviewWindowStackPane, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow
+
         //BUTTON 1
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
@@ -101,15 +116,19 @@ public class GUI extends Application {
 
                 overviewWindowStackPane.setVisible(true);
                 transferWindow.setVisible(false);
-                payWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
-                moreWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
+
+
                 System.out.println("overview button pressed");
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-        overviewButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
+        overviewButton.setStyle(buttonStyle);
         topMenu.getChildren().add(overviewButton);
 
 
@@ -119,9 +138,12 @@ public class GUI extends Application {
             try {
                 overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(true);
-                payWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
-                moreWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
+
 
                 System.out.println("transfer button pressed");
 
@@ -129,28 +151,9 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        transferButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
+        transferButton.setStyle(buttonStyle);
         topMenu.getChildren().add(transferButton);
 
-        //BUTTON 3
-        Button payButton = new Button("Pay");
-        payButton.setOnAction(event -> {
-            try {
-                overviewWindowStackPane.setVisible(false);
-                transferWindow.setVisible(false);
-                payWindow.setVisible(true);
-                addExpenseWindow.setVisible(false);
-                moreWindow.setVisible(false);
-
-
-                System.out.println("Pay button pressed");
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        payButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
-        topMenu.getChildren().add(payButton);
 
         //BUTTON 4
         Button addExpenseButton = new Button("Add Expense");
@@ -159,9 +162,11 @@ public class GUI extends Application {
 
                 overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
-                payWindow.setVisible(false);
                 addExpenseWindow.setVisible(true);
-                moreWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
 
 
                 System.out.println("add expense button pressed");
@@ -170,31 +175,94 @@ public class GUI extends Application {
                 throw new RuntimeException(e);
             }
         });
-        addExpenseButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
+        addExpenseButton.setStyle(buttonStyle);
         topMenu.getChildren().add(addExpenseButton);
 
-        //BUTTON 5
-        Button moreButton = new Button("More");
-        moreButton.setOnAction(event -> {
+        //BUTTON 3
+
+
+        Button reportButton = new Button("Report");
+        reportButton.setOnAction(event -> {
             try {
 
                 overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
-                payWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                moreWindow.setVisible(true);
+                addExpenseWindow.setVisible(true);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
 
-                System.out.println("more button pressed");
+
+                System.out.println("add expense button pressed");
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-        moreButton.setStyle("-fx-font-size: 25px; -fx-min-width: 155px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
-        topMenu.getChildren().add(moreButton);
+        reportButton.setStyle(buttonStyle);
+        topMenu.getChildren().add(reportButton);
+
+
+        Button settingsButton = new Button("Settings");
+        settingsButton.setOnAction(event -> {
+            try {
+                overviewWindowStackPane.setVisible(false);
+                transferWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(true);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
+
+                System.out.println("settings button pressed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        settingsButton.setStyle(buttonStyle);
+        topMenu.getChildren().add(settingsButton);
+
+
+
+        Button budgetButton = new Button("Budget");
+        budgetButton.setOnAction(event -> {
+            try {
+                overviewWindowStackPane.setVisible(false);
+                transferWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(true);
+                bankStatementWindow.setVisible(false);
+
+                System.out.println("settings button pressed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        budgetButton.setStyle(buttonStyle);
+        topMenu.getChildren().add(budgetButton);
+
+        Button bankStatementButton = new Button("Bank Statement");
+        bankStatementButton.setOnAction(event -> {
+            try {
+                overviewWindowStackPane.setVisible(false);
+                transferWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(false);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(true);
+
+                System.out.println("settings button pressed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        bankStatementButton.setStyle(buttonStyle);
+        topMenu.getChildren().add(bankStatementButton);
 
         return topMenu;
     }
-
-// register a ChangeListener with the StackPane's visibleProperty
-
 }
