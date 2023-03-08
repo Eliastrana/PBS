@@ -27,7 +27,6 @@ public class GUI extends Application {
     //refresh the overview window.
     public StackPane overviewWindowStackPane = new StackPane(new VBox(Overview.overviewView()));
     private StackPane transferWindow = new StackPane(new VBox(Transfer.transferView()));
-    private StackPane payWindow = new StackPane(new VBox(Pay.payPane()));
 
     private StackPane reportWindow = new StackPane(new VBox(Report.reportView()));
     private StackPane addExpenseWindow = new StackPane(new VBox(AddExpense.expanseView()));
