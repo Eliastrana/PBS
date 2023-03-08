@@ -49,8 +49,5 @@ public class Settings {
     vbox.setAlignment(Pos.TOP_CENTER);
     return vbox;
 
-
-
-
   }
 }
