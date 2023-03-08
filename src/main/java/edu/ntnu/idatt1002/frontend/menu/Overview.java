@@ -36,7 +36,7 @@ public class Overview {
     System.out.println("open overview window");
     Text text = new Text("Welcome Keira");
     text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
-    text.setStyle("-fx-fill: #3F403F; -fx-stroke: #3F403F; -fx-stroke-width: 1px; -fx-padding: 200");
+    text.setStyle("-fx-fill: #3F403F; -fx-stroke: #3F403F; -fx-stroke-width: 1px; -fx-padding: 200px;");
 
 
     //Time of day text

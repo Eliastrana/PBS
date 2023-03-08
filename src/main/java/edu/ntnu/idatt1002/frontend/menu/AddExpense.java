@@ -3,18 +3,28 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import org.w3c.dom.Node;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -67,16 +77,14 @@ public class AddExpense {
     names.setPromptText("Enter name");
     names.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-
     Button confirmExpense = new Button("Confirm");
     confirmExpense.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
-
 
     confirmExpense.setOnAction(e -> {
 
       if (categoryMenu.getValue() == null) {
-        emptyFieldAlert();
         SoundPlayer.play("src/main/resources/error.wav");
+        emptyFieldAlert();
         System.out.println("No category selected");
       } else {
         String selectedOption = (String) categoryMenu.getValue();
@@ -127,6 +135,9 @@ public class AddExpense {
     });
 
 
+
+
+
     HBox title = new HBox(text3);
     title.setAlignment(Pos.CENTER);
     title.setSpacing(40);
@@ -167,4 +178,9 @@ public class AddExpense {
     return vbox;
 
   }
+
+
+
+
+
 }

@@ -16,7 +16,6 @@ public class Main extends Application {
         GUI gui = new GUI();
         gui.start(stage);
     }
-
     public static void main(String[] args)  {
 
         Expenses.createTransportation();
@@ -32,19 +31,11 @@ public class Main extends Application {
         Accounts.addAccount("Savings", 10000);
         Accounts.addAccount("Checkings", 10000);
 
-
-
         Expenses.createAllAlist();
         Expenses.createAllExpenses();
         Incomes.createAllIncomes();
 
-        //testdata.createHashmap();
-        //hei
-        //testdata.addAccount("test", 100);
-        //This launches the start method, that again opens the start-page in the GUI class
-        //testdata.addAccount("test", 100);
         launch(args);
     }
-
 
 }

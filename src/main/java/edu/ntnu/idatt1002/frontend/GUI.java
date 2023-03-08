@@ -28,17 +28,11 @@ public class GUI extends Application {
     //refresh the overview window.
     public StackPane overviewWindowStackPane = new StackPane(new VBox(Overview.overviewView()));
     private StackPane transferWindow = new StackPane(new VBox(Transfer.transferView()));
-
     private StackPane reportWindow = new StackPane(new VBox(Report.reportView()));
     private StackPane addExpenseWindow = new StackPane(new VBox(AddExpense.expanseView()));
-
     private StackPane settingsWindow = new StackPane(new VBox(Settings.settingsView()));
-
     private StackPane budgetWindow = new StackPane(new VBox(Budget.budgetView()));
-
     private StackPane bankStatementWindow = new StackPane(new VBox(BankStatement.bankStatementView()));
-
-
 
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
