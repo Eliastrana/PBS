@@ -1,12 +1,12 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.backend;
 
 import java.util.HashMap;
 
 public class Accounts {
-    public static HashMap<String, Double> accounts;
+    public static  HashMap<String, Double> accounts;
 
     public static void createAccountsHashmap(){
-        accounts = new HashMap<String, Double>();
+        accounts = new HashMap<>();
     }
 
     public static void addAccount(String accountName, double accountBalance){

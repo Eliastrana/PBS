@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.frontend.utility;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;

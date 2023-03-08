@@ -1,4 +1,6 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.backend;
+import edu.ntnu.idatt1002.backend.Expense;
+
 import java.util.ArrayList;
 
 public class Expenses {
@@ -76,5 +78,9 @@ public class Expenses {
         double totalExpense = 0;
         totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent) + getTotalExpenses(food) + getTotalExpenses(other) + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
         return totalExpense;
+    }
+
+    public static ArrayList<Expense> getExpenses() {
+        return allExpenses;
     }
 }

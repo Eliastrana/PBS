@@ -1,8 +1,7 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.backend;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class Income {
 
@@ -14,7 +13,7 @@ public class Income {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //String date = dateUnformatted.format(formatter);
 
-    Income(String name, double price, int category, LocalDate date){
+    public Income(String name, double price, int category, LocalDate date){
         this.name = name;
         this.price = price;
         this.category = category;

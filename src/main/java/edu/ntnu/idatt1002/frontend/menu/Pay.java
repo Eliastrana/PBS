@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.frontend.menu;
 
 import com.sun.javafx.menu.MenuItemBase;
 import com.sun.javafx.scene.control.InputField;

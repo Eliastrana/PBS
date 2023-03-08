@@ -1,16 +1,16 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.frontend.utility;
 
+import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.frontend.GUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static edu.ntnu.idatt1002.Accounts.accounts;
-import static edu.ntnu.idatt1002.Accounts.getTotalOfAccount;
-import static edu.ntnu.idatt1002.Expenses.*;
+import static edu.ntnu.idatt1002.backend.Accounts.accounts;
+import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAccount;
+import static edu.ntnu.idatt1002.backend.Expenses.*;
 
 public class PieChart {
 

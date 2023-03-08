@@ -1,13 +1,19 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.backend;
+
+import edu.ntnu.idatt1002.backend.Income;
 
 import java.util.ArrayList;
 
 public class Incomes {
-    protected static ArrayList<Income> incomes;
-    protected static ArrayList<Income> allIncomes;
+    public static ArrayList<Income> incomes;
+    public static ArrayList<Income> allIncomes;
 
     public static void createIncomes(){
         incomes = new ArrayList<>();
+    }
+
+    public static ArrayList<Income> getIncomes(){
+        return incomes;
     }
 
     public static ArrayList<Income> createAllIncomes(){

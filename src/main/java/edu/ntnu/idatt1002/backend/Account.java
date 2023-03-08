@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.backend;
 
 public class Account {
     private String accountName;

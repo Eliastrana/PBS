@@ -1,14 +1,13 @@
 package edu.ntnu.idatt1002;
 
+import edu.ntnu.idatt1002.backend.Accounts;
+import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.backend.Incomes;
+import edu.ntnu.idatt1002.frontend.GUI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-
-import static edu.ntnu.idatt1002.Expenses.*;
 
 public class Main extends Application {
 
@@ -20,7 +19,7 @@ public class Main extends Application {
 
     }
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public static void main(String[] args)  {
 
         Expenses.createTransportation();
         Expenses.createRent();
@@ -38,6 +37,8 @@ public class Main extends Application {
 
 
         Expenses.createAllAlist();
+        Expenses.createAllExpenses();
+        Incomes.createAllIncomes();
 
         //testdata.createHashmap();
         //hei

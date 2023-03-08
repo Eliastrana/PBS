@@ -1,16 +1,21 @@
-package edu.ntnu.idatt1002;
+package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.backend.Accounts;
+import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.menu.Pay;
+import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -18,7 +23,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -28,21 +32,15 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.*;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.chart.XYChart;
 
-import static edu.ntnu.idatt1002.AlertWindow.emptyFieldAlert;
-import static edu.ntnu.idatt1002.Incomes.*;
-import static edu.ntnu.idatt1002.PieChart.createData;
-import static edu.ntnu.idatt1002.Expenses.*;
-import static edu.ntnu.idatt1002.Accounts.*;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
+import static edu.ntnu.idatt1002.backend.Incomes.*;
+import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
+import static edu.ntnu.idatt1002.backend.Expenses.*;
+import static edu.ntnu.idatt1002.backend.Accounts.*;
 
 
 public class GUI extends Application {
@@ -55,7 +53,7 @@ public class GUI extends Application {
 
     private void overviewWindow(){
         ObservableList<PieChart.Data> pieChartData = createData();
-        ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.PieChart.createData2();
+        ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.frontend.utility.PieChart.createData2();
 
         //BarChartSample barChart = new BarChartSample();
 
@@ -117,7 +115,7 @@ public class GUI extends Application {
 
         leftTable.getColumns().addAll(leftColumn1, leftColumn2, leftColumn3);
 
-        leftTable.getItems().addAll(Incomes.createAllIncomes());
+        leftTable.getItems().addAll(getIncomes());
 
         vboxSavings.getChildren().add(leftTable);
 
@@ -136,7 +134,7 @@ public class GUI extends Application {
 
         rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3);
 
-        rightTable.getItems().addAll(Expenses.createAllExpenses());
+        rightTable.getItems().addAll(Expenses.createAllExpenses());  //TODO: Change to getExpenses()
 
         vboxSpending.getChildren().add(rightTable);
 
@@ -239,8 +237,8 @@ public class GUI extends Application {
 
 
         confirmTransfer.setOnAction(e -> {
-            String removeFromAccount = (String) leftTransfer.getValue();
-            String addToAccount = (String) rightTransfer.getValue();
+            String removeFromAccount = leftTransfer.getValue();
+            String addToAccount = rightTransfer.getValue();
             String tempText = priceEntry.getText();
             double amountToAdd = Double.parseDouble(tempText);
             Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
@@ -291,7 +289,7 @@ public class GUI extends Application {
 
 
         confirmIncome.setOnAction(e -> {
-            String inncomeAccountName = (String) incomeAccount.getValue();
+            String inncomeAccountName = incomeAccount.getValue();
             String tempText = amountIncome.getText();
             double amountToAdd = Double.parseDouble(tempText);
             addToAccount(inncomeAccountName, amountToAdd);
@@ -467,7 +465,7 @@ public class GUI extends Application {
         addExpenseWindow.getChildren().add(vbox);
 
     }
-    private StackPane moreWindow = new StackPane();{
+    private StackPane moreWindow = new StackPane(); {
 
 
         System.out.println("opening more window");
@@ -482,11 +480,7 @@ public class GUI extends Application {
             try {
                 ExcelExporter.exportToExcel();
                 ExcelExporter.convertToPdf();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (DocumentException ex) {
-                throw new RuntimeException(ex);
-            } catch (IOException ex) {
+            } catch (DocumentException | IOException ex) {
                 throw new RuntimeException(ex);
             }
 
