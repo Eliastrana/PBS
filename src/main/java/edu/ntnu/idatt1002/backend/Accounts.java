@@ -40,4 +40,9 @@ public class Accounts {
         }
         return total;
     }
+
+    public static void addExpenseToAccount(Expense expense, String accountName){
+        Account.expenses.add(expense);
+        accounts.put(accountName, accounts.get(accountName)-expense.getPrice());
+    }
 }

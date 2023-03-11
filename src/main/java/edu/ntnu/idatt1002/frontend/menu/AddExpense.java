@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
@@ -90,6 +91,7 @@ public class AddExpense {
         String selectedOption = (String) categoryMenu.getValue();
         String name = names.getText();
         String tempText = prices.getText();
+        String accountName = (String) "Savings";  //placeholder for knappen som skal velge konto
 
         LocalDate date = datePicker.getValue();
         System.out.println("Selected date: " + date);
@@ -109,11 +111,15 @@ public class AddExpense {
           default -> System.out.println("Error");
         }
 
+        Accounts.addExpenseToAccount(new Expense(name, price, 1, datePicker.getValue()),
+            accountName);
+
+
         System.out.println("Purchase confirmed");
         System.out.println("Category: " + selectedOption);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources", "logger.txt"), true))) {
-          writer.write(selectedOption + "," + name + "," + date + "," + price + "\n");
+          writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
         } catch (IOException f) {
           System.err.println("Error writing to file: " + f.getMessage());
         }

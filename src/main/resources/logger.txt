@@ -23,3 +23,10 @@ Food,halla,2023-03-08,123.0
 Rent,rtyu,2023-03-08,5678.0
 Food,123423,2023-03-08,124.0
 Food,sdfg,2023-03-08,10000.0
+Food,dgrdgf,2023-03-11,1500.0
+Food,adms,2023-03-11,150.0
+Transportation,dfms,2023-03-11,150.0
+Food,asws,2023-03-11,150.0
+Entertainment,KSLKFVASZ,2023-03-11,99.0,Savings
+Other,gthfthfg,2023-03-11,4999.0,Savings
+Rent,gtfg,2023-03-11,545.0,Savings
