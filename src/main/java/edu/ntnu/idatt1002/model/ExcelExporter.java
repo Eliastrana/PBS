@@ -2,10 +2,9 @@ package edu.ntnu.idatt1002.model;
 
 import java.io.*;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import com.itextpdf.text.pdf.PdfPCell;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -24,9 +23,22 @@ public class ExcelExporter {
 
             Sheet sheet = workbook.createSheet("Sheet1");
 
+            Row categoryRow = sheet.createRow(0);
+            String[] categories = {"Category", "Name", "Date", "Price", "Account"}; // Replace with your own category names
+            Font font = workbook.createFont();
+            font.setFontName("Arial");
+            font.setBold(true);
+            CellStyle boldStyle = workbook.createCellStyle();
+            boldStyle.setFont(font);
+            for (int i = 0; i < categories.length; i++) {
+                Cell cell = categoryRow.createCell(i);
+                cell.setCellValue(categories[i]);
+                cell.setCellStyle(boldStyle);
+            }
+
             String line;
 
-            int rowNumber = 0;
+            int rowNumber = 1; // Start at row 1 since row 0 is used for categories
             while ((line = br.readLine()) != null) {
                 Row row = sheet.createRow(rowNumber++);
 
@@ -63,7 +75,12 @@ public class ExcelExporter {
                     float[] columnWidths = new float[row.getLastCellNum()];
                     for (int j = 0; j < row.getLastCellNum(); j++) {
                         Cell cell = row.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        table.addCell(cell.toString());
+                        com.itextpdf.text.Font font1 = new com.itextpdf.text.Font();
+                        if (row.getRowNum() == 0) {
+                            font1.setStyle(com.itextpdf.text.Font.BOLD);
+                        }
+                        PdfPCell pdfPCell = new PdfPCell(new Phrase(cell.toString(), font1));
+                        table.addCell(pdfPCell);
                         columnWidths[j] = sheet.getColumnWidthInPixels(j);
                     }
                     table.setWidths(columnWidths);
@@ -73,4 +90,4 @@ public class ExcelExporter {
             document.close();
         }
     }
-    }
+}

@@ -101,6 +101,14 @@ public class AddExpense {
         SoundPlayer.play("src/main/resources/error.wav");
         emptyFieldAlert();
         System.out.println("No category selected");
+      } else if (accounts.get((String) accountMenu.getValue())-(Double.parseDouble(prices.getText())) < 0){
+        System.out.println("Not enough money in account");
+        emptyFieldAlert();
+        categoryMenu.setValue(null);
+        categoryMenu.setPromptText(originalPromptText);
+
+        names.setText(null);
+        prices.setText(null);
       } else {
         String selectedOption = (String) categoryMenu.getValue();
         String name = names.getText();
