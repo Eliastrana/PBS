@@ -51,7 +51,13 @@ public class Transfer {
     transferto.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
     transferBewteenAccounts.getChildren().add(transferto);
     ComboBox<String> rightTransfer = new ComboBox<>();
+    rightTransfer.setDisable(true);
     rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+    leftTransfer.setOnAction(e -> {
+      rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+      rightTransfer.setDisable(false);
+      rightTransfer.getItems().remove(leftTransfer.getValue());
+    });
     transferBewteenAccounts.getChildren().add(rightTransfer);
     rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 2em;");
 
