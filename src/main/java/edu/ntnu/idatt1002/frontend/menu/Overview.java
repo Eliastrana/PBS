@@ -7,7 +7,8 @@ import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.chart.PieChart;
+import javafx.scene.Node;
+import javafx.scene.chart.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -48,13 +49,13 @@ public class Overview {
 
 
     HBox hbox2 = new HBox(2);
-    Text textSavings = new Text("Total savings: " +"\n"+ getTotalOfAllAccounts());
+    Text textSavings = new Text("Total savings: " + "\n" + getTotalOfAllAccounts());
     textSavings.setTextAlignment(TextAlignment.CENTER);
     textSavings.setStyle("-fx-fill: #3F403F");
     textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
     hbox2.getChildren().add(textSavings);
 
-    Text textSpending = new Text("Monthly spending: " +"\n"+ getExpensesOfAllCategories());
+    Text textSpending = new Text("Monthly spending: " + "\n" + getExpensesOfAllCategories());
     textSpending.setTextAlignment(TextAlignment.CENTER);
 
     textSpending.setStyle("-fx-fill: #3F403F");
@@ -116,39 +117,71 @@ public class Overview {
 
 
     Text currentAccountStatusText = new Text("Current account status");
-    currentAccountStatusText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
+    currentAccountStatusText.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
     currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
+    currentAccountStatusText.setStyle("-fx-fill: #3F403F");
 
 
     //TESTING BARCHART
 
-//        HBox barcharts = new HBox();
-//
-//        CategoryAxis xAxis = new CategoryAxis();
-//        NumberAxis yAxis = new NumberAxis();
-//        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
-//        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-//        series1.setName("Series 1");
-//        series1.getData().add(new XYChart.Data<>("Category 1", 10));
-//        series1.getData().add(new XYChart.Data<>("Category 2", 20));
-//        series1.getData().add(new XYChart.Data<>("Category 3", 30));
-//        barChart.getData().addAll(series1);
-//        barChart.setTitle("Bar Chart Example");
-//        xAxis.setLabel("Categories");
-//        yAxis.setLabel("Values");
-//        barChart.setStyle("-fx-background-color: #F4F4F4");
-//        series1.getNode().setStyle("-fx-bar-fill: #0099FF");
-//
-//        barcharts.getChildren().add(barChart);
+
+    //BARCHART INCOME
+    CategoryAxis xAxis = new CategoryAxis();
+    NumberAxis yAxis = new NumberAxis();
+    BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+
+    XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+    series1.setName("Income");
+
+    series1.getData().add(new XYChart.Data<>("Category 1", 10));
+    series1.getData().add(new XYChart.Data<>("Category 2", 20));
+    series1.getData().add(new XYChart.Data<>("Category 3", 30));
+    series1.getData().add(new XYChart.Data<>("Category 4", 40));
+
+    XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+    series2.setName("Expenses");
+    series2.getData().add(new XYChart.Data<>("Category 1", 8));
+    series2.getData().add(new XYChart.Data<>("Category 2", 15));
+    series2.getData().add(new XYChart.Data<>("Category 3", 27));
+    series2.getData().add(new XYChart.Data<>("Category 4", 35));
 
 
-    //END OF TEST OF BARCHART
+    barChart.getData().addAll(series1, series2);
+    barChart.setTitle("Bar Chart Example");
+    xAxis.setLabel("Categories");
+    yAxis.setLabel("Values");
 
-    //topMenu(primaryStage);
+    barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
+    barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
 
-    VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat);
+    // set the color of the legend symbol for series1
+    //series1.getNode().setStyle("-fx-bar-legend-symbol: #3F403F;");
+    //series2.getNode().setStyle("-fx-bar-legend-symbol: #9FB8AD;");
 
-    //overviewWindowStackPane.getChildren().add(vbox);
-    return vbox;
+
+    for (XYChart.Series<String, Number> series : barChart.getData()) {
+      if (series.getName().equals("Income")) {
+        for (XYChart.Data<String, Number> data : series.getData()) {
+          Node node = data.getNode();
+          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
+        }
+      }
+    }
+
+    for (XYChart.Series<String, Number> series : barChart.getData()) {
+      if (series.getName().equals("Expenses")) {
+        for (XYChart.Data<String, Number> data : series.getData()) {
+          Node node = data.getNode();
+          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
+        }
+      }
+    }
+
+
+
+    VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
+
+      return vbox;
+    }
   }
-}
+
