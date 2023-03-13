@@ -15,7 +15,7 @@ import com.itextpdf.text.PageSize;
 
 public class ExcelExporter {
     static String inputFile = "src/main/resources/logger.txt";
-    static String outputFile = "output.xlsx";
+    static String outputFile = "src/main/resources/output.xlsx";
     static String outputFile1 = "src/main/resources/output.pdf";
 
     public static void exportToExcel() throws FileNotFoundException {
