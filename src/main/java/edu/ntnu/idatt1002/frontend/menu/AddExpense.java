@@ -31,7 +31,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Set;
 
+import static edu.ntnu.idatt1002.backend.Accounts.accounts;
+import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAccount;
 import static edu.ntnu.idatt1002.backend.Expenses.*;
 import static edu.ntnu.idatt1002.backend.Expenses.rent;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
@@ -45,6 +49,7 @@ public class AddExpense {
 
     Text text3 = new Text("Add new expense");
     text3.setStyle("-fx-fill: #3F403F");
+    text3.setLineSpacing(10);
     text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
     DatePicker datePicker = new DatePicker();
@@ -65,6 +70,15 @@ public class AddExpense {
 
 
     final ComboBox categoryMenu = new ComboBox(options);
+
+
+    Set<String> keySet = accounts.keySet();
+    ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
+    final ComboBox accountMenu = new ComboBox(options2);
+    accountMenu.setPromptText("Pick an account");
+    accountMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+
+
 
     String originalPromptText = "Pick a category";
     categoryMenu.setPromptText(originalPromptText);
@@ -91,7 +105,7 @@ public class AddExpense {
         String selectedOption = (String) categoryMenu.getValue();
         String name = names.getText();
         String tempText = prices.getText();
-        String accountName = (String) "Savings";  //placeholder for knappen som skal velge konto
+        String accountName = (String) accountMenu.getValue();  //placeholder for knappen som skal velge konto
 
         LocalDate date = datePicker.getValue();
         System.out.println("Selected date: " + date);
@@ -174,7 +188,7 @@ public class AddExpense {
     dateAndInput.setPadding(new Insets(15));
 
 
-    VBox dateAndInputAndConfirm = new VBox(title, dateAndInput, confirmExpense);
+    VBox dateAndInputAndConfirm = new VBox(title,accountMenu, dateAndInput, confirmExpense);
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
 
 

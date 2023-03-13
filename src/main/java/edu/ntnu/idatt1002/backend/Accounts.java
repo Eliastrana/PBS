@@ -45,4 +45,10 @@ public class Accounts {
         Account.expenses.add(expense);
         accounts.put(accountName, accounts.get(accountName)-expense.getPrice());
     }
+
+    public static HashMap<String, Double> getAccounts() {
+        return accounts;
+    }
+
+
 }
