@@ -20,6 +20,14 @@ public class Income {
         this.date = date;
     }
 
+    public Income(){}
+
+    public Income(String name, double price, LocalDate date){
+        this.name = name;
+        this.price = price;
+        this.date = date;
+    }
+
     public String getName() {
         return name;
     }

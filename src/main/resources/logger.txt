@@ -8,3 +8,7 @@ Rent,snws,2023-03-13,94994.0,Savings
 Food,sss,2023-03-13,4949449.0,Card
 Rent,dneb,2023-03-13,444444.0,Savings
 Rent,smws,2023-03-13,1202.0,Savings
+Rent,smw,2023-03-13,1200.0,Checkings
+Food,smwms,2023-03-14,150.0,Savings
+Transportation,smwm,2023-03-14,150.0,Checkings
+Clothing,swsd,2023-03-14,450.0,Checkings

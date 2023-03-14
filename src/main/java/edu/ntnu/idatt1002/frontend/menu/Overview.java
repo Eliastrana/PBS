@@ -11,11 +11,15 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -23,6 +27,7 @@ import java.time.LocalDate;
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.backend.Expenses.getExpensesOfAllCategories;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
+import static edu.ntnu.idatt1002.backend.Incomes.incomes;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 
 public class Overview {
@@ -89,9 +94,35 @@ public class Overview {
     TableColumn<Income, LocalDate> leftColumn3 = new TableColumn<>("Date: ");
     leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
+    leftTable.getItems().addAll(getIncomes());
+
+    leftColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
+    leftColumn1.setOnEditCommit(event -> {
+      Income data = event.getRowValue();
+      data.setName(event.getNewValue());
+    });
+
+    leftColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+    leftColumn2.setOnEditCommit(event -> {
+      Income data = event.getRowValue();
+      data.setPrice(event.getNewValue());
+    });
+
+    leftColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+    leftColumn3.setOnEditCommit(event -> {
+      Income data = event.getRowValue();
+      data.setDate(event.getNewValue());
+    });
+
     leftTable.getColumns().addAll(leftColumn1, leftColumn2, leftColumn3);
 
-    leftTable.getItems().addAll(getIncomes());
+    leftTable.setEditable(true);
+
+    leftTable.setOnMouseClicked(event -> {
+      if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+        leftTable.edit(leftTable.getSelectionModel().getSelectedIndex(), leftColumn1);
+      }
+    });
 
     vboxSavings.getChildren().add(leftTable);
 
