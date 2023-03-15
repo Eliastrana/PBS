@@ -3,5 +3,4 @@ Clothing,Hettegenser,2023-03-04,950.0,Card
 Rent,360 Campus,2023-03-04,7660.0,Checkings
 Entertainment,HBO Max,2023-03-06,89.0,Card
 Transportation,AtB månedskort,2023-03-13,550.0,Card
-Entertainment,onlyfans,2023-03-15,2000.0,Savings
 Food,asdfg,2023-03-15,1000.0,Checkings
