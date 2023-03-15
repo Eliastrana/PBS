@@ -41,7 +41,7 @@ import static edu.ntnu.idatt1002.backend.Expenses.rent;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
 
 public class AddExpense {
-  public static VBox expanseView() {
+  public static VBox expenseView() {
     System.out.println("open expense window");
     VBox addExpenseVBox = new VBox();
     addExpenseVBox.setAlignment(Pos.CENTER);

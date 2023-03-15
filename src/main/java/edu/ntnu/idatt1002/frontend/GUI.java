@@ -1,7 +1,10 @@
 package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,11 +14,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 
 
-public class GUI extends Application {
+public class GUI extends Application implements LoginObserver {
 
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
@@ -26,22 +30,56 @@ public class GUI extends Application {
 
     //This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
-    public StackPane overviewWindowStackPane = new StackPane(new VBox(Overview.overviewView()));
-    private StackPane transferWindow = new StackPane(new VBox(Transfer.transferView()));
-    private StackPane reportWindow = new StackPane(new VBox(Report.reportView()));
-    private StackPane addExpenseWindow = new StackPane(new VBox(AddExpense.expanseView()));
-    private StackPane settingsWindow = new StackPane(new VBox(Settings.settingsView()));
-    private StackPane budgetWindow = new StackPane(new VBox(Budget.budgetView()));
-    private StackPane bankStatementWindow = new StackPane(new VBox(BankStatement.bankStatementView()));
+    private StackPane loginWindow = new StackPane(new VBox(Login.loginView()));
+    private StackPane overviewWindow = new StackPane();
+    private StackPane transferWindow = new StackPane();
+    private StackPane reportWindow = new StackPane();
+    private StackPane addExpenseWindow = new StackPane();
+    private StackPane settingsWindow = new StackPane();
+    private StackPane budgetWindow = new StackPane();
+    private StackPane bankStatementWindow = new StackPane();
+
+    private BooleanProperty isLogin = new SimpleBooleanProperty(false);
 
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loginWindow.setVisible(true);
+        loginWindow.getChildren().add(Login.loginView());
+        loginWindow.getStylesheets().add("/LightMode.css");
+        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
+        loginWindow.setAlignment(Pos.CENTER);
+        loginWindow.setPadding(new Insets(10, 10, 10, 10));
+        loginWindow.setPrefSize(1000, 700);
+        loginWindow.setMinSize(1000, 700);
+        loginWindow.setMaxSize(1000, 700);
+
+        Scene scene = new Scene(loginWindow);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        Login.addObserver(this);
+
+        isLogin.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                launchApp(primaryStage);
+            }
+        });
+    }
+
+    public void launchApp(Stage primaryStage) {
+        overviewWindow.getChildren().add(Overview.overviewView());
+        transferWindow.getChildren().add(Transfer.transferView());
+        reportWindow.getChildren().add(Report.reportView());
+        addExpenseWindow.getChildren().add(AddExpense.expenseView());
+        settingsWindow.getChildren().add(Settings.settingsView());
+        budgetWindow.getChildren().add(Budget.budgetView());
+        bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
+
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
-        overviewWindowStackPane.getStylesheets().add("/style.css");
+        overviewWindow.getStylesheets().add("/LightMode.css");
 
         Image icon = new Image("icon.png");
         primaryStage.getIcons().add(icon);
@@ -59,7 +97,7 @@ public class GUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        overviewWindowStackPane.setVisible(true);
+        overviewWindow.setVisible(true);
         transferWindow.setVisible(false);
         addExpenseWindow.setVisible(false);
         reportWindow.setVisible(false);
@@ -70,21 +108,25 @@ public class GUI extends Application {
 
         StackPane root = new StackPane();
 
-        root.getChildren().addAll(overviewWindowStackPane, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
+        root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
         borderPane.setTop(topMenu(primaryStage));
         borderPane.setCenter(root);
+
+        updatePane();
     }
 
 
     private void updatePane() {
         // update the contents of the paneToUpdate
-        overviewWindowStackPane.getChildren().clear();
-        overviewWindowStackPane.getChildren().add(Overview.overviewView());
+        overviewWindow.getChildren().clear();
+        overviewWindow.getChildren().add(Overview.overviewView());
 
     }
 
 
     //TOP MENU
+    //TODO Prog 2, Øving 11, Property, ex 2, få knappene til å variere å størrelse ut ifra hvor stort vinduet er
+    //TODO Flytte meny ut i TopMenu klassen
     public HBox topMenu(Stage primaryStage) {
 
         BorderPane borderPane = new BorderPane();
@@ -107,12 +149,12 @@ public class GUI extends Application {
         overviewButton.setOnAction(event -> {
             try {
 
-                overviewWindowStackPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
+                overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         updatePane();
                     }});
 
-                overviewWindowStackPane.setVisible(true);
+                overviewWindow.setVisible(true);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
@@ -134,7 +176,7 @@ public class GUI extends Application {
         Button transferButton = new Button("Transfer");
         transferButton.setOnAction(event -> {
             try {
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(true);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
@@ -158,7 +200,7 @@ public class GUI extends Application {
         addExpenseButton.setOnAction(event -> {
             try {
 
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(true);
                 reportWindow.setVisible(false);
@@ -183,7 +225,7 @@ public class GUI extends Application {
         reportButton.setOnAction(event -> {
             try {
 
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(true);
@@ -205,7 +247,7 @@ public class GUI extends Application {
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(event -> {
             try {
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
@@ -226,7 +268,7 @@ public class GUI extends Application {
         Button budgetButton = new Button("Budget");
         budgetButton.setOnAction(event -> {
             try {
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
@@ -245,7 +287,7 @@ public class GUI extends Application {
         Button bankStatementButton = new Button("Bank Statement");
         bankStatementButton.setOnAction(event -> {
             try {
-                overviewWindowStackPane.setVisible(false);
+                overviewWindow.setVisible(false);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
@@ -265,4 +307,10 @@ public class GUI extends Application {
 
         return topMenu;
     }
+
+    @Override
+    public void update() {
+        isLogin.setValue(true);
+    }
 }
+
