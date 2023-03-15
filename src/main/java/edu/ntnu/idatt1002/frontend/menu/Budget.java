@@ -1,3 +1,5 @@
+//BUDGET
+
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
@@ -61,7 +63,10 @@ public class Budget {
     categoryMenu.setPromptText("Select category test");
     categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-    categorySelectorHbox.getChildren().addAll(categorySelectorText, categoryMenu);
+    Button confirmCategory = new Button("Confirm");
+    confirmCategory.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+
+    categorySelectorHbox.getChildren().addAll(categorySelectorText, categoryMenu, confirmCategory);
     categorySelectorHbox.setAlignment(Pos.CENTER_LEFT);
 
 
@@ -91,7 +96,10 @@ public class Budget {
     budgetAmountField.setPromptText("Enter amount");
     budgetAmountField.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
 
-    budgetAmountHbox.getChildren().addAll(budgetAmountText, budgetAmountField);
+    Button confirmAmount = new Button("Confirm");
+    confirmAmount.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+
+    budgetAmountHbox.getChildren().addAll(budgetAmountText, budgetAmountField, confirmAmount);
     budgetAmountHbox.setAlignment(Pos.CENTER_LEFT);
 
 
