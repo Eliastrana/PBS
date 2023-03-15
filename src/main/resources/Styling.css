@@ -1,0 +1,103 @@
+.my-style-class {
+    -fx-font-size: 100pt;
+    -fx-font-family: "Arial";
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.my-style-class button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2px;
+}
+
+.my-style-class button:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #4CAF50;
+    -fx-border-color: #4CAF50;
+}
+
+.button:hover {
+    /* Set the background color to #9FB8AD when the button is hovered over */
+    -fx-background-color: #6d7c71;
+
+    /* Set the text color to white when the button is hovered over */
+    -fx-text-fill: #b93737;
+
+    /* Set the cursor to a hand when the button is hovered over */
+    -fx-cursor: hand;
+}
+
+
+
+#topMenuButton {
+    -fx-font-size: 15px;
+    -fx-min-width: 115px;
+    -fx-min-height: 40px;
+    -fx-background-color: #9FB8AD;
+    -fx-border-width: 2;
+    -fx-background-radius: 5em;
+}
+
+#topMenuButton:hover {
+    -fx-background-color: #6d7c71;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
+}
+
+#loginButton {
+    -fx-background-color: #1e2a1f;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #4c5caf;
+    -fx-border-width: 2px;
+}
+
+
+#textField {
+    -fx-background-color: #9FB8AD;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 10px;
+    -fx-font-size: 20px;
+    -fx-min-width: 100px;
+    -fx-min-height: 50px;
+    -fx-border-width: 2;
+    -fx-prompt-text-fill: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-color: #527246;
+    -fx-border-width: 2px;
+    -fx-background-radius: 0.5em;
+
+}
+
+
+#actionButton {
+    -fx-font-size: 30px;
+    -fx-min-width: 100px;
+    -fx-min-height: 50px;
+    -fx-background-color: #9FB8AD;
+    -fx-border-width: 2;
+    -fx-padding: 10px;
+    -fx-background-radius: 0.5em;
+}
+
+
+.loginScreen {
+    -fx-background-color: #1e2a1f;
+    -fx-background-radius: 5em;
+    -fx-border-color: #527246;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5em;
+    -fx-padding: 10px;
+    -fx-background-image: "";
+}
+
+

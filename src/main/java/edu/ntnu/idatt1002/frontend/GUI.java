@@ -56,6 +56,8 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.setMaxSize(1000, 700);
 
         Scene scene = new Scene(loginWindow);
+        scene.getStylesheets().add("/Styling.css");
+
         primaryStage.setScene(scene);
         primaryStage.show();
         Login.addObserver(this);
@@ -69,12 +71,26 @@ public class GUI extends Application implements LoginObserver {
 
     public void launchApp(Stage primaryStage) {
         overviewWindow.getChildren().add(Overview.overviewView());
+        overviewWindow.getStylesheets().add("/Styling.css");
+
         transferWindow.getChildren().add(Transfer.transferView());
+        transferWindow.getStylesheets().add("/Styling.css");
+
         reportWindow.getChildren().add(Report.reportView());
+        reportWindow.getStylesheets().add("/Styling.css");
+
         addExpenseWindow.getChildren().add(AddExpense.expenseView());
+        addExpenseWindow.getStylesheets().add("/Styling.css");
+
         settingsWindow.getChildren().add(Settings.settingsView());
+        settingsWindow.getStylesheets().add("/Styling.css");
+
         budgetWindow.getChildren().add(Budget.budgetView());
+        budgetWindow.getStylesheets().add("/Styling.css");
+
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
+        bankStatementWindow.getStylesheets().add("/Styling.css");
+
 
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
@@ -136,16 +152,14 @@ public class GUI extends Application implements LoginObserver {
         topMenu.setAlignment(Pos.TOP_CENTER);
         primaryStage.show();
 
+        topMenu.getStylesheets().add("/Styling.css");
+
         topMenu.setSpacing(20);
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
-
-        String buttonStyle= "-fx-font-size: 15px; -fx-min-width: 115px; -fx-min-height: 40px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;";
-
-        //overviewWindowStackPane, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow
-
         //BUTTON 1
         Button overviewButton = new Button("Overview");
+        overviewButton.setId("topMenuButton");
         overviewButton.setOnAction(event -> {
             try {
 
@@ -168,12 +182,12 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        overviewButton.setStyle(buttonStyle);
         topMenu.getChildren().add(overviewButton);
 
 
         //BUTTON 2
         Button transferButton = new Button("Transfer");
+        transferButton.setId("topMenuButton");
         transferButton.setOnAction(event -> {
             try {
                 overviewWindow.setVisible(false);
@@ -191,12 +205,12 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        transferButton.setStyle(buttonStyle);
         topMenu.getChildren().add(transferButton);
 
 
         //BUTTON 4
         Button addExpenseButton = new Button("Add Expense");
+        addExpenseButton.setId("topMenuButton");
         addExpenseButton.setOnAction(event -> {
             try {
 
@@ -215,13 +229,13 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        addExpenseButton.setStyle(buttonStyle);
         topMenu.getChildren().add(addExpenseButton);
 
         //BUTTON 3
 
 
         Button reportButton = new Button("Report");
+        reportButton.setId("topMenuButton");
         reportButton.setOnAction(event -> {
             try {
 
@@ -240,11 +254,11 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        reportButton.setStyle(buttonStyle);
         topMenu.getChildren().add(reportButton);
 
 
         Button settingsButton = new Button("Settings");
+        settingsButton.setId("topMenuButton");
         settingsButton.setOnAction(event -> {
             try {
                 overviewWindow.setVisible(false);
@@ -260,12 +274,12 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        settingsButton.setStyle(buttonStyle);
         topMenu.getChildren().add(settingsButton);
 
 
 
         Button budgetButton = new Button("Budget");
+        budgetButton.setId("topMenuButton");
         budgetButton.setOnAction(event -> {
             try {
                 overviewWindow.setVisible(false);
@@ -281,10 +295,10 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        budgetButton.setStyle(buttonStyle);
         topMenu.getChildren().add(budgetButton);
 
         Button bankStatementButton = new Button("Bank Statement");
+        bankStatementButton.setId("topMenuButton");
         bankStatementButton.setOnAction(event -> {
             try {
                 overviewWindow.setVisible(false);
@@ -300,7 +314,6 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        bankStatementButton.setStyle(buttonStyle);
         topMenu.getChildren().add(bankStatementButton);
 
         topMenu.getStylesheets().add("/style.css");

@@ -62,7 +62,7 @@ public class Report {
     HBox printOutVBox = new HBox();
 
     Button exportToPDF = new Button("Export to PDF");
-    exportToPDF.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+    exportToPDF.setId("actionButton");
 
     exportToPDF.setOnAction(e -> {
       System.out.println("Exporting to PDF");
@@ -88,6 +88,7 @@ public class Report {
 
 
     Button printToExcel = new Button("Print to Excel");
+    printToExcel.setId("actionButton");
 
     printOutVBox.getChildren().addAll(exportToPDF, printToExcel);
 
