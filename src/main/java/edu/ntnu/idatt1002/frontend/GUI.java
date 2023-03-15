@@ -185,8 +185,8 @@ public class GUI extends Application {
 
                 overviewWindowStackPane.setVisible(false);
                 transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(true);
-                reportWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                reportWindow.setVisible(true);
                 settingsWindow.setVisible(false);
                 budgetWindow.setVisible(false);
                 bankStatementWindow.setVisible(false);
