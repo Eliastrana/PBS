@@ -10,6 +10,13 @@ public class Accounts {
     }
 
     public static void addAccount(String accountName, double accountBalance){
+        if (accountName == null || accountName.isBlank()){
+            throw new IllegalArgumentException("Account name cannot be empty");
+        }
+        if (accountBalance < 0){
+            throw new IllegalArgumentException("Account balance cannot be negative");
+        }
+
         Account newAccount = new Account(accountName, accountBalance);
         accounts.put(newAccount.getAccountName(), newAccount.getAccountBalance());
     }
