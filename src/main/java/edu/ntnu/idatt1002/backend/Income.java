@@ -13,7 +13,20 @@ public class Income {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     //String date = dateUnformatted.format(formatter);
 
-    public Income(String name, double price, int category, LocalDate date){
+    public Income(String name, double price, int category, LocalDate date) {
+        if (name == null || name.isBlank()){
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        if (price < 0){
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (category < 1 || category > 5){
+            throw new IllegalArgumentException("Category must be between 1 and 5");
+        }
+        if (date == null){
+            throw new IllegalArgumentException("Date cannot be empty");
+        }
+
         this.name = name;
         this.price = price;
         this.category = category;
@@ -23,6 +36,15 @@ public class Income {
     public Income(){}
 
     public Income(String name, double price, LocalDate date){
+        if (name == null || name.isBlank()){
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        if (price < 0){
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (date == null){
+            throw new IllegalArgumentException("Date cannot be empty");
+        }
         this.name = name;
         this.price = price;
         this.date = date;
@@ -45,19 +67,31 @@ public class Income {
     }
 
     public void setName(String name) {
+        if (name == null || name.isBlank()){
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
     }
 
     public void setPrice(double price) {
+        if (price < 0){
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.price = price;
     }
 
 
     public void setCategory(int category) {
+        if (category < 1 || category > 5){
+            throw new IllegalArgumentException("Category must be between 1 and 5");
+        }
         this.category = category;
     }
 
     public void setDate(LocalDate date) {
+        if (date == null){
+            throw new IllegalArgumentException("Date cannot be empty");
+        }
         this.date = date;
     }
 }
