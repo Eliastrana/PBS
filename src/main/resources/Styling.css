@@ -25,13 +25,8 @@
 }
 
 .button:hover {
-    /* Set the background color to #9FB8AD when the button is hovered over */
     -fx-background-color: #6d7c71;
-
-    /* Set the text color to white when the button is hovered over */
-    -fx-text-fill: #b93737;
-
-    /* Set the cursor to a hand when the button is hovered over */
+    -fx-text-fill: #e7e4e3;
     -fx-cursor: hand;
 }
 
@@ -52,52 +47,160 @@
     -fx-cursor: hand;
 }
 
+#topMenuButton:focused {
+    -fx-background-color: #404f44;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
+}
+
 #loginButton {
-    -fx-background-color: #1e2a1f;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #9FB8ADFF;
+    -fx-text-fill: #010501;
     -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #4c5caf;
+    -fx-border-color: #65756a;
+    -fx-border-radius: 5em;
+
     -fx-border-width: 2px;
+}
+
+#loginButton:hover {
+    -fx-background-color: #404f44;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #9FB8ADFF;
 }
 
 
 #textField {
-    -fx-background-color: #9FB8AD;
-    -fx-text-fill: #FFFFFF;
-    -fx-padding: 10px;
-    -fx-font-size: 20px;
-    -fx-min-width: 100px;
-    -fx-min-height: 50px;
-    -fx-border-width: 2;
-    -fx-prompt-text-fill: #FFFFFF;
-    -fx-border-radius: 5px;
-    -fx-border-color: #527246;
-    -fx-border-width: 2px;
-    -fx-background-radius: 0.5em;
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 5em;
+    -fx-border-width: 1px;
+    -fx-border-color: #d9d9d9;
+    -fx-border-radius: 5em;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-spacing: 10px;
+
 
 }
 
 
 #actionButton {
-    -fx-font-size: 30px;
+    -fx-font-size: 15px;
     -fx-min-width: 100px;
     -fx-min-height: 50px;
+    -fx-background-radius: 4em;
+    -fx-border-width: 2px;
     -fx-background-color: #9FB8AD;
     -fx-border-width: 2;
     -fx-padding: 10px;
-    -fx-background-radius: 0.5em;
+
+}
+
+#actionButton:hover {
+    -fx-background-color: #6d7c71;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
 }
 
 
 .loginScreen {
-    -fx-background-color: #1e2a1f;
-    -fx-background-radius: 5em;
-    -fx-border-color: #527246;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5em;
-    -fx-padding: 10px;
-    -fx-background-image: "";
+    -fx-background-image: url("/dansk2.jpg");
 }
+
+#overlayLogin{
+    -fx-background-color: #e7e4e3;
+    -fx-background-radius: 10px;
+}
+
+
+#categoryMenuButton {
+
+    -fx-background-color: #f2f2f2;
+    -fx-background-radius: 1em;
+    -fx-border-width: 1px;
+    -fx-border-color: #d9d9d9;
+    -fx-border-radius: 1em;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-spacing: 10px;
+}
+
+#categoryMenuButton:hover {
+    -fx-background-color: #c7cbca;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
+}
+
+#titleText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 60px "Times New Roman";
+}
+
+#underTitleText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 20px "Times New Roman";
+}
+
+#smallText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 12px "Times New Roman";
+}
+
+
+
+.date-picker {
+    -fx-background-color: #f7f7f7 !important;
+    -fx-padding: 10px !important;
+    -fx-spacing: 10px !important;
+    -fx-background-insets: 0 !important;
+}
+
+.date-picker .content {
+    -fx-background-color: #fff !important;
+    -fx-padding: 20px !important;
+    -fx-background-insets: 0 !important;
+}
+
+.date-picker .content > .month-year-pane {
+    -fx-padding: 10px !important;
+}
+
+.date-picker .content > .month-year-pane > .label {
+    -fx-font-size: 18px !important;
+    -fx-font-weight: bold !important;
+    -fx-text-fill: #333 !important;
+}
+
+.date-picker .content > .month-year-pane > .arrow-button {
+    -fx-background-color: transparent !important;
+}
+
+.date-picker .content > .month-year-pane > .arrow-button > .arrow {
+    -fx-background-color: #333 !important;
+}
+
+.date-picker .content > .calendar-grid > .day-cell {
+    -fx-background-color: transparent !important;
+    -fx-text-fill: #333 !important;
+    -fx-font-size: 14px !important;
+}
+
+.date-picker .content > .calendar-grid > .day-cell:hover {
+    -fx-background-color: #eee !important;
+}
+
+.date-picker .content > .calendar-grid > .day-cell:selected {
+    -fx-background-color: #333 !important;
+    -fx-text-fill: #fff !important;
+}
+
+
+
+
 
 

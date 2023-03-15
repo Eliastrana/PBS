@@ -37,8 +37,7 @@ public class Report {
     printOutAReport.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
     HBox selectReportHBox = new HBox();
-    selectReportHBox.setAlignment(Pos.CENTER_LEFT);
-    Text selectReportText = new Text("Select report type: ");
+
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -46,20 +45,25 @@ public class Report {
                     "Balance"
             );
     final ComboBox reportType = new ComboBox(options);
-    reportType.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
-    selectReportHBox.getChildren().addAll(selectReportText, reportType);
+    reportType.setId("categoryMenuButton");
+    reportType.setPromptText("Select report type");
+
+    selectReportHBox.getChildren().addAll(reportType);
+    selectReportHBox.setAlignment(Pos.CENTER);
 
     HBox selectMonthHBox = new HBox();
-    Text selectMonthText = new Text("Select month: ");
+    selectMonthHBox.setAlignment(Pos.CENTER);
+
     DatePicker datePicker = new DatePicker();
     datePicker.setValue(LocalDate.now());
     datePicker.setShowWeekNumbers(true);
     datePicker.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
-    selectMonthHBox.getChildren().addAll(selectMonthText, datePicker);
+    selectMonthHBox.getChildren().add(datePicker);
 
 
 
     HBox printOutVBox = new HBox();
+    printOutVBox.setAlignment(Pos.CENTER);
 
     Button exportToPDF = new Button("Export to PDF");
     exportToPDF.setId("actionButton");
@@ -91,9 +95,11 @@ public class Report {
     printToExcel.setId("actionButton");
 
     printOutVBox.getChildren().addAll(exportToPDF, printToExcel);
+    printOutVBox.setSpacing(30);
 
 
     reportLayout.getChildren().addAll(printOutAReport, selectReportHBox, selectMonthHBox, printOutVBox);
+    reportLayout.setSpacing(30);
     reportLayout.setAlignment(Pos.TOP_CENTER);
 
     return reportLayout;

@@ -52,9 +52,10 @@ public class AddExpense {
     text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
     DatePicker datePicker = new DatePicker();
+    datePicker.getStyleClass().add("date-picker");
+
     datePicker.setValue(LocalDate.now());
     datePicker.setShowWeekNumbers(true);
-    datePicker.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -75,24 +76,23 @@ public class AddExpense {
     ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setPromptText("Pick an account");
-    accountMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
-
+    accountMenu.setId("categoryMenuButton");
 
 
     String originalPromptText = "Pick a category";
     categoryMenu.setPromptText(originalPromptText);
-    categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    categoryMenu.setId("categoryMenuButton");
 
     TextField prices = new TextField();
     prices.setPromptText("Enter price");
-    prices.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    prices.setId("textField");
 
     TextField names = new TextField();
     names.setPromptText("Enter name");
-    names.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    names.setId("textField");
 
     Button confirmExpense = new Button("Confirm");
-    confirmExpense.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+    confirmExpense.setId("actionButton");
 
     confirmExpense.setOnAction(e -> {
 
@@ -163,8 +163,6 @@ public class AddExpense {
 
 
 
-
-
     HBox title = new HBox(text3);
     title.setAlignment(Pos.CENTER);
     title.setSpacing(40);
@@ -197,6 +195,7 @@ public class AddExpense {
 
     VBox dateAndInputAndConfirm = new VBox(title,accountMenu, dateAndInput, confirmExpense);
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
+    dateAndInputAndConfirm.setSpacing(20);
 
 
 

@@ -66,6 +66,8 @@ public class GUI extends Application implements LoginObserver {
         Scene scene = new Scene(loginWindow);
         scene.getStylesheets().add("/Styling.css");
 
+
+
         primaryStage.setScene(scene);
         primaryStage.show();
         Login.addObserver(this);
@@ -331,7 +333,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(bankStatementButton);
 
-        topMenu.getStylesheets().add("/style.css");
+        topMenu.getStylesheets().add("/Styling.css");
 
         return topMenu;
     }

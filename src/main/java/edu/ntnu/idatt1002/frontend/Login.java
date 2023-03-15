@@ -1,11 +1,16 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginObserver;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,10 +21,37 @@ public class Login {
 
   private static List<LoginObserver> observers = new ArrayList<>();
   public static VBox loginView() {
+
+
+
+
+    Pane background = new Pane();
+    background.setPrefSize(1000,700);
+
+    background.getStylesheets().add("/LightMode.css");
+    background.getStyleClass().add("loginScreen");
+
+
+
     System.out.println("Opening login page");
 
     VBox loginVBox = new VBox();
-    loginVBox.getChildren().add(new Label("This is the login page"));
+    loginVBox.setPadding(new Insets(10));
+
+
+    loginVBox.setAlignment(Pos.CENTER);
+    loginVBox.setSpacing(20);
+    loginVBox.setMaxSize(300, 400);
+
+
+    loginVBox.getStylesheets().add("/LightMode.css");
+    loginVBox.setId("overlayLogin");
+
+    Text welcomeText = new Text("Take back ");
+    welcomeText.setId("titleText");
+
+    Text welcomeText2 = new Text("control of your life");
+    welcomeText2.setId("underTitleText");
 
     TextField username = new TextField();
     username.setPromptText("Enter username");
@@ -43,6 +75,7 @@ public class Login {
           String[] user = line.split(delimiter);
           if (user[0].equals(username.getText()) && user[1].equals(password.getText())) {
             System.out.println("Logged in");
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
             notifyObservers();
           }
         }
@@ -53,9 +86,16 @@ public class Login {
       }
     });
 
-    loginVBox.getChildren().addAll(username, password, logIn);
+    Text createUser = new Text("Create user");
+    createUser.setId("smallText");
 
-    VBox vbox = new VBox(loginVBox);
+
+    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser);
+
+    StackPane backgroundAndLogin = new StackPane(background , loginVBox);
+
+
+    VBox vbox = new VBox(backgroundAndLogin);
     vbox.setAlignment(Pos.TOP_CENTER);
     return vbox;
   }
