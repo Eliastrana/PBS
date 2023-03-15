@@ -4,6 +4,7 @@ import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,11 +27,9 @@ import org.w3c.dom.Node;
 
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -123,13 +122,13 @@ public class AddExpense {
         switch (selectedOption) {
           case "Entertainment" ->
                   Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
-          case "Food" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), food);
+          case "Food" -> Expenses.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
           case "Transportation" ->
-                  Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), transportation);
+                  Expenses.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
           case "Clothing" ->
-                  Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), clothing);
-          case "Other" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), other);
-          case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), rent);
+                  Expenses.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
+          case "Other" -> Expenses.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
+          case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
           default -> System.out.println("Error");
         }
 

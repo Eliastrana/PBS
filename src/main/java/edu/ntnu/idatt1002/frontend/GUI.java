@@ -1,7 +1,9 @@
 package edu.ntnu.idatt1002.frontend;
 
+import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,6 +19,9 @@ import javafx.stage.Stage;
 import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class GUI extends Application implements LoginObserver {
@@ -40,6 +45,9 @@ public class GUI extends Application implements LoginObserver {
     private StackPane bankStatementWindow = new StackPane();
 
     private BooleanProperty isLogin = new SimpleBooleanProperty(false);
+
+    public GUI() {
+    }
 
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
@@ -75,6 +83,7 @@ public class GUI extends Application implements LoginObserver {
         settingsWindow.getChildren().add(Settings.settingsView());
         budgetWindow.getChildren().add(Budget.budgetView());
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
+
 
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
@@ -119,6 +128,13 @@ public class GUI extends Application implements LoginObserver {
     private void updatePane() {
         // update the contents of the paneToUpdate
         overviewWindow.getChildren().clear();
+        try {
+            ExcelExporter.exportToExcel();
+            ExcelExporter.convertToPdf();
+        } catch (DocumentException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
         overviewWindow.getChildren().add(Overview.overviewView());
 
     }
@@ -148,7 +164,6 @@ public class GUI extends Application implements LoginObserver {
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
-
                 overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         updatePane();
