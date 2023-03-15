@@ -1,10 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
-<<<<<<< HEAD
 import com.itextpdf.text.DocumentException;
-=======
 import edu.ntnu.idatt1002.backend.LoginObserver;
->>>>>>> f8d7858cea4c4de1b4f1e6b4a1bcbcd797dd9d3c
 import edu.ntnu.idatt1002.frontend.menu.*;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
@@ -55,9 +52,6 @@ public class GUI extends Application implements LoginObserver {
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
     @Override
-<<<<<<< HEAD
-    public void start(Stage primaryStage) {
-=======
     public void start(Stage primaryStage) throws Exception {
         loginWindow.setVisible(true);
         loginWindow.getChildren().add(Login.loginView());
@@ -90,7 +84,7 @@ public class GUI extends Application implements LoginObserver {
         budgetWindow.getChildren().add(Budget.budgetView());
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
 
->>>>>>> f8d7858cea4c4de1b4f1e6b4a1bcbcd797dd9d3c
+
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
@@ -133,20 +127,16 @@ public class GUI extends Application implements LoginObserver {
 
     private void updatePane() {
         // update the contents of the paneToUpdate
-<<<<<<< HEAD
-        overviewWindowStackPane.getChildren().clear();
+        overviewWindow.getChildren().clear();
         try {
             ExcelExporter.exportToExcel();
             ExcelExporter.convertToPdf();
         } catch (DocumentException | IOException ex) {
             throw new RuntimeException(ex);
         }
-        overviewWindowStackPane.getChildren().add(Overview.overviewView());
-=======
-        overviewWindow.getChildren().clear();
+
         overviewWindow.getChildren().add(Overview.overviewView());
 
->>>>>>> f8d7858cea4c4de1b4f1e6b4a1bcbcd797dd9d3c
     }
 
 
@@ -174,22 +164,12 @@ public class GUI extends Application implements LoginObserver {
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
-<<<<<<< HEAD
-                overviewWindowStackPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue) {
-                        updatePane();
-                        }
-                    });
-                overviewWindowStackPane.setVisible(true);
-=======
-
                 overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         updatePane();
                     }});
 
                 overviewWindow.setVisible(true);
->>>>>>> f8d7858cea4c4de1b4f1e6b4a1bcbcd797dd9d3c
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
                 reportWindow.setVisible(false);
