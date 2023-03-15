@@ -32,4 +32,16 @@ public class timeofdaychecker {
         DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
         return selectedDate.format(monthFormatter); // Return the month as a string
     }
+
+    public static String getCurrentMonth() {
+        LocalDate currentDate = LocalDate.now(); // Get the current date
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
+        return currentDate.format(monthFormatter); // Return the month as a string
+    }
+
+    public static int getYear(){
+        LocalDate currentDate = LocalDate.now();
+        int year = currentDate.getYear();
+        return year;
+    }
 }
