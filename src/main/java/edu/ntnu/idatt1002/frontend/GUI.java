@@ -1,6 +1,8 @@
 package edu.ntnu.idatt1002.frontend;
 
+import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.frontend.menu.*;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +15,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import javafx.scene.layout.VBox;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class GUI extends Application {
@@ -34,10 +39,13 @@ public class GUI extends Application {
     private StackPane budgetWindow = new StackPane(new VBox(Budget.budgetView()));
     private StackPane bankStatementWindow = new StackPane(new VBox(BankStatement.bankStatementView()));
 
+    public GUI() {
+    }
+
     //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1000);
         primaryStage.setHeight(700);
@@ -79,8 +87,13 @@ public class GUI extends Application {
     private void updatePane() {
         // update the contents of the paneToUpdate
         overviewWindowStackPane.getChildren().clear();
+        try {
+            ExcelExporter.exportToExcel();
+            ExcelExporter.convertToPdf();
+        } catch (DocumentException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
         overviewWindowStackPane.getChildren().add(Overview.overviewView());
-
     }
 
 
@@ -106,12 +119,11 @@ public class GUI extends Application {
         Button overviewButton = new Button("Overview");
         overviewButton.setOnAction(event -> {
             try {
-
                 overviewWindowStackPane.visibleProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         updatePane();
-                    }});
-
+                        }
+                    });
                 overviewWindowStackPane.setVisible(true);
                 transferWindow.setVisible(false);
                 addExpenseWindow.setVisible(false);
