@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.model;
 import java.io.*;
 
 import com.itextpdf.text.pdf.PdfPCell;
+import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,39 +22,35 @@ public class ExcelExporter {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
              Workbook workbook = new XSSFWorkbook()) {
 
-            Sheet sheet = workbook.createSheet("Sheet1");
-
-            Row categoryRow = sheet.createRow(0);
-            String[] categories = {"Category", "Name", "Date", "Price", "Account"}; // Replace with your own category names
-            Font font = workbook.createFont();
-            font.setFontName("Arial");
-            font.setBold(true);
-            CellStyle boldStyle = workbook.createCellStyle();
-            boldStyle.setFont(font);
-            for (int i = 0; i < categories.length; i++) {
-                Cell cell = categoryRow.createCell(i);
-                cell.setCellValue(categories[i]);
-                cell.setCellStyle(boldStyle);
-            }
-
             String line;
 
-            int rowNumber = 1; // Start at row 1 since row 0 is used for categories
             while ((line = br.readLine()) != null) {
-                Row row = sheet.createRow(rowNumber++);
 
                 String[] columns = line.split(",");
+                String month = timeofdaychecker.getSelectedMonth(columns[2]);
 
-                int columnNumber = 0;
-                for (String column : columns) {
-                    Cell cell = row.createCell(columnNumber++);
-                    cell.setCellValue(column);
+                Sheet sheet = workbook.getSheet(month);
+                if (sheet == null) {
+                    // Create new sheet and header row
+                    sheet = workbook.createSheet(month);
+                    Row headerRow = sheet.createRow(0);
+                    String[] headerColumns = {"Category", "Name", "Date", "Price", "Account"};
+                    for (int i = 0; i < headerColumns.length; i++) {
+                        Cell cell = headerRow.createCell(i);
+                        cell.setCellValue(headerColumns[i]);
+                    }
+                }
+
+                // Create new data row
+                Row dataRow = sheet.createRow(sheet.getLastRowNum() + 1);
+                for (int i = 0; i < columns.length; i++) {
+                    Cell cell = dataRow.createCell(i);
+                    cell.setCellValue(columns[i]);
                 }
 
             }
 
             workbook.write(new FileOutputStream(outputFile));
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,6 +83,7 @@ public class ExcelExporter {
                     table.setWidths(columnWidths);
                     document.add(table);
                 }
+                document.add(new Paragraph("\n"));
             }
             document.close();
         }

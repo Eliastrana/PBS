@@ -1,6 +1,9 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class timeofdaychecker {
 
 
@@ -22,5 +25,11 @@ public class timeofdaychecker {
     @Override
     public String toString() {
         return timeofdaychecker();
+    }
+
+    public static String getSelectedMonth(String datePicker) {
+        LocalDate selectedDate = LocalDate.parse(datePicker); // Get the selected date from the DatePicker control
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
+        return selectedDate.format(monthFormatter); // Return the month as a string
     }
 }

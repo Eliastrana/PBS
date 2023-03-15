@@ -26,7 +26,7 @@ public class Report {
     exportToExcell.setOnAction(e -> {
       System.out.println("Exporting to PDF");
       try {
-        ExcelExporter.exportToExcel();
+        //ExcelExporter.exportToExcel();
         ExcelExporter.convertToPdf();
       } catch (DocumentException | IOException ex) {
         throw new RuntimeException(ex);
