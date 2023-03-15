@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Login {
 
-  private static Boolean loggedIn = false;
   private static List<LoginObserver> observers = new ArrayList<>();
   public static VBox loginView() {
     System.out.println("Opening login page");
@@ -42,7 +41,6 @@ public class Login {
         while ((line = br.readLine()) != null) {
           String[] user = line.split(delimiter);
           if (user[0].equals(username.getText()) && user[1].equals(password.getText())) {
-            loggedIn = true;
             System.out.println("Logged in");
             notifyObservers();
           }
