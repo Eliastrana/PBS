@@ -4,6 +4,7 @@ import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,11 +27,9 @@ import org.w3c.dom.Node;
 
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,9 +52,10 @@ public class AddExpense {
     text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
     DatePicker datePicker = new DatePicker();
+    datePicker.getStyleClass().add("date-picker");
+
     datePicker.setValue(LocalDate.now());
     datePicker.setShowWeekNumbers(true);
-    datePicker.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -76,24 +76,23 @@ public class AddExpense {
     ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setPromptText("Pick an account");
-    accountMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
-
+    accountMenu.setId("categoryMenuButton");
 
 
     String originalPromptText = "Pick a category";
     categoryMenu.setPromptText(originalPromptText);
-    categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    categoryMenu.setId("categoryMenuButton");
 
     TextField prices = new TextField();
     prices.setPromptText("Enter price");
-    prices.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    prices.setId("textField");
 
     TextField names = new TextField();
     names.setPromptText("Enter name");
-    names.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    names.setId("textField");
 
     Button confirmExpense = new Button("Confirm");
-    confirmExpense.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
+    confirmExpense.setId("actionButton");
 
     confirmExpense.setOnAction(e -> {
 
@@ -123,13 +122,13 @@ public class AddExpense {
         switch (selectedOption) {
           case "Entertainment" ->
                   Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
-          case "Food" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), food);
+          case "Food" -> Expenses.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
           case "Transportation" ->
-                  Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), transportation);
+                  Expenses.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
           case "Clothing" ->
-                  Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), clothing);
-          case "Other" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), other);
-          case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), rent);
+                  Expenses.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
+          case "Other" -> Expenses.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
+          case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
           default -> System.out.println("Error");
         }
 
@@ -161,8 +160,6 @@ public class AddExpense {
 
       }
     });
-
-
 
 
 
@@ -198,6 +195,7 @@ public class AddExpense {
 
     VBox dateAndInputAndConfirm = new VBox(title,accountMenu, dateAndInput, confirmExpense);
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
+    dateAndInputAndConfirm.setSpacing(20);
 
 
 

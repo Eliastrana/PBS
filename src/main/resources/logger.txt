@@ -1,19 +1,6 @@
-Food,smw,2023-03-13,150.0,Savings
-Transportation,amsw,2023-03-13,203.0,Checkings
-Transportation,ffrr,2023-03-13,5555.0,Savings
-Food,dr,2023-03-13,34.0,Savings
-Rent,msw,2023-03-13,303.0,Savings
-Food,smws,2023-03-13,1500.0,Checkings
-Rent,snws,2023-03-13,94994.0,Savings
-Food,sss,2023-03-13,4949449.0,Card
-Rent,dneb,2023-03-13,444444.0,Savings
-Rent,smws,2023-03-13,1202.0,Savings
-Rent,smw,2023-03-13,1200.0,Checkings
-Food,smwms,2023-03-14,150.0,Savings
-Transportation,smwm,2023-03-14,150.0,Checkings
-Clothing,swsd,2023-03-14,450.0,Checkings
-Food,Cava,2023-03-15,100.0,Savings
-Food,sws,2023-03-15,123.0,Savings
-Transportation,sws,2023-03-15,343.0,Savings
-Transportation,sws,2024-03-13,5454.0,Checkings
-Transportation,dfsf,2023-04-12,342.0,Checkings
+Food,Coop Extra,2023-03-01,369.0,Checkings
+Clothing,Hettegenser,2023-03-04,950.0,Card
+Rent,360 Campus,2023-03-04,7660.0,Checkings
+Entertainment,HBO Max,2023-03-06,89.0,Card
+Transportation,AtB månedskort,2023-03-13,550.0,Card
+Food,asdfg,2023-03-15,1000.0,Checkings

@@ -5,6 +5,7 @@ import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -23,7 +24,9 @@ import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.awt.*;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.backend.Expenses.getExpensesOfAllCategories;
@@ -60,7 +63,7 @@ public class Overview {
     textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
     hbox2.getChildren().add(textSavings);
 
-    Text textSpending = new Text("Monthly spending: " + "\n" + getExpensesOfAllCategories());
+    Text textSpending = new Text("Monthly spending: " + "\n" + ExcelExporter.getMonthlyTotal());
     textSpending.setTextAlignment(TextAlignment.CENTER);
 
     textSpending.setStyle("-fx-fill: #3F403F");
@@ -140,9 +143,21 @@ public class Overview {
     TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
     rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-    rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3);
+    TableColumn<Expense, String> rightColumn4 = new TableColumn<>("Category: ");
+    rightColumn4.setCellValueFactory(new PropertyValueFactory<>("category"));
 
-    rightTable.getItems().addAll(Expenses.createAllExpenses());  //TODO: Change to getExpenses()
+    TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
+    rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
+
+    rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+
+    rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
+
+//    try {
+//      rightTable.getItems().addAll(ExcelExporter.getExpensesForCurrentMonth());
+//    } catch (IOException e) {
+//    throw new RuntimeException(e);
+//    }
 
     vboxSpending.getChildren().add(rightTable);
 

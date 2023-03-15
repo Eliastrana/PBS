@@ -41,11 +41,11 @@ public class Transfer {
     Text transferfrom = new Text("Transfer from:");
     transferfrom.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
     transferBewteenAccounts.getChildren().add(transferfrom);
+
     ComboBox<String> leftTransfer = new ComboBox<>();
     leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
     transferBewteenAccounts.getChildren().add(leftTransfer);
-    leftTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
-
+    leftTransfer.setId("categoryMenuButton");
 
     Text transferto = new Text(" to: ");
     transferto.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
@@ -59,7 +59,7 @@ public class Transfer {
       rightTransfer.getItems().remove(leftTransfer.getValue());
     });
     transferBewteenAccounts.getChildren().add(rightTransfer);
-    rightTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 2em;");
+    rightTransfer.setId("categoryMenuButton");
 
 
     HBox transferBewteenAccountsAmount = new HBox();
@@ -76,11 +76,11 @@ public class Transfer {
 
     TextField priceEntry = new TextField();
     priceEntry.setPromptText("Enter price");
+    priceEntry.setId("textField");
     transferBewteenAccountsAmount.getChildren().add(priceEntry);
 
     Button confirmTransfer = new Button("Confirm");
-    confirmTransfer.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
-
+  confirmTransfer.setId("actionButton");
 
     confirmTransfer.setOnAction(e -> {
       String removeFromAccount = leftTransfer.getValue();
@@ -113,7 +113,7 @@ public class Transfer {
     ComboBox<String> incomeAccount = new ComboBox<>();
     incomeAccount.setItems(FXCollections.observableArrayList(accounts.keySet()));
     registerIncomeHBox.getChildren().add(incomeAccount);
-    incomeAccount.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px; -fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-background-radius: 5em;");
+    incomeAccount.setId("categoryMenuButton");
 
     HBox registerAmount = new HBox();
     registerAmount.setSpacing(20);
@@ -128,11 +128,11 @@ public class Transfer {
 
     TextField amountIncome = new TextField();
     amountIncome.setPromptText("Enter price");
+    amountIncome.setId("textField");
     registerAmount.getChildren().add(amountIncome);
 
     Button confirmIncome = new Button("Confirm");
-    confirmIncome.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
-
+    confirmIncome.setId("actionButton");
 
     confirmIncome.setOnAction(e -> {
       String inncomeAccountName = incomeAccount.getValue();
