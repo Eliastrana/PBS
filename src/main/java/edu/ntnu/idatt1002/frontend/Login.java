@@ -5,25 +5,33 @@ import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
 public class Login {
 
   private static List<LoginObserver> observers = new ArrayList<>();
+  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
+  private static String SALT;
+  public static boolean loggedIn = false;
+  public static TextField username = new TextField();
   public static VBox loginView() {
-
-
-
 
     Pane background = new Pane();
     background.setPrefSize(1000,700);
@@ -53,42 +61,82 @@ public class Login {
     Text welcomeText2 = new Text("control of your life");
     welcomeText2.setId("underTitleText");
 
-    TextField username = new TextField();
     username.setPromptText("Enter username");
     username.setId("textField");
 
-    TextField password = new TextField();
+    PasswordField password = new PasswordField();
     password.setPromptText("Enter password");
     password.setId("textField");
 
     Button logIn = new Button("Log in");
     logIn.setId("loginButton");
-    //logIn.setStyle("-fx-font-size: 30px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     logIn.setOnAction(e -> {
       String csvFile = "src/main/resources/users.csv";
       String line = "";
-      String delimiter = ",";
-
-      try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-        while ((line = br.readLine()) != null) {
-          String[] user = line.split(delimiter);
-          if (user[0].equals(username.getText()) && user[1].equals(password.getText())) {
-            System.out.println("Logged in");
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-            notifyObservers();
+      BufferedReader br = null;
+      try {
+        br = new BufferedReader(new FileReader(csvFile));
+      } catch (FileNotFoundException ex) {
+        throw new RuntimeException(ex);
+      }
+      while (true) {
+        try {
+          if ((line = br.readLine()) == null) break;
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
+        }
+        String[] user = line.split(",");
+          if (user[0].equals(username.getText())) {
+            String encryptedPassword = user[1];
+            String SALT = user[2];
+            String decryptedPassword = decrypt(encryptedPassword, SALT);
+            if (password.getText().equals(new String(decryptedPassword))) {
+              System.out.println("Logged in");
+              SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+              loggedIn = true;
+              notifyObservers();
+            }
           }
         }
-      } catch (FileNotFoundException ex) {
-        System.out.println("File not found");
-      } catch (IOException ex) {
-        System.out.println("IO exception");
-      }
     });
 
     Text createUser = new Text("Create user");
-    createUser.setId("smallText");
+    createUser.setId("linkSmallText");
 
+    createUser.setOnMouseClicked(e -> {
+      System.out.println("Opening create user page");
+      notifyObservers();
+    });
+
+//    createUser.setOnMouseClicked(e -> {
+//      SALT = generateSalt();
+//      byte[] key = new byte[16];
+//      SecureRandom random = new SecureRandom();
+//      random.nextBytes(key);
+//
+//      String passwordString = password.getText();
+//
+//      String encryptedPasswordString = encrypt(passwordString);
+//      BufferedWriter writer;
+//      try {
+//        writer = new BufferedWriter(new FileWriter("src/main/resources/users.csv", true));
+//      } catch (IOException ex) {
+//        throw new RuntimeException(ex);
+//      }
+//      try {
+//        writer.write(username.getText() + "," + encryptedPasswordString + "," + SALT);
+//      } catch (IOException ex) {
+//        throw new RuntimeException(ex);
+//      }
+//      try {
+//        writer.newLine();
+//        writer.close();
+//      } catch (IOException ex) {
+//        throw new RuntimeException(ex);
+//      }
+//      notifyObservers();
+//    });
 
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser);
 
@@ -100,7 +148,54 @@ public class Login {
     return vbox;
   }
 
+//  public static String generateSalt() {
+//    byte[] salt = new byte[16];
+//    SecureRandom random = new SecureRandom();
+//    random.nextBytes(salt);
+//    return Base64.getEncoder().encodeToString(salt);
+//  }
+//
+//  public static String encrypt (String password) {
+//    try {
+//      byte[] iv = new byte[16];
+//      IvParameterSpec ivSpec = new IvParameterSpec(iv);
+//
+//      SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+//      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
+//      SecretKey tmp = factory.generateSecret(spec);
+//      SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+//
+//      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+//      cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
+//      return Base64.getEncoder().encodeToString(cipher.doFinal(password.getBytes("UTF-8")));
+//    } catch (Exception e) {
+//      System.out.println("Error while encrypting: " + e.toString());
+//    }
+//    return null;
+//  }
 
+  public static String decrypt (String password, String SALT) {
+    try {
+      byte[] iv = new byte[16];
+      IvParameterSpec ivSpec = new IvParameterSpec(iv);
+
+      SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
+      SecretKey tmp = factory.generateSecret(spec);
+      SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+
+      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+      cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+      return new String(cipher.doFinal(Base64.getDecoder().decode(password)));
+    } catch (Exception e) {
+      System.out.println("Error while decrypting: " + e.toString());
+    }
+    return null;
+  }
+
+  public static boolean isLoggedIn() {
+    return loggedIn;
+  }
   public static void addObserver(LoginObserver observer) {
     observers.add(observer);
   }

@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.backend.CreateUser;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -36,6 +37,7 @@ public class GUI extends Application implements LoginObserver {
     //This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
     private StackPane loginWindow = new StackPane(new VBox(Login.loginView()));
+    private StackPane createUserWindow = new StackPane();
     private StackPane overviewWindow = new StackPane();
     private StackPane transferWindow = new StackPane();
     private StackPane reportWindow = new StackPane();
@@ -45,6 +47,7 @@ public class GUI extends Application implements LoginObserver {
     private StackPane bankStatementWindow = new StackPane();
 
     private BooleanProperty isLogin = new SimpleBooleanProperty(false);
+    private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
 
     public GUI() {
     }
@@ -72,11 +75,21 @@ public class GUI extends Application implements LoginObserver {
         primaryStage.show();
         Login.addObserver(this);
 
+        isCreateAccount.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                launchCreateUser(primaryStage);
+            }
+        });
+
         isLogin.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 launchApp(primaryStage);
             }
         });
+    }
+
+    public void callStart() {
+
     }
 
     public void launchApp(Stage primaryStage) {
@@ -140,6 +153,27 @@ public class GUI extends Application implements LoginObserver {
         borderPane.setCenter(root);
 
         updatePane();
+    }
+
+    public void launchCreateUser(Stage primaryStage) {
+        createUserWindow.getChildren().add(CreateUser.createUserView());
+        loginWindow.setVisible(true);
+        loginWindow.getChildren().add(Login.loginView());
+        loginWindow.getStylesheets().add("/LightMode.css");
+        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
+        loginWindow.setAlignment(Pos.CENTER);
+        loginWindow.setPadding(new Insets(10, 10, 10, 10));
+        loginWindow.setPrefSize(1000, 700);
+        loginWindow.setMinSize(1000, 700);
+        loginWindow.setMaxSize(1000, 700);
+
+        Scene scene = new Scene(createUserWindow);
+        scene.getStylesheets().add("/Styling.css");
+
+        CreateUser.addObserver(this);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 
@@ -340,7 +374,15 @@ public class GUI extends Application implements LoginObserver {
 
     @Override
     public void update() {
-        isLogin.setValue(true);
+        boolean isLoggedIn = Login.isLoggedIn();
+        boolean createdUser = CreateUser.isCreatedUser();
+        if (isLoggedIn) {
+            isLogin.setValue(true);
+        } else if (createdUser) {
+            isLogin.setValue(true);
+        } else {
+            isCreateAccount.setValue(true);
+        }
     }
 }
 

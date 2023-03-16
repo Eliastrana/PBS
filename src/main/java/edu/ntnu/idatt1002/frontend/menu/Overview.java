@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -43,7 +44,7 @@ public class Overview {
 
 
     System.out.println("open overview window");
-    Text text = new Text("Welcome Keira");
+    Text text = new Text("Welcome " + Login.username.getText() + "!");
     text.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 80));
     text.setStyle("-fx-fill: #3F403F; -fx-stroke: #3F403F; -fx-stroke-width: 1px; -fx-padding: 200px;");
 

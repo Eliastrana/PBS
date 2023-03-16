@@ -151,6 +151,19 @@
     -fx-font: 12px "Times New Roman";
 }
 
+#linkSmallText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 12px "Times New Roman";
+    -fx-underline: true;
+}
+
+#linkSmallText:hover {
+    -fx-underline: false;
+    -fx-cursor: hand;
+    -fx-text-fill: #27a5d5;
+}
+
 
 
 .date-picker {
