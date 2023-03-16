@@ -31,6 +31,8 @@ public class CreateUser {
   private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
   private static String SALT;
   public static boolean createdUser = false;
+  public static TextField username = new TextField();
+
   public static VBox createUserView() {
 
     Pane background = new Pane();
@@ -57,7 +59,6 @@ public class CreateUser {
     Text welcomeText2 = new Text("control of your life");
     welcomeText2.setId("underTitleText");
 
-    TextField username = new TextField();
     username.setPromptText("Enter username");
     username.setId("textField");
 
