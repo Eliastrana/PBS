@@ -66,6 +66,9 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
 
+        Image icon = new Image("icon.png");
+        primaryStage.getIcons().add(icon);
+
         Scene scene = new Scene(loginWindow);
         scene.getStylesheets().add("/Styling.css");
 
@@ -169,6 +172,9 @@ public class GUI extends Application implements LoginObserver {
 
         Scene scene = new Scene(createUserWindow);
         scene.getStylesheets().add("/Styling.css");
+
+        Image icon = new Image("icon.png");
+        primaryStage.getIcons().add(icon);
 
         CreateUser.addObserver(this);
 

@@ -80,7 +80,7 @@ public class Transfer {
     transferBewteenAccountsAmount.getChildren().add(priceEntry);
 
     Button confirmTransfer = new Button("Confirm");
-  confirmTransfer.setId("actionButton");
+    confirmTransfer.setId("actionButton");
 
     confirmTransfer.setOnAction(e -> {
       String removeFromAccount = leftTransfer.getValue();
@@ -93,6 +93,8 @@ public class Transfer {
       leftTransfer.setValue(null);
       rightTransfer.setValue(null);
       priceEntry.setText(null);
+      rightTransfer.setDisable(true);
+      rightTransfer.getItems().clear();
     });
 
     transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
