@@ -31,7 +31,6 @@ import static javafx.scene.text.Font.font;
 public class Budget {
   public static VBox budgetView() {
 
-
     VBox budgetLayout = new VBox();
     budgetLayout.setAlignment(Pos.CENTER_LEFT);
     budgetLayout.setSpacing(20);

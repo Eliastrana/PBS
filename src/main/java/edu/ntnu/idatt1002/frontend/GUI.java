@@ -241,6 +241,7 @@ public class GUI extends Application implements LoginObserver {
         transferButton.setId("topMenuButton");
         transferButton.setOnAction(event -> {
             try {
+
                 overviewWindow.setVisible(false);
                 transferWindow.setVisible(true);
                 addExpenseWindow.setVisible(false);
