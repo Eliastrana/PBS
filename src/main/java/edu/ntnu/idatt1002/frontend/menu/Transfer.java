@@ -100,6 +100,8 @@ public class Transfer {
       leftTransfer.setValue(null);
       rightTransfer.setValue(null);
       priceEntry.setText(null);
+      rightTransfer.setDisable(true);
+      rightTransfer.getItems().clear();
     });
 
     transferBewteenAccountsAmount.getChildren().add(confirmTransfer);

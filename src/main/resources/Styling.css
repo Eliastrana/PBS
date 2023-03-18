@@ -86,8 +86,10 @@
     -fx-font-size: 14px;
     -fx-text-fill: #333333;
     -fx-spacing: 10px;
+}
 
-
+#textField:focused {
+    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
 }
 
 

@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.backend;
 
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -31,6 +32,8 @@ public class CreateUser {
   private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
   private static String SALT;
   public static boolean createdUser = false;
+  public static TextField username = new TextField();
+
   public static VBox createUserView() {
 
     Pane background = new Pane();
@@ -57,7 +60,6 @@ public class CreateUser {
     Text welcomeText2 = new Text("control of your life");
     welcomeText2.setId("underTitleText");
 
-    TextField username = new TextField();
     username.setPromptText("Enter username");
     username.setId("textField");
 
