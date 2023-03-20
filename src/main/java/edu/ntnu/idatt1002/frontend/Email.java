@@ -39,7 +39,7 @@ public class Email {
 
     //String emailPhoto = "src/main/resources/icon.PNG";
 
-    message = "It seems you have been a silly goose! "+"\n"+"Your masterpassword is: "+"\n" + sb.toString();
+    message = "It's not always easy to remember everything! "+"\n"+"Your masterpassword is: "+"\n" + sb.toString()+ "\n" + "Have a nice day!" + "\n" + "Best regards," + "\n" + "The PBS team";
 
 
     // Create a JavaMail session with the SMTP server
