@@ -8,3 +8,5 @@ Clothing,gucci sokker,2023-04-06,2000.0,Card
 Food,pizza,2023-03-09,1000.0,Checkings
 Transportation,buss,2023-03-18,2000.0,Savings
 Food,sdaf,2023-03-18,1234.0,Checkings
+Transportation,flybillett,2023-05-23,450.0,Savings
+Transportation,frf,2023-05-23,434.0,Checkings
