@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.beans.property.BooleanProperty;
@@ -51,6 +52,8 @@ public class GUI extends Application implements LoginObserver {
     private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
 
     private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
+
+    public static String currentUser;
 
     public GUI() {
     }
@@ -149,7 +152,7 @@ public class GUI extends Application implements LoginObserver {
 
 
         primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
+        primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add("/LightMode.css");
 
@@ -244,8 +247,12 @@ public class GUI extends Application implements LoginObserver {
         topMenu.setSpacing(20);
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
+        ImageView overviewImage = new ImageView(new Image("overview.png"));
+        overviewImage.setFitHeight(20);
+        overviewImage.setFitWidth(20);
+
         //BUTTON 1
-        Button overviewButton = new Button("Overview");
+        Button overviewButton = new Button("Overview", overviewImage);
         overviewButton.setId("topMenuButton");
         overviewButton.setOnAction(event -> {
             try {
@@ -272,9 +279,12 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(overviewButton);
 
+        ImageView transferImage = new ImageView(new Image("transfer.png"));
+        transferImage.setFitHeight(20);
+        transferImage.setFitWidth(20);
 
         //BUTTON 2
-        Button transferButton = new Button("Transfer");
+        Button transferButton = new Button("Transfer", transferImage);
         transferButton.setId("topMenuButton");
         transferButton.setOnAction(event -> {
             try {
@@ -296,9 +306,12 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(transferButton);
 
+        ImageView addExpenseImage = new ImageView(new Image("addExpense.png"));
+        addExpenseImage.setFitHeight(20);
+        addExpenseImage.setFitWidth(20);
 
         //BUTTON 4
-        Button addExpenseButton = new Button("Add Expense");
+        Button addExpenseButton = new Button("Add Expense", addExpenseImage);
         addExpenseButton.setId("topMenuButton");
         addExpenseButton.setOnAction(event -> {
             try {
@@ -322,8 +335,11 @@ public class GUI extends Application implements LoginObserver {
 
         //BUTTON 3
 
+        ImageView reportImage = new ImageView(new Image("report.png"));
+        reportImage.setFitHeight(20);
+        reportImage.setFitWidth(20);
 
-        Button reportButton = new Button("Report");
+        Button reportButton = new Button("Report", reportImage);
         reportButton.setId("topMenuButton");
         reportButton.setOnAction(event -> {
             try {
@@ -345,8 +361,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(reportButton);
 
+        ImageView settingsImage = new ImageView(new Image("settings.png"));
+        settingsImage.setFitHeight(20);
+        settingsImage.setFitWidth(20);
 
-        Button settingsButton = new Button("Settings");
+        Button settingsButton = new Button("Settings", settingsImage);
         settingsButton.setId("topMenuButton");
         settingsButton.setOnAction(event -> {
             try {
@@ -365,9 +384,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(settingsButton);
 
+        ImageView budgetImage = new ImageView(new Image("budget.png"));
+        budgetImage.setFitHeight(20);
+        budgetImage.setFitWidth(20);
 
-
-        Button budgetButton = new Button("Budget");
+        Button budgetButton = new Button("Budget", budgetImage);
         budgetButton.setId("topMenuButton");
         budgetButton.setOnAction(event -> {
             try {
@@ -386,7 +407,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(budgetButton);
 
-        Button bankStatementButton = new Button("Bank Statement");
+        ImageView bankStatementImage = new ImageView(new Image("bankStatement.png"));
+        bankStatementImage.setFitHeight(20);
+        bankStatementImage.setFitWidth(20);
+
+        Button bankStatementButton = new Button("Bank Statement", bankStatementImage);
         bankStatementButton.setId("topMenuButton");
         bankStatementButton.setOnAction(event -> {
             try {
@@ -410,6 +435,10 @@ public class GUI extends Application implements LoginObserver {
         return topMenu;
     }
 
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+
     @Override
     public void update() {
         boolean isLoggedIn = Login.isLoggedIn();
@@ -417,9 +446,11 @@ public class GUI extends Application implements LoginObserver {
         boolean forgotPassword = Login.isForgotPassword();
         boolean emailGotten = ForgotPassword.getGotEmail();
         if (isLoggedIn) {
+            currentUser = Login.username.getText();
             isLogin.setValue(true);
         } else if (createdUser) {
             Login.username.clear();
+            currentUser = CreateUser.username.getText();
             isLogin.setValue(true);
         } else if (forgotPassword) {
             Login.username.clear();
