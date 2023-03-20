@@ -1,5 +1,6 @@
-package edu.ntnu.idatt1002.backend;
+package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.beans.binding.Bindings;
