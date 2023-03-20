@@ -17,6 +17,7 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.mail.MessagingException;
 import java.io.*;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -133,7 +134,8 @@ public class Login {
       forgotPasswordBoolean = true;
       System.out.println("Opening forgot password page");
       notifyObservers();
-    });
+      });
+
 
 //    createUser.setOnMouseClicked(e -> {
 //      SALT = generateSalt();
