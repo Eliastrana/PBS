@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -116,18 +117,26 @@ public class BankStatement {
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
 
-    TableView<Income> bankStatementTable = new TableView<>();
-    TableColumn<Income, String> budgetTableColumn1 = new TableColumn<>("Name: ");
-    budgetTableColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+    TableView<Expense> bankStatementTable = new TableView<>();
+    TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
+    rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-    TableColumn<Income, Double> budgetTableColumn2 = new TableColumn<>("Price: ");
-    budgetTableColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+    TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
+    rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-    TableColumn<Income, LocalDate> budgetTableColumn3 = new TableColumn<>("Date: ");
-    budgetTableColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
+    TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
+    rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-    bankStatementTable.getColumns().addAll(budgetTableColumn1, budgetTableColumn2, budgetTableColumn3);
-    bankStatementTable.getItems().addAll(getIncomes());
+    TableColumn<Expense, String> rightColumn4 = new TableColumn<>("Category: ");
+    rightColumn4.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+    TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
+    rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
+
+    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+
+    bankStatementTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
+
     bankStatementTable.setMinWidth(600);
 
     tableHbox.getChildren().add(bankStatementTable);

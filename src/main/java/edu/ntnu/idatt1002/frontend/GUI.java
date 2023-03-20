@@ -218,7 +218,8 @@ public class GUI extends Application implements LoginObserver {
         overviewButton.setOnAction(event -> {
             try {
                 overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue) {
+                    System.out.println(newValue);
+                    if (newValue) { //Redundant, but just to be sure
                         updatePane();
                     }});
 
@@ -232,6 +233,7 @@ public class GUI extends Application implements LoginObserver {
 
 
                 System.out.println("overview button pressed");
+                updatePane();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
