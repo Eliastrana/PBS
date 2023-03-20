@@ -142,8 +142,15 @@ public class BankStatement {
     tableHbox.getChildren().add(bankStatementTable);
 
 
+    Button exportButton = new Button("Export to Excel");
+    exportButton.setId("actionButton");
+    exportButton.setOnAction(e -> {
+      //ExcelExporter.exportToExcel();
+    });
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox);
+
+
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, exportButton);
 
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;

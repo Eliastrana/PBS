@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +32,69 @@ public class ForgotPassword {
 
     public static VBox forgottenPasswordView() {
 
+
+
         VBox forgottenPasswordVBox = new VBox();
+
+        forgottenPasswordVBox.getStylesheets().add("/Styling.css");
 
         forgottenPasswordVBox.setPadding(new Insets(10));
 
         TextField emailTextField = new TextField();
+        emailTextField.setPromptText("Enter email");
+        emailTextField.setId("textField");
+        emailTextField.setMaxWidth(250);
 
+
+        PasswordField masterPassword = new PasswordField();
+        masterPassword.setPromptText("Enter master password");
+        masterPassword.setId("textField");
+        masterPassword.setMaxWidth(250);
+
+
+        PasswordField newPassword = new PasswordField();
+        newPassword.setPromptText("Enter new password");
+        newPassword.setId("textField");
+        newPassword.setMaxWidth(250);
+
+
+        PasswordField confirmNewPassword = new PasswordField();
+        confirmNewPassword.setPromptText("Confirm new password");
+        confirmNewPassword.setId("textField");
+        confirmNewPassword.setMaxWidth(250);
+
+        Button changePasswordButton = new Button("Update Password");
+        changePasswordButton.setId("actionButton");
+
+
+        masterPassword.setVisible(false);
+        newPassword.setVisible(false);
+        confirmNewPassword.setVisible(false);
+        changePasswordButton.setVisible(false);
 
         Button submitButton = new Button("Submit");
         GridPane.setConstraints(submitButton, 1, 2);
         submitButton.setOnAction(e -> {
                 gotEmail = true;
 
-                handleSubmit();
-                });
-        forgottenPasswordVBox.getChildren().addAll(emailTextField, submitButton);
+                masterPassword.setVisible(true);
+                newPassword.setVisible(true);
+                confirmNewPassword.setVisible(true);
+                changePasswordButton.setVisible(true);
 
-        // Create a GridPane layout to hold the UI elements
+                handleSubmit();
+
+
+                });
+
+        submitButton.setId("actionButton");
+
+
+
+
+        forgottenPasswordVBox.getChildren().addAll(emailTextField, submitButton, masterPassword, newPassword, confirmNewPassword, changePasswordButton);
+        forgottenPasswordVBox.setSpacing(30);
+        forgottenPasswordVBox.setAlignment(Pos.CENTER);
 
 
         return forgottenPasswordVBox;
