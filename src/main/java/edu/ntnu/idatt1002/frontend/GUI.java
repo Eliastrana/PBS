@@ -1,12 +1,10 @@
 package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.backend.CreateUser;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +19,6 @@ import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 

@@ -1,8 +1,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
-import edu.ntnu.idatt1002.backend.CreateUser;
+import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
@@ -25,15 +24,10 @@ import javafx.scene.text.Font;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
-import java.awt.*;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
-import static edu.ntnu.idatt1002.backend.Expenses.getExpensesOfAllCategories;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
-import static edu.ntnu.idatt1002.backend.Incomes.incomes;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 
 public class Overview {
