@@ -23,6 +23,8 @@ public class Email {
 
   public void sendEmail(String email) throws MessagingException {
 
+    recipientEmail = email;
+
     String message = "Your password is:";
     String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     StringBuilder sb = new StringBuilder();
@@ -34,7 +36,12 @@ public class Email {
       sb.append(randomChar);
     }
     recipientEmail = email;
-    message = sb.toString();
+
+    //String emailPhoto = "src/main/resources/icon.PNG";
+
+    message = "It seems you have been a silly goose! "+"\n"+"Your masterpassword is: "+"\n" + sb.toString();
+
+
     // Create a JavaMail session with the SMTP server
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
