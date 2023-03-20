@@ -39,9 +39,9 @@ public class Overview {
 
     String name;
     if (!Login.username.getText().equals("")) {
-      name = Login.username.getText();
+      name = Login.getCurrentUser();
     } else if (!CreateUser.username.getText().equals("")) {
-      name = CreateUser.username.getText();
+      name = CreateUser.getCurrentUser();
     } else{
       name = "User";
     }

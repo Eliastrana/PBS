@@ -32,6 +32,12 @@ public class Login {
   private static String SALT;
   public static boolean loggedIn = false;
   public static TextField username = new TextField();
+  public static String currentUser;
+
+  public static String getCurrentUser() {
+    return currentUser;
+  }
+
   public static VBox loginView() {
 
     Pane background = new Pane();
@@ -96,6 +102,7 @@ public class Login {
         }
         String[] user = line.split(",");
           if (user[0].equals(username.getText())) {
+            currentUser = username.getText();
             String encryptedPassword = user[1];
             String SALT = user[2];
             String decryptedPassword = decrypt(encryptedPassword, SALT);

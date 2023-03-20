@@ -34,6 +34,11 @@ public class CreateUser {
   private static String SALT;
   public static boolean createdUser = false;
   public static TextField username = new TextField();
+  public static String currentUser;
+
+  public static String getCurrentUser() {
+    return currentUser;
+  }
 
   public static VBox createUserView() {
 
@@ -98,6 +103,7 @@ public class CreateUser {
         }
 
         String encryptedPasswordString = encrypt(passwordString);
+        currentUser = username.getText();
         BufferedWriter writer;
         try {
           writer = new BufferedWriter(new FileWriter("src/main/resources/users.csv", true));
