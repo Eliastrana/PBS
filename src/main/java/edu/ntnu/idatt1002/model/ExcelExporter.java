@@ -108,28 +108,26 @@ public class ExcelExporter {
     public static List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();
         String currentMonth = timeofdaychecker.getCurrentMonth();
-        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(outputFile))) {
-            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-                Sheet sheet = workbook.getSheet(currentMonth);
-                if (sheet == null){
-                    sheet = workbook.createSheet(currentMonth);
-                }
-                for (Row row : sheet) {
-                    if (row.getRowNum() == 0) {
-                        // Skip header row
-                        continue;
-                    }
-                    String name = row.getCell(1).getStringCellValue();
-                    Double price = Double.valueOf(row.getCell(3).getStringCellValue());
-                    LocalDate date = LocalDate.parse(row.getCell(2).getStringCellValue());
-                    String category = row.getCell(0).getStringCellValue();
-                    String account = row.getCell(4).getStringCellValue();
-                    Expense expense = new Expense(name, price, date, category, account, uniqueID);
-                    expenses.add(expense);
-                    expensesToTable = expenses;
-                }
-
+        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(outputFile))) {{
+            Sheet sheet = workbook.getSheet(currentMonth);
+            if (sheet == null){
+                sheet = workbook.createSheet(currentMonth);
             }
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    // Skip header row
+                    continue;
+                }
+                String name = row.getCell(1).getStringCellValue();
+                Double price = Double.valueOf(row.getCell(3).getStringCellValue());
+                LocalDate date = LocalDate.parse(row.getCell(2).getStringCellValue());
+                String category = row.getCell(0).getStringCellValue();
+                String account = row.getCell(4).getStringCellValue();
+                Expense expense = new Expense(name, price, date, category, account, uniqueID);
+                expenses.add(expense);
+                expensesToTable = expenses;
+            }
+        }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
