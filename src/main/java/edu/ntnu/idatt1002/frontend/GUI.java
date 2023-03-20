@@ -34,6 +34,8 @@ public class GUI extends Application implements LoginObserver {
     //This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
     private StackPane loginWindow = new StackPane(new VBox(Login.loginView()));
+
+    private StackPane passwordForgottenWindow = new StackPane();
     private StackPane createUserWindow = new StackPane();
     private StackPane overviewWindow = new StackPane();
     private StackPane transferWindow = new StackPane();
@@ -43,8 +45,12 @@ public class GUI extends Application implements LoginObserver {
     private StackPane budgetWindow = new StackPane();
     private StackPane bankStatementWindow = new StackPane();
 
+
+
     private BooleanProperty isLogin = new SimpleBooleanProperty(false);
     private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
+
+    private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
 
     public GUI() {
     }
@@ -86,10 +92,36 @@ public class GUI extends Application implements LoginObserver {
                 launchApp(primaryStage);
             }
         });
+
+        passwordForgotten.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                launchForgotPassword(primaryStage);
+            }
+        });
     }
 
     public void callStart() {
 
+    }
+
+    public void launchForgotPassword(Stage primaryStage){
+        passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
+        passwordForgottenWindow.getStylesheets().add("/Styling.css");
+        passwordForgottenWindow.setStyle("-fx-background-color: #E6E8E6;");
+        passwordForgottenWindow.setAlignment(Pos.CENTER);
+        passwordForgottenWindow.setPadding(new Insets(10, 10, 10, 10));
+        passwordForgottenWindow.setPrefSize(1000, 700);
+        passwordForgottenWindow.setMinSize(1000, 700);
+        passwordForgottenWindow.setMaxSize(1000, 700);
+
+        Image icon = new Image("icon.png");
+        primaryStage.getIcons().add(icon);
+
+        Scene scene = new Scene(passwordForgottenWindow);
+        scene.getStylesheets().add("/Styling.css");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public void launchApp(Stage primaryStage) {
@@ -382,15 +414,25 @@ public class GUI extends Application implements LoginObserver {
     public void update() {
         boolean isLoggedIn = Login.isLoggedIn();
         boolean createdUser = CreateUser.isCreatedUser();
+        boolean forgotPassword = Login.isForgotPassword();
+        boolean emailGotten = ForgotPassword.getGotEmail();
         if (isLoggedIn) {
             isLogin.setValue(true);
         } else if (createdUser) {
+            Login.username.clear();
+            isLogin.setValue(true);
+        } else if (forgotPassword) {
+            Login.username.clear();
+            passwordForgotten.setValue(true);
+        } else if (emailGotten) {
             Login.username.clear();
             isLogin.setValue(true);
         } else {
             Login.username.clear();
             isCreateAccount.setValue(true);
         }
+
+
     }
 }
 

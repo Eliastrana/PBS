@@ -34,6 +34,9 @@ public class Login {
   public static TextField username = new TextField();
   public static String currentUser;
 
+  public static boolean forgotPasswordBoolean = false;
+
+
   public static String getCurrentUser() {
     return currentUser;
   }
@@ -124,6 +127,14 @@ public class Login {
       notifyObservers();
     });
 
+    Text forgotPassword = new Text("Forgot password");
+    forgotPassword.setId("linkSmallText");
+    forgotPassword.setOnMouseClicked(e -> {
+      forgotPasswordBoolean = true;
+      System.out.println("Opening forgot password page");
+      notifyObservers();
+    });
+
 //    createUser.setOnMouseClicked(e -> {
 //      SALT = generateSalt();
 //      byte[] key = new byte[16];
@@ -153,7 +164,7 @@ public class Login {
 //      notifyObservers();
 //    });
 
-    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser);
+    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser, forgotPassword);
 
     StackPane backgroundAndLogin = new StackPane(background , loginVBox);
 
@@ -210,6 +221,10 @@ public class Login {
 
   public static boolean isLoggedIn() {
     return loggedIn;
+  }
+
+  public static boolean isForgotPassword() {
+    return forgotPasswordBoolean;
   }
   public static void addObserver(LoginObserver observer) {
     observers.add(observer);
