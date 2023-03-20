@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.frontend.Email;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.geometry.Pos;
@@ -14,6 +15,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextField;
+
+import javax.mail.MessagingException;
 
 import static javafx.scene.text.Font.font;
 
@@ -89,7 +92,9 @@ public class Settings {
 
 
     Button confirmPasswordUpdate = new Button("Confirm");
-    confirmPasswordUpdate.setStyle("-fx-background-color: #3F403F");
+
+
+      confirmPasswordUpdate.setStyle("-fx-background-color: #3F403F");
 
 
     updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdate);
