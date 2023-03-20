@@ -44,8 +44,6 @@ public class Main extends Application {
         Expenses.createAllExpenses();
         Incomes.createAllIncomes();
 
-        ExcelExporter.getExpensesForMonth();
-
         String uniqueID = timeofdaychecker.getCurrentMonth() + timeofdaychecker.getYear();
 
         launch(args);

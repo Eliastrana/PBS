@@ -11,6 +11,7 @@ import java.util.List;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.*;
@@ -19,17 +20,22 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 
 public class ExcelExporter {
-    static String inputFile = "src/main/resources/logger.txt";
-    static String outputFile = "src/main/resources/output.xlsx";
-    static String outputFile1 = "src/main/resources/output.pdf";
+    static String outputDirectory = "src/main/resources/userfiles/" + Login.getCurrentUser() + "/";
+    static File outputDirectoryFile = new File(outputDirectory);
+    static String inputFile = outputDirectory + Login.getCurrentUser() + ".csv";
+    static String outputFile = outputDirectory + Login.getCurrentUser() + ".xlsx";
+    static String outputFile1 = outputDirectory + Login.getCurrentUser() + ".pdf";
     public static List<Expense> expensesToTable = new ArrayList<>();
 
     public static void exportToExcel() throws FileNotFoundException {
+        if(!outputDirectoryFile.exists()) {
+            outputDirectoryFile.mkdirs();
+        }
         File inputFileObj = new File(inputFile);
         if (inputFileObj.length() == 0) {
             // Create empty workbook with default sheet
             Workbook workbook = new XSSFWorkbook();
-            workbook.createSheet("Sheet1");
+            workbook.createSheet(timeofdaychecker.getCurrentMonth());
             try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
                 workbook.write(outputStream);
             } catch (IOException e) {
@@ -108,6 +114,11 @@ public class ExcelExporter {
     public static List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();
         String currentMonth = timeofdaychecker.getCurrentMonth();
+        try{
+            exportToExcel();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(outputFile))) {{
             Sheet sheet = workbook.getSheet(currentMonth);
             if (sheet == null){

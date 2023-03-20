@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
@@ -103,54 +104,57 @@ public class AddExpense {
 
     confirmExpense.setOnAction(e -> {
 
-      if (categoryMenu.getValue() == null) {
-        SoundPlayer.play("src/main/resources/error.wav");
-        emptyFieldAlert();
-        System.out.println("No category selected");
-      } else if (accounts.get((String) accountMenu.getValue())-(Double.parseDouble(prices.getText())) < 0){
-        System.out.println("Not enough money in account");
-        emptyFieldAlert();
-        categoryMenu.setValue(null);
-        categoryMenu.setPromptText(originalPromptText);
+              if (categoryMenu.getValue() == null) {
+                SoundPlayer.play("src/main/resources/error.wav");
+                emptyFieldAlert();
+                System.out.println("No category selected");
+              } else if (accounts.get((String) accountMenu.getValue()) - (Double.parseDouble(prices.getText())) < 0) {
+                System.out.println("Not enough money in account");
+                emptyFieldAlert();
+                categoryMenu.setValue(null);
+                categoryMenu.setPromptText(originalPromptText);
 
-        names.setText(null);
-        prices.setText(null);
-      } else {
-        String selectedOption = (String) categoryMenu.getValue();
-        String name = names.getText();
-        String tempText = prices.getText();
-        String accountName = (String) accountMenu.getValue();  //placeholder for knappen som skal velge konto
+                names.setText(null);
+                prices.setText(null);
+              } else {
+                String selectedOption = (String) categoryMenu.getValue();
+                String name = names.getText();
+                String tempText = prices.getText();
+                String accountName = (String) accountMenu.getValue();  //placeholder for knappen som skal velge konto
 
-        LocalDate date = datePicker.getValue();
-        System.out.println("Selected date: " + date);
+                LocalDate date = datePicker.getValue();
+                System.out.println("Selected date: " + date);
 
-        double price = Double.parseDouble(tempText); //det er en error her
+                double price = Double.parseDouble(tempText); //det er en error her
 
-        switch (selectedOption) {
-          case "Entertainment" ->
-                  Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
-          case "Food" -> Expenses.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
-          case "Transportation" ->
-                  Expenses.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
-          case "Clothing" ->
-                  Expenses.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
-          case "Other" -> Expenses.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
-          case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
-          default -> System.out.println("Error");
-        }
+                switch (selectedOption) {
+                  case "Entertainment" -> Expenses.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
+                  case "Food" -> Expenses.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
+                  case "Transportation" -> Expenses.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
+                  case "Clothing" -> Expenses.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
+                  case "Other" -> Expenses.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
+                  case "Rent" -> Expenses.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
+                  default -> System.out.println("Error");
+                }
 
-        Accounts.addExpenseToAccount(new Expense(name, price, 1, datePicker.getValue()),
-            accountName);
+                Accounts.addExpenseToAccount(new Expense(name, price, 1, datePicker.getValue()),
+                        accountName);
 
 
-        System.out.println("Purchase confirmed");
-        System.out.println("Category: " + selectedOption);
+                System.out.println("Purchase confirmed");
+                System.out.println("Category: " + selectedOption);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources", "logger.txt"), true))) {
-          writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
-        } catch (IOException f) {
-          System.err.println("Error writing to file: " + f.getMessage());
-        }
+                try {
+                  ExcelExporter.exportToExcel();
+                } catch (IOException ioException) {
+                  ioException.printStackTrace();
+                }
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/", Login.getCurrentUser() + ".csv"), true))) {
+                  writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
+                } catch (IOException f) {
+                  System.err.println("Error writing to file: " + f.getMessage());
+                }
+
 
         //This clears the textfields and plays the confirmation sound
         //categoryMenu.setValue(null);

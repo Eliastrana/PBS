@@ -383,8 +383,10 @@ public class GUI extends Application implements LoginObserver {
         if (isLoggedIn) {
             isLogin.setValue(true);
         } else if (createdUser) {
+            Login.username.clear();
             isLogin.setValue(true);
         } else {
+            Login.username.clear();
             isCreateAccount.setValue(true);
         }
     }
