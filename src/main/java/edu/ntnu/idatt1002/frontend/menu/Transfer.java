@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -82,6 +83,12 @@ public class Transfer {
     Button confirmTransfer = new Button("Confirm");
     confirmTransfer.setId("actionButton");
 
+    priceEntry.setOnKeyPressed(e -> {
+      if (e.getCode() == KeyCode.ENTER) {
+        confirmTransfer.fire(); // Simulate a click event on the logIn button
+      }
+    });
+
     confirmTransfer.setOnAction(e -> {
       String removeFromAccount = leftTransfer.getValue();
       String addToAccount = rightTransfer.getValue();
@@ -133,8 +140,16 @@ public class Transfer {
     amountIncome.setId("textField");
     registerAmount.getChildren().add(amountIncome);
 
+
+
     Button confirmIncome = new Button("Confirm");
     confirmIncome.setId("actionButton");
+
+    amountIncome.setOnKeyPressed(e -> {
+      if (e.getCode() == KeyCode.ENTER) {
+        confirmIncome.fire(); // Simulate a click event on the logIn button
+      }
+    });
 
     confirmIncome.setOnAction(e -> {
       String inncomeAccountName = incomeAccount.getValue();

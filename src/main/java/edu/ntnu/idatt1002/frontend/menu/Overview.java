@@ -41,8 +41,7 @@ public class Overview {
     ObservableList<PieChart.Data> pieChartData = createData();
     ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.frontend.utility.PieChart.createData2();
 
-    //BarChartSample barChart = new BarChartSample();
-
+    VBox welcomeAndTimeOfDay = new VBox();
 
     String name;
     if (!Login.username.getText().equals("")) {
@@ -66,6 +65,9 @@ public class Overview {
     text2.setFill(Color.LIGHTGREEN);
     text2.setStyle("-fx-fill: #9FB8AD");
 
+    welcomeAndTimeOfDay.getChildren().addAll(text, text2);
+    welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
+
 
     HBox hbox2 = new HBox(2);
     Text textSavings = new Text("Total savings: " + "\n" + getTotalOfAllAccounts());
@@ -84,11 +86,17 @@ public class Overview {
     Text emptySpace = new Text("\n");
     emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
-    VBox vboxSavings = new VBox(textSavings, new DoughnutChart(pieChartData));
+    VBox vboxSavings = new VBox();
+    DoughnutChart pieChart1 = new DoughnutChart(pieChartData);
     vboxSavings.setAlignment(Pos.CENTER);
+    pieChart1.getStyleClass().add("default-color0.chart-pie"); //DELETE THIS TO GO BACK TO NORMAL COLORS
+    vboxSavings.getChildren().addAll(textSavings, pieChart1);
 
-    VBox vboxSpending = new VBox(textSpending, new DoughnutChart(pieChartData2));
+    VBox vboxSpending = new VBox();
+    DoughnutChart pieChart2 = new DoughnutChart(pieChartData2);
     vboxSpending.setAlignment(Pos.CENTER);
+    pieChart2.getStyleClass().add("my-pie-chart"); //DELETE THIS TO GO BACK TO NORMAL COLORS
+    vboxSpending.getChildren().addAll(textSpending, pieChart2);
 
     HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
     hboxPieLayout.setAlignment(Pos.CENTER);
@@ -236,7 +244,7 @@ public class Overview {
 
 
 
-    VBox vbox = new VBox(text, text2, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
+    VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
 
       return vbox;
     }

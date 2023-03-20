@@ -40,6 +40,7 @@ public class PieChart {
     }
 
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
+
         return FXCollections.observableArrayList(
                 new javafx.scene.chart.PieChart.Data("Rent: " +"\n"+ getTotalOfRent(expensesToTable) , ExcelExporter.getTotalOfRent(expensesToTable)),
                 new javafx.scene.chart.PieChart.Data("Transportation: " +"\n"+ getTotalOfTransportation(expensesToTable), ExcelExporter.getTotalOfTransportation(expensesToTable)),
@@ -47,6 +48,7 @@ public class PieChart {
                 new javafx.scene.chart.PieChart.Data("Entertainment: " +"\n"+ getTotalOfEntertainment(expensesToTable), ExcelExporter.getTotalOfEntertainment(expensesToTable)),
                 new javafx.scene.chart.PieChart.Data("Food: " +"\n"+ getTotalOfFood(expensesToTable), ExcelExporter.getTotalOfFood(expensesToTable)),
                 new javafx.scene.chart.PieChart.Data("Other: " +"\n"+ getTotalOfOther(expensesToTable), ExcelExporter.getTotalOfOther(expensesToTable)));
+
 
     }
 
