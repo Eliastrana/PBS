@@ -13,8 +13,10 @@ import com.itextpdf.text.pdf.PdfPCell;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import javafx.scene.control.DatePicker;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -25,6 +27,7 @@ public class ExcelExporter {
     static String inputFile = outputDirectory + Login.getCurrentUser() + ".csv";
     static String outputFile = outputDirectory + Login.getCurrentUser() + ".xlsx";
     static String outputFile1 = outputDirectory + Login.getCurrentUser() + ".pdf";
+    static String outputFile2 = outputDirectory + Login.getCurrentUser() + "_" + "bankstatement.xlsx";
     public static List<Expense> expensesToTable = new ArrayList<>();
 
     public static void exportToExcel() throws FileNotFoundException {
@@ -110,6 +113,45 @@ public class ExcelExporter {
             }
             document.close();
         }
+    }
+    public static void createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException {
+        // Read CSV file
+        BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));
+        String row;
+        List<String[]> rows = new ArrayList<>();
+        while ((row = csvReader.readLine()) != null) {
+            String[] data = row.split(",");
+            rows.add(data);
+        }
+        csvReader.close();
+
+        // Filter rows based on category and date range
+        List<String[]> filteredRows = new ArrayList<>();
+        for (String[] data : rows) {
+            String date = data[2];
+            if (data[0].equals(category) && data[4].equals(account) && date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0) {
+                filteredRows.add(new String[]{data[1], data[3]});
+            }
+        }
+
+        // Write to Excel file
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Sheet1");
+        int rowNum = 0;
+        for (String[] data : filteredRows) {
+            Row row1 = sheet.createRow(rowNum++);
+            int colNum = 0;
+            for (String cellData : data) {
+                Cell cell = row1.createCell(colNum++);
+                if (cellData instanceof String) {
+                    cell.setCellValue((String) cellData);
+                }
+            }
+        }
+        FileOutputStream outputStream = new FileOutputStream(outputFile2);
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
     }
     public static List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();

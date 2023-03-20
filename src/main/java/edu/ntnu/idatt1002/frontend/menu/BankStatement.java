@@ -113,6 +113,17 @@ public class BankStatement {
 
     calenderIntervalHbox.getChildren().addAll(fromText, datePickerFrom, toText, datePickerTo);
 
+    String account = (String) accountMenu.getValue();
+    String category = (String) categoryMenu.getValue();
+    String from = String.valueOf(datePickerFrom.getValue());
+    String to = String.valueOf(datePickerTo.getValue());
+
+    try {
+      ExcelExporter.createBankStatement(account, category, from, to);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
 
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
