@@ -110,7 +110,7 @@ public class Login {
             String encryptedPassword = user[1];
             String SALT = user[2];
             String decryptedPassword = decrypt(encryptedPassword, SALT);
-            if (password.getText().equals(new String(decryptedPassword))) {
+            if (password.getText().equals(decryptedPassword)) {
               System.out.println("Logged in");
               SoundPlayer.play("src/main/resources/16bitconfirm.wav");
               loggedIn = true;
