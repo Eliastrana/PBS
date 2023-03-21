@@ -68,13 +68,14 @@ public class Email {
 
 // Create a MimeBodyPart for the HTML content
     MimeBodyPart htmlPart = new MimeBodyPart();
-    htmlPart.setContent("<html> <body> " +
+    htmlPart.setContent("<html> <body style='background-color: #f2f2f2;'> " +
             "<div style='text-align: center;'>" +
             "<h1>You silly goose!</h1> " +
-            "<p> Your master-password is: " + sb.toString() + "</p>" +
             "<img src=\"cid:image1\">" +
+            "<p> Your master-password is: " + sb.toString() + "</p>" +
             "</div>" +
             "</body> </html>", "text/html");
+
 
 
 // Create a MimeBodyPart for the image
