@@ -39,35 +39,26 @@ public class BankStatement {
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
 
-
     Text viewBankStatement = new Text("View bank statement");
-    viewBankStatement.setStyle("-fx-fill: #3F403F");
-    viewBankStatement.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
-    viewBankStatement.setTextAlignment(TextAlignment.LEFT);
-
+    viewBankStatement.setId("titleText");
 
 
     HBox selectAccountHbox = new HBox();
-    selectAccountHbox.setAlignment(Pos.CENTER_LEFT);
+    selectAccountHbox.setAlignment(Pos.CENTER);
 
-    Text selectAccountText = new Text("Select account: ");
-    selectAccountText.setStyle("-fx-fill: #3F403F");
-    selectAccountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
     Set<String> keySet = accounts.keySet();
     ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
     final ComboBox accountMenu = new ComboBox(options2);
-    accountMenu.setPromptText("Pick an account");
-    accountMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
-    selectAccountHbox.getChildren().addAll(selectAccountText, accountMenu);
+    accountMenu.setId("categoryMenuButton");
+    accountMenu.setPromptText("Select account");
+    selectAccountHbox.getChildren().addAll(accountMenu);
+
 
 
     HBox selectCategoryHbox = new HBox();
-    selectCategoryHbox.setAlignment(Pos.CENTER_LEFT);
+    selectCategoryHbox.setAlignment(Pos.CENTER);
 
-    Text selectCategoryText = new Text("Select category: ");
-    selectCategoryText.setStyle("-fx-fill: #3F403F");
-    selectCategoryText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -80,39 +71,36 @@ public class BankStatement {
             );
     final ComboBox categoryMenu = new ComboBox(options);
     categoryMenu.setPromptText("Pick a category");
-    categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
-    selectCategoryHbox.getChildren().addAll(selectCategoryText, categoryMenu);
+    categoryMenu.setId("categoryMenuButton");
+    selectCategoryHbox.getChildren().addAll(categoryMenu);
+
+
 
 
     HBox calenderIntervalHbox = new HBox();
-    calenderIntervalHbox.setAlignment(Pos.CENTER_LEFT);
+    calenderIntervalHbox.setAlignment(Pos.CENTER);
 
     //this should probably have its own hbox
     Text calenderIntervalText = new Text("Select timeframe: ");
-    calenderIntervalText.setStyle("-fx-fill: #3F403F");
-    calenderIntervalText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    calenderIntervalText.setId("bodyText");
 
 
     Text fromText = new Text("From: ");
-    fromText.setStyle("-fx-fill: #3F403F");
-    fromText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    fromText.setId("bodyText");
 
     DatePicker datePickerFrom = new DatePicker();
     datePickerFrom.setValue(LocalDate.now());
     datePickerFrom.setShowWeekNumbers(true);
-    datePickerFrom.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     Text toText = new Text("To: ");
-    toText.setStyle("-fx-fill: #3F403F");
-    toText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    toText.setId("bodyText");
 
     DatePicker datePickerTo = new DatePicker();
     datePickerTo.setValue(LocalDate.now());
     datePickerTo.setShowWeekNumbers(true);
-    datePickerTo.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     calenderIntervalHbox.getChildren().addAll(fromText, datePickerFrom, toText, datePickerTo);
-
+    calenderIntervalHbox.setSpacing(20);
 
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
@@ -141,12 +129,10 @@ public class BankStatement {
 
     tableHbox.getChildren().add(bankStatementTable);
 
+    Button exportToExcel = new Button("Export to Excel");
+    exportToExcel.setId("actionButton");
 
-
-
-
-
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox);
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, exportToExcel);
 
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;

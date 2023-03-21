@@ -32,6 +32,12 @@
 
 
 
+#bodyText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 20px "Helvetica Neue";
+}
+
 #topMenuButton {
     -fx-font-size: 13px;
     -fx-min-width: 115px;
@@ -147,6 +153,17 @@
     -fx-font: 60px "Times New Roman";
 }
 
+#squareButton {
+    -fx-background-color: #9FB8AD;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #9FB8AD;
+    -fx-border-width: 2px;
+    -fx-max-height: 20px;
+    -fx-max-width: 20px;
+}
+
 #underTitleText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
@@ -258,11 +275,11 @@ default-color2.chart-pie {
 
 
 /* Style for the table container */
-.table-view {
-    -fx-background-color: transparent;
-    -fx-background-radius: 20px;
-    -fx-effect: gaussianBlur(5);
-}
+/*.table-view {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-background-radius: 20px;*/
+/*    -fx-effect: gaussianBlur(5);*/
+/*}*/
 
 /* Style for the table header */
 .table-header-background {
