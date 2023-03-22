@@ -3,9 +3,16 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,7 +20,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
 
@@ -28,9 +47,7 @@ public class Budget {
     editMonthBudget.setId("titleText");
 
 
-
     HBox categorySelectorHbox = new HBox();
-
 
 
     ObservableList<String> options =
@@ -44,34 +61,13 @@ public class Budget {
             );
 
 
-
     final ComboBox categoryMenu = new ComboBox(options);
     categoryMenu.setPromptText("Select category");
     categoryMenu.setId("categoryMenuButton");
 
-
-    Button confirmCategory = new Button("Confirm");
-    confirmCategory.setId("actionButton");
-
-    categorySelectorHbox.getChildren().addAll(categoryMenu, confirmCategory);
+    categorySelectorHbox.getChildren().addAll(categoryMenu);
     categorySelectorHbox.setAlignment(Pos.CENTER);
     categorySelectorHbox.setSpacing(20);
-
-
-    TableView<Income> budgetTable = new TableView<>();
-    TableColumn<Income, String> budgetTableColumn1 = new TableColumn<>("Name: ");
-    budgetTableColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-    TableColumn<Income, Double> budgetTableColumn2 = new TableColumn<>("Price: ");
-    budgetTableColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-    TableColumn<Income, LocalDate> budgetTableColumn3 = new TableColumn<>("Date: ");
-    budgetTableColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-    budgetTable.getColumns().addAll(budgetTableColumn1, budgetTableColumn2, budgetTableColumn3);
-    budgetTable.getItems().addAll(getIncomes());
-    budgetTable.setMaxWidth(500);
-
 
 
     HBox budgetAmountHbox = new HBox();
@@ -83,27 +79,77 @@ public class Budget {
     Button confirmAmount = new Button("Confirm");
     confirmAmount.setId("actionButton");
 
-    budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount);
+    confirmAmount.setOnAction(e -> {
+      System.out.println("confirm amount");
+
+      String category = categoryMenu.getValue().toString();
+      String amount = budgetAmountField.getText();
+      String month = timeofdaychecker.getCurrentMonth();
+
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv"), true))) {
+        writer.write(category + "," + amount + "," + month + "\n");
+      } catch (IOException f) {
+        System.err.println("Error writing to file: " + f.getMessage());
+      }
+    });
+
+
+    Button createBarChart = new Button("Create bar chart");
+    createBarChart.setId("actionButton");
+
+    String currentMonth = timeofdaychecker.getCurrentMonth();
+
+    // Read the CSV file
+    String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+    BufferedReader br = null;
+    String line = "";
+    String csvSplitBy = ",";
+    List<String[]> lines = new ArrayList<String[]>();
+    BarChart<String, Number> barChart = null;
+    try {
+      br = new BufferedReader(new FileReader(csvFile));
+      while ((line = br.readLine()) != null) {
+        String[] data = line.split(csvSplitBy);
+        // Filter the data by the current month
+        if (data[2].equalsIgnoreCase(currentMonth)) {
+          lines.add(data);
+        }
+      }
+
+      // Create the bar chart dataset
+      ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList();
+      for (String[] lineData : lines) {
+        data.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> series = new XYChart.Series<String, Number>(data);
+
+      // Create the bar chart
+      CategoryAxis xAxis = new CategoryAxis();
+      xAxis.setLabel("Category");
+      NumberAxis yAxis = new NumberAxis();
+      yAxis.setLabel("Value");
+      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart.setTitle("Bar Chart");
+      barChart.getData().add(series);
+
+      // Show the bar chart
+    } catch (IOException f) {
+      f.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
+        } catch (IOException f) {
+          f.printStackTrace();
+        }
+      }
+    }
+
+    budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount, createBarChart);
     budgetAmountHbox.setAlignment(Pos.CENTER);
     budgetAmountHbox.setSpacing(20);
 
-
-
-    TableView<Income> totalBudgetTable = new TableView<>();
-    TableColumn<Income, String> totalBudgetTableColumn1 = new TableColumn<>("Name: ");
-    totalBudgetTableColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-    TableColumn<Income, Double> totalBudgetTableColumn2 = new TableColumn<>("Price: ");
-    totalBudgetTableColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-    TableColumn<Income, LocalDate> totalBudgetTableColumn3 = new TableColumn<>("Date: ");
-    totalBudgetTableColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-    totalBudgetTable.getColumns().addAll(totalBudgetTableColumn1, totalBudgetTableColumn2, totalBudgetTableColumn3);
-    totalBudgetTable.getItems().addAll(getIncomes());
-    totalBudgetTable.setMaxWidth(500);
-
-    budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetTable, budgetAmountHbox, totalBudgetTable);
+    budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
     budgetLayout.setAlignment(Pos.TOP_CENTER);
 
     return budgetLayout;
