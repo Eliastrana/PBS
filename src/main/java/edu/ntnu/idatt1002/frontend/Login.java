@@ -35,6 +35,7 @@ public class Login {
   public static String currentUser;
 
   public static boolean forgotPasswordBoolean = false;
+  public static boolean createUser = false;
 
 
   public static String getCurrentUser() {
@@ -49,6 +50,8 @@ public class Login {
     Random random = new Random();
     int randomInt = random.nextInt(2)+1;
     background.getStylesheets().add("/LightMode.css");
+
+
     background.getStyleClass().add("loginScreen"+randomInt);
 
 
@@ -65,6 +68,8 @@ public class Login {
 
 
     loginVBox.getStylesheets().add("/LightMode.css");
+
+
     loginVBox.setId("overlayLogin");
 
     Text welcomeText = new Text("Take back ");
@@ -130,6 +135,7 @@ public class Login {
 
     createUser.setOnMouseClicked(e -> {
       System.out.println("Opening create user page");
+        Login.createUser = true;
       try {
         notifyObservers();
       } catch (Exception ex) {
@@ -150,34 +156,7 @@ public class Login {
     });
 
 
-//    createUser.setOnMouseClicked(e -> {
-//      SALT = generateSalt();
-//      byte[] key = new byte[16];
-//      SecureRandom random = new SecureRandom();
-//      random.nextBytes(key);
-//
-//      String passwordString = password.getText();
-//
-//      String encryptedPasswordString = encrypt(passwordString);
-//      BufferedWriter writer;
-//      try {
-//        writer = new BufferedWriter(new FileWriter("src/main/resources/users.csv", true));
-//      } catch (IOException ex) {
-//        throw new RuntimeException(ex);
-//      }
-//      try {
-//        writer.write(username.getText() + "," + encryptedPasswordString + "," + SALT);
-//      } catch (IOException ex) {
-//        throw new RuntimeException(ex);
-//      }
-//      try {
-//        writer.newLine();
-//        writer.close();
-//      } catch (IOException ex) {
-//        throw new RuntimeException(ex);
-//      }
-//      notifyObservers();
-//    });
+
 
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser, forgotPassword);
 
@@ -189,31 +168,6 @@ public class Login {
     return vbox;
   }
 
-//  public static String generateSalt() {
-//    byte[] salt = new byte[16];
-//    SecureRandom random = new SecureRandom();
-//    random.nextBytes(salt);
-//    return Base64.getEncoder().encodeToString(salt);
-//  }
-//
-//  public static String encrypt (String password) {
-//    try {
-//      byte[] iv = new byte[16];
-//      IvParameterSpec ivSpec = new IvParameterSpec(iv);
-//
-//      SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-//      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
-//      SecretKey tmp = factory.generateSecret(spec);
-//      SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
-//
-//      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-//      cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-//      return Base64.getEncoder().encodeToString(cipher.doFinal(password.getBytes("UTF-8")));
-//    } catch (Exception e) {
-//      System.out.println("Error while encrypting: " + e.toString());
-//    }
-//    return null;
-//  }
 
   public static String decrypt (String password, String SALT) {
     try {
@@ -237,9 +191,18 @@ public class Login {
   public static boolean isLoggedIn() {
     return loggedIn;
   }
+  public static void setLoggedIn(boolean loggedIn) {
+    Login.loggedIn = loggedIn;
+  }
+  public static void setForgotPasswordBoolean(boolean forgotPasswordBoolean) {
+    Login.forgotPasswordBoolean = forgotPasswordBoolean;
+  }
 
   public static boolean isForgotPassword() {
     return forgotPasswordBoolean;
+  }
+  public static boolean isCreateUser() {
+    return createUser;
   }
   public static void addObserver(LoginObserver observer) {
     observers.add(observer);

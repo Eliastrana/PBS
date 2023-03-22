@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +24,7 @@ import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +42,8 @@ public class CreateUser {
           Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
   private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
+  public static boolean backToLogin = false;
+
 
   public static String getCurrentUser() {
     return currentUser;
@@ -49,8 +54,12 @@ public class CreateUser {
     Pane background = new Pane();
     background.setPrefSize(1000,700);
 
+
     background.getStylesheets().add("/LightMode.css");
-    background.getStyleClass().add("loginScreen");
+
+      Random randomBackground = new Random();
+      int randomInt = randomBackground.nextInt(1)+1;
+      background.getStyleClass().add("loginScreen"+randomInt);
 
     System.out.println("Opening createUser page");
 
@@ -64,10 +73,10 @@ public class CreateUser {
     loginVBox.getStylesheets().add("/LightMode.css");
     loginVBox.setId("overlayLogin");
 
-    Text welcomeText = new Text("Take back ");
+    Text welcomeText = new Text("Create user ");
     welcomeText.setId("titleText");
 
-    Text welcomeText2 = new Text("control of your life");
+    Text welcomeText2 = new Text("Please enter your information");
     welcomeText2.setId("underTitleText");
 
     VBox usernameBox = new VBox();
@@ -212,9 +221,33 @@ public class CreateUser {
       }
     });
 
+    VBox backButtonBox = new VBox();
+    Button backButton = new Button();
+    backButton.setId("backButton");
+
+    ImageView backImage = new ImageView(new Image("back.png"));
+    backImage.setFitHeight(50);
+    backImage.setFitWidth(50);
+    backButton.setGraphic(backImage);
+    backButtonBox.getChildren().add(backButton);
+    backButtonBox.setAlignment(Pos.TOP_LEFT);
+    backButtonBox.setPadding(new Insets(20, 0, 0, 20));
+
+    backButton.setOnAction(e -> {
+
+
+        try {
+            backToLogin = true;
+            notifyObservers();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    });
+
+
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, createUserBox, createUser);
 
-    StackPane backgroundAndLogin = new StackPane(background , loginVBox);
+    StackPane backgroundAndLogin = new StackPane(background, backButtonBox, loginVBox);
 
 
     VBox vbox = new VBox(backgroundAndLogin);
@@ -263,4 +296,16 @@ public class CreateUser {
   public static boolean isCreatedUser() {
     return createdUser;
   }
+
+    public static void setCreatedUser(boolean createdUser) {
+        CreateUser.createdUser = createdUser;
+    }
+
+    public static boolean isBackToLogin() {
+        return backToLogin;
+    }
+
+    public static void setBackToLogin(boolean backToLogin) {
+        CreateUser.backToLogin = backToLogin;
+    }
 }

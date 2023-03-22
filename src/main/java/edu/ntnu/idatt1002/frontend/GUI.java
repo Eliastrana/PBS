@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend;
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -55,9 +56,13 @@ public class GUI extends Application implements LoginObserver {
     private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
     private BooleanProperty newPassword = new SimpleBooleanProperty(false);
 
+    private BooleanProperty backToLoginForgot = new SimpleBooleanProperty(false);
+    private BooleanProperty backToLoginCreate = new SimpleBooleanProperty(false);
+
     public static String currentUser;
 
     Scene scene = new Scene(loginWindow);
+
 
     public GUI() {
     }
@@ -73,9 +78,7 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.setVisible(true);
         loginWindow.getChildren().add(Login.loginView());
         loginWindow.getStylesheets().add("/LightMode.css");
-        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
         loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPadding(new Insets(10, 10, 10, 10));
         loginWindow.setPrefSize(1000, 700);
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
@@ -96,13 +99,13 @@ public class GUI extends Application implements LoginObserver {
         });
 
         isLogin.addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+            if (isLogin.get()) {
                 launchApp(primaryStage);
             }
         });
 
         passwordForgotten.addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+            if (passwordForgotten.get()) {
                 launchForgotPassword(primaryStage);
             }
         });
@@ -134,8 +137,20 @@ public class GUI extends Application implements LoginObserver {
         ForgotPassword.addObserver(this);
 
         newPassword.addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+            if (newPassword.get()) {
                 try {
+                    externalStartMenu(primaryStage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        backToLoginForgot.addListener((observable, oldValue, newValue) -> {
+            if (backToLoginForgot.get()) {
+                try {
+                    backToLoginForgot.set(false);
+                    ForgotPassword.setBackToLogin(false);
                     externalStartMenu(primaryStage);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -229,6 +244,18 @@ public class GUI extends Application implements LoginObserver {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        backToLoginCreate.addListener((observable, oldValue, newValue) -> {
+            if (backToLoginCreate.get()) {
+                try {
+                    backToLoginCreate.set(false);
+                    CreateUser.setBackToLogin(false);
+                    externalStartMenu(primaryStage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
 
@@ -459,11 +486,22 @@ public class GUI extends Application implements LoginObserver {
 
         topMenu.getChildren().add(logOutButton);
         logOutButton.setOnAction(event -> {
+            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
             try {
                 externalStartMenu(primaryStage);  //This does NOT WORK
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
+            isLogin.setValue(false);
+            isCreateAccount.setValue(false);
+            passwordForgotten.setValue(false);
+            newPassword.setValue(false);
+            Login.setLoggedIn(false);
+            CreateUser.setCreatedUser(false);
+            Login.setForgotPasswordBoolean(false);
+            ForgotPassword.setChangedPassword(false);
         });
 
         topMenu.getStylesheets().add("/Styling.css");
@@ -481,6 +519,7 @@ public class GUI extends Application implements LoginObserver {
         boolean createdUser = CreateUser.isCreatedUser();
         boolean forgotPassword = Login.isForgotPassword();
         boolean changedPassword = ForgotPassword.isChangedPassword();
+        boolean isCreateUser = Login.isCreateUser();
         if (isLoggedIn) {
             currentUser = Login.username.getText();
             isLogin.setValue(true);
@@ -497,9 +536,17 @@ public class GUI extends Application implements LoginObserver {
         if (forgotPassword) {
             Login.username.clear();
             passwordForgotten.setValue(true);
-        } else {
+        }
+        if (isCreateUser){
             Login.username.clear();
             isCreateAccount.setValue(true);
+        }
+       if (ForgotPassword.isBackToLogin()) {
+            backToLoginForgot.setValue(true);
+        }
+
+        if (CreateUser.isBackToLogin()) {
+            backToLoginCreate.setValue(true);
         }
 
 
