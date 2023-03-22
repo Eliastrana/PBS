@@ -39,6 +39,12 @@ public class timeofdaychecker {
         return currentDate.format(monthFormatter); // Return the month as a string
     }
 
+    public static String getPreviousMonth() {
+        LocalDate currentDate = LocalDate.now().minusMonths(1);
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
+        return currentDate.format(monthFormatter); // Return the month as a string
+    }
+
     public static int getYear(){
         LocalDate currentDate = LocalDate.now();
         int year = currentDate.getYear();
