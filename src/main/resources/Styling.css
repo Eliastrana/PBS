@@ -119,10 +119,13 @@
 
 
 .loginScreen1 {
-    -fx-background-image: url("/background1.jpg");
+    -fx-background-image: url("/Backgrounds/background1.jpg");
 }
 .loginScreen2 {
-    -fx-background-image: url("/background2.jpg");
+    -fx-background-image: url("/Backgrounds/background2.jpg");
+}
+.loginScreen3 {
+    -fx-background-image: url("/Backgrounds/background3.jpg");
 }
 
 
