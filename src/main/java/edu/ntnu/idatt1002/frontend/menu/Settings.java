@@ -2,100 +2,151 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
-import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.control.TextField;
-
-import static javafx.scene.text.Font.font;
-
+import javafx.scene.text.TextAlignment;
 
 public class Settings {
   public static VBox settingsView() {
+
     VBox vbox = new VBox();
 
-    Text settingsText = new Text("Settings");
+    HBox currentEmailHbox = new HBox();
 
     VBox currentStatus = new VBox();
 
-    HBox currentEmailHbox = new HBox();
+    Text title = new Text("Settings");
+    title.setId("titleText");
     Text currentEmailText = new Text("Current email: ");
-    currentEmailText.setStyle("-fx-fill: #3F403F");
-    currentEmailText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-
-    Label currentEmailLabel = new Label("eliastrana@gmail.com"); //eksempel email, legg inn variabel
-    currentEmailLabel.setStyle("-fx-fill: #3F403F");
-    currentEmailLabel.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-
-    currentEmailHbox.getChildren().addAll(currentEmailText, currentEmailLabel);
-
-    HBox currentPassword = new HBox();
+    currentEmailText.setId("bodyText");
+    currentEmailText.setTextAlignment(TextAlignment.RIGHT);
     Text currentPasswordText = new Text("Current password: ");
-    currentPasswordText.setStyle("-fx-fill: #3F403F");
-    currentPasswordText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    currentPasswordText.setId("bodyText");
+    currentPasswordText.setTextAlignment(TextAlignment.RIGHT);
 
-    Label currentPasswordLabel = new Label("12345"); //Eksempel passord, legg inn variabel
-    currentPassword.getChildren().addAll(currentPasswordText, currentPasswordLabel);
+    currentStatus.getChildren().addAll(currentEmailText, currentPasswordText);
+    currentStatus.setAlignment(Pos.TOP_RIGHT);
 
-    currentStatus.getChildren().addAll(currentEmailHbox, currentPassword);
+    VBox currentPassword = new VBox();
+
+    Text currentEmailLabel = new Text("eliastrana@gmail.com"); //eksempel email, legg inn variabel
+    currentEmailLabel.setId("bodyText");
+    currentEmailLabel.setVisible(false);
+    currentEmailLabel.setTextAlignment(TextAlignment.LEFT);
+    Text currentPasswordLabel = new Text("12345"); //Eksempel passord, legg inn variabel
+    currentPasswordLabel.setVisible(false);
+    currentPasswordLabel.setId("bodyText");
+
+    ImageView visibilityImage = new ImageView(new Image("visibility.png"));
+    visibilityImage.setFitHeight(20);
+    visibilityImage.setFitWidth(20);
+
+    Button showPrivateInformation = new Button();
+    showPrivateInformation.setGraphic(visibilityImage);
+    showPrivateInformation.setId("squareButton");
+
+    showPrivateInformation.setOnAction(e -> {
+      if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
+        currentEmailLabel.setVisible(false);
+        currentPasswordLabel.setVisible(false);
+        visibilityImage.setImage(new Image("visibility.png"));
+      } else {
+        currentEmailLabel.setVisible(true);
+        currentPasswordLabel.setVisible(true);
+        visibilityImage.setImage(new Image("notvisibility.png"));
+      }
+    });
+
+    currentPassword.getChildren().addAll(currentEmailLabel, currentPasswordLabel);
+
+    currentEmailHbox.getChildren().addAll(currentStatus, currentPassword, showPrivateInformation);
+
+    currentEmailHbox.setSpacing(20);
+    currentEmailHbox.setAlignment(Pos.CENTER);
+
 
     HBox emailUpdateHbox = new HBox();
 
     VBox updateEmail = new VBox();
     Text updateEmailText = new Text("Update email: ");
-    updateEmailText.setStyle("-fx-fill: #3F403F");
-    updateEmailText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    updateEmailText.setId("bodyText");
 
-    Text updatePasswordText = new Text("Update password: ");
-    updatePasswordText.setStyle("-fx-fill: #3F403F");
-    updatePasswordText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-
-    updateEmail.getChildren().addAll(updateEmailText, updatePasswordText);
+    updateEmail.getChildren().addAll(updateEmailText);
+    updateEmail.setAlignment(Pos.CENTER);
 
     VBox updatePassword = new VBox();
     TextField updateEmailTextField = new TextField();
-    TextField updatePasswordTextField = new TextField();
-    updatePassword.getChildren().addAll(updateEmailTextField, updatePasswordTextField);
+    updatePassword.getChildren().addAll(updateEmailTextField);
+    updatePassword.setAlignment(Pos.CENTER);
 
-    Button updateButton = new Button("Confirm");
-    emailUpdateHbox.getChildren().addAll(updateEmail, updatePassword, updateButton);
+    VBox confirmEmailUpdateVbox = new VBox();
+    Button confirmEmailUpdate = new Button("Confirm");
+    confirmEmailUpdate.setId("actionButton");
+    confirmEmailUpdateVbox.getChildren().addAll(confirmEmailUpdate);
+    confirmEmailUpdateVbox.setAlignment(Pos.TOP_CENTER);
+
+    emailUpdateHbox.getChildren().addAll(updateEmail, updatePassword, confirmEmailUpdateVbox);
+    emailUpdateHbox.setSpacing(20);
+    emailUpdateHbox.setAlignment(Pos.CENTER);
+
 
 
     HBox updatePasswordHbox = new HBox();
 
     VBox currentAndNewPasswordHbox = new VBox();
-    Text currentPasswordText2 = new Text("Enter current password: ");
-    currentPasswordText2.setStyle("-fx-fill: #3F403F");
-    currentPasswordText2.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-
-    Text enterNewPasswordText = new Text("Enter new password: ");
-    enterNewPasswordText.setStyle("-fx-fill: #3F403F");
-    enterNewPasswordText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-    currentAndNewPasswordHbox.getChildren().addAll(currentPasswordText2, enterNewPasswordText);
-
+    Text currentPasswordText2 = new Text("Update password: ");
+    currentPasswordText2.setId("bodyText");
+    currentAndNewPasswordHbox.getChildren().addAll(currentPasswordText2);
+    currentAndNewPasswordHbox.setAlignment(Pos.CENTER);
 
     VBox currentAndNewPasswordInputFields = new VBox();
-    TextField currentPasswordTextField = new TextField();
     TextField newPasswordTextField = new TextField();
-    currentAndNewPasswordInputFields.getChildren().addAll(currentPasswordTextField, newPasswordTextField);
+    currentAndNewPasswordInputFields.getChildren().addAll(newPasswordTextField);
+    currentAndNewPasswordInputFields.setAlignment(Pos.CENTER);
 
-
+    VBox confirmPasswordUpdateVBox = new VBox();
     Button confirmPasswordUpdate = new Button("Confirm");
-    confirmPasswordUpdate.setStyle("-fx-background-color: #3F403F");
+    confirmPasswordUpdate.setId("actionButton");
+    confirmPasswordUpdateVBox.getChildren().addAll(confirmPasswordUpdate);
+    confirmPasswordUpdateVBox.setAlignment(Pos.CENTER);
 
 
-    updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdate);
 
 
-    vbox.getChildren().addAll(settingsText,currentStatus, emailUpdateHbox, updatePasswordHbox);
+
+    updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
+    updatePasswordHbox.setAlignment(Pos.CENTER);
+    updatePasswordHbox.setSpacing(20);
+
+    Text prefrences = new Text("Preferences");
+    prefrences.setId("titleText");
+    prefrences.setTextAlignment(TextAlignment.CENTER);
+
+    HBox viewmodeHbox = new HBox();
+    Text viewmodeText = new Text("Viewmode: ");
+    viewmodeText.setId("bodyText");
+
+    CheckBox lightmode = new CheckBox();
+    Text lightmodeText = new Text("Lightmode");
+    lightmodeText.setId("bodyText");
+
+    CheckBox darkmode = new CheckBox();
+    Text darkmodeText = new Text("Darkmode");
+    darkmodeText.setId("bodyText");
+
+    CheckBox colorblind = new CheckBox();
+    Text colorblindMode = new Text("Colorblindmode");
+    colorblindMode.setId("bodyText");
+    viewmodeHbox.getChildren().addAll(viewmodeText, lightmode, lightmodeText, darkmode, darkmodeText, colorblind, colorblindMode);
+    viewmodeHbox.setSpacing(20);
+    viewmodeHbox.setAlignment(Pos.CENTER);
+
+    vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox);
     vbox.setSpacing(40);
 
     vbox.setAlignment(Pos.TOP_CENTER);

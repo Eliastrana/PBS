@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.beans.property.BooleanProperty;
@@ -20,6 +21,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+
 
 
 public class GUI extends Application implements LoginObserver {
@@ -34,6 +36,8 @@ public class GUI extends Application implements LoginObserver {
     //This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
     private StackPane loginWindow = new StackPane(new VBox(Login.loginView()));
+
+    private StackPane passwordForgottenWindow = new StackPane();
     private StackPane createUserWindow = new StackPane();
     private StackPane overviewWindow = new StackPane();
     private StackPane transferWindow = new StackPane();
@@ -43,8 +47,14 @@ public class GUI extends Application implements LoginObserver {
     private StackPane budgetWindow = new StackPane();
     private StackPane bankStatementWindow = new StackPane();
 
+
+
     private BooleanProperty isLogin = new SimpleBooleanProperty(false);
     private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
+
+    private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
+
+    public static String currentUser;
 
     public GUI() {
     }
@@ -53,6 +63,10 @@ public class GUI extends Application implements LoginObserver {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        externalStartMenu(primaryStage);
+    }
+
+    public void externalStartMenu(Stage primaryStage) throws Exception {
         loginWindow.setVisible(true);
         loginWindow.getChildren().add(Login.loginView());
         loginWindow.getStylesheets().add("/LightMode.css");
@@ -86,10 +100,36 @@ public class GUI extends Application implements LoginObserver {
                 launchApp(primaryStage);
             }
         });
+
+        passwordForgotten.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                launchForgotPassword(primaryStage);
+            }
+        });
     }
 
     public void callStart() {
 
+    }
+
+    public void launchForgotPassword(Stage primaryStage){
+        passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
+        passwordForgottenWindow.getStylesheets().add("/Styling.css");
+        passwordForgottenWindow.setStyle("-fx-background-color: #E6E8E6;");
+        passwordForgottenWindow.setAlignment(Pos.CENTER);
+        passwordForgottenWindow.setPadding(new Insets(10, 10, 10, 10));
+        passwordForgottenWindow.setPrefSize(1000, 700);
+        passwordForgottenWindow.setMinSize(1000, 700);
+        passwordForgottenWindow.setMaxSize(1000, 700);
+
+        Image icon = new Image("icon.png");
+        primaryStage.getIcons().add(icon);
+
+        Scene scene = new Scene(passwordForgottenWindow);
+        scene.getStylesheets().add("/Styling.css");
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public void launchApp(Stage primaryStage) {
@@ -117,7 +157,7 @@ public class GUI extends Application implements LoginObserver {
 
 
         primaryStage.setTitle("Bank");
-        primaryStage.setWidth(1000);
+        primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add("/LightMode.css");
 
@@ -211,8 +251,12 @@ public class GUI extends Application implements LoginObserver {
         topMenu.setSpacing(20);
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
+        ImageView overviewImage = new ImageView(new Image("overview.png"));
+        overviewImage.setFitHeight(20);
+        overviewImage.setFitWidth(20);
+
         //BUTTON 1
-        Button overviewButton = new Button("Overview");
+        Button overviewButton = new Button("Overview", overviewImage);
         overviewButton.setId("topMenuButton");
         overviewButton.setOnAction(event -> {
             try {
@@ -239,9 +283,12 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(overviewButton);
 
+        ImageView transferImage = new ImageView(new Image("transfer.png"));
+        transferImage.setFitHeight(20);
+        transferImage.setFitWidth(20);
 
         //BUTTON 2
-        Button transferButton = new Button("Transfer");
+        Button transferButton = new Button("Transfer", transferImage);
         transferButton.setId("topMenuButton");
         transferButton.setOnAction(event -> {
             try {
@@ -263,9 +310,12 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(transferButton);
 
+        ImageView addExpenseImage = new ImageView(new Image("addExpense.png"));
+        addExpenseImage.setFitHeight(20);
+        addExpenseImage.setFitWidth(20);
 
         //BUTTON 4
-        Button addExpenseButton = new Button("Add Expense");
+        Button addExpenseButton = new Button("Add Expense", addExpenseImage);
         addExpenseButton.setId("topMenuButton");
         addExpenseButton.setOnAction(event -> {
             try {
@@ -289,8 +339,11 @@ public class GUI extends Application implements LoginObserver {
 
         //BUTTON 3
 
+        ImageView reportImage = new ImageView(new Image("report.png"));
+        reportImage.setFitHeight(20);
+        reportImage.setFitWidth(20);
 
-        Button reportButton = new Button("Report");
+        Button reportButton = new Button("Report", reportImage);
         reportButton.setId("topMenuButton");
         reportButton.setOnAction(event -> {
             try {
@@ -312,8 +365,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(reportButton);
 
+        ImageView settingsImage = new ImageView(new Image("settings.png"));
+        settingsImage.setFitHeight(20);
+        settingsImage.setFitWidth(20);
 
-        Button settingsButton = new Button("Settings");
+        Button settingsButton = new Button("Settings", settingsImage);
         settingsButton.setId("topMenuButton");
         settingsButton.setOnAction(event -> {
             try {
@@ -332,9 +388,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(settingsButton);
 
+        ImageView budgetImage = new ImageView(new Image("budget.png"));
+        budgetImage.setFitHeight(20);
+        budgetImage.setFitWidth(20);
 
-
-        Button budgetButton = new Button("Budget");
+        Button budgetButton = new Button("Budget", budgetImage);
         budgetButton.setId("topMenuButton");
         budgetButton.setOnAction(event -> {
             try {
@@ -353,7 +411,11 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(budgetButton);
 
-        Button bankStatementButton = new Button("Bank Statement");
+        ImageView bankStatementImage = new ImageView(new Image("bankStatement.png"));
+        bankStatementImage.setFitHeight(20);
+        bankStatementImage.setFitWidth(20);
+
+        Button bankStatementButton = new Button("Bank Statement", bankStatementImage);
         bankStatementButton.setId("topMenuButton");
         bankStatementButton.setOnAction(event -> {
             try {
@@ -372,24 +434,57 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(bankStatementButton);
 
+        ImageView logOutImage = new ImageView(new Image("logOut.png"));
+        logOutImage.setFitHeight(15);
+        logOutImage.setFitWidth(15);
+
+        Button logOutButton = new Button();
+        logOutButton.setGraphic(logOutImage);
+        logOutButton.setId("squareButton");
+
+        topMenu.getChildren().add(logOutButton);
+        logOutButton.setOnAction(event -> {
+            try {
+                externalStartMenu(primaryStage);  //This does NOT WORK
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         topMenu.getStylesheets().add("/Styling.css");
 
         return topMenu;
+    }
+
+    public static String getCurrentUser() {
+        return currentUser;
     }
 
     @Override
     public void update() {
         boolean isLoggedIn = Login.isLoggedIn();
         boolean createdUser = CreateUser.isCreatedUser();
+        boolean forgotPassword = Login.isForgotPassword();
+        boolean emailGotten = ForgotPassword.getGotEmail();
         if (isLoggedIn) {
+            currentUser = Login.username.getText();
             isLogin.setValue(true);
         } else if (createdUser) {
+            Login.username.clear();
+            currentUser = CreateUser.username.getText();
+            isLogin.setValue(true);
+        } else if (forgotPassword) {
+            Login.username.clear();
+            passwordForgotten.setValue(true);
+        } else if (emailGotten) {
             Login.username.clear();
             isLogin.setValue(true);
         } else {
             Login.username.clear();
             isCreateAccount.setValue(true);
         }
+
+
     }
 }
 

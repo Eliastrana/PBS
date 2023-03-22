@@ -18,7 +18,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -33,6 +32,9 @@ public class Login {
   public static boolean loggedIn = false;
   public static TextField username = new TextField();
   public static String currentUser;
+
+  public static boolean forgotPasswordBoolean = false;
+
 
   public static String getCurrentUser() {
     return currentUser;
@@ -106,7 +108,7 @@ public class Login {
             String encryptedPassword = user[1];
             String SALT = user[2];
             String decryptedPassword = decrypt(encryptedPassword, SALT);
-            if (password.getText().equals(new String(decryptedPassword))) {
+            if (password.getText().equals(decryptedPassword)) {
               System.out.println("Logged in");
               SoundPlayer.play("src/main/resources/16bitconfirm.wav");
               loggedIn = true;
@@ -123,6 +125,15 @@ public class Login {
       System.out.println("Opening create user page");
       notifyObservers();
     });
+
+    Text forgotPassword = new Text("Forgot password");
+    forgotPassword.setId("linkSmallText");
+    forgotPassword.setOnMouseClicked(e -> {
+      forgotPasswordBoolean = true;
+      System.out.println("Opening forgot password page");
+      notifyObservers();
+      });
+
 
 //    createUser.setOnMouseClicked(e -> {
 //      SALT = generateSalt();
@@ -153,7 +164,7 @@ public class Login {
 //      notifyObservers();
 //    });
 
-    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser);
+    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser, forgotPassword);
 
     StackPane backgroundAndLogin = new StackPane(background , loginVBox);
 
@@ -210,6 +221,10 @@ public class Login {
 
   public static boolean isLoggedIn() {
     return loggedIn;
+  }
+
+  public static boolean isForgotPassword() {
+    return forgotPasswordBoolean;
   }
   public static void addObserver(LoginObserver observer) {
     observers.add(observer);

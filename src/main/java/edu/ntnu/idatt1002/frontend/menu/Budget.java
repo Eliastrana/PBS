@@ -2,31 +2,20 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
-import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.Income;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
-import static javafx.scene.text.Font.font;
 
 public class Budget {
   public static VBox budgetView() {
@@ -36,15 +25,13 @@ public class Budget {
     budgetLayout.setSpacing(20);
 
     Text editMonthBudget = new Text("Edit this months budget");
-    editMonthBudget.setStyle("-fx-fill: #3F403F");
-    editMonthBudget.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
+    editMonthBudget.setId("titleText");
+
 
 
     HBox categorySelectorHbox = new HBox();
 
-    Text categorySelectorText = new Text("Select category: ");
-    categorySelectorText.setStyle("-fx-fill: #3F403F");
-    categorySelectorText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -59,14 +46,16 @@ public class Budget {
 
 
     final ComboBox categoryMenu = new ComboBox(options);
-    categoryMenu.setPromptText("Select category test");
-    categoryMenu.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    categoryMenu.setPromptText("Select category");
+    categoryMenu.setId("categoryMenuButton");
+
 
     Button confirmCategory = new Button("Confirm");
-    confirmCategory.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    confirmCategory.setId("actionButton");
 
-    categorySelectorHbox.getChildren().addAll(categorySelectorText, categoryMenu, confirmCategory);
-    categorySelectorHbox.setAlignment(Pos.CENTER_LEFT);
+    categorySelectorHbox.getChildren().addAll(categoryMenu, confirmCategory);
+    categorySelectorHbox.setAlignment(Pos.CENTER);
+    categorySelectorHbox.setSpacing(20);
 
 
     TableView<Income> budgetTable = new TableView<>();
@@ -81,25 +70,22 @@ public class Budget {
 
     budgetTable.getColumns().addAll(budgetTableColumn1, budgetTableColumn2, budgetTableColumn3);
     budgetTable.getItems().addAll(getIncomes());
-
+    budgetTable.setMaxWidth(500);
 
 
 
     HBox budgetAmountHbox = new HBox();
 
-    Text budgetAmountText = new Text("Set budget for next month: ");
-    budgetAmountText.setStyle("-fx-fill: #3F403F");
-    budgetAmountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
-
     TextField budgetAmountField = new TextField();
-    budgetAmountField.setPromptText("Enter amount");
-    budgetAmountField.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    budgetAmountField.setPromptText("Set budget for next month: ");
+    budgetAmountField.setId("textField");
 
     Button confirmAmount = new Button("Confirm");
-    confirmAmount.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em; -fx-prompt-text-fill: #FFFFFF; -fx-text-fill: #FFFFFF;");
+    confirmAmount.setId("actionButton");
 
-    budgetAmountHbox.getChildren().addAll(budgetAmountText, budgetAmountField, confirmAmount);
-    budgetAmountHbox.setAlignment(Pos.CENTER_LEFT);
+    budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount);
+    budgetAmountHbox.setAlignment(Pos.CENTER);
+    budgetAmountHbox.setSpacing(20);
 
 
 
@@ -115,10 +101,10 @@ public class Budget {
 
     totalBudgetTable.getColumns().addAll(totalBudgetTableColumn1, totalBudgetTableColumn2, totalBudgetTableColumn3);
     totalBudgetTable.getItems().addAll(getIncomes());
-
+    totalBudgetTable.setMaxWidth(500);
 
     budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetTable, budgetAmountHbox, totalBudgetTable);
-
+    budgetLayout.setAlignment(Pos.TOP_CENTER);
 
     return budgetLayout;
   }
