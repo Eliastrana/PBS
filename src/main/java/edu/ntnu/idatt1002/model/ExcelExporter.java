@@ -130,7 +130,7 @@ public class ExcelExporter {
         for (String[] data : rows) {
             String date = data[2];
             if (data[0].equals(category) && data[4].equals(account) && date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0) {
-                filteredRows.add(new String[]{data[1], data[3]});
+                filteredRows.add(data);
             }
         }
 
@@ -138,9 +138,16 @@ public class ExcelExporter {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet1");
         int rowNum = 0;
+        Row headerRow = sheet.createRow(rowNum++);
+        String[] headerColumns = {"Category", "Name", "Date", "Price", "Account"};
+        int colNum = 0;
+        for (String header : headerColumns) {
+            Cell cell = headerRow.createCell(colNum++);
+            cell.setCellValue(header);
+        }
         for (String[] data : filteredRows) {
             Row row1 = sheet.createRow(rowNum++);
-            int colNum = 0;
+            colNum = 0;
             for (String cellData : data) {
                 Cell cell = row1.createCell(colNum++);
                 if (cellData instanceof String) {

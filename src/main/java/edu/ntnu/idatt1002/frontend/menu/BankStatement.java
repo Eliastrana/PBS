@@ -29,6 +29,7 @@ import java.util.Set;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
 import static javafx.scene.text.Font.font;
 
 public class BankStatement {
@@ -113,51 +114,62 @@ public class BankStatement {
 
     calenderIntervalHbox.getChildren().addAll(fromText, datePickerFrom, toText, datePickerTo);
 
-    String account = (String) accountMenu.getValue();
-    String category = (String) categoryMenu.getValue();
-    String from = String.valueOf(datePickerFrom.getValue());
-    String to = String.valueOf(datePickerTo.getValue());
+    Button export = new Button("Confirm");
+    export.setId("actionButton");
 
-    try {
-      ExcelExporter.createBankStatement(account, category, from, to);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    export.setOnAction(e -> {
+
+          if (categoryMenu.getValue() == null) {
+            SoundPlayer.play("src/main/resources/error.wav");
+            emptyFieldAlert();
+
+          } else {
+            String account = (String) accountMenu.getValue();
+            String category = (String) categoryMenu.getValue();
+            String from = String.valueOf(datePickerFrom.getValue());
+            String to = String.valueOf(datePickerTo.getValue());
+
+            try {
+              ExcelExporter.createBankStatement(account, category, from, to);
+            } catch (IOException f) {
+              throw new RuntimeException(f);
+            }
+          }
+        });
+
+
+        HBox tableHbox = new HBox();
+        tableHbox.setAlignment(Pos.CENTER);
+
+        TableView<Expense> bankStatementTable = new TableView<>();
+        TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
+        rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
+        rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
+        rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<Expense, String> rightColumn4 = new TableColumn<>("Category: ");
+        rightColumn4.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+        TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
+        rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
+
+        bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+
+        bankStatementTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
+
+        bankStatementTable.setMinWidth(600);
+
+        tableHbox.getChildren().add(bankStatementTable);
+
+
+        bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox,
+            selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, tableHbox, export);
+
+        bankStatementVbox.setAlignment(Pos.TOP_CENTER);
+        return bankStatementVbox;
+      }
     }
-
-
-    HBox tableHbox = new HBox();
-    tableHbox.setAlignment(Pos.CENTER);
-
-    TableView<Expense> bankStatementTable = new TableView<>();
-    TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
-    rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-    TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
-    rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-    TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
-    rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-    TableColumn<Expense, String> rightColumn4 = new TableColumn<>("Category: ");
-    rightColumn4.setCellValueFactory(new PropertyValueFactory<>("category"));
-
-    TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
-    rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
-
-    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
-
-    bankStatementTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
-
-    bankStatementTable.setMinWidth(600);
-
-    tableHbox.getChildren().add(bankStatementTable);
-
-
-
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox);
-
-    bankStatementVbox.setAlignment(Pos.TOP_CENTER);
-    return bankStatementVbox;
-
-  }
-}
