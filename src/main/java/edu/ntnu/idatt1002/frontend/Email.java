@@ -23,23 +23,15 @@ public class Email {
 
   // Define the email recipient, subject, and message body
   String recipientEmail;
+  String passwordString;
   String subject = "Forgotten your password?";
 
-  public void sendEmail(String email) throws MessagingException {
-
-    recipientEmail = email;
+  public void sendEmail(String email, String password) throws MessagingException {
 
     String message = "Your password is:";
-    String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-    StringBuilder sb = new StringBuilder();
-    Random random = new Random();
-    int length = 10;
-    for (int i = 0; i < length; i++) {
-      int index = random.nextInt(alphabet.length());
-      char randomChar = alphabet.charAt(index);
-      sb.append(randomChar);
-    }
+
     recipientEmail = email;
+    passwordString = password;
 
     //String emailPhoto = "src/main/resources/icon.PNG";
 
@@ -73,7 +65,8 @@ public class Email {
             "<div style='text-align: center;'>" +
             "<h1>You silly goose!</h1> " +
             "<img src=\"cid:image1\">" +
-            "<p> Your master-password is: " + sb.toString() + "</p>" +
+            "<p> Your master-password is: " + passwordString + "</p>" +
+            "<p> Best regard, Public Banking Service.</p>" +
             "</div>" +
             "</body> </html>", "text/html");
 
@@ -81,7 +74,9 @@ public class Email {
 
 // Create a MimeBodyPart for the image
     MimeBodyPart imagePart = new MimeBodyPart();
-    DataSource fds = new FileDataSource("src/main/resources/mailmeme.jpg");
+    Random rand = new Random();
+    int n = rand.nextInt(5) + 1;
+    DataSource fds = new FileDataSource("src/main/resources/mailmeme"+n+".jpg");
     imagePart.setDataHandler(new DataHandler(fds));
     imagePart.setHeader("Content-ID", "<image1>");
 

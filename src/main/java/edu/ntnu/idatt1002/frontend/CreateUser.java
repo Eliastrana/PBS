@@ -124,8 +124,8 @@ public class CreateUser {
     Button createUser = new Button("Create user");
     createUser.setId("loginButton");
 
+
     createUser.setOnAction( e -> {
-        SALT = generateSalt();
         byte[] key = new byte[16];
         SecureRandom random = new SecureRandom();
         random.nextBytes(key);
@@ -184,7 +184,8 @@ public class CreateUser {
           passwordString = passwordStringTest1;
         }
 
-        String encryptedPasswordString = encrypt(passwordString);
+        String SALT = generateSalt();
+        String encryptedPasswordString = encrypt(passwordString, SALT);
         currentUser = username.getText();
         BufferedWriter writer;
         try {
@@ -204,8 +205,12 @@ public class CreateUser {
           throw new RuntimeException(ex);
         }
         createdUser = true;
+      try {
         notifyObservers();
-      });
+      } catch (Exception ex) {
+        throw new RuntimeException(ex);
+      }
+    });
 
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, createUserBox, createUser);
 
@@ -217,8 +222,9 @@ public class CreateUser {
     return vbox;
   }
 
-  public static String encrypt (String password) {
+  public static String encrypt (String password, String SALT) {
     try {
+      //SALT = generateSalt();
       byte[] iv = new byte[16];
       IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
@@ -247,7 +253,7 @@ public class CreateUser {
     observers.add(observer);
   }
 
-  private static void notifyObservers() {
+  private static void notifyObservers() throws Exception {
     for (LoginObserver observer : observers) {
       observer.update();
       System.out.println("Notified observer");

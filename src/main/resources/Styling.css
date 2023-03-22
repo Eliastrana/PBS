@@ -118,9 +118,13 @@
 }
 
 
-.loginScreen {
-    -fx-background-image: url("/dansk2.jpg");
+.loginScreen1 {
+    -fx-background-image: url("/background1.jpg");
 }
+.loginScreen2 {
+    -fx-background-image: url("/background2.jpg");
+}
+
 
 #overlayLogin{
     -fx-background-color: #e7e4e3;
