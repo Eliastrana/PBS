@@ -124,6 +124,7 @@ public class CreateUser {
     Button createUser = new Button("Create user");
     createUser.setId("loginButton");
 
+
     createUser.setOnAction( e -> {
         SALT = generateSalt();
         byte[] key = new byte[16];

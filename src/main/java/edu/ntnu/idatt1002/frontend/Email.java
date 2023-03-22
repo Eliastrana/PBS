@@ -74,6 +74,7 @@ public class Email {
             "<h1>You silly goose!</h1> " +
             "<img src=\"cid:image1\">" +
             "<p> Your master-password is: " + sb.toString() + "</p>" +
+            "<p> Best regard, Public Banking Service.</p>" +
             "</div>" +
             "</body> </html>", "text/html");
 
@@ -81,7 +82,9 @@ public class Email {
 
 // Create a MimeBodyPart for the image
     MimeBodyPart imagePart = new MimeBodyPart();
-    DataSource fds = new FileDataSource("src/main/resources/mailmeme.jpg");
+    Random rand = new Random();
+    int n = rand.nextInt(5) + 1;
+    DataSource fds = new FileDataSource("src/main/resources/mailmeme"+n+".jpg");
     imagePart.setDataHandler(new DataHandler(fds));
     imagePart.setHeader("Content-ID", "<image1>");
 

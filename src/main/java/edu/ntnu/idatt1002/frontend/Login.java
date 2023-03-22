@@ -22,6 +22,7 @@ import java.security.spec.KeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 
 public class Login {
@@ -45,8 +46,10 @@ public class Login {
     Pane background = new Pane();
     background.setPrefSize(1000,700);
 
+    Random random = new Random();
+    int randomInt = random.nextInt(1)+1;
     background.getStylesheets().add("/LightMode.css");
-    background.getStyleClass().add("loginScreen");
+    background.getStyleClass().add("loginScreen"+randomInt);
 
 
 
