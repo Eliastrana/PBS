@@ -293,7 +293,7 @@ public class GUI extends Application implements LoginObserver {
         topMenu.setSpacing(20);
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
-        ImageView overviewImage = new ImageView(new Image("overview.png"));
+        ImageView overviewImage = new ImageView(new Image("icons/overview.png"));
         overviewImage.setFitHeight(20);
         overviewImage.setFitWidth(20);
 
@@ -325,7 +325,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(overviewButton);
 
-        ImageView transferImage = new ImageView(new Image("transfer.png"));
+        ImageView transferImage = new ImageView(new Image("icons/transfer.png"));
         transferImage.setFitHeight(20);
         transferImage.setFitWidth(20);
 
@@ -352,7 +352,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(transferButton);
 
-        ImageView addExpenseImage = new ImageView(new Image("addExpense.png"));
+        ImageView addExpenseImage = new ImageView(new Image("icons/addExpense.png"));
         addExpenseImage.setFitHeight(20);
         addExpenseImage.setFitWidth(20);
 
@@ -381,7 +381,7 @@ public class GUI extends Application implements LoginObserver {
 
         //BUTTON 3
 
-        ImageView reportImage = new ImageView(new Image("report.png"));
+        ImageView reportImage = new ImageView(new Image("icons/report.png"));
         reportImage.setFitHeight(20);
         reportImage.setFitWidth(20);
 
@@ -407,7 +407,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(reportButton);
 
-        ImageView settingsImage = new ImageView(new Image("settings.png"));
+        ImageView settingsImage = new ImageView(new Image("icons/settings.png"));
         settingsImage.setFitHeight(20);
         settingsImage.setFitWidth(20);
 
@@ -430,7 +430,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(settingsButton);
 
-        ImageView budgetImage = new ImageView(new Image("budget.png"));
+        ImageView budgetImage = new ImageView(new Image("icons/budget.png"));
         budgetImage.setFitHeight(20);
         budgetImage.setFitWidth(20);
 
@@ -453,7 +453,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(budgetButton);
 
-        ImageView bankStatementImage = new ImageView(new Image("bankStatement.png"));
+        ImageView bankStatementImage = new ImageView(new Image("icons/bankStatement.png"));
         bankStatementImage.setFitHeight(20);
         bankStatementImage.setFitWidth(20);
 
@@ -476,7 +476,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(bankStatementButton);
 
-        ImageView logOutImage = new ImageView(new Image("logOut.png"));
+        ImageView logOutImage = new ImageView(new Image("icons/logOut.png"));
         logOutImage.setFitHeight(15);
         logOutImage.setFitWidth(15);
 

@@ -225,7 +225,7 @@ public class CreateUser {
     Button backButton = new Button();
     backButton.setId("backButton");
 
-    ImageView backImage = new ImageView(new Image("back.png"));
+    ImageView backImage = new ImageView(new Image("icons/back.png"));
     backImage.setFitHeight(50);
     backImage.setFitWidth(50);
     backButton.setGraphic(backImage);
