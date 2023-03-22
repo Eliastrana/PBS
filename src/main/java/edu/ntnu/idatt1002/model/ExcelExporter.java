@@ -28,6 +28,8 @@ public class ExcelExporter {
     static String outputFile = outputDirectory + Login.getCurrentUser() + ".xlsx";
     static String outputFile1 = outputDirectory + Login.getCurrentUser() + ".pdf";
     static String outputFile2 = outputDirectory + Login.getCurrentUser() + "_" + "bankstatement.xlsx";
+    static String outputFile3 = outputDirectory + Login.getCurrentUser() + "_" + "bankstatement" +
+        ".pdf";   //Need to rename all outputfiles to be unique
     public static List<Expense> expensesToTable = new ArrayList<>();
 
     public static void exportToExcel() throws FileNotFoundException {
