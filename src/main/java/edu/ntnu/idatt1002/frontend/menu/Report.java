@@ -72,8 +72,9 @@ public class Report {
     exportToPDF.setOnAction(e -> {
       System.out.println("Exporting to PDF");
       try {
+
         ExcelExporter.exportToExcel();
-        ExcelExporter.convertToPdf();
+        ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
       } catch (DocumentException | IOException ex) {
         throw new RuntimeException(ex);
       }

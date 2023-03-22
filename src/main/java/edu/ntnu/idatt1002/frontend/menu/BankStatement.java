@@ -5,6 +5,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
@@ -130,10 +131,21 @@ public class BankStatement {
             String to = String.valueOf(datePickerTo.getValue());
 
             try {
-              ExcelExporter.createBankStatement(account, category, from, to);
+                ExcelExporter.convertToPdf(ExcelExporter.createBankStatement(account, category, from, to), "bankstatement");
+
             } catch (IOException f) {
               throw new RuntimeException(f);
+            } catch (DocumentException ex) {
+                throw new RuntimeException(ex);
             }
+              if (Desktop.isDesktopSupported()) {
+                  try {
+                      File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + "bankstatement.pdf");
+                      Desktop.getDesktop().open(myFile);
+                  } catch (IOException ex) {
+                      // no application registered for PDFs
+                  }
+              }
           }
         });
 

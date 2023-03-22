@@ -32,7 +32,7 @@ public class ExcelExporter {
         ".pdf";   //Need to rename all outputfiles to be unique
     public static List<Expense> expensesToTable = new ArrayList<>();
 
-    public static void exportToExcel() throws FileNotFoundException {
+    public static String exportToExcel() throws FileNotFoundException {
         if(!outputDirectoryFile.exists()) {
             outputDirectoryFile.mkdirs();
         }
@@ -83,10 +83,11 @@ public class ExcelExporter {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return outputFile;
     }
-    public static void convertToPdf() throws IOException, DocumentException {
-        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(outputFile));
-             FileOutputStream fos = new FileOutputStream(outputFile1)) {
+    public static void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
+        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
+             FileOutputStream fos = new FileOutputStream(outputDirectory + Login.getCurrentUser() + fileName + ".pdf")){
 
             Document document = new Document();
             PdfWriter.getInstance(document, fos);
@@ -116,7 +117,7 @@ public class ExcelExporter {
             document.close();
         }
     }
-    public static void createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException {
+    public static String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
         // Read CSV file
         BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));
         String row;
@@ -161,6 +162,8 @@ public class ExcelExporter {
         workbook.write(outputStream);
         workbook.close();
         outputStream.close();
+
+        return outputFile2;
     }
     public static List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();
