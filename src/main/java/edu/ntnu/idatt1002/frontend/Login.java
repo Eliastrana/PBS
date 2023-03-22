@@ -47,7 +47,7 @@ public class Login {
     background.setPrefSize(1000,700);
 
     Random random = new Random();
-    int randomInt = random.nextInt(1)+1;
+    int randomInt = random.nextInt(2)+1;
     background.getStylesheets().add("/LightMode.css");
     background.getStyleClass().add("loginScreen"+randomInt);
 
