@@ -1,28 +1,21 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginObserver;
-import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.management.NotificationFilter;
 import java.io.*;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;

@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 
+
 public class GUI extends Application implements LoginObserver {
 
     //Each page has its own method, all the buttons are in the same method.
@@ -62,6 +63,10 @@ public class GUI extends Application implements LoginObserver {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        externalStartMenu(primaryStage);
+    }
+
+    public void externalStartMenu(Stage primaryStage) throws Exception {
         loginWindow.setVisible(true);
         loginWindow.getChildren().add(Login.loginView());
         loginWindow.getStylesheets().add("/LightMode.css");
@@ -429,6 +434,23 @@ public class GUI extends Application implements LoginObserver {
             }
         });
         topMenu.getChildren().add(bankStatementButton);
+
+        ImageView logOutImage = new ImageView(new Image("logOut.png"));
+        logOutImage.setFitHeight(15);
+        logOutImage.setFitWidth(15);
+
+        Button logOutButton = new Button();
+        logOutButton.setGraphic(logOutImage);
+        logOutButton.setId("squareButton");
+
+        topMenu.getChildren().add(logOutButton);
+        logOutButton.setOnAction(event -> {
+            try {
+                externalStartMenu(primaryStage);  //This does NOT WORK
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         topMenu.getStylesheets().add("/Styling.css");
 

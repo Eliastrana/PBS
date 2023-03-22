@@ -1,5 +1,5 @@
 package edu.ntnu.idatt1002.frontend;
-import java.security.SecureRandom;
+
 import java.util.Properties;
 import java.util.Random;
 import javax.activation.DataHandler;
@@ -8,6 +8,7 @@ import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.mail.internet.MimeMessage;
+
 import static javax.mail.Transport.send;
 
 

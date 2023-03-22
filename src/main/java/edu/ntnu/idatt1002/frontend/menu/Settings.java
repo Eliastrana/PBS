@@ -2,25 +2,14 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
-import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.frontend.Email;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-
-import javax.mail.MessagingException;
-
-import static javafx.scene.text.Font.font;
-
 
 public class Settings {
   public static VBox settingsView() {

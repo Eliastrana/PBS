@@ -1,18 +1,15 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginObserver;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import javax.mail.MessagingException;
 import java.util.ArrayList;
