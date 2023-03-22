@@ -61,6 +61,10 @@ public class GUI extends Application implements LoginObserver {
 
     public static String currentUser;
 
+    Scene sceneCreateUser = new Scene(createUserWindow);
+
+    Scene scenePasswordForgotten = new Scene(passwordForgottenWindow);
+
     Scene scene = new Scene(loginWindow);
 
 
@@ -83,7 +87,7 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         scene.getStylesheets().add("/Styling.css");
@@ -111,9 +115,6 @@ public class GUI extends Application implements LoginObserver {
         });
     }
 
-    public void callStart() {
-
-    }
 
     public void launchForgotPassword(Stage primaryStage){
         passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
@@ -125,13 +126,12 @@ public class GUI extends Application implements LoginObserver {
         passwordForgottenWindow.setMinSize(1000, 700);
         passwordForgottenWindow.setMaxSize(1000, 700);
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
-        Scene scene = new Scene(passwordForgottenWindow);
-        scene.getStylesheets().add("/Styling.css");
+        scenePasswordForgotten.getStylesheets().add("/Styling.css");
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(scenePasswordForgotten);
         primaryStage.show();
 
         ForgotPassword.addObserver(this);
@@ -188,7 +188,7 @@ public class GUI extends Application implements LoginObserver {
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add("/LightMode.css");
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         ScrollPane scrollPane = new ScrollPane();
@@ -229,20 +229,18 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.getStylesheets().add("/LightMode.css");
         loginWindow.setStyle("-fx-background-color: #E6E8E6;");
         loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPadding(new Insets(10, 10, 10, 10));
         loginWindow.setPrefSize(1000, 700);
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
 
-        Scene scene = new Scene(createUserWindow);
-        scene.getStylesheets().add("/Styling.css");
+        sceneCreateUser.getStylesheets().add("/Styling.css");
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         CreateUser.addObserver(this);
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(sceneCreateUser);
         primaryStage.show();
 
         backToLoginCreate.addListener((observable, oldValue, newValue) -> {
@@ -293,7 +291,7 @@ public class GUI extends Application implements LoginObserver {
         topMenu.setSpacing(20);
         topMenu.setPadding(new Insets(20, 20, 20, 20));
 
-        ImageView overviewImage = new ImageView(new Image("overview.png"));
+        ImageView overviewImage = new ImageView(new Image("icons/overview.png"));
         overviewImage.setFitHeight(20);
         overviewImage.setFitWidth(20);
 
@@ -325,7 +323,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(overviewButton);
 
-        ImageView transferImage = new ImageView(new Image("transfer.png"));
+        ImageView transferImage = new ImageView(new Image("icons/transfer.png"));
         transferImage.setFitHeight(20);
         transferImage.setFitWidth(20);
 
@@ -352,7 +350,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(transferButton);
 
-        ImageView addExpenseImage = new ImageView(new Image("addExpense.png"));
+        ImageView addExpenseImage = new ImageView(new Image("icons/addExpense.png"));
         addExpenseImage.setFitHeight(20);
         addExpenseImage.setFitWidth(20);
 
@@ -381,7 +379,7 @@ public class GUI extends Application implements LoginObserver {
 
         //BUTTON 3
 
-        ImageView reportImage = new ImageView(new Image("report.png"));
+        ImageView reportImage = new ImageView(new Image("icons/report.png"));
         reportImage.setFitHeight(20);
         reportImage.setFitWidth(20);
 
@@ -407,7 +405,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(reportButton);
 
-        ImageView settingsImage = new ImageView(new Image("settings.png"));
+        ImageView settingsImage = new ImageView(new Image("icons/settings.png"));
         settingsImage.setFitHeight(20);
         settingsImage.setFitWidth(20);
 
@@ -430,7 +428,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(settingsButton);
 
-        ImageView budgetImage = new ImageView(new Image("budget.png"));
+        ImageView budgetImage = new ImageView(new Image("icons/budget.png"));
         budgetImage.setFitHeight(20);
         budgetImage.setFitWidth(20);
 
@@ -453,7 +451,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(budgetButton);
 
-        ImageView bankStatementImage = new ImageView(new Image("bankStatement.png"));
+        ImageView bankStatementImage = new ImageView(new Image("icons/bankStatement.png"));
         bankStatementImage.setFitHeight(20);
         bankStatementImage.setFitWidth(20);
 
@@ -476,7 +474,7 @@ public class GUI extends Application implements LoginObserver {
         });
         topMenu.getChildren().add(bankStatementButton);
 
-        ImageView logOutImage = new ImageView(new Image("logOut.png"));
+        ImageView logOutImage = new ImageView(new Image("icons/logOut.png"));
         logOutImage.setFitHeight(15);
         logOutImage.setFitWidth(15);
 

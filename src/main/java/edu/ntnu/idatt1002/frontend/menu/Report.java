@@ -34,8 +34,7 @@ public class Report {
     reportLayout.setSpacing(20);
 
     Text printOutAReport = new Text("Print out a report");
-    printOutAReport.setStyle("-fx-fill: #3F403F");
-    printOutAReport.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
+    printOutAReport.setId("titleText");
 
     HBox selectReportHBox = new HBox();
 

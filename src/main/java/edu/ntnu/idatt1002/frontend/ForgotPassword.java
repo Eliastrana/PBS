@@ -11,7 +11,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
@@ -79,7 +78,7 @@ public class ForgotPassword {
         Button backButton = new Button();
         backButton.setId("backButton");
 
-        ImageView backImage = new ImageView(new Image("back.png"));
+        ImageView backImage = new ImageView(new Image("icons/back.png"));
         backImage.setFitHeight(50);
         backImage.setFitWidth(50);
         backButton.setGraphic(backImage);

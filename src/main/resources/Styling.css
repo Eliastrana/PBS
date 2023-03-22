@@ -119,13 +119,13 @@
 
 
 .loginScreen1 {
-    -fx-background-image: url("/Backgrounds/background1.jpg");
+    -fx-background-image: url("/backgrounds/background1.jpg");
 }
 .loginScreen2 {
-    -fx-background-image: url("/Backgrounds/background2.jpg");
+    -fx-background-image: url("/backgrounds/background2.jpg");
 }
 .loginScreen3 {
-    -fx-background-image: url("/Backgrounds/background3.jpg");
+    -fx-background-image: url("/backgrounds/background3.jpg");
 }
 
 
@@ -158,6 +158,12 @@
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-font: 60px "Times New Roman";
+}
+
+#welcomeTitleText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 90px "Times New Roman";
 }
 
 #squareButton {

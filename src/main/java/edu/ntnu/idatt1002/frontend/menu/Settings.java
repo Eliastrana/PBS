@@ -42,7 +42,7 @@ public class Settings {
     currentPasswordLabel.setVisible(false);
     currentPasswordLabel.setId("bodyText");
 
-    ImageView visibilityImage = new ImageView(new Image("visibility.png"));
+    ImageView visibilityImage = new ImageView(new Image("icons/visibility.png"));
     visibilityImage.setFitHeight(20);
     visibilityImage.setFitWidth(20);
 
@@ -54,11 +54,11 @@ public class Settings {
       if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
         currentEmailLabel.setVisible(false);
         currentPasswordLabel.setVisible(false);
-        visibilityImage.setImage(new Image("visibility.png"));
+        visibilityImage.setImage(new Image("icons/visibility.png"));
       } else {
         currentEmailLabel.setVisible(true);
         currentPasswordLabel.setVisible(true);
-        visibilityImage.setImage(new Image("notvisibility.png"));
+        visibilityImage.setImage(new Image("icons/notvisibility.png"));
       }
     });
 
