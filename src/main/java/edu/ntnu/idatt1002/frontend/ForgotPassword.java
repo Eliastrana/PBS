@@ -18,6 +18,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class ForgotPassword {
 
@@ -32,6 +33,9 @@ public class ForgotPassword {
     private static String newPasswordString;
     private static String masterPasswordString;
     public static boolean backToLogin = false;
+    private static final String PASSWORD_PATTERN =
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
 
     public static VBox forgottenPasswordView() {
@@ -146,14 +150,22 @@ public class ForgotPassword {
         submitButton.setId("actionButton");
 
         changePasswordButton.setOnAction(e -> {
+
             if (newPassword.getText().equals(confirmNewPassword.getText()) && masterPassword.getText().equals(masterPasswordString)) {
-                newPasswordString = newPassword.getText();
-                try {
-                    handleSubmit();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
+                if (!pattern.matcher(newPassword.getText()).matches()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Password must contain at least one uppercase letter, one lowercase letter, one number, one special character and be between 8 and 20 characters long.");
+                    alert.showAndWait();
+                } else {
+                    newPasswordString = newPassword.getText();
+                    try {
+                        handleSubmit();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
