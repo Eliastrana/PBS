@@ -50,9 +50,8 @@ public class AddExpense {
     addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
 
     Text text3 = new Text("Add new expense");
-    text3.setStyle("-fx-fill: #3F403F");
+    text3.setId("titleText");
     text3.setLineSpacing(10);
-    text3.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
 
     DatePicker datePicker = new DatePicker();
     datePicker.getStyleClass().add("date-picker");

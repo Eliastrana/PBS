@@ -61,6 +61,10 @@ public class GUI extends Application implements LoginObserver {
 
     public static String currentUser;
 
+    Scene sceneCreateUser = new Scene(createUserWindow);
+
+    Scene scenePasswordForgotten = new Scene(passwordForgottenWindow);
+
     Scene scene = new Scene(loginWindow);
 
 
@@ -111,9 +115,6 @@ public class GUI extends Application implements LoginObserver {
         });
     }
 
-    public void callStart() {
-
-    }
 
     public void launchForgotPassword(Stage primaryStage){
         passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
@@ -128,10 +129,9 @@ public class GUI extends Application implements LoginObserver {
         Image icon = new Image("icon.png");
         primaryStage.getIcons().add(icon);
 
-        Scene scene = new Scene(passwordForgottenWindow);
-        scene.getStylesheets().add("/Styling.css");
+        scenePasswordForgotten.getStylesheets().add("/Styling.css");
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(scenePasswordForgotten);
         primaryStage.show();
 
         ForgotPassword.addObserver(this);
@@ -229,20 +229,18 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.getStylesheets().add("/LightMode.css");
         loginWindow.setStyle("-fx-background-color: #E6E8E6;");
         loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPadding(new Insets(10, 10, 10, 10));
         loginWindow.setPrefSize(1000, 700);
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
 
-        Scene scene = new Scene(createUserWindow);
-        scene.getStylesheets().add("/Styling.css");
+        sceneCreateUser.getStylesheets().add("/Styling.css");
 
         Image icon = new Image("icon.png");
         primaryStage.getIcons().add(icon);
 
         CreateUser.addObserver(this);
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(sceneCreateUser);
         primaryStage.show();
 
         backToLoginCreate.addListener((observable, oldValue, newValue) -> {

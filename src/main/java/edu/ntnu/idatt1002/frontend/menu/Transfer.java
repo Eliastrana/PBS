@@ -29,8 +29,7 @@ public class Transfer {
     VBox transferVBox = new VBox();
 
     Text transferBetweenAccounts = new Text("Transfer between accounts:");
-    transferBetweenAccounts.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
-    transferBetweenAccounts.setStyle("-fx-fill: #3F403F");
+    transferBetweenAccounts.setId("titleText");
     transferVBox.getChildren().add(transferBetweenAccounts);
 
     HBox transferBewteenAccounts = new HBox();
@@ -107,8 +106,7 @@ public class Transfer {
     transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
 
     Text registerIncome = new Text("Register new income:");
-    registerIncome.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
-    registerIncome.setStyle("-fx-fill: #3F403F");
+    registerIncome.setId("titleText");
     transferVBox.getChildren().add(registerIncome);
 
     HBox registerIncomeHBox = new HBox();

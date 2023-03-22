@@ -160,6 +160,12 @@
     -fx-font: 60px "Times New Roman";
 }
 
+#welcomeTitleText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 90px "Times New Roman";
+}
+
 #squareButton {
     -fx-background-color: #9FB8AD;
     -fx-text-fill: #ffffff;
