@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -149,7 +150,7 @@ public class AddExpense {
                 } catch (IOException ioException) {
                   ioException.printStackTrace();
                 }
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/", Login.getCurrentUser() + ".csv"), true))) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + ".csv"), true))) {
                   writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
                 } catch (IOException f) {
                   System.err.println("Error writing to file: " + f.getMessage());

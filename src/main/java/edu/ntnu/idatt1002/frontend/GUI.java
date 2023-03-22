@@ -225,8 +225,11 @@ public class GUI extends Application implements LoginObserver {
         overviewWindow.getChildren().clear();
         try {
             ExcelExporter.exportToExcel();
+            ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
         } catch ( IOException ex) {
             throw new RuntimeException(ex);
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
         }
 
         overviewWindow.getChildren().add(Overview.overviewView());

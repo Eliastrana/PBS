@@ -81,7 +81,7 @@ public class Report {
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + ".pdf");
+          File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + "report.pdf");
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
           // no application registered for PDFs

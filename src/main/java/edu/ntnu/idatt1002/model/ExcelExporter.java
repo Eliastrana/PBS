@@ -47,7 +47,7 @@ public class ExcelExporter {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else
+        } else {
             try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
                  Workbook workbook = new XSSFWorkbook()) {
 
@@ -78,14 +78,39 @@ public class ExcelExporter {
                     }
 
                 }
+                // Calculate monthly total outside of the loop
+                for (Sheet sheet : workbook) {
+                    double monthlyTotal = 0;
+                    for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                        Row row = sheet.getRow(i);
+                        if (row != null) {
+                            Cell priceCell = row.getCell(3);
+                            if (priceCell != null && priceCell.getCellType() == CellType.NUMERIC) {
+                                monthlyTotal += priceCell.getNumericCellValue();
+                            }
+                            if (priceCell != null && priceCell.getCellType().equals(CellType.STRING)) {
+                                monthlyTotal += Double.parseDouble(priceCell.getStringCellValue());
+                            }
+                        }
+                    }
+
+                    // Write monthly total to cell at the bottom of the sheet
+                    Row totalRow = sheet.createRow(sheet.getLastRowNum() + 1);
+                    Cell totalLabelCell = totalRow.createCell(0);
+                    totalLabelCell.setCellValue("Monthly total: ");
+                    Cell totalValueCell = totalRow.createCell(1);
+                    totalValueCell.setCellValue(monthlyTotal);
+                }
 
                 workbook.write(new FileOutputStream(outputFile));
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            return outputFile;
+        }
+        return outputFile;
     }
+
     public static void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
              FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".pdf")){
@@ -179,16 +204,58 @@ public class ExcelExporter {
             if (sheet == null){
                 sheet = workbook.createSheet(currentMonth);
             }
-            for (Row row : sheet) {
+            for (int i = 0; i < sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
                 if (row.getRowNum() == 0) {
                     // Skip header row
                     continue;
                 }
-                String name = row.getCell(1).getStringCellValue();
-                Double price = Double.valueOf(row.getCell(3).getStringCellValue());
-                LocalDate date = LocalDate.parse(row.getCell(2).getStringCellValue());
-                String category = row.getCell(0).getStringCellValue();
-                String account = row.getCell(4).getStringCellValue();
+                Cell categoryCell = row.getCell(0);
+                String category = "";
+                if (categoryCell != null) {
+                    if (categoryCell.getCellType() == CellType.STRING) {
+                        category = categoryCell.getStringCellValue();
+                    } else if (categoryCell.getCellType() == CellType.NUMERIC) {
+                        category = String.valueOf(categoryCell.getNumericCellValue());
+                    }
+                }
+
+                Cell nameCell = row.getCell(1);
+                String name = "";
+                if (nameCell != null) {
+                    if (nameCell.getCellType() == CellType.STRING) {
+                        name = nameCell.getStringCellValue();
+                    } else if (nameCell.getCellType() == CellType.NUMERIC) {
+                        name = String.valueOf(nameCell.getNumericCellValue());
+                    }
+                }
+
+                Cell dateCell = row.getCell(2);
+                LocalDate date = null;
+                if (dateCell != null && dateCell.getCellType() == CellType.STRING) {
+                    date = LocalDate.parse(dateCell.getStringCellValue());
+                }
+
+                Cell priceCell = row.getCell(3);
+                Double price = null;
+                if (priceCell != null) {
+                    if (priceCell.getCellType() == CellType.NUMERIC) {
+                        price = priceCell.getNumericCellValue();
+                    } else if (priceCell.getCellType() == CellType.STRING) {
+                        price = Double.parseDouble(priceCell.getStringCellValue());
+                    }
+                }
+
+                Cell accountCell = row.getCell(4);
+                String account = "";
+                if (accountCell != null) {
+                    if (accountCell.getCellType() == CellType.STRING) {
+                        account = accountCell.getStringCellValue();
+                    } else if (accountCell.getCellType() == CellType.NUMERIC) {
+                        account = String.valueOf(accountCell.getNumericCellValue());
+                    }
+                }
+
                 Expense expense = new Expense(name, price, date, category, account, uniqueID);
                 expenses.add(expense);
                 expensesToTable = expenses;
