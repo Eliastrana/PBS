@@ -13,22 +13,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ForgotPassword {
 
-    public static boolean gotEmail = false;
-
-    public static boolean getGotEmail() {
-        return gotEmail;
-    }
+    public static boolean changedPassword = false;
     private static List<LoginObserver> observers = new ArrayList<>();
 
 
     private Stage stage;
     private static TextField emailTextField;
     private static Label errorLabel;
+    private static String emailString;
+    private static String newPasswordString;
+    private static String masterPasswordString;
 
     public static VBox forgottenPasswordView() {
 
@@ -40,7 +41,7 @@ public class ForgotPassword {
 
         forgottenPasswordVBox.setPadding(new Insets(10));
 
-        TextField emailTextField = new TextField();
+        emailTextField = new TextField();
         emailTextField.setPromptText("Enter email");
         emailTextField.setId("textField");
         emailTextField.setMaxWidth(250);
@@ -86,29 +87,50 @@ public class ForgotPassword {
         GridPane.setConstraints(submitButton, 1, 2);
         submitButton.setOnAction(e -> {
 
-                gotEmail = true;
-
                 Email email = new Email();
+                emailString = emailTextField.getText();
+
+                String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                StringBuilder sb = new StringBuilder();
+                Random random = new Random();
+                int length = 10;
+                for (int i = 0; i < length; i++) {
+                    int index = random.nextInt(alphabet.length());
+                    char randomChar = alphabet.charAt(index);
+                    sb.append(randomChar);
+                }
+                masterPasswordString = sb.toString();
             try {
-                email.sendEmail(emailTextField.getText());
+                email.sendEmail(emailString, masterPasswordString);
             } catch (MessagingException ex) {
                 throw new RuntimeException(ex);
             }
-
             masterPassword.setVisible(true);
-                newPassword.setVisible(true);
-                confirmNewPassword.setVisible(true);
-                changePasswordButton.setVisible(true);
+            newPassword.setVisible(true);
+            confirmNewPassword.setVisible(true);
+            changePasswordButton.setVisible(true);
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Password Reset");
+            alert.setHeaderText("Instructions to reset your password have been sent to your email.");
+            alert.showAndWait();
+        });
 
-
-                handleSubmit();
-
-
-                });
 
         submitButton.setId("actionButton");
 
+        changePasswordButton.setOnAction(e -> {
+            if (newPassword.getText().equals(confirmNewPassword.getText()) && masterPassword.getText().equals(masterPasswordString)) {
+                newPasswordString = newPassword.getText();
+                try {
+                    handleSubmit();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
 
 
@@ -124,24 +146,65 @@ public class ForgotPassword {
         observers.add(observer);
     }
 
-    private static void notifyObservers() {
+    private static void notifyObservers() throws Exception {
         for (LoginObserver observer : observers) {
             observer.update();
             System.out.println("Notified observer");
         }
     }
 
-    private static void handleSubmit() {
-        String email = emailTextField.getText();
-        if (email.isEmpty()) {
+    private static void handleSubmit() throws Exception {
+        if (emailString.isEmpty()) {
             errorLabel.setText("Please enter your email.");
         } else {
-            // TODO: Implement forgot password logic here
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Password Reset");
-            alert.setHeaderText("Instructions to reset your password have been sent to your email.");
-            alert.showAndWait();
+            String csvFile = "src/main/resources/users.csv";
+            String tempCsvFile = "src/main/resources/temp_users.csv";
+            String line = "";
+            String csvSplitBy = ",";
+            String salt = CreateUser.generateSalt();
+            String newPassword = CreateUser.encrypt(newPasswordString, salt);
+
+            try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
+                 FileWriter fw = new FileWriter(tempCsvFile)) {
+
+                // Loop through each line in the CSV file
+                while ((line = br.readLine()) != null) {
+
+                    // Split the line by commas
+                    String[] user = line.split(csvSplitBy);
+
+                    // Check if the email matches the input email
+                    if (user[3].equals(emailString)) {
+
+                        // Update the password and salt
+                        user[1] = newPassword;
+                        user[2] = salt;
+                    }
+
+                    // Write the line to the temporary CSV file
+                    fw.write(String.join(",", user) + "\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Replace the original CSV file with the updated content
+            File originalFile = new File(csvFile);
+            File tempFile = new File(tempCsvFile);
+            if (originalFile.delete()) {
+                if (!tempFile.renameTo(originalFile)) {
+                    throw new IOException("Failed to rename temp file");
+                }
+            } else {
+                throw new IOException("Failed to delete original file");
+            }
+            System.out.println("Password reset");
+            changedPassword = true;
+            notifyObservers();
         }
     }
 
+    public static boolean isChangedPassword() {
+        return changedPassword;
+    }
 }

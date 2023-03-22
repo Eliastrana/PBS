@@ -53,8 +53,11 @@ public class GUI extends Application implements LoginObserver {
     private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
 
     private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
+    private BooleanProperty newPassword = new SimpleBooleanProperty(false);
 
     public static String currentUser;
+
+    Scene scene = new Scene(loginWindow);
 
     public GUI() {
     }
@@ -80,7 +83,6 @@ public class GUI extends Application implements LoginObserver {
         Image icon = new Image("icon.png");
         primaryStage.getIcons().add(icon);
 
-        Scene scene = new Scene(loginWindow);
         scene.getStylesheets().add("/Styling.css");
 
 
@@ -90,7 +92,7 @@ public class GUI extends Application implements LoginObserver {
         Login.addObserver(this);
 
         isCreateAccount.addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+            if (isCreateAccount.get()) {
                 launchCreateUser(primaryStage);
             }
         });
@@ -130,6 +132,18 @@ public class GUI extends Application implements LoginObserver {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        ForgotPassword.addObserver(this);
+
+        newPassword.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                try {
+                    externalStartMenu(primaryStage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void launchApp(Stage primaryStage) {
@@ -464,11 +478,11 @@ public class GUI extends Application implements LoginObserver {
     }
 
     @Override
-    public void update() {
+    public void update() throws Exception {
         boolean isLoggedIn = Login.isLoggedIn();
         boolean createdUser = CreateUser.isCreatedUser();
         boolean forgotPassword = Login.isForgotPassword();
-        boolean emailGotten = ForgotPassword.getGotEmail();
+        boolean changedPassword = ForgotPassword.isChangedPassword();
         if (isLoggedIn) {
             currentUser = Login.username.getText();
             isLogin.setValue(true);
@@ -476,12 +490,12 @@ public class GUI extends Application implements LoginObserver {
             Login.username.clear();
             currentUser = CreateUser.username.getText();
             isLogin.setValue(true);
+        } else if (changedPassword) {
+            Login.username.clear();
+            newPassword.setValue(true);
         } else if (forgotPassword) {
             Login.username.clear();
             passwordForgotten.setValue(true);
-        } else if (emailGotten) {
-            Login.username.clear();
-            isLogin.setValue(true);
         } else {
             Login.username.clear();
             isCreateAccount.setValue(true);

@@ -115,7 +115,11 @@ public class Login {
               System.out.println("Logged in");
               SoundPlayer.play("src/main/resources/16bitconfirm.wav");
               loggedIn = true;
-              notifyObservers();
+              try {
+                notifyObservers();
+              } catch (Exception ex) {
+                throw new RuntimeException(ex);
+              }
             }
           }
         }
@@ -126,7 +130,11 @@ public class Login {
 
     createUser.setOnMouseClicked(e -> {
       System.out.println("Opening create user page");
-      notifyObservers();
+      try {
+        notifyObservers();
+      } catch (Exception ex) {
+        throw new RuntimeException(ex);
+      }
     });
 
     Text forgotPassword = new Text("Forgot password");
@@ -134,8 +142,12 @@ public class Login {
     forgotPassword.setOnMouseClicked(e -> {
       forgotPasswordBoolean = true;
       System.out.println("Opening forgot password page");
-      notifyObservers();
-      });
+      try {
+        notifyObservers();
+      } catch (Exception ex) {
+        throw new RuntimeException(ex);
+      }
+    });
 
 
 //    createUser.setOnMouseClicked(e -> {
@@ -213,7 +225,7 @@ public class Login {
       SecretKey tmp = factory.generateSecret(spec);
       SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
-      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
       cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
       return new String(cipher.doFinal(Base64.getDecoder().decode(password)));
     } catch (Exception e) {
@@ -233,7 +245,7 @@ public class Login {
     observers.add(observer);
   }
 
-  private static void notifyObservers() {
+  private static void notifyObservers() throws Exception {
     for (LoginObserver observer : observers) {
       observer.update();
       System.out.println("Notified observer");
