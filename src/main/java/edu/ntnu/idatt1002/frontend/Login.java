@@ -106,7 +106,7 @@ public class Login {
           throw new RuntimeException(ex);
         }
         String[] user = line.split(",");
-          if (user[0].equals(username.getText())) {
+          if (user[0].equals(username.getText()) || user[3].equals(username.getText())) {
             currentUser = username.getText();
             String encryptedPassword = user[1];
             String SALT = user[2];
