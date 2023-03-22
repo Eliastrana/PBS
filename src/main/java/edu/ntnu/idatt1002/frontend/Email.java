@@ -76,7 +76,7 @@ public class Email {
     MimeBodyPart imagePart = new MimeBodyPart();
     Random rand = new Random();
     int n = rand.nextInt(5) + 1;
-    DataSource fds = new FileDataSource("src/main/resources/mailmeme"+n+".jpg");
+    DataSource fds = new FileDataSource("src/main/resources/memes/mailmeme"+n+".jpg");
     imagePart.setDataHandler(new DataHandler(fds));
     imagePart.setHeader("Content-ID", "<image1>");
 
