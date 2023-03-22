@@ -2,7 +2,11 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
+import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.Login;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,11 +16,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
+import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
+import static javafx.scene.text.Font.font;
 
 public class BankStatement {
   public static VBox bankStatementView() {
@@ -26,6 +39,7 @@ public class BankStatement {
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
 
+
     Text viewBankStatement = new Text("View bank statement");
     viewBankStatement.setId("titleText");
 
@@ -33,6 +47,9 @@ public class BankStatement {
     HBox selectAccountHbox = new HBox();
     selectAccountHbox.setAlignment(Pos.CENTER);
 
+    Text selectAccountText = new Text("Select account: ");
+    selectAccountText.setStyle("-fx-fill: #3F403F");
+    selectAccountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
     Set<String> keySet = accounts.keySet();
     ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
@@ -78,6 +95,7 @@ public class BankStatement {
     DatePicker datePickerFrom = new DatePicker();
     datePickerFrom.setValue(LocalDate.now());
     datePickerFrom.setShowWeekNumbers(true);
+    datePickerFrom.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     Text toText = new Text("To: ");
     toText.setId("bodyText");
@@ -85,9 +103,44 @@ public class BankStatement {
     DatePicker datePickerTo = new DatePicker();
     datePickerTo.setValue(LocalDate.now());
     datePickerTo.setShowWeekNumbers(true);
+    datePickerTo.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
     calenderIntervalHbox.getChildren().addAll(fromText, datePickerFrom, toText, datePickerTo);
-    calenderIntervalHbox.setSpacing(20);
+
+    Button export = new Button("Confirm");
+    export.setId("actionButton");
+
+    export.setOnAction(e -> {
+
+          if (categoryMenu.getValue() == null) {
+            SoundPlayer.play("src/main/resources/error.wav");
+            emptyFieldAlert();
+
+          } else {
+            String account = (String) accountMenu.getValue();
+            String category = (String) categoryMenu.getValue();
+            String from = String.valueOf(datePickerFrom.getValue());
+            String to = String.valueOf(datePickerTo.getValue());
+
+            try {
+                ExcelExporter.convertToPdf(ExcelExporter.createBankStatement(account, category, from, to), "bankstatement");
+
+            } catch (IOException f) {
+              throw new RuntimeException(f);
+            } catch (DocumentException ex) {
+                throw new RuntimeException(ex);
+            }
+              if (Desktop.isDesktopSupported()) {
+                  try {
+                      File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + "bankstatement.pdf");
+                      Desktop.getDesktop().open(myFile);
+                  } catch (IOException ex) {
+                      // no application registered for PDFs
+                  }
+              }
+          }
+        });
+
 
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
@@ -119,7 +172,8 @@ public class BankStatement {
     Button exportToExcel = new Button("Export to Excel");
     exportToExcel.setId("actionButton");
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, exportToExcel);
+
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, export);
 
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
