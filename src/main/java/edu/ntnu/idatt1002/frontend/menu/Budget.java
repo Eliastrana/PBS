@@ -102,6 +102,14 @@ public class Budget {
 
     // Read the CSV file
     String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+    File file = new File(csvFile);
+    if (!file.exists()) {
+      try {
+        file.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     BufferedReader br = null;
     String line = "";
     String csvSplitBy = ",";
