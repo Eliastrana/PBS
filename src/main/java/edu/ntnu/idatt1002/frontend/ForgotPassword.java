@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
@@ -45,7 +46,7 @@ public class ForgotPassword {
         emailTextField.setMaxWidth(250);
 
 
-        PasswordField masterPassword = new PasswordField();
+        TextField masterPassword = new TextField();
         masterPassword.setPromptText("Enter master password");
         masterPassword.setId("textField");
         masterPassword.setMaxWidth(250);
