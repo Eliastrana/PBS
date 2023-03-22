@@ -134,7 +134,7 @@ public class Budget {
         previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
       }
       XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-      previousSeries.setName("Previous month");
+      previousSeries.setName(previousMonth);
 
       // Create the bar chart
       CategoryAxis xAxis = new CategoryAxis();
