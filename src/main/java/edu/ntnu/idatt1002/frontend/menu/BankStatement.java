@@ -2,6 +2,7 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
+import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.Login;
@@ -15,7 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -166,7 +173,7 @@ public class BankStatement {
     exportToExcel.setId("actionButton");
 
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox);
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, export);
 
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
