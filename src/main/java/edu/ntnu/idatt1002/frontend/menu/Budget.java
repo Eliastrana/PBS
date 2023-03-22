@@ -92,11 +92,78 @@ public class Budget {
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
       }
+
+      String currentMonth = timeofdaychecker.getCurrentMonth();
+      String previousMonth = timeofdaychecker.getPreviousMonth();
+
+      // Read the CSV file
+      String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+      File file = new File(csvFile);
+      if (!file.exists()) {
+        try {
+          file.createNewFile();
+        } catch (IOException f) {
+          f.printStackTrace();
+        }
+      }
+      BufferedReader br = null;
+      String line = "";
+      String csvSplitBy = ",";
+      List<String[]> currentLines = new ArrayList<String[]>();
+      List<String[]> previousLines = new ArrayList<String[]>();
+      BarChart<String, Number> barChart = null;
+      try {
+        br = new BufferedReader(new FileReader(csvFile));
+        while ((line = br.readLine()) != null) {
+          String[] data = line.split(csvSplitBy);
+          // Filter the data by the current month
+          if (data[2].equalsIgnoreCase(currentMonth)) {
+            currentLines.add(data);
+          }
+          if (data[2].equalsIgnoreCase(previousMonth)) {
+            previousLines.add(data);
+          }
+        }
+
+        // Create the bar chart dataset
+        ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+        for (String[] lineData : currentLines) {
+          currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+        }
+        XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+        currentSeries.setName(currentMonth);
+
+        ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+        for (String[] lineData : previousLines) {
+          previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+        }
+        XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+        previousSeries.setName(previousMonth);
+
+        // Create the bar chart
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Category");
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Value");
+        barChart = new BarChart<String, Number>(xAxis, yAxis);
+        barChart.setTitle("Bar Chart");
+        barChart.getData().addAll(currentSeries, previousSeries);
+        budgetLayout.getChildren().clear();
+        budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
+
+        // Show the bar chart
+      } catch (IOException f) {
+        f.printStackTrace();
+      } finally {
+        if (br != null) {
+          try {
+            br.close();
+          } catch (IOException f) {
+            f.printStackTrace();
+          }
+        }
+      }
     });
-
-
-    Button createBarChart = new Button("Create bar chart");
-    createBarChart.setId("actionButton");
 
     String currentMonth = timeofdaychecker.getCurrentMonth();
     String previousMonth = timeofdaychecker.getPreviousMonth();
@@ -166,16 +233,8 @@ public class Budget {
         }
       }
     }
-    assert barChart != null;
-    for (XYChart.Series<String, Number> series : barChart.getData()) {
-      for (XYChart.Data<String, Number> data : series.getData()) {
-        String category = data.getXValue();
-        options.removeIf(option -> option.equalsIgnoreCase(category));
-      }
-    }
 
-
-    budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount, createBarChart);
+    budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount);
     budgetAmountHbox.setAlignment(Pos.CENTER);
     budgetAmountHbox.setSpacing(20);
 
