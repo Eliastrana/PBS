@@ -69,7 +69,7 @@ public class GUI extends Application implements LoginObserver {
         externalStartMenu(primaryStage);
     }
 
-    public void externalStartMenu(Stage primaryStage) throws Exception {
+    public void externalStartMenu(Stage primaryStage) {
         loginWindow.setVisible(true);
         loginWindow.getChildren().add(Login.loginView());
         loginWindow.getStylesheets().add("/LightMode.css");
@@ -84,8 +84,6 @@ public class GUI extends Application implements LoginObserver {
         primaryStage.getIcons().add(icon);
 
         scene.getStylesheets().add("/Styling.css");
-
-
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -486,14 +484,17 @@ public class GUI extends Application implements LoginObserver {
         if (isLoggedIn) {
             currentUser = Login.username.getText();
             isLogin.setValue(true);
-        } else if (createdUser) {
+        }
+        if (createdUser) {
             Login.username.clear();
             currentUser = CreateUser.username.getText();
             isLogin.setValue(true);
-        } else if (changedPassword) {
+        }
+        if (changedPassword) {
             Login.username.clear();
             newPassword.setValue(true);
-        } else if (forgotPassword) {
+        }
+        if (forgotPassword) {
             Login.username.clear();
             passwordForgotten.setValue(true);
         } else {
