@@ -61,6 +61,7 @@ public class Budget {
             );
 
 
+
     final ComboBox categoryMenu = new ComboBox(options);
     categoryMenu.setPromptText("Select category");
     categoryMenu.setId("categoryMenuButton");
@@ -144,6 +145,14 @@ public class Budget {
         }
       }
     }
+    assert barChart != null;
+    for (XYChart.Series<String, Number> series : barChart.getData()) {
+      for (XYChart.Data<String, Number> data : series.getData()) {
+        String category = data.getXValue();
+        options.removeIf(option -> option.equalsIgnoreCase(category));
+      }
+    }
+
 
     budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount, createBarChart);
     budgetAmountHbox.setAlignment(Pos.CENTER);
