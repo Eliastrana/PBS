@@ -11,6 +11,7 @@ import java.util.List;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import javafx.scene.control.DatePicker;
@@ -22,13 +23,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 
 public class ExcelExporter {
-    static String outputDirectory = "src/main/resources/userfiles/" + Login.getCurrentUser() + "/";
+    static String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
     static File outputDirectoryFile = new File(outputDirectory);
-    static String inputFile = outputDirectory + Login.getCurrentUser() + ".csv";
-    static String outputFile = outputDirectory + Login.getCurrentUser() + ".xlsx";
-    static String outputFile1 = outputDirectory + Login.getCurrentUser() + ".pdf";
-    static String outputFile2 = outputDirectory + Login.getCurrentUser() + "_" + "bankstatement.xlsx";
-    static String outputFile3 = outputDirectory + Login.getCurrentUser() + "_" + "bankstatement" +
+    static String inputFile = outputDirectory + GUI.getCurrentUser() + ".csv";
+    static String outputFile = outputDirectory + GUI.getCurrentUser() + ".xlsx";
+    static String outputFile1 = outputDirectory + GUI.getCurrentUser() + ".pdf";
+    static String outputFile2 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement.xlsx";
+    static String outputFile3 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement" +
         ".pdf";   //Need to rename all outputfiles to be unique
     public static List<Expense> expensesToTable = new ArrayList<>();
 
@@ -87,7 +88,7 @@ public class ExcelExporter {
     }
     public static void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
-             FileOutputStream fos = new FileOutputStream(outputDirectory + Login.getCurrentUser() + fileName + ".pdf")){
+             FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".pdf")){
 
             Document document = new Document();
             PdfWriter.getInstance(document, fos);
