@@ -87,7 +87,7 @@ public class GUI extends Application implements LoginObserver {
         loginWindow.setMinSize(1000, 700);
         loginWindow.setMaxSize(1000, 700);
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         scene.getStylesheets().add("/Styling.css");
@@ -126,7 +126,7 @@ public class GUI extends Application implements LoginObserver {
         passwordForgottenWindow.setMinSize(1000, 700);
         passwordForgottenWindow.setMaxSize(1000, 700);
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         scenePasswordForgotten.getStylesheets().add("/Styling.css");
@@ -188,7 +188,7 @@ public class GUI extends Application implements LoginObserver {
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add("/LightMode.css");
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         ScrollPane scrollPane = new ScrollPane();
@@ -235,7 +235,7 @@ public class GUI extends Application implements LoginObserver {
 
         sceneCreateUser.getStylesheets().add("/Styling.css");
 
-        Image icon = new Image("icon.png");
+        Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
 
         CreateUser.addObserver(this);

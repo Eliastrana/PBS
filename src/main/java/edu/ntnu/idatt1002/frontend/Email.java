@@ -33,7 +33,7 @@ public class Email {
     recipientEmail = email;
     passwordString = password;
 
-    //String emailPhoto = "src/main/resources/icon.PNG";
+    //String emailPhoto = "src/main/resources/icon.png";
 
 
 
