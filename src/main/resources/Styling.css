@@ -168,6 +168,17 @@
     -fx-max-width: 20px;
 }
 
+#squareButton:hover {
+    -fx-background-color: #6d7c71;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-max-height: 20px;
+    -fx-max-width: 20px;;
+    -fx-cursor: hand;
+}
+
 #underTitleText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
@@ -201,6 +212,27 @@
 }
 
 
+#backButton {
+    -fx-background-color: rgba(0, 0, 0, 0);
+    -fx-text-fill: rgb(1, 5, 1);
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-color: rgba(159, 184, 173, 0);
+    -fx-border-width: 2px;
+    -fx-max-height: 50px;
+    -fx-max-width: 50px;
+}
+
+#backButton:hover {
+    -fx-background-color: rgba(215, 212, 211, 0.3);
+    -fx-text-fill: #e7e4e3;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-max-height: 20px;
+    -fx-max-width: 20px;;
+    -fx-cursor: hand;
+}
 
 default-color0.chart-pie {
     -fx-pie-color: #65756a
