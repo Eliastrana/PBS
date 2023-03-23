@@ -2,7 +2,7 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
-import edu.ntnu.idatt1002.UserHandling;
+import edu.ntnu.idatt1002.backend.UserHandling;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
