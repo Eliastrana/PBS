@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -80,7 +81,8 @@ public class Report {
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + "report.pdf");
+          File myFile =
+              new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
           // no application registered for PDFs

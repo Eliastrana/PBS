@@ -5,6 +5,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -132,7 +133,8 @@ public class BankStatement {
             }
               if (Desktop.isDesktopSupported()) {
                   try {
-                      File myFile = new File("src/main/resources/userfiles/" + Login.getCurrentUser() + "/" + Login.getCurrentUser() + "bankstatement.pdf");
+                      File myFile =
+                          new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "bankstatement.pdf");
                       Desktop.getDesktop().open(myFile);
                   } catch (IOException ex) {
                       // no application registered for PDFs
