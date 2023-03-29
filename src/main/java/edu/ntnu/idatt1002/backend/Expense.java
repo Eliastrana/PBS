@@ -19,6 +19,19 @@ public class Expense {
     //String date = dateUnformatted.format(formatter);
 
     public Expense(String name, double price, int category, LocalDate date){
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (category < 1 || category > 5) {
+            throw new IllegalArgumentException("Category must be between 1 and 5");
+        }
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+
         this.name = name;
         this.price = price;
         this.category = category;
@@ -26,6 +39,18 @@ public class Expense {
     }
 
     public Expense(String name, Double price, LocalDate date, String category, String account) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        if (category == null || category.isBlank()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
         this.name = name;
         this.price = price;
         this.date = date;
@@ -34,6 +59,22 @@ public class Expense {
     }
 
     public Expense(String name, Double price, LocalDate date, String category, String account, String uniqueID) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
+        if (category == null || category.isBlank()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
+        if (uniqueID == null || uniqueID.isBlank()) {
+            throw new IllegalArgumentException("UniqueID cannot be null or empty");
+        }
+
         this.name = name;
         this.price = price;
         this.date = date;
@@ -53,21 +94,45 @@ public class Expense {
     public LocalDate getDate() {
         return date;
     }
+    public int getCategoryInt() {
+        return category;
+    }
+    public String getCategoryAsString() {
+        return categoryAsString;
+    }
 
     public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
         this.name = name;
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
         this.price = price;
     }
 
 
-    public void setCategory(int category) {
+    public void setCategoryInt(int category) {
+        if (category < 1 || category > 5) {
+            throw new IllegalArgumentException("Category must be between 1 and 5");
+        }
         this.category = category;
+    }
+    public void setCategoryAsString(String category) {
+        if (category == null || category.isBlank()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
+        this.categoryAsString = category;
     }
 
     public void setDate(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date cannot be null");
+        }
         this.date = date;
     }
     public String getAccount() {
@@ -78,7 +143,11 @@ public class Expense {
     }
     public String getUniqueID() {
         return uniqueID;
-
-
+    }
+    public void setUniqueID(String uniqueID) {
+        if (uniqueID == null || uniqueID.isBlank()) {
+            throw new IllegalArgumentException("UniqueID cannot be null or empty");
+        }
+        this.uniqueID = uniqueID;
     }
 }
