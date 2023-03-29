@@ -190,6 +190,14 @@ public class Transfer {
               newAccountName.setText(null);
               newAccountBalance.setText(null);
 
+              leftTransfer.getItems().clear();
+              leftTransfer.getItems().addAll(Accounts.getAccounts().keySet());
+
+              incomeAccount.getItems().clear();
+              incomeAccount.getItems().addAll(Accounts.getAccounts().keySet());
+
+
+
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
                     writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "\n");
