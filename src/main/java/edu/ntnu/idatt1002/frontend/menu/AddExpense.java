@@ -164,8 +164,8 @@ public class AddExpense {
                   default -> System.out.println("Error");
                 }
 
-                Accounts.addExpenseToAccount(new Expense(name, price, 1, datePicker.getValue()),
-                        accountName);
+//                Accounts.addExpenseToAccount(new Expense(name, price, 1, datePicker.getValue()),
+//                        accountName);
 
 
                 System.out.println("Purchase confirmed");
