@@ -173,8 +173,10 @@
     -fx-border-radius: 5px;
     -fx-border-color: #9FB8AD;
     -fx-border-width: 2px;
-    -fx-max-height: 20px;
-    -fx-max-width: 20px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+    -fx-min-width: 40px;
+    -fx-max-width: 40px;
 }
 
 #squareButton:hover {

@@ -181,8 +181,6 @@ public class GUI extends Application implements LoginObserver {
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
         bankStatementWindow.getStylesheets().add("/Styling.css");
 
-
-
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
@@ -321,7 +319,6 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(overviewButton);
 
         ImageView transferImage = new ImageView(new Image("icons/transfer.png"));
         transferImage.setFitHeight(20);
@@ -348,7 +345,6 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(transferButton);
 
         ImageView addExpenseImage = new ImageView(new Image("icons/addExpense.png"));
         addExpenseImage.setFitHeight(20);
@@ -375,7 +371,6 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(addExpenseButton);
 
         //BUTTON 3
 
@@ -403,30 +398,7 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(reportButton);
 
-        ImageView settingsImage = new ImageView(new Image("icons/settings.png"));
-        settingsImage.setFitHeight(20);
-        settingsImage.setFitWidth(20);
-
-        Button settingsButton = new Button("Settings", settingsImage);
-        settingsButton.setId("topMenuButton");
-        settingsButton.setOnAction(event -> {
-            try {
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(true);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-                System.out.println("settings button pressed");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        topMenu.getChildren().add(settingsButton);
 
         ImageView budgetImage = new ImageView(new Image("icons/budget.png"));
         budgetImage.setFitHeight(20);
@@ -449,7 +421,6 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(budgetButton);
 
         ImageView bankStatementImage = new ImageView(new Image("icons/bankStatement.png"));
         bankStatementImage.setFitHeight(20);
@@ -472,17 +443,38 @@ public class GUI extends Application implements LoginObserver {
                 throw new RuntimeException(e);
             }
         });
-        topMenu.getChildren().add(bankStatementButton);
+
+
+        ImageView settingsImage = new ImageView(new Image("icons/settings.png"));
+        settingsImage.setFitHeight(20);
+        settingsImage.setFitWidth(20);
+
+        Button settingsButton = new Button("", settingsImage);
+        settingsButton.setId("squareButton");
+        settingsButton.setOnAction(event -> {
+            try {
+                overviewWindow.setVisible(false);
+                transferWindow.setVisible(false);
+                addExpenseWindow.setVisible(false);
+                reportWindow.setVisible(false);
+                settingsWindow.setVisible(true);
+                budgetWindow.setVisible(false);
+                bankStatementWindow.setVisible(false);
+
+                System.out.println("settings button pressed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         ImageView logOutImage = new ImageView(new Image("icons/logOut.png"));
-        logOutImage.setFitHeight(15);
-        logOutImage.setFitWidth(15);
+        logOutImage.setFitHeight(20);
+        logOutImage.setFitWidth(20);
 
         Button logOutButton = new Button();
         logOutButton.setGraphic(logOutImage);
         logOutButton.setId("squareButton");
 
-        topMenu.getChildren().add(logOutButton);
         logOutButton.setOnAction(event -> {
             SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
@@ -503,6 +495,8 @@ public class GUI extends Application implements LoginObserver {
         });
 
         topMenu.getStylesheets().add("/Styling.css");
+
+        topMenu.getChildren().addAll(overviewButton,transferButton,addExpenseButton,reportButton,budgetButton,bankStatementButton,settingsButton,logOutButton);
 
         return topMenu;
     }

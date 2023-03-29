@@ -5,6 +5,7 @@ import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
+import edu.ntnu.idatt1002.frontend.utility.OutlinedTextField;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
@@ -36,11 +37,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+
+
+
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAccount;
 import static edu.ntnu.idatt1002.backend.Expenses.*;
 import static edu.ntnu.idatt1002.backend.Expenses.rent;
-import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 public class AddExpense {
   public static VBox expenseView() {
@@ -71,6 +75,7 @@ public class AddExpense {
 
 
 
+
     final ComboBox categoryMenu = new ComboBox(options);
 
 
@@ -84,13 +89,15 @@ public class AddExpense {
     categoryMenu.setPromptText(originalPromptText);
     categoryMenu.setId("categoryMenuButton");
 
-    TextField prices = new TextField();
+    OutlinedTextField prices = new OutlinedTextField();
     prices.setPromptText("Enter price");
     prices.setId("textField");
 
-    TextField names = new TextField();
+    // Replace the TextField object with an instance of the OutlinedTextField class
+    OutlinedTextField names = new OutlinedTextField();
     names.setPromptText("Enter name");
     names.setId("textField");
+
 
     Button confirmExpense = new Button("Confirm");
     confirmExpense.setId("actionButton");
@@ -105,11 +112,27 @@ public class AddExpense {
 
               if (categoryMenu.getValue() == null) {
                 SoundPlayer.play("src/main/resources/error.wav");
-                emptyFieldAlert();
+                String customMessage = "Please select a category.";
+                showAlert(customMessage);
                 System.out.println("No category selected");
+
+              } else if (prices.getText().isEmpty()) {
+                SoundPlayer.play("src/main/resources/error.wav");
+                prices.getOutlinedStyleProperty().set("-fx-border-color: red;");
+
+
+              } else if (names.getText().isEmpty()) {
+                SoundPlayer.play("src/main/resources/error.wav");
+
+                names.getOutlinedStyleProperty().set("-fx-border-color: red;");
+
+
+
               } else if (accounts.get((String) accountMenu.getValue()) - (Double.parseDouble(prices.getText())) < 0) {
                 System.out.println("Not enough money in account");
-                emptyFieldAlert();
+                String customMessage = "Not enough money in account.";
+                showAlert(customMessage);
+
                 categoryMenu.setValue(null);
                 categoryMenu.setPromptText(originalPromptText);
 
@@ -154,16 +177,6 @@ public class AddExpense {
                   System.err.println("Error writing to file: " + f.getMessage());
                 }
 
-
-        //This clears the textfields and plays the confirmation sound
-        //categoryMenu.setValue(null);
-        //categoryMenu.setPromptText("Pick a category");
-        //categoryMenu.getSelectionModel().clearSelection();
-
-
-        categoryMenu.setValue(null);
-        categoryMenu.setPromptText(originalPromptText);
-
         names.setText(null);
         prices.setText(null);
         SoundPlayer.play("src/main/resources/16bitconfirm.wav");
@@ -177,12 +190,7 @@ public class AddExpense {
     title.setAlignment(Pos.CENTER);
     title.setSpacing(40);
 
-    VBox categoryNamePrice = new VBox(//pickCategory,
-            categoryMenu,
-            //pickPrice,
-            prices,
-            //pickName,
-            names);
+    VBox categoryNamePrice = new VBox(accountMenu, categoryMenu, prices, names);
 
 
     categoryNamePrice.setPadding(new Insets(25));
@@ -203,7 +211,7 @@ public class AddExpense {
     dateAndInput.setPadding(new Insets(15));
 
 
-    VBox dateAndInputAndConfirm = new VBox(title,accountMenu, dateAndInput, confirmExpense);
+    VBox dateAndInputAndConfirm = new VBox(title, dateAndInput, confirmExpense);
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
     dateAndInputAndConfirm.setSpacing(20);
 

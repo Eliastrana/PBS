@@ -29,7 +29,7 @@ import java.util.Set;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
-import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.emptyFieldAlert;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static javafx.scene.text.Font.font;
 
 public class BankStatement {
@@ -114,7 +114,8 @@ public class BankStatement {
 
           if (categoryMenu.getValue() == null) {
             SoundPlayer.play("src/main/resources/error.wav");
-            emptyFieldAlert();
+            String customMessage = "Please select a category";
+            showAlert(customMessage);
 
           } else {
             String account = (String) accountMenu.getValue();

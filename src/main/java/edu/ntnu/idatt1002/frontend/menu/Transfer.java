@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,77 +34,52 @@ public class Transfer {
     System.out.println("open transfer window");
     VBox transferVBox = new VBox();
 
-    Text transferBetweenAccounts = new Text("Transfer between accounts:");
-    transferBetweenAccounts.setId("titleText");
-    transferVBox.getChildren().add(transferBetweenAccounts);
-
-    HBox transferBewteenAccounts = new HBox();
-    transferBewteenAccounts.setSpacing(20);
-    transferVBox.getChildren().add(transferBewteenAccounts);
-    transferBewteenAccounts.setAlignment(Pos.CENTER);
 
 
-    Text transferfrom = new Text("Transfer from:");
-    transferfrom.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
-    transferBewteenAccounts.getChildren().add(transferfrom);
-
-    ComboBox<String> leftTransfer = new ComboBox<>();
-    try {
-      leftTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-    transferBewteenAccounts.getChildren().add(leftTransfer);
-    leftTransfer.setId("categoryMenuButton");
-
-    Text transferto = new Text(" to: ");
-    transferto.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
-    transferBewteenAccounts.getChildren().add(transferto);
-    ComboBox<String> rightTransfer = new ComboBox<>();
-    rightTransfer.setDisable(true);
-    try {
-      rightTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-    leftTransfer.setOnAction(e -> {
-      try {
-        rightTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
-      } catch (FileNotFoundException ex) {
-        throw new RuntimeException(ex);
-      }
-      rightTransfer.setDisable(false);
-      rightTransfer.getItems().remove(leftTransfer.getValue());
-    });
-    transferBewteenAccounts.getChildren().add(rightTransfer);
-    rightTransfer.setId("categoryMenuButton");
+        Text transferBetweenAccounts = new Text("Transfer between accounts:");
+        transferBetweenAccounts.setId("titleText");
 
 
-    HBox transferBewteenAccountsAmount = new HBox();
-    transferBewteenAccountsAmount.setSpacing(20);
-    transferBewteenAccountsAmount.setPadding(new Insets(40, 40, 40, 40));
-    transferVBox.getChildren().add(transferBewteenAccountsAmount);
-    transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
+        HBox transferBetweenAccountsHbox = new HBox();
+        transferBetweenAccountsHbox.setSpacing(20);
+        transferBetweenAccountsHbox.setAlignment(Pos.CENTER);
 
-    Text selectAmount = new Text("Select transfer amount: ");
-    selectAmount.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
-    transferBewteenAccountsAmount.getChildren().add(selectAmount);
-    transferBewteenAccountsAmount.setAlignment(Pos.CENTER);
+            ComboBox<String> leftTransfer = new ComboBox<>();
+            leftTransfer.setPromptText("Select Account");
+            leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+
+            leftTransfer.setId("categoryMenuButton");
 
 
-    TextField priceEntry = new TextField();
-    priceEntry.setPromptText("Enter price");
-    priceEntry.setId("textField");
-    transferBewteenAccountsAmount.getChildren().add(priceEntry);
+            ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
+            arrow.setFitHeight(20);
+            arrow.setFitWidth(20);
 
-    Button confirmTransfer = new Button("Confirm");
-    confirmTransfer.setId("actionButton");
 
-    priceEntry.setOnKeyPressed(e -> {
-      if (e.getCode() == KeyCode.ENTER) {
-        confirmTransfer.fire(); // Simulate a click event on the logIn button
-      }
-    });
+      ComboBox<String> rightTransfer = new ComboBox<>();
+            rightTransfer.setPromptText("Select Account");
+
+            rightTransfer.setDisable(true);
+            rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+            leftTransfer.setOnAction(e -> {
+              rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+              rightTransfer.setDisable(false);
+              rightTransfer.getItems().remove(leftTransfer.getValue());
+            });
+            rightTransfer.setId("categoryMenuButton");
+
+            TextField priceEntry = new TextField();
+            priceEntry.setPromptText("Enter transfer amount");
+            priceEntry.setId("textField");
+
+            Button confirmTransfer = new Button("Confirm");
+            confirmTransfer.setId("actionButton");
+
+            priceEntry.setOnKeyPressed(e -> {
+              if (e.getCode() == KeyCode.ENTER) {
+                confirmTransfer.fire(); // Simulate a click event on the logIn button
+              }
+            });
 
     confirmTransfer.setOnAction(e -> {
       String removeFromAccount = leftTransfer.getValue();
@@ -136,55 +113,37 @@ public class Transfer {
     }
     });
 
-    transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
 
-    Text registerIncome = new Text("Register new income:");
-    registerIncome.setId("titleText");
-    transferVBox.getChildren().add(registerIncome);
+        Text registerIncome = new Text("Register new income:");
+        registerIncome.setId("titleText");
 
-    HBox registerIncomeHBox = new HBox();
-    registerIncomeHBox.setSpacing(20);
-    transferVBox.getChildren().add(registerIncomeHBox);
-    registerIncomeHBox.setAlignment(Pos.CENTER);
+
+        HBox registerIncomeHBox = new HBox();
+        registerIncomeHBox.setSpacing(20);
+        registerIncomeHBox.setAlignment(Pos.CENTER);
 
     Text incomeTo = new Text("Choose the account for registering income:");
     incomeTo.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
-    registerIncomeHBox.getChildren().add(incomeTo);
     ComboBox<String> incomeAccount = new ComboBox<>();
     try {
       incomeAccount.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
     }
-    registerIncomeHBox.getChildren().add(incomeAccount);
     incomeAccount.setId("categoryMenuButton");
 
-    HBox registerAmount = new HBox();
-    registerAmount.setSpacing(20);
-    registerAmount.setPadding(new Insets(40, 40, 40, 40));
-    transferVBox.getChildren().add(registerAmount);
-    registerAmount.setAlignment(Pos.CENTER);
+            TextField amountIncome = new TextField();
+            amountIncome.setPromptText("Enter income amount");
+            amountIncome.setId("textField");
 
-    Text selectAmountIncome = new Text("Select transfer amount: ");
-    selectAmountIncome.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
-    registerAmount.getChildren().add(selectAmountIncome);
-    registerAmount.setAlignment(Pos.CENTER);
+            Button confirmIncome = new Button("Confirm");
+            confirmIncome.setId("actionButton");
 
-    TextField amountIncome = new TextField();
-    amountIncome.setPromptText("Enter price");
-    amountIncome.setId("textField");
-    registerAmount.getChildren().add(amountIncome);
-
-
-
-    Button confirmIncome = new Button("Confirm");
-    confirmIncome.setId("actionButton");
-
-    amountIncome.setOnKeyPressed(e -> {
-      if (e.getCode() == KeyCode.ENTER) {
-        confirmIncome.fire(); // Simulate a click event on the logIn button
-      }
-    });
+            amountIncome.setOnKeyPressed(e -> {
+              if (e.getCode() == KeyCode.ENTER) {
+                confirmIncome.fire(); // Simulate a click event on the logIn button
+              }
+            });
 
     confirmIncome.setOnAction(e -> {
       String inncomeAccountName = incomeAccount.getValue();
@@ -203,10 +162,62 @@ public class Transfer {
       }
     });
 
-    registerAmount.getChildren().add(confirmIncome);
+
+            Text addNewAccount = new Text("Add new account:");
+            addNewAccount.setId("titleText");
+
+            HBox addNewAccountHBox = new HBox();
+            addNewAccountHBox.setSpacing(20);
+            addNewAccountHBox.setAlignment(Pos.CENTER);
+
+            TextField newAccountName = new TextField();
+            newAccountName.setPromptText("Enter account name");
+            newAccountName.setId("textField");
+
+            TextField newAccountBalance = new TextField();
+            newAccountBalance.setPromptText("Enter account balance");
+            newAccountBalance.setId("textField");
+
+            Button confirmNewAccount = new Button("Confirm");
+            confirmNewAccount.setId("actionButton");
+            confirmNewAccount.setOnAction(e -> {
+              String accountName = newAccountName.getText();
+              String tempText = newAccountBalance.getText();
+              double accountBalance = Double.parseDouble(tempText);
+              Accounts.addAccount(accountName, accountBalance);
+              System.out.println("Confirm new account button pressed");
+              SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+              newAccountName.setText(null);
+              newAccountBalance.setText(null);
+
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+                    writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "\n");
+                } catch (IOException f) {
+                    System.err.println("Error writing to file: " + f.getMessage());
+                }
+            });
+
+            newAccountBalance.setOnKeyPressed(e -> {
+              if (e.getCode() == KeyCode.ENTER) {
+                confirmNewAccount.fire(); // Simulate a click event on the logIn button
+              }
+            });
+
+
+
+
+    transferBetweenAccountsHbox.getChildren().addAll(leftTransfer,arrow, rightTransfer,priceEntry, confirmTransfer);
+
+    registerIncomeHBox.getChildren().addAll(incomeAccount, amountIncome, confirmIncome);
+
+    addNewAccountHBox.getChildren().addAll(newAccountName,newAccountBalance, confirmNewAccount);
+
+    transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox,registerIncome, registerIncomeHBox, addNewAccount, addNewAccountHBox);
+    transferVBox.setSpacing(40);
+
     VBox vbox = new VBox(transferVBox);
     vbox.setPadding(new Insets(40, 40, 40, 40));
-    //transferWindow.getChildren().add(vbox);
     return vbox;
 
 

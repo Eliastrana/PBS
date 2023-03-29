@@ -57,11 +57,10 @@ public class Overview {
     text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
     text2.setLineSpacing(0);
     text2.setFill(Color.LIGHTGREEN);
-    text2.setStyle("-fx-fill: #9FB8AD");
+    text2.setStyle("-fx-fill: #404f44");
 
     welcomeAndTimeOfDay.getChildren().addAll(text, text2);
     welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
-
 
     HBox hbox2 = new HBox(2);
     Text textSavings = new Text("Total savings: " + "\n" + getTotalOfAllAccounts());
@@ -98,7 +97,6 @@ public class Overview {
 
     HBox currentAccountStatusTextFormat = new HBox();
     currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
-
 
     //LeftTable
     TableView<Income> leftTable = new TableView<>();
@@ -235,7 +233,6 @@ public class Overview {
         }
       }
     }
-
 
 
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);

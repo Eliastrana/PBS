@@ -10,21 +10,20 @@ import javafx.scene.control.Dialog;
 public class AlertWindow {
 
 
-    public static void emptyFieldAlert() {
-
+    public static void showAlert(String message) {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Empty Field Alert");
+        dialog.setTitle("Alert");
         dialog.setHeaderText(null);
         dialog.setResizable(false);
         dialog.setWidth(300);
         dialog.setHeight(200);
 
         // Create a label with the message
-        Label message = new Label("You have left a field empty"); //
-        message.setStyle("-fx-font-size: 20px;");
+        Label messageLabel = new Label(message);
+        messageLabel.setStyle("-fx-font-size: 20px;");
 
         // Create a vertical box to hold the label and the button
-        VBox content = new VBox(message);
+        VBox content = new VBox(messageLabel);
         content.setAlignment(Pos.CENTER);
         content.setPadding(new Insets(10, 10, 10, 10));
 
@@ -52,6 +51,7 @@ public class AlertWindow {
         // Show the dialog and wait for the user to respond
         dialog.showAndWait();
     }
+
 
 
 
