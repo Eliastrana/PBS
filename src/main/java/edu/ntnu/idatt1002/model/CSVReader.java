@@ -20,7 +20,6 @@ public class CSVReader {
         HashMap<String, Double> newAccounts = new HashMap<>(); // Create a new instance of hashmap
         CSV_FILE_PATH = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
         File csvFile = new File(CSV_FILE_PATH);
-        System.out.println("File path: " + csvFile.getAbsolutePath());
         if (!csvFile.exists()) {
             try {
                 csvFile.createNewFile();
