@@ -198,7 +198,6 @@ public class Transfer {
 
 
 
-
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
                     writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "\n");
                 } catch (IOException f) {

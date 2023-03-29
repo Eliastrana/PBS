@@ -7,6 +7,7 @@ import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.OutlinedTextField;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -47,6 +48,8 @@ import static edu.ntnu.idatt1002.backend.Expenses.rent;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 public class AddExpense {
+
+
   public static VBox expenseView() {
     System.out.println("open expense window");
     VBox addExpenseVBox = new VBox();
@@ -73,13 +76,15 @@ public class AddExpense {
                     "Other"
             );
 
-
-
-
     final ComboBox categoryMenu = new ComboBox(options);
 
 
-    ObservableList<String> options2 = FXCollections.observableArrayList("String");
+    ObservableList<String> options2 = null;
+    try {
+      options2 = FXCollections.observableArrayList(CSVReader.readCSV().keySet());
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setPromptText("Pick an account");
     accountMenu.setId("categoryMenuButton");

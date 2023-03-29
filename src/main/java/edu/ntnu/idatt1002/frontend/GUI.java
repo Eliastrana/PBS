@@ -354,6 +354,10 @@ public class GUI extends Application implements LoginObserver {
         Button addExpenseButton = new Button("Add Expense", addExpenseImage);
         addExpenseButton.setId("topMenuButton");
         addExpenseButton.setOnAction(event -> {
+
+            addExpenseWindow.getChildren().clear();
+            addExpenseWindow.getChildren().add(AddExpense.expenseView());
+
             try {
 
                 overviewWindow.setVisible(false);
