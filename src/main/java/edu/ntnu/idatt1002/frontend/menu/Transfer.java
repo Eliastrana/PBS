@@ -2,7 +2,9 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.model.CSVReader;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,7 +19,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.Accounts.addToAccount;
@@ -43,7 +47,11 @@ public class Transfer {
     transferBewteenAccounts.getChildren().add(transferfrom);
 
     ComboBox<String> leftTransfer = new ComboBox<>();
-    leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+    try {
+      leftTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
     transferBewteenAccounts.getChildren().add(leftTransfer);
     leftTransfer.setId("categoryMenuButton");
 
@@ -52,9 +60,17 @@ public class Transfer {
     transferBewteenAccounts.getChildren().add(transferto);
     ComboBox<String> rightTransfer = new ComboBox<>();
     rightTransfer.setDisable(true);
-    rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+    try {
+      rightTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
     leftTransfer.setOnAction(e -> {
-      rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+      try {
+        rightTransfer.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
+      } catch (FileNotFoundException ex) {
+        throw new RuntimeException(ex);
+      }
       rightTransfer.setDisable(false);
       rightTransfer.getItems().remove(leftTransfer.getValue());
     });
@@ -93,14 +109,31 @@ public class Transfer {
       String addToAccount = rightTransfer.getValue();
       String tempText = priceEntry.getText();
       double amountToAdd = Double.parseDouble(tempText);
-      Accounts.transferBetweenAccounts(removeFromAccount, addToAccount, amountToAdd);
+
+      if (amountToAdd > accounts.get(removeFromAccount)) {
+        System.out.println("Not enough money");
+        SoundPlayer.play("src/main/resources/error.wav");
+        leftTransfer.setValue(null);
+        rightTransfer.setValue(null);
+        priceEntry.setText(null);
+        rightTransfer.setDisable(true);
+        rightTransfer.getItems().clear();
+      }
+      else{
       System.out.println("Confirm transfer button pressed");
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-      leftTransfer.setValue(null);
-      rightTransfer.setValue(null);
-      priceEntry.setText(null);
-      rightTransfer.setDisable(true);
-      rightTransfer.getItems().clear();
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+        writer.write(removeFromAccount + "," + (amountToAdd*-1) + "," + LocalDate.now() + "\n");
+        writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "\n");
+      } catch (IOException f) {
+        System.err.println("Error writing to file: " + f.getMessage());
+      }
+        leftTransfer.setValue(null);
+        rightTransfer.setValue(null);
+        priceEntry.setText(null);
+        rightTransfer.setDisable(true);
+        rightTransfer.getItems().clear();
+    }
     });
 
     transferBewteenAccountsAmount.getChildren().add(confirmTransfer);
@@ -118,7 +151,11 @@ public class Transfer {
     incomeTo.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
     registerIncomeHBox.getChildren().add(incomeTo);
     ComboBox<String> incomeAccount = new ComboBox<>();
-    incomeAccount.setItems(FXCollections.observableArrayList(accounts.keySet()));
+    try {
+      incomeAccount.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
     registerIncomeHBox.getChildren().add(incomeAccount);
     incomeAccount.setId("categoryMenuButton");
 
@@ -153,12 +190,17 @@ public class Transfer {
       String inncomeAccountName = incomeAccount.getValue();
       String tempText = amountIncome.getText();
       double amountToAdd = Double.parseDouble(tempText);
-      addToAccount(inncomeAccountName, amountToAdd);
       incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
       System.out.println("Confirm income button pressed");
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
       incomeAccount.setValue(null);
       amountIncome.setText(null);
+
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+        writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "\n");
+      } catch (IOException f) {
+        System.err.println("Error writing to file: " + f.getMessage());
+      }
     });
 
     registerAmount.getChildren().add(confirmIncome);

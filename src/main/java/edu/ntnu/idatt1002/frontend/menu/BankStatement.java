@@ -52,8 +52,7 @@ public class BankStatement {
     selectAccountText.setStyle("-fx-fill: #3F403F");
     selectAccountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
-    Set<String> keySet = accounts.keySet();
-    ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
+    ObservableList<String> options2 = FXCollections.observableArrayList("Savings");
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setId("categoryMenuButton");
     accountMenu.setPromptText("Select account");

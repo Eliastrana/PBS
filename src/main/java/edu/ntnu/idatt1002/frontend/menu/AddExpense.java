@@ -74,8 +74,7 @@ public class AddExpense {
     final ComboBox categoryMenu = new ComboBox(options);
 
 
-    Set<String> keySet = accounts.keySet();
-    ObservableList<String> options2 = FXCollections.observableArrayList(keySet);
+    ObservableList<String> options2 = FXCollections.observableArrayList("String");
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setPromptText("Pick an account");
     accountMenu.setId("categoryMenuButton");
