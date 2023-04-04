@@ -40,21 +40,21 @@ public class GUI extends Application implements LoginObserver {
 
     private StackPane passwordForgottenWindow = new StackPane();
     private StackPane createUserWindow = new StackPane();
-    private StackPane overviewWindow = new StackPane();
-    private StackPane transferWindow = new StackPane();
-    private StackPane reportWindow = new StackPane();
-    private StackPane addExpenseWindow = new StackPane();
-    private StackPane settingsWindow = new StackPane();
-    private StackPane budgetWindow = new StackPane();
-    private StackPane bankStatementWindow = new StackPane();
+    protected static StackPane overviewWindow = new StackPane();
+    protected static StackPane transferWindow = new StackPane();
+    protected static StackPane reportWindow = new StackPane();
+    protected static StackPane addExpenseWindow = new StackPane();
+    protected static StackPane settingsWindow = new StackPane();
+    protected static StackPane budgetWindow = new StackPane();
+    protected static StackPane bankStatementWindow = new StackPane();
 
 
 
-    private BooleanProperty isLogin = new SimpleBooleanProperty(false);
-    private BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
+    BooleanProperty isLogin = new SimpleBooleanProperty(false);
+    BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
 
-    private BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
-    private BooleanProperty newPassword = new SimpleBooleanProperty(false);
+    BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
+    BooleanProperty newPassword = new SimpleBooleanProperty(false);
 
     private BooleanProperty backToLoginForgot = new SimpleBooleanProperty(false);
     private BooleanProperty backToLoginCreate = new SimpleBooleanProperty(false);
@@ -115,6 +115,39 @@ public class GUI extends Application implements LoginObserver {
         });
     }
 
+    public void launchCreateUser(Stage primaryStage) {
+        createUserWindow.getChildren().add(CreateUser.createUserView());
+        loginWindow.setVisible(true);
+        loginWindow.getChildren().add(Login.loginView());
+        loginWindow.getStylesheets().add("/LightMode.css");
+        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
+        loginWindow.setAlignment(Pos.CENTER);
+        loginWindow.setPrefSize(1000, 700);
+        loginWindow.setMinSize(1000, 700);
+        loginWindow.setMaxSize(1000, 700);
+
+        sceneCreateUser.getStylesheets().add("/Styling.css");
+
+        Image icon = new Image("icons/icon.png");
+        primaryStage.getIcons().add(icon);
+
+        CreateUser.addObserver(this);
+
+        primaryStage.setScene(sceneCreateUser);
+        primaryStage.show();
+
+        backToLoginCreate.addListener((observable, oldValue, newValue) -> {
+            if (backToLoginCreate.get()) {
+                try {
+                    backToLoginCreate.set(false);
+                    CreateUser.setBackToLogin(false);
+                    externalStartMenu(primaryStage);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
     public void launchForgotPassword(Stage primaryStage){
         passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
@@ -181,6 +214,8 @@ public class GUI extends Application implements LoginObserver {
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
         bankStatementWindow.getStylesheets().add("/Styling.css");
 
+
+
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
@@ -214,295 +249,26 @@ public class GUI extends Application implements LoginObserver {
         StackPane root = new StackPane();
 
         root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
-        borderPane.setTop(topMenu(primaryStage));
+        TopMenu topMenu = new TopMenu(this);
+        borderPane.setTop(topMenu.topMenu(primaryStage));
         borderPane.setCenter(root);
 
         updatePane();
     }
 
-    public void launchCreateUser(Stage primaryStage) {
-        createUserWindow.getChildren().add(CreateUser.createUserView());
-        loginWindow.setVisible(true);
-        loginWindow.getChildren().add(Login.loginView());
-        loginWindow.getStylesheets().add("/LightMode.css");
-        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
-        loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPrefSize(1000, 700);
-        loginWindow.setMinSize(1000, 700);
-        loginWindow.setMaxSize(1000, 700);
 
-        sceneCreateUser.getStylesheets().add("/Styling.css");
-
-        Image icon = new Image("icons/icon.png");
-        primaryStage.getIcons().add(icon);
-
-        CreateUser.addObserver(this);
-
-        primaryStage.setScene(sceneCreateUser);
-        primaryStage.show();
-
-        backToLoginCreate.addListener((observable, oldValue, newValue) -> {
-            if (backToLoginCreate.get()) {
-                try {
-                    backToLoginCreate.set(false);
-                    CreateUser.setBackToLogin(false);
-                    externalStartMenu(primaryStage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
-
-    private void updatePane() {
+    static void updatePane() {
         // update the contents of the paneToUpdate
         overviewWindow.getChildren().clear();
         try {
             ExcelExporter.exportToExcel();
             ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
-        } catch ( IOException ex) {
+        } catch (IOException | DocumentException ex) {
             throw new RuntimeException(ex);
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
         }
 
         overviewWindow.getChildren().add(Overview.overviewView());
 
-    }
-
-
-    //TOP MENU
-    //TODO Prog 2, Øving 11, Property, ex 2, få knappene til å variere å størrelse ut ifra hvor stort vinduet er
-    //TODO Flytte meny ut i TopMenu klassen
-    public HBox topMenu(Stage primaryStage) {
-
-        BorderPane borderPane = new BorderPane();
-        MenuBar menuBar = new MenuBar();
-        borderPane.setTop(menuBar);
-        HBox topMenu = new HBox();
-        topMenu.setAlignment(Pos.TOP_CENTER);
-        primaryStage.show();
-
-        topMenu.getStylesheets().add("/Styling.css");
-
-        topMenu.setSpacing(20);
-        topMenu.setPadding(new Insets(20, 20, 20, 20));
-
-        ImageView overviewImage = new ImageView(new Image("icons/overview.png"));
-        overviewImage.setFitHeight(20);
-        overviewImage.setFitWidth(20);
-
-        //BUTTON 1
-        Button overviewButton = new Button("Overview", overviewImage);
-        overviewButton.setId("topMenuButton");
-        overviewButton.setOnAction(event -> {
-            try {
-                overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
-                    System.out.println(newValue);
-                    if (newValue) { //Redundant, but just to be sure
-                        updatePane();
-                    }});
-
-                overviewWindow.setVisible(true);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-
-                System.out.println("overview button pressed");
-                updatePane();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        ImageView transferImage = new ImageView(new Image("icons/transfer.png"));
-        transferImage.setFitHeight(20);
-        transferImage.setFitWidth(20);
-
-        //BUTTON 2
-        Button transferButton = new Button("Transfer", transferImage);
-        transferButton.setId("topMenuButton");
-        transferButton.setOnAction(event -> {
-            try {
-
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(true);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-
-                System.out.println("transfer button pressed");
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        ImageView addExpenseImage = new ImageView(new Image("icons/addExpense.png"));
-        addExpenseImage.setFitHeight(20);
-        addExpenseImage.setFitWidth(20);
-
-        //BUTTON 4
-        Button addExpenseButton = new Button("Add Expense", addExpenseImage);
-        addExpenseButton.setId("topMenuButton");
-        addExpenseButton.setOnAction(event -> {
-
-            addExpenseWindow.getChildren().clear();
-            addExpenseWindow.getChildren().add(AddExpense.expenseView());
-
-            try {
-
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(true);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-
-                System.out.println("add expense button pressed");
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        //BUTTON 3
-
-        ImageView reportImage = new ImageView(new Image("icons/report.png"));
-        reportImage.setFitHeight(20);
-        reportImage.setFitWidth(20);
-
-        Button reportButton = new Button("Report", reportImage);
-        reportButton.setId("topMenuButton");
-        reportButton.setOnAction(event -> {
-            try {
-
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(true);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-
-                System.out.println("add expense button pressed");
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-
-        ImageView budgetImage = new ImageView(new Image("icons/budget.png"));
-        budgetImage.setFitHeight(20);
-        budgetImage.setFitWidth(20);
-
-        Button budgetButton = new Button("Budget", budgetImage);
-        budgetButton.setId("topMenuButton");
-        budgetButton.setOnAction(event -> {
-            try {
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(true);
-                bankStatementWindow.setVisible(false);
-
-                System.out.println("settings button pressed");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        ImageView bankStatementImage = new ImageView(new Image("icons/bankStatement.png"));
-        bankStatementImage.setFitHeight(20);
-        bankStatementImage.setFitWidth(20);
-
-        Button bankStatementButton = new Button("Bank Statement", bankStatementImage);
-        bankStatementButton.setId("topMenuButton");
-        bankStatementButton.setOnAction(event -> {
-            try {
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(false);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(true);
-
-                System.out.println("settings button pressed");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-
-        ImageView settingsImage = new ImageView(new Image("icons/settings.png"));
-        settingsImage.setFitHeight(20);
-        settingsImage.setFitWidth(20);
-
-        Button settingsButton = new Button("", settingsImage);
-        settingsButton.setId("squareButton");
-        settingsButton.setOnAction(event -> {
-            try {
-                overviewWindow.setVisible(false);
-                transferWindow.setVisible(false);
-                addExpenseWindow.setVisible(false);
-                reportWindow.setVisible(false);
-                settingsWindow.setVisible(true);
-                budgetWindow.setVisible(false);
-                bankStatementWindow.setVisible(false);
-
-                System.out.println("settings button pressed");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        ImageView logOutImage = new ImageView(new Image("icons/logOut.png"));
-        logOutImage.setFitHeight(20);
-        logOutImage.setFitWidth(20);
-
-        Button logOutButton = new Button();
-        logOutButton.setGraphic(logOutImage);
-        logOutButton.setId("squareButton");
-
-        logOutButton.setOnAction(event -> {
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-
-            try {
-                externalStartMenu(primaryStage);  //This does NOT WORK
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
-            isLogin.setValue(false);
-            isCreateAccount.setValue(false);
-            passwordForgotten.setValue(false);
-            newPassword.setValue(false);
-            Login.setLoggedIn(false);
-            CreateUser.setCreatedUser(false);
-            Login.setForgotPasswordBoolean(false);
-            ForgotPassword.setChangedPassword(false);
-        });
-
-        topMenu.getStylesheets().add("/Styling.css");
-
-        topMenu.getChildren().addAll(overviewButton,transferButton,addExpenseButton,reportButton,budgetButton,bankStatementButton,settingsButton,logOutButton);
-
-        return topMenu;
     }
 
     public static String getCurrentUser() {
@@ -544,8 +310,5 @@ public class GUI extends Application implements LoginObserver {
         if (CreateUser.isBackToLogin()) {
             backToLoginCreate.setValue(true);
         }
-
-
     }
 }
-
