@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
@@ -28,8 +29,6 @@ import java.util.Random;
 public class Login {
 
   private static List<LoginObserver> observers = new ArrayList<>();
-  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
-  private static String SALT;
   public static boolean loggedIn = false;
   public static TextField username = new TextField();
   public static String currentUser;
@@ -115,7 +114,7 @@ public class Login {
             currentUser = username.getText();
             String encryptedPassword = user[1];
             String SALT = user[2];
-            String decryptedPassword = decrypt(encryptedPassword, SALT);
+            String decryptedPassword = LoginBackend.decrypt(encryptedPassword, SALT);
             if (password.getText().equals(decryptedPassword)) {
               System.out.println("Logged in");
               SoundPlayer.play("src/main/resources/16bitconfirm.wav");
@@ -168,26 +167,6 @@ public class Login {
     return vbox;
   }
 
-
-  public static String decrypt (String password, String SALT) {
-    try {
-      byte[] iv = new byte[16];
-      IvParameterSpec ivSpec = new IvParameterSpec(iv);
-
-      SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
-      SecretKey tmp = factory.generateSecret(spec);
-      SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
-
-      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-      cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-      return new String(cipher.doFinal(Base64.getDecoder().decode(password)));
-    } catch (Exception e) {
-      System.out.println("Error while decrypting: " + e.toString());
-    }
-    return null;
-  }
-
   public static boolean isLoggedIn() {
     return loggedIn;
   }
@@ -213,5 +192,8 @@ public class Login {
       observer.update();
       System.out.println("Notified observer");
     }
+  }
+  public static void setCreateUser(boolean createUser) {
+    Login.createUser = createUser;
   }
 }

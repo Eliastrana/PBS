@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
+import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.menu.*;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
@@ -280,7 +281,7 @@ public class GUI extends Application implements LoginObserver {
         boolean isLoggedIn = Login.isLoggedIn();
         boolean createdUser = CreateUser.isCreatedUser();
         boolean forgotPassword = Login.isForgotPassword();
-        boolean changedPassword = ForgotPassword.isChangedPassword();
+        boolean changedPassword = ForgotPasswordBackend.isChangedPassword();
         boolean isCreateUser = Login.isCreateUser();
         if (isLoggedIn) {
             currentUser = Login.username.getText();

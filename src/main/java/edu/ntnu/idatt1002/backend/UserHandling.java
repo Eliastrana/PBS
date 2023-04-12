@@ -45,7 +45,7 @@ public class UserHandling {
                 if (user[0].equals(GUI.getCurrentUser())) {
                     String salt = user[2];
                     password = user[1];
-                    password = Login.decrypt(password, salt);
+                    password = LoginBackend.decrypt(password, salt);
 
                 }
             }
@@ -106,8 +106,8 @@ public class UserHandling {
         String tempCsvFile = "src/main/resources/temp_users.csv";
         String line = "";
         String csvSplitBy = ",";
-        String salt = CreateUser.generateSalt();
-        String newPassword = CreateUser.encrypt(password, salt);
+        String salt = CreateUserBackend.generateSalt();
+        String newPassword = CreateUserBackend.encrypt(password, salt);
         Matcher passwordMatcher = PASSWORD_PATTERN.matcher(password);
 
         if (!passwordMatcher.matches()) {

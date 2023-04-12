@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -240,7 +241,7 @@ public class TopMenu {
       Login.setForgotPasswordBoolean(false);
       //Login.setCreateUser(false);
       CreateUser.setCreatedUser(false);
-      ForgotPassword.setChangedPassword(false);
+      ForgotPasswordBackend.setChangedPassword(false);
     });
 
     topMenu.getStylesheets().add("/Styling.css");
