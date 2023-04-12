@@ -5,11 +5,13 @@ import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -27,8 +29,13 @@ import javafx.scene.text.Font;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
@@ -174,61 +181,185 @@ public class Overview {
 
 
     //BARCHART INCOME
-    CategoryAxis xAxis = new CategoryAxis();
-    NumberAxis yAxis = new NumberAxis();
-    BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+//    CategoryAxis xAxis = new CategoryAxis();
+//    NumberAxis yAxis = new NumberAxis();
+//    BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+//
+//    XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+//    series1.setName("Income");
+//
+//    series1.getData().add(new XYChart.Data<>("Category 1", 10));
+//    series1.getData().add(new XYChart.Data<>("Category 2", 20));
+//    series1.getData().add(new XYChart.Data<>("Category 3", 30));
+//    series1.getData().add(new XYChart.Data<>("Category 4", 40));
+//
+//    XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+//    series2.setName("Expenses");
+//    series2.getData().add(new XYChart.Data<>("Category 1", 8));
+//    series2.getData().add(new XYChart.Data<>("Category 2", 15));
+//    series2.getData().add(new XYChart.Data<>("Category 3", 27));
+//    series2.getData().add(new XYChart.Data<>("Category 4", 35));
+//
+//
+//    barChart.getData().addAll(series1, series2);
+//    barChart.setTitle("Bar Chart Example");
+//    xAxis.setLabel("Categories");
+//    yAxis.setLabel("Values");
+//
+//    barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
+//    barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
+//
+//    // set the color of the legend symbol for series1
+//    //series1.getNode().setStyle("-fx-bar-legend-symbol: #3F403F;");
+//    //series2.getNode().setStyle("-fx-bar-legend-symbol: #9FB8AD;");
+//
+//
+//    for (XYChart.Series<String, Number> series : barChart.getData()) {
+//      if (series.getName().equals("Income")) {
+//        for (XYChart.Data<String, Number> data : series.getData()) {
+//          Node node = data.getNode();
+//          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
+//        }
+//      }
+//    }
+//
+//    for (XYChart.Series<String, Number> series : barChart.getData()) {
+//      if (series.getName().equals("Expenses")) {
+//        for (XYChart.Data<String, Number> data : series.getData()) {
+//          Node node = data.getNode();
+//          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
+//        }
+//      }
+//    }
 
-    XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-    series1.setName("Income");
+    String currentMonth = timeofdaychecker.getCurrentMonth();
+    String previousMonth = timeofdaychecker.getPreviousMonth();
 
-    series1.getData().add(new XYChart.Data<>("Category 1", 10));
-    series1.getData().add(new XYChart.Data<>("Category 2", 20));
-    series1.getData().add(new XYChart.Data<>("Category 3", 30));
-    series1.getData().add(new XYChart.Data<>("Category 4", 40));
+    String csvFileBudget = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+    String csvFileExpense = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + ".csv");
 
-    XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-    series2.setName("Expenses");
-    series2.getData().add(new XYChart.Data<>("Category 1", 8));
-    series2.getData().add(new XYChart.Data<>("Category 2", 15));
-    series2.getData().add(new XYChart.Data<>("Category 3", 27));
-    series2.getData().add(new XYChart.Data<>("Category 4", 35));
+    File fileBudget = new File(csvFileBudget);
+    File fileExpense = new File(csvFileExpense);
+    if (!fileBudget.exists()) {
+      try {
+        fileBudget.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    BufferedReader br = null;
+    String line = "";
+    String csvSplitBy = ",";
+    List<String[]> budgetLines = new ArrayList<>();
+    BarChart<String, Number> barChart = null;
+    List<String[]> expensesLines;
+    try {
+      br = new BufferedReader(new FileReader(fileBudget));
+      while ((line = br.readLine()) != null) {
+        String[] data = line.split(csvSplitBy);
+        // Filter the data by the current month
+        if (data[2].equalsIgnoreCase(currentMonth)) {
+          budgetLines.add(data);
+        }
+      }
+      expensesLines = Expense.getExpensesByMonth(csvFileExpense, currentMonth);
 
+      // Create the bar chart
+      ObservableList<XYChart.Data<String, Number>> barChartData = FXCollections.observableArrayList();
+      for (String[] lineData : budgetLines) {
+        barChartData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> series = new XYChart.Series<String, Number>(barChartData);
+      series.setName(currentMonth);
 
-    barChart.getData().addAll(series1, series2);
-    barChart.setTitle("Bar Chart Example");
-    xAxis.setLabel("Categories");
-    yAxis.setLabel("Values");
+      ObservableList<XYChart.Data<String, Number>> barChartData2 = FXCollections.observableArrayList();
+      for (String[] lineData : expensesLines) {
+        barChartData2.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> series2 = new XYChart.Series<String, Number>(barChartData2);
+      series2.setName(previousMonth);
 
-    barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
-    barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
-
-    // set the color of the legend symbol for series1
-    //series1.getNode().setStyle("-fx-bar-legend-symbol: #3F403F;");
-    //series2.getNode().setStyle("-fx-bar-legend-symbol: #9FB8AD;");
-
-
-    for (XYChart.Series<String, Number> series : barChart.getData()) {
-      if (series.getName().equals("Income")) {
-        for (XYChart.Data<String, Number> data : series.getData()) {
-          Node node = data.getNode();
-          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
+      CategoryAxis xAxis = new CategoryAxis();
+      NumberAxis yAxis = new NumberAxis();
+      xAxis.setLabel("Categories");
+      yAxis.setLabel("Values");
+      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart.setTitle("Budget");
+      barChart.getData().addAll(series, series2);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
     }
 
-    for (XYChart.Series<String, Number> series : barChart.getData()) {
-      if (series.getName().equals("Expenses")) {
-        for (XYChart.Data<String, Number> data : series.getData()) {
-          Node node = data.getNode();
-          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
+    if (!fileBudget.exists()) {
+      try {
+        fileBudget.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    br = null;
+    line = "";
+    csvSplitBy = ",";
+    budgetLines = new ArrayList<>();
+    expensesLines = new ArrayList<>();
+    barChart = null;
+    try {
+      br = new BufferedReader(new FileReader(fileBudget));
+      while ((line = br.readLine()) != null) {
+        String[] data = line.split(csvSplitBy);
+        // Filter the data by the current month
+        if (data[2].equalsIgnoreCase(currentMonth)) {
+          budgetLines.add(data);
+        }
+      }
+      expensesLines = Expense.getExpensesByMonth(csvFileExpense, currentMonth);
+
+      // Create the bar chart dataset
+      ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+      for (String[] lineData : budgetLines) {
+        currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+      currentSeries.setName("Budget");
+
+      ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+      for (String[] lineData : expensesLines) {
+        previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+      previousSeries.setName("Expenses");
+
+      // Create the bar chart
+      CategoryAxis xAxis = new CategoryAxis();
+      xAxis.setLabel("Category");
+      NumberAxis yAxis = new NumberAxis();
+      yAxis.setLabel("Value");
+      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart.setTitle("Bar Chart");
+      barChart.getData().addAll(currentSeries, previousSeries);
+
+      // Show the bar chart
+    } catch (Exception f) {
+      f.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
+        } catch (IOException f) {
+          f.printStackTrace();
         }
       }
     }
 
-
-    VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
-
-      return vbox;
-    }
+    return new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
+  }
   }
 
