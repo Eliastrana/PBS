@@ -19,11 +19,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import java.time.YearMonth;
+//import org.controlsfx.control.MonthPicker;
+
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 import static javafx.scene.text.Font.font;
 
@@ -54,6 +58,12 @@ public class Report {
 
     HBox selectMonthHBox = new HBox();
     selectMonthHBox.setAlignment(Pos.CENTER);
+
+
+//    MonthPicker monthPicker = new MonthPicker();
+//    monthPicker.setDateFormat(YearMonth.class);
+//    monthPicker.setShowTime(false);
+//    monthPicker.setValue(YearMonth.now());
 
     DatePicker datePicker = new DatePicker();
     datePicker.setValue(LocalDate.now());

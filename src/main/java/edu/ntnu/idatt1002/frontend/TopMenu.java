@@ -5,6 +5,7 @@ import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.UserHandling;
 import edu.ntnu.idatt1002.frontend.menu.Overview;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class TopMenu {
 
@@ -104,9 +106,20 @@ public class TopMenu {
     addExpenseButton.setOnAction(event -> {
       try {
 
+        GUI.addExpenseWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
+          System.out.println(newValue);
+          if (newValue) { //Redundant, but just to be sure
+            GUI.updatePane();
+          }});
+
+//        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), GUI.addExpenseWindow);
+//        fadeTransition.setFromValue(0);
+//        fadeTransition.setToValue(1);
+//        fadeTransition.play();
+
+        GUI.addExpenseWindow.setVisible(true);
         GUI.overviewWindow.setVisible(false);
         GUI.transferWindow.setVisible(false);
-        GUI.addExpenseWindow.setVisible(true);
         GUI.reportWindow.setVisible(false);
         GUI.settingsWindow.setVisible(false);
         GUI.budgetWindow.setVisible(false);
@@ -153,24 +166,7 @@ public class TopMenu {
     settingsImage.setFitHeight(20);
     settingsImage.setFitWidth(20);
 
-    Button settingsButton = new Button("Settings", settingsImage);
-    settingsButton.setId("topMenuButton");
-    settingsButton.setOnAction(event -> {
-      try {
-        GUI.overviewWindow.setVisible(false);
-        GUI.transferWindow.setVisible(false);
-        GUI.addExpenseWindow.setVisible(false);
-        GUI.reportWindow.setVisible(false);
-        GUI.settingsWindow.setVisible(true);
-        GUI.budgetWindow.setVisible(false);
-        GUI.bankStatementWindow.setVisible(false);
 
-        System.out.println("settings button pressed");
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    });
-    topMenu.getChildren().add(settingsButton);
 
     ImageView budgetImage = new ImageView(new Image("/icons/budget.png"));
     budgetImage.setFitHeight(20);
@@ -180,6 +176,12 @@ public class TopMenu {
     budgetButton.setId("topMenuButton");
     budgetButton.setOnAction(event -> {
       try {
+
+        GUI.budgetWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
+          System.out.println(newValue);
+          if (newValue) { //Redundant, but just to be sure
+            GUI.updatePane();
+          }});
         GUI.overviewWindow.setVisible(false);
         GUI.transferWindow.setVisible(false);
         GUI.addExpenseWindow.setVisible(false);
@@ -203,6 +205,13 @@ public class TopMenu {
     bankStatementButton.setId("topMenuButton");
     bankStatementButton.setOnAction(event -> {
       try {
+
+        GUI.bankStatementWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
+          System.out.println(newValue);
+          if (newValue) { //Redundant, but just to be sure
+            GUI.updatePane();
+          }});
+
         GUI.overviewWindow.setVisible(false);
         GUI.transferWindow.setVisible(false);
         GUI.addExpenseWindow.setVisible(false);
@@ -217,6 +226,34 @@ public class TopMenu {
       }
     });
     topMenu.getChildren().add(bankStatementButton);
+
+
+    ImageView settingsIcon = new ImageView(new Image("/icons/settings.png"));
+    settingsIcon.setFitHeight(15);
+    settingsIcon.setFitWidth(15);
+
+    Button settingsButton = new Button();
+    settingsButton.setGraphic(settingsIcon);
+    settingsButton.setId("squareButton");
+    settingsButton.setOnAction(event -> {
+      try {
+        GUI.overviewWindow.setVisible(false);
+        GUI.transferWindow.setVisible(false);
+        GUI.addExpenseWindow.setVisible(false);
+        GUI.reportWindow.setVisible(false);
+        GUI.settingsWindow.setVisible(true);
+        GUI.budgetWindow.setVisible(false);
+        GUI.bankStatementWindow.setVisible(false);
+
+        System.out.println("settings button pressed");
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    });
+    topMenu.getChildren().add(settingsButton);
+
+
+
 
     ImageView logOutImage = new ImageView(new Image("/icons/logOut.png"));
     logOutImage.setFitHeight(15);

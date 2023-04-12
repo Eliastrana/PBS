@@ -181,7 +181,7 @@ public class GUI extends Application {
 
     static void updatePane() {
         // update the contents of the paneToUpdate
-        overviewWindow.getChildren().clear();
+
         try {
             ExcelExporter.exportToExcel();
             ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
@@ -189,7 +189,20 @@ public class GUI extends Application {
             throw new RuntimeException(ex);
         }
 
+        //THIS CODE IS BAD AND MAKES THE WHOLE PROGRAM SLOW
+        overviewWindow.getChildren().clear();
         overviewWindow.getChildren().add(Overview.overviewView());
+        transferWindow.getChildren().clear();
+        transferWindow.getChildren().add(Transfer.transferView());
+        addExpenseWindow.getChildren().clear();
+        addExpenseWindow.getChildren().add(AddExpense.expenseView());
+        reportWindow.getChildren().clear();
+        reportWindow.getChildren().add(Report.reportView());
+        budgetWindow.getChildren().clear();
+        budgetWindow.getChildren().add(Budget.budgetView());
+        settingsWindow.getChildren().clear();
+        settingsWindow.getChildren().add(Settings.settingsView());
+
 
     }
 

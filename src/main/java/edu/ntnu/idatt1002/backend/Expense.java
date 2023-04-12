@@ -120,7 +120,7 @@ public class Expense {
 
 
     public void setCategoryInt(int category) {
-        if (category < 1 || category > 5) {
+        if (category < 1 || category > 6) {
             throw new IllegalArgumentException("Category must be between 1 and 5");
         }
         this.category = category;

@@ -122,9 +122,9 @@ public class Transfer {
         registerIncomeHBox.setSpacing(20);
         registerIncomeHBox.setAlignment(Pos.CENTER);
 
-    Text incomeTo = new Text("Choose the account for registering income:");
-    incomeTo.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 25));
+
     ComboBox<String> incomeAccount = new ComboBox<>();
+    incomeAccount.setPromptText("Select Account");
     try {
       incomeAccount.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
     } catch (IOException e) {
