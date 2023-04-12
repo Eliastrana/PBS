@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.backend.CreateUserBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -199,8 +200,8 @@ public class ForgotPassword {
             String tempCsvFile = "src/main/resources/temp_users.csv";
             String line = "";
             String csvSplitBy = ",";
-            String salt = CreateUser.generateSalt();
-            String newPassword = CreateUser.encrypt(newPasswordString, salt);
+            String salt = CreateUserBackend.generateSalt();
+            String newPassword = CreateUserBackend.encrypt(newPasswordString, salt);
 
             try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
                  FileWriter fw = new FileWriter(tempCsvFile)) {

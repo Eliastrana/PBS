@@ -106,8 +106,8 @@ public class UserHandling {
         String tempCsvFile = "src/main/resources/temp_users.csv";
         String line = "";
         String csvSplitBy = ",";
-        String salt = CreateUser.generateSalt();
-        String newPassword = CreateUser.encrypt(password, salt);
+        String salt = CreateUserBackend.generateSalt();
+        String newPassword = CreateUserBackend.encrypt(password, salt);
         Matcher passwordMatcher = PASSWORD_PATTERN.matcher(password);
 
         if (!passwordMatcher.matches()) {
