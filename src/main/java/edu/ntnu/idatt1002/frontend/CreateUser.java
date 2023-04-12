@@ -2,8 +2,10 @@ package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.CreateUserBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
+import edu.ntnu.idatt1002.frontend.controllers.CreateUserController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -30,17 +32,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateUser {
-  private static List<LoginObserver> observers = new ArrayList<>();
-  public static boolean createdUser = false;
   public static TextField username = new TextField();
   public static String currentUser;
-  public static boolean backToLogin = false;
-
   public static String getCurrentUser() {
     return currentUser;
   }
 
-  public static VBox createUserView() {
+  public static void setCurrentUser(String currentUser) {
+    CreateUser.currentUser = currentUser;
+  }
+
+  public Parent createUserView(CreateUserController controller) {
 
     Pane background = new Pane();
     background.setPrefSize(1000,700);
@@ -161,18 +163,10 @@ public class CreateUser {
         passwordString = passwordStringTest1;
       }
 
-      String SALT = CreateUserBackend.generateSalt();
-      String encryptedPasswordString = CreateUserBackend.encrypt(passwordString, SALT);
-      currentUser = username.getText();
       try {
-        CreateUserBackend.saveUser(username.getText(), encryptedPasswordString, SALT, email.getText());
+        currentUser = username.getText();
+        controller.handleCreateButton(username.getText(), passwordString, email.getText());
       } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
-      createdUser = true;
-      try {
-        notifyObservers();
-      } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
     });
@@ -189,14 +183,7 @@ public class CreateUser {
     backButtonBox.setAlignment(Pos.TOP_LEFT);
     backButtonBox.setPadding(new Insets(20, 0, 0, 20));
 
-    backButton.setOnAction(e -> {
-        try {
-            backToLogin = true;
-            notifyObservers();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    });
+    backButton.setOnAction(e -> controller.handleBackButton());
 
 
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, createUserBox, createUser);
@@ -208,31 +195,4 @@ public class CreateUser {
     vbox.setAlignment(Pos.TOP_CENTER);
     return vbox;
   }
-
-  public static void addObserver(LoginObserver observer) {
-    observers.add(observer);
-  }
-
-  private static void notifyObservers() throws Exception {
-    for (LoginObserver observer : observers) {
-      observer.update();
-      System.out.println("Notified observer");
-    }
-  }
-
-  public static boolean isCreatedUser() {
-    return createdUser;
-  }
-
-    public static void setCreatedUser(boolean createdUser) {
-        CreateUser.createdUser = createdUser;
-    }
-
-    public static boolean isBackToLogin() {
-        return backToLogin;
-    }
-
-    public static void setBackToLogin(boolean backToLogin) {
-        CreateUser.backToLogin = backToLogin;
-    }
 }

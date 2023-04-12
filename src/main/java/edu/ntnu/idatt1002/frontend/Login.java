@@ -2,9 +2,11 @@ package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
+import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -28,20 +30,14 @@ import java.util.Random;
 
 public class Login {
 
-  private static List<LoginObserver> observers = new ArrayList<>();
-  public static boolean loggedIn = false;
   public static TextField username = new TextField();
   public static String currentUser;
-
-  public static boolean forgotPasswordBoolean = false;
-  public static boolean createUser = false;
-
 
   public static String getCurrentUser() {
     return currentUser;
   }
 
-  public static VBox loginView() {
+  public static Parent loginView(LoginController controller) {
 
     Pane background = new Pane();
     background.setPrefSize(1000,700);
@@ -50,24 +46,18 @@ public class Login {
     int randomInt = random.nextInt(2)+1;
     background.getStylesheets().add("/LightMode.css");
 
-
     background.getStyleClass().add("loginScreen"+randomInt);
-
-
 
     System.out.println("Opening login page");
 
     VBox loginVBox = new VBox();
     loginVBox.setPadding(new Insets(10));
 
-
     loginVBox.setAlignment(Pos.CENTER);
     loginVBox.setSpacing(20);
     loginVBox.setMaxSize(300, 400);
 
-
     loginVBox.getStylesheets().add("/LightMode.css");
-
 
     loginVBox.setId("overlayLogin");
 
@@ -93,50 +83,15 @@ public class Login {
       }
     });
 
-
-    logIn.setOnAction(e -> {
-      String csvFile = "src/main/resources/users.csv";
-      String line = "";
-      BufferedReader br = null;
-      try {
-        br = new BufferedReader(new FileReader(csvFile));
-      } catch (FileNotFoundException ex) {
-        throw new RuntimeException(ex);
-      }
-      while (true) {
-        try {
-          if ((line = br.readLine()) == null) break;
-        } catch (IOException ex) {
-          throw new RuntimeException(ex);
-        }
-        String[] user = line.split(",");
-          if (user[0].equals(username.getText()) || user[3].equals(username.getText())) {
-            currentUser = username.getText();
-            String encryptedPassword = user[1];
-            String SALT = user[2];
-            String decryptedPassword = LoginBackend.decrypt(encryptedPassword, SALT);
-            if (password.getText().equals(decryptedPassword)) {
-              System.out.println("Logged in");
-              SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-              loggedIn = true;
-              try {
-                notifyObservers();
-              } catch (Exception ex) {
-                throw new RuntimeException(ex);
-              }
-            }
-          }
-        }
-    });
+    logIn.setOnAction(e -> LoginBackend.login(username.getText(), password.getText(), controller));
 
     Text createUser = new Text("Create user");
     createUser.setId("linkSmallText");
 
     createUser.setOnMouseClicked(e -> {
       System.out.println("Opening create user page");
-        Login.createUser = true;
       try {
-        notifyObservers();
+        controller.handleCreateUserButton();
       } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
@@ -145,55 +100,20 @@ public class Login {
     Text forgotPassword = new Text("Forgot password");
     forgotPassword.setId("linkSmallText");
     forgotPassword.setOnMouseClicked(e -> {
-      forgotPasswordBoolean = true;
       System.out.println("Opening forgot password page");
       try {
-        notifyObservers();
+        controller.handleForgotPasswordButton();
       } catch (Exception ex) {
         throw new RuntimeException(ex);
       }
     });
 
-
-
-
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser, forgotPassword);
 
     StackPane backgroundAndLogin = new StackPane(background , loginVBox);
 
-
     VBox vbox = new VBox(backgroundAndLogin);
     vbox.setAlignment(Pos.TOP_CENTER);
     return vbox;
-  }
-
-  public static boolean isLoggedIn() {
-    return loggedIn;
-  }
-  public static void setLoggedIn(boolean loggedIn) {
-    Login.loggedIn = loggedIn;
-  }
-  public static void setForgotPasswordBoolean(boolean forgotPasswordBoolean) {
-    Login.forgotPasswordBoolean = forgotPasswordBoolean;
-  }
-
-  public static boolean isForgotPassword() {
-    return forgotPasswordBoolean;
-  }
-  public static boolean isCreateUser() {
-    return createUser;
-  }
-  public static void addObserver(LoginObserver observer) {
-    observers.add(observer);
-  }
-
-  private static void notifyObservers() throws Exception {
-    for (LoginObserver observer : observers) {
-      observer.update();
-      System.out.println("Notified observer");
-    }
-  }
-  public static void setCreateUser(boolean createUser) {
-    Login.createUser = createUser;
   }
 }
