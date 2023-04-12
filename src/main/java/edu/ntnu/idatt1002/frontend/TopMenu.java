@@ -238,7 +238,7 @@ public class TopMenu {
       gui.newPassword.setValue(false);
       Login.setLoggedIn(false);
       Login.setForgotPasswordBoolean(false);
-      Login.setCreateUser(false);
+      //Login.setCreateUser(false);
       CreateUser.setCreatedUser(false);
       ForgotPassword.setChangedPassword(false);
     });

@@ -1,11 +1,13 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -24,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
@@ -99,35 +102,21 @@ public class Overview {
     currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
     //LeftTable
-    TableView<Income> leftTable = new TableView<>();
-    TableColumn<Income, String> leftColumn1 = new TableColumn<>("Name: ");
-    leftColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+    TableView<Account> leftTable = new TableView<>();
+    TableColumn<Account, String> leftColumn1 = new TableColumn<>("Account: ");
+    leftColumn1.setCellValueFactory(new PropertyValueFactory<>("accountName"));
 
-    TableColumn<Income, Double> leftColumn2 = new TableColumn<>("Price: ");
-    leftColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+    TableColumn<Account, Double> leftColumn2 = new TableColumn<>("Amount: ");
+    leftColumn2.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-    TableColumn<Income, LocalDate> leftColumn3 = new TableColumn<>("Date: ");
+    TableColumn<Account, String> leftColumn3 = new TableColumn<>("Date: ");
     leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-    leftTable.getItems().addAll(getIncomes());
-
-    leftColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
-    leftColumn1.setOnEditCommit(event -> {
-      Income data = event.getRowValue();
-      data.setName(event.getNewValue());
-    });
-
-    leftColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
-    leftColumn2.setOnEditCommit(event -> {
-      Income data = event.getRowValue();
-      data.setPrice(event.getNewValue());
-    });
-
-    leftColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
-    leftColumn3.setOnEditCommit(event -> {
-      Income data = event.getRowValue();
-      data.setDate(event.getNewValue());
-    });
+    try {
+      leftTable.getItems().addAll(CSVReader.listOfTransfers());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
 
     leftTable.getColumns().addAll(leftColumn1, leftColumn2, leftColumn3);
 
