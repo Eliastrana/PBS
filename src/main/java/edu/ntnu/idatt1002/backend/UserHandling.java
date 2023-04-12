@@ -45,7 +45,7 @@ public class UserHandling {
                 if (user[0].equals(GUI.getCurrentUser())) {
                     String salt = user[2];
                     password = user[1];
-                    password = Login.decrypt(password, salt);
+                    password = LoginBackend.decrypt(password, salt);
 
                 }
             }
