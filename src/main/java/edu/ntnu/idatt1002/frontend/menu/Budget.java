@@ -83,32 +83,59 @@ public class Budget {
     confirmAmount.setId("actionButton");
 
     confirmAmount.setOnAction(e -> {
-      System.out.println("confirm amount");
-
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
       String month = timeofdaychecker.getCurrentMonth();
 
       String categorymonth = category + month;
 
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv"), true));
-           BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv")))) {
+      File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
 
+      try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        // Read the lines of the file into the list
         String line;
 
-        String[] columns = reader.readLine().split(",");
-        String categoryandmonth = columns[0] + columns[2];
-        writer.write(category + "," + amount + "," + month + "\n");
+        while ((line = reader.readLine()) != null) {
+          String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
+          if (oldCategoryMonth.equals(categorymonth)) {
+            continue;
+          }
+          lines.add(line);
+        }
+
+        reader.close();
+        // Remove the old file
+        System.out.println(csvFile.delete());
+
+        // Create a new file and write the updated data to it
+        FileWriter fw = new FileWriter(csvFile);
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        // Write the lines to the new file
+        for (String l : lines) {
+          bw.write(l);
+          bw.newLine();
+        }
+
+        // Write the updated line to the new file
+        bw.write(category + "," + amount + "," + month);
+        bw.newLine();
+        bw.flush();
+
+
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
       }
+
 
       String currentMonth = timeofdaychecker.getCurrentMonth();
       String previousMonth = timeofdaychecker.getPreviousMonth();
 
       // Read the CSV file
-      String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
-      File file = new File(csvFile);
+      File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
       if (!file.exists()) {
         try {
           file.createNewFile();
@@ -127,10 +154,10 @@ public class Budget {
         while ((line = br.readLine()) != null) {
           String[] data = line.split(csvSplitBy);
           // Filter the data by the current month
-          if (data[2].equalsIgnoreCase(currentMonth)) {
+          if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
             currentLines.add(data);
           }
-          if (data[2].equalsIgnoreCase(previousMonth)) {
+          if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
             previousLines.add(data);
           }
         }
@@ -199,10 +226,10 @@ public class Budget {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
         // Filter the data by the current month
-        if (data[2].equalsIgnoreCase(currentMonth)) {
+        if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
           currentLines.add(data);
         }
-        if (data[2].equalsIgnoreCase(previousMonth)) {
+        if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
           previousLines.add(data);
         }
       }

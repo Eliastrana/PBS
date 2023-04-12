@@ -4,11 +4,13 @@ import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -26,12 +28,20 @@ import javafx.scene.text.Font;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
+import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 public class Overview {
   public static VBox overviewView() {
@@ -172,30 +182,89 @@ public class Overview {
 
 
     //BARCHART INCOME
-    CategoryAxis xAxis = new CategoryAxis();
-    NumberAxis yAxis = new NumberAxis();
-    BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+    File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+    String currentMonth = timeofdaychecker.getCurrentMonth();
+    if (!csvFile.exists()) {
+      try {
+        csvFile.createNewFile();
+      } catch (IOException f) {
+        f.printStackTrace();
+      }
+    }
+    BufferedReader br = null;
+    String line = "";
+    String csvSplitBy = ",";
+    List<String[]> currentLines = new ArrayList<String[]>();
+    List<String[]> previousLines = new ArrayList<String[]>();
+    BarChart<String, Number> barChart = null;
+    HashMap<String, Double> expensesToBarChart = new HashMap<>();
+    try {
+      br = new BufferedReader(new FileReader(csvFile));
+      while ((line = br.readLine()) != null) {
+        String[] data = line.split(csvSplitBy);
+        // Filter the data by the current month
+        if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
+          currentLines.add(data);
+        }
+        if (data[0].equalsIgnoreCase("Rent")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfRent(expensesToTable));
+        }
+        if (data[0].equalsIgnoreCase("Entertainment")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfEntertainment(expensesToTable));
+        }
+        if (data[0].equalsIgnoreCase("Food")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfFood(expensesToTable));
+        }
+        if (data[0].equalsIgnoreCase("Transportation")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfTransportation(expensesToTable));
+        }
+        if (data[0].equalsIgnoreCase("Other")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfOther(expensesToTable));
+        }
+        if (data[0].equalsIgnoreCase("Clothing")) {
+          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfClothing(expensesToTable));
+        }
+        System.out.println(expensesToBarChart);
+      }
+      // Create the bar chart dataset
+      ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+      for (String[] lineData : currentLines) {
+        currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+      }
+      XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+      currentSeries.setName(currentMonth);
 
-    XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-    series1.setName("Income");
+      ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+      for (Map.Entry<String, Double> entry : expensesToBarChart.entrySet()) {
+        String category = entry.getKey();
+        double total = entry.getValue();
+        previousData.add(new XYChart.Data<String, Number>(category, total));
+      }
 
-    series1.getData().add(new XYChart.Data<>("Category 1", 10));
-    series1.getData().add(new XYChart.Data<>("Category 2", 20));
-    series1.getData().add(new XYChart.Data<>("Category 3", 30));
-    series1.getData().add(new XYChart.Data<>("Category 4", 40));
+      XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+      previousSeries.setName("Expenses for " + currentMonth);
 
-    XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-    series2.setName("Expenses");
-    series2.getData().add(new XYChart.Data<>("Category 1", 8));
-    series2.getData().add(new XYChart.Data<>("Category 2", 15));
-    series2.getData().add(new XYChart.Data<>("Category 3", 27));
-    series2.getData().add(new XYChart.Data<>("Category 4", 35));
+      // Create the bar chart
+      CategoryAxis xAxis = new CategoryAxis();
+      xAxis.setLabel("Category");
+      NumberAxis yAxis = new NumberAxis();
+      yAxis.setLabel("Value");
+      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart.setTitle("Bar Chart");
+      barChart.getData().addAll(currentSeries, previousSeries);
 
-
-    barChart.getData().addAll(series1, series2);
-    barChart.setTitle("Bar Chart Example");
-    xAxis.setLabel("Categories");
-    yAxis.setLabel("Values");
+      // Show the bar chart
+    } catch (IOException f) {
+      f.printStackTrace();
+    } finally {
+      if (br != null) {
+        try {
+          br.close();
+        } catch (IOException f) {
+          f.printStackTrace();
+        }
+      }
+    }
 
     barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
     barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
