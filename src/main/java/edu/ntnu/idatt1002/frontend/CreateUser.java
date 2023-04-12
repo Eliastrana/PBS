@@ -38,6 +38,10 @@ public class CreateUser {
     return currentUser;
   }
 
+  public static void setCurrentUser(String currentUser) {
+    CreateUser.currentUser = currentUser;
+  }
+
   public Parent createUserView(CreateUserController controller) {
 
     Pane background = new Pane();
@@ -160,6 +164,7 @@ public class CreateUser {
       }
 
       try {
+        currentUser = username.getText();
         controller.handleCreateButton(username.getText(), passwordString, email.getText());
       } catch (IOException ex) {
         throw new RuntimeException(ex);
