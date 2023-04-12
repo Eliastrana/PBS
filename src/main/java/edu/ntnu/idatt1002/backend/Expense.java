@@ -1,8 +1,13 @@
 package edu.ntnu.idatt1002.backend;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Expense {
     private String uniqueID;
@@ -149,5 +154,27 @@ public class Expense {
             throw new IllegalArgumentException("UniqueID cannot be null or empty");
         }
         this.uniqueID = uniqueID;
+    }
+
+    public static List<String[]> getExpensesByMonth(String filePath, String month) throws IOException {
+        List<String[]> expenses = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line = reader.readLine(); // read the header line
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        while ((line = reader.readLine()) != null) {
+            String[] fields = line.split(",");
+            LocalDate date = LocalDate.parse(fields[2], formatter);
+            if (date.getMonth().toString().equalsIgnoreCase(month)) {
+                try {
+                    Double.parseDouble(fields[3]);
+                    String[] expense = {fields[0], fields[3]};
+                    expenses.add(expense);
+                } catch (NumberFormatException e) {
+                    // skip over lines that can't be parsed as numbers in column 4
+                }
+            }
+        }
+        reader.close();
+        return expenses;
     }
 }
