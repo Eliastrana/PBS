@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ public class PieChart {
         try {
             accounts = CSVReader.readCSV();
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();

@@ -127,7 +127,7 @@ public class Transfer {
     ComboBox<String> incomeAccount = new ComboBox<>();
     try {
       incomeAccount.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
     incomeAccount.setId("categoryMenuButton");

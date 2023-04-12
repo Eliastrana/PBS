@@ -48,8 +48,6 @@ import static edu.ntnu.idatt1002.backend.Expenses.rent;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 public class AddExpense {
-
-
   public static VBox expenseView() {
     System.out.println("open expense window");
     VBox addExpenseVBox = new VBox();
@@ -82,7 +80,7 @@ public class AddExpense {
     ObservableList<String> options2 = null;
     try {
       options2 = FXCollections.observableArrayList(CSVReader.readCSV().keySet());
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
     final ComboBox accountMenu = new ComboBox(options2);

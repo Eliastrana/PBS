@@ -1,11 +1,14 @@
 package edu.ntnu.idatt1002.backend;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Account {
     private String accountName;
     private double accountBalance;
     public static ArrayList<Expense> expenses;
+    private double amount;
+    private String date;
 
     public Account(String accountName, double accountBalance){
         if (accountName == null || accountName.isBlank()){
@@ -17,6 +20,20 @@ public class Account {
         this.accountName = accountName;
         this.accountBalance = accountBalance;
         expenses = new ArrayList<Expense>();
+    }
+
+    public Account(String accountName, double amount, String date){
+        this.accountName = accountName;
+        this.amount = amount;
+        this.date = date;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getAccountName() {
