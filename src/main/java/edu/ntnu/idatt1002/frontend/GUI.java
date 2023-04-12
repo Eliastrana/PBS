@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
+import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.controllers.CreateUserController;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
@@ -106,6 +107,14 @@ public class GUI extends Application {
     }
 
     public void navigateToMainApp() {
+        if (LoginBackend.getCurrentUser() != null) {
+            setCurrentUser(LoginBackend.getCurrentUser());
+        } else if (CreateUser.getCurrentUser() != null) {
+            setCurrentUser(CreateUser.getCurrentUser());
+        } else {
+            setCurrentUser("User");
+        }
+
         overviewWindow.getChildren().add(Overview.overviewView());
         overviewWindow.getStylesheets().add("/Styling.css");
 
@@ -186,6 +195,10 @@ public class GUI extends Application {
 
     public static String getCurrentUser() {
         return currentUser;
+    }
+
+    public static void setCurrentUser(String currentUser) {
+        GUI.currentUser = currentUser;
     }
 
     private void updateScene(Scene scene, Parent root) {
