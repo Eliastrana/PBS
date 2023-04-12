@@ -16,21 +16,34 @@ import java.util.List;
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 
 public class CSVReader {
-    private static String CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
-    private static String CSV_FILE_PATH_2 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + ".csv";
+    private static String CSV_FILE_PATH_1;
+    private static String CSV_FILE_PATH_2;
     private static final String CVS_SPLIT_BY = ",";
+    private static String outPutDirectory;
     private static List<Account> listOfTransfers;
 
     public static HashMap<String, Double> readCSV() throws IOException {
         HashMap<String, Double> newAccounts = new HashMap<>(); // Create a new instance of hashmap
         CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
         CSV_FILE_PATH_2 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + ".csv";
+        outPutDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
         File csvFile1 = new File(CSV_FILE_PATH_1);
         File csvFile2 = new File(CSV_FILE_PATH_2);
         if (!csvFile1.exists() && !csvFile2.exists()) {
             try {
+                File outPutDirectoryFile = new File(outPutDirectory);
+                outPutDirectoryFile.mkdirs();
                 csvFile1.createNewFile();
                 csvFile2.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return newAccounts; // Return empty hashmap since both files are empty
+        }
+
+        if (!csvFile1.exists()) {
+            try {
+                csvFile1.createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
