@@ -28,6 +28,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -81,24 +83,59 @@ public class Budget {
     confirmAmount.setId("actionButton");
 
     confirmAmount.setOnAction(e -> {
-      System.out.println("confirm amount");
-
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
       String month = timeofdaychecker.getCurrentMonth();
 
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv"), true))) {
-        writer.write(category + "," + amount + "," + month + "\n");
+      String categorymonth = category + month;
+
+      File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+
+      try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        // Read the lines of the file into the list
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+          String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
+          if (oldCategoryMonth.equals(categorymonth)) {
+            continue;
+          }
+          lines.add(line);
+        }
+
+        reader.close();
+        // Remove the old file
+        System.out.println(csvFile.delete());
+
+        // Create a new file and write the updated data to it
+        FileWriter fw = new FileWriter(csvFile);
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        // Write the lines to the new file
+        for (String l : lines) {
+          bw.write(l);
+          bw.newLine();
+        }
+
+        // Write the updated line to the new file
+        bw.write(category + "," + amount + "," + month);
+        bw.newLine();
+        bw.flush();
+
+
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
       }
+
 
       String currentMonth = timeofdaychecker.getCurrentMonth();
       String previousMonth = timeofdaychecker.getPreviousMonth();
 
       // Read the CSV file
-      String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
-      File file = new File(csvFile);
+      File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
       if (!file.exists()) {
         try {
           file.createNewFile();
@@ -117,10 +154,10 @@ public class Budget {
         while ((line = br.readLine()) != null) {
           String[] data = line.split(csvSplitBy);
           // Filter the data by the current month
-          if (data[2].equalsIgnoreCase(previousMonth)) {
+          if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
             currentLines.add(data);
           }
-          if (data[2].equalsIgnoreCase(currentMonth)) {
+          if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
             previousLines.add(data);
           }
         }
@@ -131,14 +168,14 @@ public class Budget {
           currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
         }
         XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
-        currentSeries.setName(previousMonth);
+        currentSeries.setName(currentMonth);
 
         ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
         for (String[] lineData : previousLines) {
           previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
         }
         XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-        previousSeries.setName(currentMonth);
+        previousSeries.setName(previousMonth);
 
         // Create the bar chart
         CategoryAxis xAxis = new CategoryAxis();
@@ -189,10 +226,10 @@ public class Budget {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
         // Filter the data by the current month
-        if (data[2].equalsIgnoreCase(previousMonth)) {
+        if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
           currentLines.add(data);
         }
-        if (data[2].equalsIgnoreCase(currentMonth)) {
+        if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
           previousLines.add(data);
         }
       }
@@ -203,14 +240,14 @@ public class Budget {
         currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
       }
       XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
-      currentSeries.setName(previousMonth);
+      currentSeries.setName(currentMonth);
 
       ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
       for (String[] lineData : previousLines) {
         previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
       }
       XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-      previousSeries.setName(currentMonth);
+      previousSeries.setName(previousMonth);
 
       // Create the bar chart
       CategoryAxis xAxis = new CategoryAxis();

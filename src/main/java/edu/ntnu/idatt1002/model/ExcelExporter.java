@@ -34,7 +34,7 @@ public class ExcelExporter {
     public static List<Expense> expensesToTable = new ArrayList<>();
 
     public static String exportToExcel() throws FileNotFoundException {
-        if(!outputDirectoryFile.exists()) {
+        if (!outputDirectoryFile.exists()) {
             outputDirectoryFile.mkdirs();
         }
         File inputFileObj = new File(inputFile);
@@ -55,8 +55,40 @@ public class ExcelExporter {
 
                 while ((line = br.readLine()) != null) {
 
-                    String[] columns = line.split(",");
+                    List<String> columnsList = new ArrayList<>();
+                    boolean insideQuotes = false;
+                    StringBuilder sb = new StringBuilder();
+
+                    for (char c : line.toCharArray()) {
+                        if (c == '|') {
+                            insideQuotes = !insideQuotes;
+                        } else if (c == ',' && !insideQuotes) {
+                            columnsList.add(sb.toString());
+                            sb = new StringBuilder();
+                        } else {
+                            sb.append(c);
+                        }
+                    }
+
+                    columnsList.add(sb.toString()); // Add last column
+
+                    String[] columns = columnsList.toArray(new String[0]);
+
+                    for (int i = 0; i < columns.length; i++) {
+                        if (columns[i].startsWith("|") && columns[i].endsWith("|")) {
+                            // remove the bars from the string
+                            columns[i] = columns[i].substring(1, columns[i].length() - 1);
+                        }
+                        // remove quotes from the string
+                        columns[i] = columns[i].replaceAll("^\"|\"$", "");
+                    }
+
                     String month = timeofdaychecker.getSelectedMonth(columns[2]);
+                    String category = columns[0];
+                    String name = columns[1];
+                    String date = columns[2];
+                    String price = columns[3];
+                    String accountName = columns[4];
 
                     Sheet sheet = workbook.getSheet(month);
                     if (sheet == null) {
@@ -72,11 +104,16 @@ public class ExcelExporter {
 
                     // Create new data row
                     Row dataRow = sheet.createRow(sheet.getLastRowNum() + 1);
-                    for (int i = 0; i < columns.length; i++) {
-                        Cell cell = dataRow.createCell(i);
-                        cell.setCellValue(columns[i]);
-                    }
-
+                    Cell categoryCell = dataRow.createCell(0);
+                    categoryCell.setCellValue(category);
+                    Cell nameCell = dataRow.createCell(1);
+                    nameCell.setCellValue(name);
+                    Cell dateCell = dataRow.createCell(2);
+                    dateCell.setCellValue(date);
+                    Cell priceCell = dataRow.createCell(3);
+                    priceCell.setCellValue(Double.parseDouble(price));
+                    Cell accountNameCell = dataRow.createCell(4);
+                    accountNameCell.setCellValue(accountName);
                 }
                 // Calculate monthly total outside of the loop
                 for (Sheet sheet : workbook) {
