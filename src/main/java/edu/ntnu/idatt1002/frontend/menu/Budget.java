@@ -117,10 +117,10 @@ public class Budget {
         while ((line = br.readLine()) != null) {
           String[] data = line.split(csvSplitBy);
           // Filter the data by the current month
-          if (data[2].equalsIgnoreCase(currentMonth)) {
+          if (data[2].equalsIgnoreCase(previousMonth)) {
             currentLines.add(data);
           }
-          if (data[2].equalsIgnoreCase(previousMonth)) {
+          if (data[2].equalsIgnoreCase(currentMonth)) {
             previousLines.add(data);
           }
         }
@@ -131,14 +131,14 @@ public class Budget {
           currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
         }
         XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
-        currentSeries.setName(currentMonth);
+        currentSeries.setName(previousMonth);
 
         ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
         for (String[] lineData : previousLines) {
           previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
         }
         XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-        previousSeries.setName(previousMonth);
+        previousSeries.setName(currentMonth);
 
         // Create the bar chart
         CategoryAxis xAxis = new CategoryAxis();
@@ -189,10 +189,10 @@ public class Budget {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
         // Filter the data by the current month
-        if (data[2].equalsIgnoreCase(currentMonth)) {
+        if (data[2].equalsIgnoreCase(previousMonth)) {
           currentLines.add(data);
         }
-        if (data[2].equalsIgnoreCase(previousMonth)) {
+        if (data[2].equalsIgnoreCase(currentMonth)) {
           previousLines.add(data);
         }
       }
@@ -203,14 +203,14 @@ public class Budget {
         currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
       }
       XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
-      currentSeries.setName(currentMonth);
+      currentSeries.setName(previousMonth);
 
       ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
       for (String[] lineData : previousLines) {
         previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
       }
       XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-      previousSeries.setName(previousMonth);
+      previousSeries.setName(currentMonth);
 
       // Create the bar chart
       CategoryAxis xAxis = new CategoryAxis();
