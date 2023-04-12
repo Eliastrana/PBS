@@ -16,6 +16,7 @@ import java.util.Base64;
 
 public class LoginBackend {
   private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
+  private static String currentUser;
 
   public static String decrypt(String password, String SALT) {
     try {
@@ -59,10 +60,17 @@ public class LoginBackend {
         if (password.equals(decryptedPassword)) {
           System.out.println("Logged in");
           SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+          currentUser = username;
           controller.handleLoginButton();
         }
       }
     }
   }
+  public static String getCurrentUser() {
+    return currentUser;
+  }
 
+  public static void setCurrentUser(String currentUser) {
+    LoginBackend.currentUser = currentUser;
+  }
 }

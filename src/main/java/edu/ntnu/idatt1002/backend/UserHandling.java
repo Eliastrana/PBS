@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 public class UserHandling {
 
+    private static String username;
     private static String email;
-
     private static String password;
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
@@ -147,6 +147,10 @@ public class UserHandling {
             throw new IOException("Failed to delete original file");
         }
         System.out.println("Password reset");
+    }
+
+    public static void setUsername(String username) {
+        UserHandling.username = username;
     }
 }
 

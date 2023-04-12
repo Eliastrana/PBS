@@ -15,8 +15,8 @@ import javafx.scene.text.TextAlignment;
 
 public class Settings {
   public static VBox settingsView() {
-
     VBox vbox = new VBox();
+    vbox.getChildren().clear();
 
     HBox currentEmailHbox = new HBox();
 
@@ -61,6 +61,8 @@ public class Settings {
 
     showPrivateInformation.setOnAction(e -> {
       if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
+        currentEmailLabel.setText(UserHandling.getEmail());
+        currentPasswordLabel.setText(UserHandling.getPassword());
         currentEmailLabel.setVisible(false);
         currentPasswordLabel.setVisible(false);
         visibilityImage.setImage(new Image("icons/visibility.png"));

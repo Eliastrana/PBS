@@ -1,6 +1,9 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
+import edu.ntnu.idatt1002.backend.LoginBackend;
+import edu.ntnu.idatt1002.backend.UserHandling;
+import edu.ntnu.idatt1002.frontend.menu.Overview;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -228,6 +231,8 @@ public class TopMenu {
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
       try {
+        LoginBackend.setCurrentUser(null);
+        CreateUser.setCurrentUser(null);
         gui.navigateToLogin();
       } catch (Exception e) {
         throw new RuntimeException(e);
