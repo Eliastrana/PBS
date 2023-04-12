@@ -233,6 +233,7 @@ public class TopMenu {
       try {
         LoginBackend.setCurrentUser(null);
         CreateUser.setCurrentUser(null);
+        GUI.settingsWindow.getChildren().clear();
         gui.navigateToLogin();
       } catch (Exception e) {
         throw new RuntimeException(e);
