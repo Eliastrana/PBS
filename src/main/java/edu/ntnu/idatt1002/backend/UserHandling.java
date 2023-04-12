@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 public class UserHandling {
 
+    private static String username;
     private static String email;
-
     private static String password;
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
@@ -45,7 +45,7 @@ public class UserHandling {
                 if (user[0].equals(GUI.getCurrentUser())) {
                     String salt = user[2];
                     password = user[1];
-                    password = Login.decrypt(password, salt);
+                    password = LoginBackend.decrypt(password, salt);
 
                 }
             }
@@ -106,8 +106,8 @@ public class UserHandling {
         String tempCsvFile = "src/main/resources/temp_users.csv";
         String line = "";
         String csvSplitBy = ",";
-        String salt = CreateUser.generateSalt();
-        String newPassword = CreateUser.encrypt(password, salt);
+        String salt = CreateUserBackend.generateSalt();
+        String newPassword = CreateUserBackend.encrypt(password, salt);
         Matcher passwordMatcher = PASSWORD_PATTERN.matcher(password);
 
         if (!passwordMatcher.matches()) {
@@ -147,6 +147,10 @@ public class UserHandling {
             throw new IOException("Failed to delete original file");
         }
         System.out.println("Password reset");
+    }
+
+    public static void setUsername(String username) {
+        UserHandling.username = username;
     }
 }
 
