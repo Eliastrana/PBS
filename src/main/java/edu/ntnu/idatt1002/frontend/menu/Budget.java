@@ -28,6 +28,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -87,7 +89,15 @@ public class Budget {
       String amount = budgetAmountField.getText();
       String month = timeofdaychecker.getCurrentMonth();
 
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv"), true))) {
+      String categorymonth = category + month;
+
+      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv"), true));
+           BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "budget.csv")))) {
+
+        String line;
+
+        String[] columns = reader.readLine().split(",");
+        String categoryandmonth = columns[0] + columns[2];
         writer.write(category + "," + amount + "," + month + "\n");
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());

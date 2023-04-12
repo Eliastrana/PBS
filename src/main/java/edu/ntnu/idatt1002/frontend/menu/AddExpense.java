@@ -143,7 +143,7 @@ public class AddExpense {
                 prices.setText(null);
               } else {
                 String selectedOption = (String) categoryMenu.getValue();
-                String name = names.getText();
+                String name = ('|' + names.getText() + '|');
                 String tempText = prices.getText();
                 String accountName = (String) accountMenu.getValue();  //placeholder for knappen som skal velge konto
 
