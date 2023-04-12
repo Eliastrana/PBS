@@ -224,7 +224,6 @@ public class Overview {
         if (data[0].equalsIgnoreCase("Clothing")) {
           expensesToBarChart.put(data[0], ExcelExporter.getTotalOfClothing(expensesToTable));
         }
-        System.out.println(expensesToBarChart);
       }
       // Create the bar chart dataset
       ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
