@@ -3,6 +3,9 @@ package edu.ntnu.idatt1002.frontend;
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
 import edu.ntnu.idatt1002.backend.LoginObserver;
+import edu.ntnu.idatt1002.frontend.controllers.CreateUserController;
+import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
+import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import edu.ntnu.idatt1002.frontend.menu.*;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -10,6 +13,7 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
@@ -26,7 +30,7 @@ import java.io.IOException;
 
 
 
-public class GUI extends Application implements LoginObserver {
+public class GUI extends Application {
 
     //Each page has its own method, all the buttons are in the same method.
     //The buttons are then connected to the methods that open the pages.
@@ -37,10 +41,6 @@ public class GUI extends Application implements LoginObserver {
 
     //This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
-    private StackPane loginWindow = new StackPane(new VBox(Login.loginView()));
-
-    private StackPane passwordForgottenWindow = new StackPane();
-    private StackPane createUserWindow = new StackPane();
     protected static StackPane overviewWindow = new StackPane();
     protected static StackPane transferWindow = new StackPane();
     protected static StackPane reportWindow = new StackPane();
@@ -49,25 +49,11 @@ public class GUI extends Application implements LoginObserver {
     protected static StackPane budgetWindow = new StackPane();
     protected static StackPane bankStatementWindow = new StackPane();
 
-
-
-    BooleanProperty isLogin = new SimpleBooleanProperty(false);
-    BooleanProperty isCreateAccount = new SimpleBooleanProperty(false);
-
-    BooleanProperty passwordForgotten = new SimpleBooleanProperty(false);
-    BooleanProperty newPassword = new SimpleBooleanProperty(false);
-
-    private BooleanProperty backToLoginForgot = new SimpleBooleanProperty(false);
-    private BooleanProperty backToLoginCreate = new SimpleBooleanProperty(false);
-
     public static String currentUser;
 
-    Scene sceneCreateUser = new Scene(createUserWindow);
-
-    Scene scenePasswordForgotten = new Scene(passwordForgottenWindow);
-
-    Scene scene = new Scene(loginWindow);
-
+    private Stage primaryStage;
+    private LoginController loginController;
+    private Login loginView;
 
     public GUI() {
     }
@@ -76,124 +62,50 @@ public class GUI extends Application implements LoginObserver {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        externalStartMenu(primaryStage);
-    }
+        this.primaryStage = primaryStage;
+        loginController = new LoginController(this);
+        loginView = new Login();
 
-    public void externalStartMenu(Stage primaryStage) {
-        loginWindow.setVisible(true);
-        loginWindow.getChildren().add(Login.loginView());
-        loginWindow.getStylesheets().add("/LightMode.css");
-        loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPrefSize(1000, 700);
-        loginWindow.setMinSize(1000, 700);
-        loginWindow.setMaxSize(1000, 700);
-
-        Image icon = new Image("icons/icon.png");
-        primaryStage.getIcons().add(icon);
-
+        Parent root = loginView.loginView(loginController);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add("/Styling.css");
 
+        primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
-        Login.addObserver(this);
-
-        isCreateAccount.addListener((observable, oldValue, newValue) -> {
-            if (isCreateAccount.get()) {
-                launchCreateUser(primaryStage);
-            }
-        });
-
-        isLogin.addListener((observable, oldValue, newValue) -> {
-            if (isLogin.get()) {
-                launchApp(primaryStage);
-            }
-        });
-
-        passwordForgotten.addListener((observable, oldValue, newValue) -> {
-            if (passwordForgotten.get()) {
-                launchForgotPassword(primaryStage);
-            }
-        });
     }
 
-    public void launchCreateUser(Stage primaryStage) {
-        createUserWindow.getChildren().add(CreateUser.createUserView());
-        loginWindow.setVisible(true);
-        loginWindow.getChildren().add(Login.loginView());
-        loginWindow.getStylesheets().add("/LightMode.css");
-        loginWindow.setStyle("-fx-background-color: #E6E8E6;");
-        loginWindow.setAlignment(Pos.CENTER);
-        loginWindow.setPrefSize(1000, 700);
-        loginWindow.setMinSize(1000, 700);
-        loginWindow.setMaxSize(1000, 700);
+    public void navigateToLogin() {
+        loginController = new LoginController(this);
+        loginView = new Login();
 
-        sceneCreateUser.getStylesheets().add("/Styling.css");
-
-        Image icon = new Image("icons/icon.png");
-        primaryStage.getIcons().add(icon);
-
-        CreateUser.addObserver(this);
-
-        primaryStage.setScene(sceneCreateUser);
-        primaryStage.show();
-
-        backToLoginCreate.addListener((observable, oldValue, newValue) -> {
-            if (backToLoginCreate.get()) {
-                try {
-                    backToLoginCreate.set(false);
-                    CreateUser.setBackToLogin(false);
-                    externalStartMenu(primaryStage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        Parent root = loginView.loginView(loginController);
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/Styling.css");
+        updateScene(scene, root);
     }
 
-    public void launchForgotPassword(Stage primaryStage){
-        passwordForgottenWindow.getChildren().add(ForgotPassword.forgottenPasswordView());
-        passwordForgottenWindow.getStylesheets().add("/Styling.css");
-        passwordForgottenWindow.setStyle("-fx-background-color: #E6E8E6;");
-        passwordForgottenWindow.setAlignment(Pos.CENTER);
-        passwordForgottenWindow.setPadding(new Insets(10, 10, 10, 10));
-        passwordForgottenWindow.setPrefSize(1000, 700);
-        passwordForgottenWindow.setMinSize(1000, 700);
-        passwordForgottenWindow.setMaxSize(1000, 700);
+    public void navigateToCreateUser() {
+        CreateUserController createUserController = new CreateUserController(this);
+        CreateUser createUser = new CreateUser();
 
-        Image icon = new Image("icons/icon.png");
-        primaryStage.getIcons().add(icon);
-
-        scenePasswordForgotten.getStylesheets().add("/Styling.css");
-
-        primaryStage.setScene(scenePasswordForgotten);
-        primaryStage.show();
-
-        ForgotPassword.addObserver(this);
-
-        newPassword.addListener((observable, oldValue, newValue) -> {
-            if (newPassword.get()) {
-                try {
-                    externalStartMenu(primaryStage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        backToLoginForgot.addListener((observable, oldValue, newValue) -> {
-            if (backToLoginForgot.get()) {
-                try {
-                    backToLoginForgot.set(false);
-                    ForgotPassword.setBackToLogin(false);
-                    externalStartMenu(primaryStage);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        Parent root = createUser.createUserView(createUserController);
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/Styling.css");
+        updateScene(scene, root);
     }
 
-    public void launchApp(Stage primaryStage) {
+    public void navigateToForgotPassword() {
+        ForgotPasswordController forgotPasswordController = new ForgotPasswordController(this);
+        ForgotPassword forgotPasswordView = new ForgotPassword();
+
+        Parent root = forgotPasswordView.forgottenPasswordView(forgotPasswordController);
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/Styling.css");
+        updateScene(scene, root);
+    }
+
+    public void navigateToMainApp() {
         overviewWindow.getChildren().add(Overview.overviewView());
         overviewWindow.getStylesheets().add("/Styling.css");
 
@@ -276,40 +188,8 @@ public class GUI extends Application implements LoginObserver {
         return currentUser;
     }
 
-    @Override
-    public void update() throws Exception {
-        boolean isLoggedIn = Login.isLoggedIn();
-        boolean createdUser = CreateUser.isCreatedUser();
-        boolean forgotPassword = Login.isForgotPassword();
-        boolean changedPassword = ForgotPasswordBackend.isChangedPassword();
-        boolean isCreateUser = Login.isCreateUser();
-        if (isLoggedIn) {
-            currentUser = Login.username.getText();
-            isLogin.setValue(true);
-        }
-        if (createdUser) {
-            Login.username.clear();
-            currentUser = CreateUser.username.getText();
-            isLogin.setValue(true);
-        }
-        if (changedPassword) {
-            Login.username.clear();
-            newPassword.setValue(true);
-        }
-        if (forgotPassword) {
-            Login.username.clear();
-            passwordForgotten.setValue(true);
-        }
-        if (isCreateUser){
-            Login.username.clear();
-            isCreateAccount.setValue(true);
-        }
-       if (ForgotPassword.isBackToLogin()) {
-            backToLoginForgot.setValue(true);
-        }
-
-        if (CreateUser.isBackToLogin()) {
-            backToLoginCreate.setValue(true);
-        }
+    private void updateScene(Scene scene, Parent root) {
+        Stage stage = (Stage) primaryStage.getScene().getWindow();
+        stage.setScene(scene);
     }
 }

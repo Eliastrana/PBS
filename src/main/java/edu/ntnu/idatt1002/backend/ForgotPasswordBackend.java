@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.backend;
 
 import edu.ntnu.idatt1002.frontend.Email;
 import edu.ntnu.idatt1002.frontend.ForgotPassword;
+import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +20,7 @@ public class ForgotPasswordBackend {
 
   public static boolean changedPassword = false;
 
-  public static void handleSubmit() throws Exception {
+  public static void handleSubmit(ForgotPasswordController controller) throws Exception {
     if (ForgotPassword.emailString.isEmpty()) {
       ForgotPassword.errorLabel.setText("Please enter your email.");
     } else {
@@ -66,15 +67,7 @@ public class ForgotPasswordBackend {
       }
       System.out.println("Password reset");
       changedPassword = true;
-      ForgotPassword.notifyObservers();
+      controller.handleResetButton();
     }
-  }
-
-  public static boolean isChangedPassword() {
-    return changedPassword;
-  }
-
-  public static void setChangedPassword(boolean changedPassword) {
-    ForgotPasswordBackend.changedPassword = changedPassword;
   }
 }

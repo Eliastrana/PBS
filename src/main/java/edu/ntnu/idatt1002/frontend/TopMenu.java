@@ -228,20 +228,10 @@ public class TopMenu {
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
       try {
-        gui.externalStartMenu(primaryStage);
+        gui.navigateToLogin();
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
-
-      gui.isLogin.setValue(false);
-      gui.isCreateAccount.setValue(false);
-      gui.passwordForgotten.setValue(false);
-      gui.newPassword.setValue(false);
-      Login.setLoggedIn(false);
-      Login.setForgotPasswordBoolean(false);
-      Login.setCreateUser(false);
-      CreateUser.setCreatedUser(false);
-      ForgotPasswordBackend.setChangedPassword(false);
     });
 
     topMenu.getStylesheets().add("/Styling.css");

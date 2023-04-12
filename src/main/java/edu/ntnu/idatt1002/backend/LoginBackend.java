@@ -1,5 +1,8 @@
 package edu.ntnu.idatt1002.backend;
 
+import edu.ntnu.idatt1002.frontend.controllers.LoginController;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
@@ -32,4 +35,34 @@ public class LoginBackend {
     }
     return null;
   }
+
+  public static void login(String username, String password, LoginController controller) {
+    String csvFile = "src/main/resources/users.csv";
+    String line = "";
+    BufferedReader br = null;
+    try {
+      br = new BufferedReader(new FileReader(csvFile));
+    } catch (FileNotFoundException ex) {
+      throw new RuntimeException(ex);
+    }
+    while (true) {
+      try {
+        if ((line = br.readLine()) == null) break;
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+      String[] user = line.split(",");
+      if (user[0].equals(username) || user[3].equals(username)) {
+        String encryptedPassword = user[1];
+        String SALT = user[2];
+        String decryptedPassword = decrypt(encryptedPassword, SALT);
+        if (password.equals(decryptedPassword)) {
+          System.out.println("Logged in");
+          SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+          controller.handleLoginButton();
+        }
+      }
+    }
+  }
+
 }

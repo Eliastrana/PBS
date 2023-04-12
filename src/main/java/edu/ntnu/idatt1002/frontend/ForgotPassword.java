@@ -1,8 +1,10 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginObserver;
+import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -23,20 +25,16 @@ import java.util.regex.Pattern;
 import static edu.ntnu.idatt1002.backend.ForgotPasswordBackend.handleSubmit;
 
 public class ForgotPassword {
-
-    private static List<LoginObserver> observers = new ArrayList<>();
-
     private static TextField emailTextField;
     public static Label errorLabel;
     public static String emailString;
     public static String newPasswordString;
-    public static boolean backToLogin = false;
     private static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
 
-    public static VBox forgottenPasswordView() {
+    public Parent forgottenPasswordView(ForgotPasswordController controller) {
 
         VBox forgottenPasswordVBox = new VBox();
 
@@ -84,15 +82,7 @@ public class ForgotPassword {
         backButtonBox.setAlignment(Pos.TOP_LEFT);
         backButtonBox.setPadding(new Insets(20, 0, 0, 20));
 
-        backButton.setOnAction(e -> {
-
-            try {
-                backToLogin = true;
-                notifyObservers();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        backButton.setOnAction(e -> controller.handleBackButton());
 
         masterPassword.setVisible(false);
         newPassword.setVisible(false);
@@ -150,7 +140,7 @@ public class ForgotPassword {
                 } else {
                     newPasswordString = newPassword.getText();
                     try {
-                        handleSubmit();
+                        handleSubmit(controller);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
@@ -163,24 +153,5 @@ public class ForgotPassword {
         forgottenPasswordVBox.setAlignment(Pos.CENTER);
 
         return forgottenPasswordVBox;
-    }
-
-    public static void addObserver(LoginObserver observer) {
-        observers.add(observer);
-    }
-
-    public static void notifyObservers() throws Exception {
-        for (LoginObserver observer : observers) {
-            observer.update();
-            System.out.println("Notified observer");
-        }
-    }
-
-    public static boolean isBackToLogin() {
-        return backToLogin;
-    }
-
-    public static void setBackToLogin(boolean backToLogin) {
-        ForgotPassword.backToLogin = backToLogin;
     }
 }
