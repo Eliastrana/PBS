@@ -30,9 +30,7 @@ public class Expense {
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
-        if (category < 1 || category > 5) {
-            throw new IllegalArgumentException("Category must be between 1 and 5");
-        }
+
         if (date == null) {
             throw new IllegalArgumentException("Date cannot be null");
         }
