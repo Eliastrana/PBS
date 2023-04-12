@@ -37,7 +37,7 @@ public class LoginBackend {
     return null;
   }
 
-  public static void login(String username, String password, LoginController controller) {
+  public static void login(String username, String password, LoginController controller) throws IOException {
     String csvFile = "src/main/resources/users.csv";
     String line = "";
     BufferedReader br = null;

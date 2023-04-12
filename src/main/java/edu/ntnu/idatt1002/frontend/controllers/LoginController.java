@@ -23,7 +23,7 @@ public class LoginController {
     this.gui = gui;
   }
 
-  public void handleLoginButton() {
+  public void handleLoginButton() throws IOException {
     gui.navigateToMainApp();
   }
 

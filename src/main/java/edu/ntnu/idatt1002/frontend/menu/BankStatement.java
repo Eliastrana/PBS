@@ -8,6 +8,7 @@ import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +34,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static javafx.scene.text.Font.font;
 
 public class BankStatement {
-  public static VBox bankStatementView() {
+  public static VBox bankStatementView() throws IOException {
 
 
     System.out.println("opening more window");
@@ -52,7 +53,7 @@ public class BankStatement {
     selectAccountText.setStyle("-fx-fill: #3F403F");
     selectAccountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
-    ObservableList<String> options2 = FXCollections.observableArrayList("Savings");
+    ObservableList<String> options2 = FXCollections.observableArrayList(CSVReader.readCSV().keySet());
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setId("categoryMenuButton");
     accountMenu.setPromptText("Select account");

@@ -83,7 +83,13 @@ public class Login {
       }
     });
 
-    logIn.setOnAction(e -> LoginBackend.login(username.getText(), password.getText(), controller));
+    logIn.setOnAction(e -> {
+      try {
+        LoginBackend.login(username.getText(), password.getText(), controller);
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+    });
 
     Text createUser = new Text("Create user");
     createUser.setId("linkSmallText");

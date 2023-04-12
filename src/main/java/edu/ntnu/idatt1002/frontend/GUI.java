@@ -106,7 +106,7 @@ public class GUI extends Application {
         updateScene(scene, root);
     }
 
-    public void navigateToMainApp() {
+    public void navigateToMainApp() throws IOException {
         if (LoginBackend.getCurrentUser() != null) {
             setCurrentUser(LoginBackend.getCurrentUser());
         } else if (CreateUser.getCurrentUser() != null) {
