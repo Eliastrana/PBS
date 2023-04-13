@@ -39,6 +39,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
 
 public class Budget {
+  public static List<String[]> currentBudget = new ArrayList<String[]>();
   public static VBox budgetView() {
 
     VBox budgetLayout = new VBox();
@@ -278,8 +279,7 @@ public class Budget {
     budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
     budgetLayout.setAlignment(Pos.TOP_CENTER);
 
+    currentBudget = currentLines;
     return budgetLayout;
   }
-
-
 }

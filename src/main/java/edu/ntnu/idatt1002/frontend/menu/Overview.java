@@ -8,6 +8,7 @@ import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.Login;
+import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -75,7 +76,9 @@ public class Overview {
     text2.setFill(Color.LIGHTGREEN);
     text2.setStyle("-fx-fill: #404f44");
 
-    welcomeAndTimeOfDay.getChildren().addAll(text, text2);
+    Text text3 = new Text("Total budget remaining: " + "\n" + (BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal()));
+
+    welcomeAndTimeOfDay.getChildren().addAll(text, text2, text3);
     welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
 
     HBox hbox2 = new HBox(2);
