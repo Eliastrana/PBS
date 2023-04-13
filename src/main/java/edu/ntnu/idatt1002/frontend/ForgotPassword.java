@@ -1,6 +1,5 @@
 package edu.ntnu.idatt1002.frontend;
 
-import edu.ntnu.idatt1002.backend.LoginObserver;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
