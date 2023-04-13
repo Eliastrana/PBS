@@ -1,6 +1,8 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Account;
+import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Income;
@@ -44,18 +46,19 @@ import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 public class Overview {
+  public static String name;
   public static VBox overviewView() {
     ObservableList<PieChart.Data> pieChartData = createData();
     ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.frontend.utility.PieChart.createData2();
 
     VBox welcomeAndTimeOfDay = new VBox();
 
-    String name;
-    if (!Login.username.getText().equals("")) {
-      name = Login.getCurrentUser();
-    } else if (!CreateUser.username.getText().equals("")) {
+
+    if (LoginBackend.getCurrentUser() != null) {
+      name = LoginBackend.getCurrentUser();
+    } else if (CreateUser.getCurrentUser() != null) {
       name = CreateUser.getCurrentUser();
-    } else{
+    } else {
       name = "User";
     }
 
