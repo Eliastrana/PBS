@@ -216,5 +216,7 @@ public class GUI extends Application {
     private void updateScene(Scene scene, Parent root) {
         Stage stage = (Stage) primaryStage.getScene().getWindow();
         stage.setScene(scene);
+        stage.setMinHeight(700);
+        stage.setMinWidth(1000);
     }
 }
