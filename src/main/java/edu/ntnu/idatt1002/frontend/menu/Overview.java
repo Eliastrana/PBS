@@ -15,15 +15,20 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -155,10 +160,74 @@ public class Overview {
     TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
 
+    rightTable.setEditable(true);
+
+    rightColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
+    rightColumn1.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());       //Add error message if not a string
+
+      // Set the new name value on the expense object
+      expense.setName(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+           CSVReader.getExpensesFromCSV());
+    });
+
+    rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));      //Add errror message if not a double
+    rightColumn2.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setPrice(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+    });
+
+    rightColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));   //Add error message if date is not valid
+    rightColumn3.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setDate(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+    });
+
+    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
+    rightColumn4.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setCategoryAsString(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+    });
+
+    rightColumn5.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid account
+    rightColumn5.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setAccountAsString(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+    });
+
     rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
 
     rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
 
+    Button removeButton = new Button("Remove Selected");
+    removeButton.setOnAction(event -> {
+      ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
+      rightTable.getItems().removeAll(selectedExpenses);
+    });
+
+    vboxSpending.getChildren().add(removeButton);
     vboxSpending.getChildren().add(rightTable);
 
     Text currentAccountStatusText = new Text("Current account status");
@@ -270,7 +339,6 @@ public class Overview {
         }
       }
     }
-
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
 
       return vbox;

@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.backend;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Objects;
 
 public class Expense {
     private String uniqueID;
@@ -149,5 +150,22 @@ public class Expense {
             throw new IllegalArgumentException("UniqueID cannot be null or empty");
         }
         this.uniqueID = uniqueID;
+    }
+
+    public void setAccountAsString(String accountAsString) {
+        this.accountAsString = accountAsString;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Expense expense = (Expense) o;
+        return Double.compare(expense.price, price) == 0 && Objects.equals(name, expense.name) && Objects.equals(categoryAsString, expense.categoryAsString) && Objects.equals(accountAsString, expense.accountAsString) && Objects.equals(date, expense.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, categoryAsString, accountAsString, date);
     }
 }
