@@ -47,9 +47,6 @@
     -fx-background-radius: 5em;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.5, 0.0, 0.0);
 
-
-
-
 }
 
 
@@ -174,9 +171,14 @@
 #welcomeTitleText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
-    -fx-font: 90px "Times New Roman";
+    -fx-font: 70px "Times New Roman";
 }
 
+#goodMorningText {
+    -fx-font-weight: bold;
+    -fx-text-fill: #404f44;
+    -fx-font: 40px "Helvetica Neue";
+}
 #squareButton {
     -fx-background-color: #9FB8AD;
     -fx-text-fill: #ffffff;
@@ -189,6 +191,13 @@
     -fx-min-width: 40px;
     -fx-max-width: 40px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.5, 0.0, 0.0);
+
+}
+
+#helveticaTitle {
+
+    -fx-fill: #3F403F;
+    -fx-font: 30px "Helvetica Neue";
 
 }
 
@@ -370,6 +379,13 @@ default-color2.chart-pie {
     -fx-padding: 5 10 5 10;
 }
 
+
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected > .focus-indicator {
+    -fx-background-color: yellow;
+    -fx-background-insets: -1.4, -2.8, -3.4, -4.2;
+    -fx-background-radius: 2.0, 2.0, 4.0, 5.0;
+}
 
 
 

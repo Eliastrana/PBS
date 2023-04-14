@@ -68,6 +68,8 @@ public class GUI extends Application {
 
         Parent root = loginView.loginView(loginController);
         Scene scene = new Scene(root);
+
+
         scene.getStylesheets().add("/Styling.css");
 
         primaryStage.setTitle("Login");

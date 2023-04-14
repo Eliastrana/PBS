@@ -180,6 +180,15 @@ public class ExcelExporter {
             document.close();
         }
     }
+
+    public static void convertToXlsx(String excelFile, String fileName) throws IOException {
+        try (Workbook workbook = WorkbookFactory.create(new File(excelFile));
+             FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".xlsx")) {
+
+            workbook.write(fos);
+        }
+    }
+
     public static String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
         // Read CSV file
         BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));

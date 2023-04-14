@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.UserHandling;
+import edu.ntnu.idatt1002.frontend.utility.MyToggleGroupClass;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,7 +15,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 public class Settings {
+
+  private MyToggleGroupClass myToggleGroupClass;
+
+
   public static VBox settingsView() {
+
     VBox vbox = new VBox();
     vbox.getChildren().clear();
 
@@ -166,21 +172,26 @@ public class Settings {
     prefrences.setTextAlignment(TextAlignment.CENTER);
 
     HBox viewmodeHbox = new HBox();
-    Text viewmodeText = new Text("Viewmode: ");
-    viewmodeText.setId("bodyText");
 
-    CheckBox lightmode = new CheckBox();
-    Text lightmodeText = new Text("Lightmode");
-    lightmodeText.setId("bodyText");
 
-    CheckBox darkmode = new CheckBox();
-    Text darkmodeText = new Text("Darkmode");
-    darkmodeText.setId("bodyText");
 
-    CheckBox colorblind = new CheckBox();
-    Text colorblindMode = new Text("Colorblindmode");
-    colorblindMode.setId("bodyText");
-    viewmodeHbox.getChildren().addAll(viewmodeText, lightmode, lightmodeText, darkmode, darkmodeText, colorblind, colorblindMode);
+    RadioButton lightmode = new RadioButton("Lightmode");
+    RadioButton darkmode = new RadioButton("Darkmode");
+    RadioButton colorblind = new RadioButton("Colorblindmode");
+
+    ToggleGroup toggleGroup = new ToggleGroup();
+    lightmode.setToggleGroup(toggleGroup);
+    darkmode.setToggleGroup(toggleGroup);
+    colorblind.setToggleGroup(toggleGroup);
+
+    RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+    if (selectedRadioButton != null) {
+      String selectedText = selectedRadioButton.getText();
+      // do something with the selected text
+    }
+
+
+    viewmodeHbox.getChildren().addAll(lightmode, darkmode, colorblind);
     viewmodeHbox.setSpacing(20);
     viewmodeHbox.setAlignment(Pos.CENTER);
 

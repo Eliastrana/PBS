@@ -2,12 +2,9 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Account;
-import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.Income;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
@@ -21,16 +18,12 @@ import javafx.scene.chart.*;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,9 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
-import static edu.ntnu.idatt1002.backend.Incomes.getIncomes;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
@@ -54,7 +45,6 @@ public class Overview {
 
     VBox welcomeAndTimeOfDay = new VBox();
 
-
     if (LoginBackend.getCurrentUser() != null) {
       name = LoginBackend.getCurrentUser();
     } else if (CreateUser.getCurrentUser() != null) {
@@ -65,34 +55,34 @@ public class Overview {
 
     System.out.println("open overview window");
 
-    Text text = new Text("Welcome " + name + "!");
-    text.setId("welcomeTitleText");
+    Text welcome = new Text(timeofdaychecker.timeofdaychecker()+" " + name + "!");
+    welcome.setId("welcomeTitleText");
 
+    Text budgetRemaining = new Text("Budget remaining: ");
+    budgetRemaining.setId("goodMorningText");
 
-    //Time of day text
-    Text text2 = new Text(timeofdaychecker.timeofdaychecker() + "\n");
-    text2.setFont(Font.font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 60));
-    text2.setLineSpacing(0);
-    text2.setFill(Color.LIGHTGREEN);
-    text2.setStyle("-fx-fill: #404f44");
+    Text budgetText = new Text((BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal())+" kr");
+    budgetText.setId("goodMorningText");
+    if (BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal() < 0) {
+      budgetText.setFill(Color.RED);
+    } else {
+      budgetText.setFill(Color.GREEN);
+    }
 
-    Text text3 = new Text("Total budget remaining: " + "\n" + (BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal()));
-
-    welcomeAndTimeOfDay.getChildren().addAll(text, text2, text3);
+    welcomeAndTimeOfDay.getChildren().addAll(welcome,budgetRemaining, budgetText);
     welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
 
     HBox hbox2 = new HBox(2);
+
     Text textSavings = new Text("Total savings: " + "\n" + getTotalOfAllAccounts());
     textSavings.setTextAlignment(TextAlignment.CENTER);
-    textSavings.setStyle("-fx-fill: #3F403F");
-    textSavings.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    textSavings.setId("helveticaTitle");
     hbox2.getChildren().add(textSavings);
+
 
     Text textSpending = new Text("Monthly spending: " + "\n" + ExcelExporter.getMonthlyTotal());
     textSpending.setTextAlignment(TextAlignment.CENTER);
-
-    textSpending.setStyle("-fx-fill: #3F403F");
-    textSpending.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
+    textSpending.setId("helveticaTitle");
     hbox2.getChildren().add(textSpending);
 
     Text emptySpace = new Text("\n");
@@ -101,13 +91,11 @@ public class Overview {
     VBox vboxSavings = new VBox();
     DoughnutChart pieChart1 = new DoughnutChart(pieChartData);
     vboxSavings.setAlignment(Pos.CENTER);
-    pieChart1.getStyleClass().add("default-color0.chart-pie"); //DELETE THIS TO GO BACK TO NORMAL COLORS
     vboxSavings.getChildren().addAll(textSavings, pieChart1);
 
     VBox vboxSpending = new VBox();
     DoughnutChart pieChart2 = new DoughnutChart(pieChartData2);
     vboxSpending.setAlignment(Pos.CENTER);
-    pieChart2.getStyleClass().add("my-pie-chart"); //DELETE THIS TO GO BACK TO NORMAL COLORS
     vboxSpending.getChildren().addAll(textSpending, pieChart2);
 
     HBox hboxPieLayout = new HBox(vboxSavings, vboxSpending);
@@ -146,6 +134,8 @@ public class Overview {
 
     vboxSavings.getChildren().add(leftTable);
 
+
+
     //TODO vboxSpending.getChildren().add(rightTable);
 
     //RightTable
@@ -169,14 +159,7 @@ public class Overview {
 
     rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
 
-//    try {
-//      rightTable.getItems().addAll(ExcelExporter.getExpensesForCurrentMonth());
-//    } catch (IOException e) {
-//    throw new RuntimeException(e);
-//    }
-
     vboxSpending.getChildren().add(rightTable);
-
 
     Text currentAccountStatusText = new Text("Current account status");
     currentAccountStatusText.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
@@ -184,10 +167,6 @@ public class Overview {
     currentAccountStatusText.setStyle("-fx-fill: #3F403F");
 
 
-    //TESTING BARCHART
-
-
-    //BARCHART INCOME
     File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
     String currentMonth = timeofdaychecker.getCurrentMonth();
     if (!csvFile.exists()) {
@@ -274,11 +253,6 @@ public class Overview {
     barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
     barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
 
-    // set the color of the legend symbol for series1
-    //series1.getNode().setStyle("-fx-bar-legend-symbol: #3F403F;");
-    //series2.getNode().setStyle("-fx-bar-legend-symbol: #9FB8AD;");
-
-
     for (XYChart.Series<String, Number> series : barChart.getData()) {
       if (series.getName().equals("Income")) {
         for (XYChart.Data<String, Number> data : series.getData()) {
@@ -296,7 +270,6 @@ public class Overview {
         }
       }
     }
-
 
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
 
