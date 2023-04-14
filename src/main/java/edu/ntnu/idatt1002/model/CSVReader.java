@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static edu.ntnu.idatt1002.backend.Accounts.accounts;
-
 public class CSVReader {
     private static String CSV_FILE_PATH_1;
     private static String CSV_FILE_PATH_2;
@@ -219,29 +217,37 @@ public class CSVReader {
         }
     }
 
-    public static List<Expense> updateRowsThatAreDifferentInTable(List<Expense> expensesInTable,
-                                                                  List<Expense> expensesFromFile) {
+    public static void updateRowsThatAreDifferentInTable(List<Expense> expensesInTable,
+                                                         List<Expense> expensesFromFile) {
         List<Expense> updatedExpenses = new ArrayList<>();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_2))) {
             for (Expense e : expensesInTable) {
-                for (Expense expenseInTable : expensesInTable) {
-                    if (e.equals(expenseInTable)) {
-                        e.setCategoryAsString(expenseInTable.getCategory());
-                        e.setName(expenseInTable.getName());
-                        e.setDate(expenseInTable.getDate());
-                        e.setPrice(expenseInTable.getPrice());
-                        e.setAccountAsString(expenseInTable.getAccount());
+                for (Expense expenseInFile : expensesFromFile) {
+                    if (e.equals(expenseInFile)) {
+                        e.setCategoryAsString(expenseInFile.getCategory());
+                        e.setName(expenseInFile.getName());
+                        e.setDate(expenseInFile.getDate());
+                        e.setPrice(expenseInFile.getPrice());
+                        e.setAccountAsString(expenseInFile.getAccount());
+                    } else if (expenseInFile.getDate().getMonthValue() != LocalDate.now().getMonthValue()){
+                        writer.write(expenseInFile.getCategory() + "," + "|" + expenseInFile.getName() + "|" + "," + expenseInFile.getDate() +
+                            "," + expenseInFile.getPrice() + "," + expenseInFile.getAccount());
+                        writer.newLine();
                     }
                 }
-                writer.write(e.getCategory() + "," + "|" + e.getName() + "|" + "," + e.getDate() +
+                LocalDate currentDate = LocalDate.now();
+                int currentMonth = currentDate.getMonthValue();
+                int expenseMonth = e.getDate().getMonthValue();
+                if (currentMonth == expenseMonth) {
+                    writer.write(e.getCategory() + "," + "|" + e.getName() + "|" + "," + e.getDate() +
                         "," + e.getPrice() + "," + e.getAccount());
-                writer.newLine();
-                updatedExpenses.add(e);
+                    writer.newLine();
+                    updatedExpenses.add(e);
+                }
             }
             writer.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return updatedExpenses;
     }
 }
