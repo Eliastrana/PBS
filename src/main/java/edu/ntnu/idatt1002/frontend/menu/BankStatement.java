@@ -16,6 +16,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontPosture;
@@ -34,7 +37,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static javafx.scene.text.Font.font;
 
 public class BankStatement {
-  public static VBox bankStatementView() throws IOException {
+  public static VBox bankStatementView() {
 
 
     System.out.println("opening more window");
@@ -50,10 +53,14 @@ public class BankStatement {
     selectAccountHbox.setAlignment(Pos.CENTER);
 
     Text selectAccountText = new Text("Select account: ");
-    selectAccountText.setStyle("-fx-fill: #3F403F");
-    selectAccountText.setFont(font("helvetica", FontWeight.BOLD, FontPosture.REGULAR, 30));
 
-    ObservableList<String> options2 = FXCollections.observableArrayList(CSVReader.readCSV().keySet());
+
+    ObservableList<String> options2 = null;
+    try {
+      options2 = FXCollections.observableArrayList(CSVReader.readCSV().keySet());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setId("categoryMenuButton");
     accountMenu.setPromptText("Select account");
@@ -90,23 +97,22 @@ public class BankStatement {
     calenderIntervalText.setId("bodyText");
 
 
-    Text fromText = new Text("From: ");
-    fromText.setId("bodyText");
 
     DatePicker datePickerFrom = new DatePicker();
     datePickerFrom.setValue(LocalDate.now());
     datePickerFrom.setShowWeekNumbers(true);
-    datePickerFrom.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
-    Text toText = new Text("To: ");
-    toText.setId("bodyText");
+    ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
+    arrow.setFitHeight(20);
+    arrow.setFitWidth(20);
+
 
     DatePicker datePickerTo = new DatePicker();
     datePickerTo.setValue(LocalDate.now());
     datePickerTo.setShowWeekNumbers(true);
-    datePickerTo.setStyle("-fx-font-size: 20px; -fx-min-width: 100px; -fx-min-height: 50px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;");
 
-    calenderIntervalHbox.getChildren().addAll(fromText, datePickerFrom, toText, datePickerTo);
+    calenderIntervalHbox.getChildren().addAll(datePickerFrom, arrow, datePickerTo);
+    calenderIntervalHbox.setSpacing(20);
 
     Button export = new Button("Confirm");
     export.setId("actionButton");
@@ -175,6 +181,11 @@ public class BankStatement {
     Button exportToExcel = new Button("Export to Excel");
     exportToExcel.setId("actionButton");
 
+    calenderIntervalHbox.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        exportToExcel.fire();
+      }
+    });
 
     bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, export);
 

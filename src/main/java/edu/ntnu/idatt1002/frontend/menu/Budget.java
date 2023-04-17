@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -80,10 +81,26 @@ public class Budget {
     budgetAmountField.setPromptText("Set budget for next month: ");
     budgetAmountField.setId("textField");
 
+
+
     Button confirmAmount = new Button("Confirm");
     confirmAmount.setId("actionButton");
 
+    confirmAmount.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        confirmAmount.fire();
+      }
+    });
+
+    budgetAmountField.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        confirmAmount.fire();
+      }
+    });
+
     confirmAmount.setOnAction(e -> {
+
+
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
       String month = timeofdaychecker.getCurrentMonth();

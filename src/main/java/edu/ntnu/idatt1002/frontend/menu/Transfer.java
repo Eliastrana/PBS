@@ -48,7 +48,7 @@ public class Transfer {
             ComboBox<String> leftTransfer = new ComboBox<>();
             leftTransfer.setPromptText("Select Account");
             leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-
+            leftTransfer.setFocusTraversable(true);
             leftTransfer.setId("categoryMenuButton");
 
 
@@ -68,8 +68,10 @@ public class Transfer {
               rightTransfer.getItems().remove(leftTransfer.getValue());
             });
             rightTransfer.setId("categoryMenuButton");
+            rightTransfer.setFocusTraversable(true);
 
             TextField priceEntry = new TextField();
+            priceEntry.setFocusTraversable(true);
             priceEntry.setPromptText("Enter transfer amount");
             priceEntry.setId("textField");
 
@@ -82,7 +84,17 @@ public class Transfer {
               }
             });
 
+      confirmTransfer.setOnKeyPressed(event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+              confirmTransfer.fire();
+          }
+      });
+
+            confirmTransfer.setFocusTraversable(true);
     confirmTransfer.setOnAction(e -> {
+
+
+
       String removeFromAccount = leftTransfer.getValue();
       String addToAccount = rightTransfer.getValue();
       String tempText = priceEntry.getText();
@@ -126,12 +138,14 @@ public class Transfer {
 
     ComboBox<String> incomeAccount = new ComboBox<>();
     incomeAccount.setPromptText("Select Account");
+
     try {
       incomeAccount.setItems(FXCollections.observableArrayList(CSVReader.readCSV().keySet()));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
     incomeAccount.setId("categoryMenuButton");
+    incomeAccount.setFocusTraversable(true);
 
             TextField amountIncome = new TextField();
             amountIncome.setPromptText("Enter income amount");
@@ -146,7 +160,16 @@ public class Transfer {
               }
             });
 
+      confirmIncome.setOnKeyPressed(event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+              confirmIncome.fire();
+          }
+      });
+
+            confirmIncome.setFocusTraversable(true);
     confirmIncome.setOnAction(e -> {
+
+
       String inncomeAccountName = incomeAccount.getValue();
       String tempText = amountIncome.getText();
       double amountToAdd = Double.parseDouble(tempText);
@@ -166,22 +189,34 @@ public class Transfer {
 
             Text addNewAccount = new Text("Add new account:");
             addNewAccount.setId("titleText");
+            addNewAccount.setFocusTraversable(true);
 
             HBox addNewAccountHBox = new HBox();
             addNewAccountHBox.setSpacing(20);
             addNewAccountHBox.setAlignment(Pos.CENTER);
 
             TextField newAccountName = new TextField();
+            newAccountName.setFocusTraversable(true);
             newAccountName.setPromptText("Enter account name");
             newAccountName.setId("textField");
 
             TextField newAccountBalance = new TextField();
+            newAccountBalance.setFocusTraversable(true);
             newAccountBalance.setPromptText("Enter account balance");
             newAccountBalance.setId("textField");
 
             Button confirmNewAccount = new Button("Confirm");
+            confirmNewAccount.setFocusTraversable(true);
             confirmNewAccount.setId("actionButton");
+
+      confirmNewAccount.setOnKeyPressed(event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+              confirmNewAccount.fire();
+          }
+      });
             confirmNewAccount.setOnAction(e -> {
+
+
               String accountName = newAccountName.getText();
               String tempText = newAccountBalance.getText();
               double accountBalance = Double.parseDouble(tempText);
@@ -206,11 +241,7 @@ public class Transfer {
                 }
             });
 
-            newAccountBalance.setOnKeyPressed(e -> {
-              if (e.getCode() == KeyCode.ENTER) {
-                confirmNewAccount.fire(); // Simulate a click event on the logIn button
-              }
-            });
+
 
 
 

@@ -30,6 +30,10 @@
     -fx-cursor: hand;
 }
 
+#background {
+    -fx-background-color: #E6E8E6;
+}
+
 #bodyText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
@@ -98,7 +102,9 @@
 }
 
 #textField:focused {
-    -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+    -fx-background-color: #ffffff;
+    -fx-border-color: #32483d;
+    -fx-border-width: 2px;
 }
 
 
@@ -122,6 +128,12 @@
     -fx-cursor: hand;
 }
 
+#actionButton:focused {
+    -fx-background-color: #404f44;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
+}
+
 
 .loginScreen1 {
     -fx-background-image: url("/backgrounds/background1.jpg");
@@ -129,9 +141,7 @@
 .loginScreen2 {
     -fx-background-image: url("/backgrounds/background2.jpg");
 }
-.loginScreen3 {
-    -fx-background-image: url("/backgrounds/background3.jpg");
-}
+
 
 
 #overlayLogin{
@@ -160,16 +170,40 @@
     -fx-cursor: hand;
 }
 
+
+
+#categoryMenuButton:focused {
+    -fx-background-color: #c7cbca;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
+
+    -fx-border-color: #32483d;
+}
+
 #titleText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-font: 60px "Times New Roman";
 }
 
+#titleText:focused {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 60px "Times New Roman";
+    -fx-outline-color: #b93737;
+}
+
 #welcomeTitleText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-font: 70px "Times New Roman";
+}
+
+#welcomeTitleText:focused {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font: 70px "Times New Roman";
+    -fx-outline-color: #b93737;
 }
 
 #goodMorningText {
@@ -189,7 +223,12 @@
     -fx-min-width: 40px;
     -fx-max-width: 40px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0.5, 0.0, 0.0);
+}
 
+#squareButton:focused {
+    -fx-background-color: #404f44;
+    -fx-text-fill: #e7e4e3;
+    -fx-cursor: hand;
 }
 
 #helveticaTitle {
@@ -264,34 +303,6 @@
     -fx-max-height: 20px;
     -fx-max-width: 20px;;
     -fx-cursor: hand;
-}
-
-
-.table-header-background {
-    -fx-background-color: rgba(255, 255, 255, 0.8);
-    -fx-background-insets: 0;
-    -fx-padding: 5 5 5 5;
-    -fx-border-color: #CFCFCF;
-    -fx-border-insets: 0;
-    -fx-border-width: 0 0 1 0;
-}
-
-/* Style for the table header label */
-.table-column .label {
-    -fx-text-fill: #707070;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-}
-
-/* Style for the table row */
-.table-row-cell:odd {
-    -fx-background-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Style for the table cell */
-.table-cell {
-    -fx-alignment: center-left;
-    -fx-padding: 5 10 5 10;
 }
 
 

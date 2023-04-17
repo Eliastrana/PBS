@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -44,13 +45,23 @@ public class TopMenu {
     //BUTTON 1
     Button overviewButton = new Button("Overview", overviewImage);
     overviewButton.setId("topMenuButton");
+    overviewButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        overviewButton.fire();
+        event.consume();
+      }
+    });
     overviewButton.setOnAction(event -> {
+
       try {
         GUI.overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
           System.out.println(newValue);
           if (newValue) { //Redundant, but just to be sure
             GUI.updatePane();
           }});
+
+
+
 
         GUI.overviewWindow.setVisible(true);
         GUI.transferWindow.setVisible(false);
@@ -76,6 +87,12 @@ public class TopMenu {
     //BUTTON 2
     Button transferButton = new Button("Transfer", transferImage);
     transferButton.setId("topMenuButton");
+    transferButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        transferButton.fire();
+        event.consume();
+      }
+    });
     transferButton.setOnAction(event -> {
       try {
 
@@ -103,6 +120,12 @@ public class TopMenu {
     //BUTTON 4
     Button addExpenseButton = new Button("Add Expense", addExpenseImage);
     addExpenseButton.setId("topMenuButton");
+    addExpenseButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        addExpenseButton.fire();
+        event.consume();
+      }
+    });
     addExpenseButton.setOnAction(event -> {
       try {
 
@@ -142,6 +165,12 @@ public class TopMenu {
 
     Button reportButton = new Button("Report" ,reportImage);
     reportButton.setId("topMenuButton");
+    reportButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        reportButton.fire();
+        event.consume();
+      }
+    });
     reportButton.setOnAction(event -> {
       try {
 
@@ -174,6 +203,12 @@ public class TopMenu {
 
     Button budgetButton = new Button("Budget", budgetImage);
     budgetButton.setId("topMenuButton");
+    budgetButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        budgetButton.fire();
+        event.consume();
+      }
+    });
     budgetButton.setOnAction(event -> {
       try {
 
@@ -203,6 +238,12 @@ public class TopMenu {
 
     Button bankStatementButton = new Button("Bank Statement", bankStatementImage);
     bankStatementButton.setId("topMenuButton");
+    bankStatementButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        bankStatementButton.fire();
+        event.consume();
+      }
+    });
     bankStatementButton.setOnAction(event -> {
       try {
 
@@ -235,6 +276,12 @@ public class TopMenu {
     Button settingsButton = new Button();
     settingsButton.setGraphic(settingsIcon);
     settingsButton.setId("squareButton");
+    settingsButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        settingsButton.fire();
+        event.consume();
+      }
+    });
     settingsButton.setOnAction(event -> {
       try {
         GUI.overviewWindow.setVisible(false);
@@ -253,8 +300,6 @@ public class TopMenu {
     topMenu.getChildren().add(settingsButton);
 
 
-
-
     ImageView logOutImage = new ImageView(new Image("/icons/logOut.png"));
     logOutImage.setFitHeight(15);
     logOutImage.setFitWidth(15);
@@ -264,6 +309,12 @@ public class TopMenu {
     logOutButton.setId("squareButton");
 
     topMenu.getChildren().add(logOutButton);
+    logOutButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        logOutButton.fire();
+        event.consume();
+      }
+    });
     logOutButton.setOnAction(event -> {
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 

@@ -22,6 +22,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -63,9 +64,11 @@ public class Overview {
 
     Text welcome = new Text(timeofdaychecker.timeofdaychecker()+" " + name + "!");
     welcome.setId("welcomeTitleText");
+    welcome.setFocusTraversable(true);
 
     Text budgetRemaining = new Text("Budget remaining: ");
     budgetRemaining.setId("goodMorningText");
+    budgetRemaining.setFocusTraversable(true);
 
     Text budgetText = new Text((BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal())+" kr");
     budgetText.setId("goodMorningText");
@@ -96,11 +99,13 @@ public class Overview {
 
     VBox vboxSavings = new VBox();
     DoughnutChart pieChart1 = new DoughnutChart(pieChartData);
+    pieChart1.setFocusTraversable(true);
     vboxSavings.setAlignment(Pos.CENTER);
     vboxSavings.getChildren().addAll(textSavings, pieChart1);
 
     VBox vboxSpending = new VBox();
     DoughnutChart pieChart2 = new DoughnutChart(pieChartData2);
+    pieChart2.setFocusTraversable(true);
     vboxSpending.setAlignment(Pos.CENTER);
     vboxSpending.getChildren().addAll(textSpending, pieChart2);
 
@@ -133,6 +138,14 @@ public class Overview {
     leftTable.setEditable(true);
 
     Button removeButton1 = new Button("Remove Selected");
+    removeButton1.setFocusTraversable(true);
+    removeButton1.setId("actionButton");
+    removeButton1.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.DELETE) {
+        removeButton1.fire();
+      }
+    });
+
     removeButton1.setOnAction(event -> {
       Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
       if (selectedTransfer != null) {
@@ -153,11 +166,15 @@ public class Overview {
     vboxSavings.getChildren().add(removeButton1);
     vboxSavings.getChildren().add(leftTable);
 
+    vboxSavings.setSpacing(20);
+    vboxSpending.setSpacing(20);
+
 
     //TODO vboxSpending.getChildren().add(rightTable);
 
     //RightTable
     TableView<Expense> rightTable = new TableView<>();
+    rightTable.setFocusTraversable(true);
     TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
     rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -240,7 +257,18 @@ public class Overview {
     rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
 
     Button removeButton = new Button("Remove Selected");
+    removeButton.setId("actionButton");
+    removeButton.setFocusTraversable(true);
+
+    removeButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        removeButton.fire();
+      }
+    });
+
     removeButton.setOnAction(event -> {
+
+
       ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
       rightTable.getItems().removeAll(selectedExpenses);
         CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
@@ -252,9 +280,7 @@ public class Overview {
     vboxSpending.getChildren().add(rightTable);
 
     Text currentAccountStatusText = new Text("Current account status");
-    currentAccountStatusText.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 40));
     currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
-    currentAccountStatusText.setStyle("-fx-fill: #3F403F");
 
 
     File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
@@ -360,7 +386,14 @@ public class Overview {
         }
       }
     }
+
+    barChart.setFocusTraversable(true);
+
+
+
+
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
+    vbox.setSpacing(20);
 
       return vbox;
     }

@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -40,8 +41,19 @@ public class Settings {
     PasswordField passwordField = new PasswordField();
     passwordField.setId("textField");
 
-
     Button submitButton = new Button("Submit");
+
+    passwordField.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        submitButton.fire();
+      }
+    });
+
+    submitButton.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        submitButton.fire();
+      }
+    });
     submitButton.setId("actionButton");
     vbox.getChildren().addAll(passwordLabel, passwordField, submitButton);
     vbox.setSpacing(20);

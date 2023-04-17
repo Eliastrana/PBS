@@ -82,6 +82,9 @@ public class GUI extends Application {
     private Login loginView;
     private static String stylesheet = "/Styling.css";
 
+    static BorderPane borderPane = new BorderPane();
+
+
     /**
      * Instantiates a new Gui.
      */
@@ -98,7 +101,6 @@ public class GUI extends Application {
 
         Parent root = loginView.loginView(loginController);
         Scene scene = new Scene(root);
-
 
         scene.getStylesheets().add(stylesheet);
 
@@ -194,10 +196,16 @@ public class GUI extends Application {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
-        BorderPane borderPane = new BorderPane();
 
-        borderPane.setStyle("-fx-background-color: #E6E8E6;");
-        scrollPane.setStyle("-fx-background-color: #E6E8E6;");
+        borderPane.getStylesheets().add(stylesheet);
+
+        borderPane.setId("background");
+        scrollPane.setId("background");
+
+        //borderPane.setStyle("-fx-background-color: #E6E8E6;");
+        //scrollPane.setStyle("-fx-background-color: #E6E8E6;");
+
+
         scrollPane.setContent(borderPane);
 
         Scene scene = new Scene(scrollPane);
@@ -214,6 +222,8 @@ public class GUI extends Application {
 
 
         StackPane root = new StackPane();
+
+
 
         root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
         TopMenu topMenu = new TopMenu(this);
@@ -250,7 +260,8 @@ public class GUI extends Application {
         budgetWindow.getChildren().add(Budget.budgetView());
         settingsWindow.getChildren().clear();
         settingsWindow.getChildren().add(Settings.settingsView());
-
+        bankStatementWindow.getChildren().clear();
+        bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
 
     }
 
@@ -279,12 +290,22 @@ public class GUI extends Application {
     }
     public static void setStyle(String style) {
         StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow};
+        BorderPane[] borderPanes = new BorderPane[]{borderPane};
 
-        for (StackPane stackPane : stackPanes) {
+        for (StackPane stackPane : stackPanes ) {
             stackPane.getStylesheets().clear();
             stackPane.getStylesheets().add("/" + style + ".css");
         }
+
+        for (BorderPane borderPane : borderPanes) {
+            borderPane.getStylesheets().clear();
+            borderPane.getStylesheets().add("/" + style + ".css");
+        }
+
+
     }
+
+
 
     private void updateScene(Scene scene, Parent root) {
         Stage stage = (Stage) primaryStage.getScene().getWindow();

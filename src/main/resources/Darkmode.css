@@ -33,6 +33,10 @@
     -fx-cursor: hand;
 }
 
+#background {
+    -fx-background-color: #272a42;
+}
+
 #bodyText {
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
@@ -132,9 +136,7 @@
 .loginScreen2 {
     -fx-background-image: url("/backgrounds/background2.jpg");
 }
-.loginScreen3 {
-    -fx-background-image: url("/backgrounds/background3.jpg");
-}
+
 
 
 #overlayLogin{
@@ -165,19 +167,20 @@
 
 #titleText {
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-fill: #e7e4e3;
     -fx-font: 60px "Times New Roman";
 }
 
 #welcomeTitleText {
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-fill: #e7e4e3;
     -fx-font: 70px "Times New Roman";
+    -fx-font-color: #e7e4e3;
 }
 
 #goodMorningText {
     -fx-font-weight: bold;
-    -fx-text-fill: #404f44;
+    -fx-fill: #e7e4e3;
     -fx-font: 40px "Helvetica Neue";
 }
 #squareButton {
@@ -197,7 +200,7 @@
 
 #helveticaTitle {
 
-    -fx-fill: #3F403F;
+    -fx-fill: #e7e4e3;
     -fx-font: 30px "Helvetica Neue";
 
 }
@@ -215,19 +218,19 @@
 
 #underTitleText {
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #e7e4e3;
     -fx-font: 20px "Times New Roman";
 }
 
 #smallText {
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #e7e4e3;
     -fx-font: 12px "Times New Roman";
 }
 
 #linkSmallText {
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #e7e4e3;
     -fx-font: 12px "Times New Roman";
     -fx-underline: true;
 }

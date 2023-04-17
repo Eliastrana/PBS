@@ -6,6 +6,7 @@ import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -24,28 +25,17 @@ public class Report {
     printOutAReport.setId("titleText");
     HBox selectReportHBox = new HBox();
 
-//    ObservableList<String> options =
-//            FXCollections.observableArrayList(
-//                    "Result",
-//                    "Balance"
-//            );
-//    final ComboBox reportType = new ComboBox(options);
-//    reportType.setId("categoryMenuButton");
-//    reportType.setPromptText("Select report type");
-//    selectReportHBox.getChildren().addAll(reportType);
-//    selectReportHBox.setAlignment(Pos.CENTER);
-//    HBox selectMonthHBox = new HBox();
-//    selectMonthHBox.setAlignment(Pos.CENTER);
-//    DatePicker datePicker = new DatePicker();
-//    datePicker.setValue(LocalDate.now());
-//    datePicker.setShowWeekNumbers(true);
-//    selectMonthHBox.getChildren().add(datePicker);
 
     HBox printOutVBox = new HBox();
     printOutVBox.setAlignment(Pos.CENTER);
 
     Button exportToPDF = new Button("Export to PDF");
     exportToPDF.setId("actionButton");
+    exportToPDF.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        exportToPDF.fire();
+      }
+    });
 
     exportToPDF.setOnAction(e -> {
       System.out.println("Exporting to PDF");
@@ -73,6 +63,11 @@ public class Report {
     //THIS ONE DOES NOT WORK BUT EMIL IS SICK SO WE DONT KNOW WHAT TO DO
     Button printToExcel = new Button("Print to Excel");
     printToExcel.setId("actionButton");
+    printToExcel.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        printToExcel.fire();
+      }
+    });
     printToExcel.setOnAction(e -> {
       System.out.println("Exporting to PDF");
       String excelFile = null;

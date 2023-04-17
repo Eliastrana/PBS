@@ -59,11 +59,7 @@ public class AddExpense {
     text3.setId("titleText");
     text3.setLineSpacing(10);
 
-    DatePicker datePicker = new DatePicker();
-    datePicker.getStyleClass().add("date-picker");
 
-    datePicker.setValue(LocalDate.now());
-    datePicker.setShowWeekNumbers(true);
 
     ObservableList<String> options =
             FXCollections.observableArrayList(
@@ -76,7 +72,14 @@ public class AddExpense {
             );
 
     final ComboBox categoryMenu = new ComboBox(options);
+    categoryMenu.setFocusTraversable(true);
 
+
+    DatePicker datePicker = new DatePicker();
+    datePicker.getStyleClass().add("date-picker");
+    datePicker.setValue(LocalDate.now());
+    datePicker.setShowWeekNumbers(true);
+    datePicker.setFocusTraversable(true);
 
     ObservableList<String> options2 = null;
     try {
@@ -87,8 +90,7 @@ public class AddExpense {
     final ComboBox accountMenu = new ComboBox(options2);
     accountMenu.setPromptText("Pick an account");
     accountMenu.setId("categoryMenuButton");
-
-
+    accountMenu.setFocusTraversable(true);
     String originalPromptText = "Pick a category";
     categoryMenu.setPromptText(originalPromptText);
     categoryMenu.setId("categoryMenuButton");
@@ -96,15 +98,17 @@ public class AddExpense {
     OutlinedTextField prices = new OutlinedTextField();
     prices.setPromptText("Enter price");
     prices.setId("textField");
+    prices.setFocusTraversable(true);
 
     // Replace the TextField object with an instance of the OutlinedTextField class
     OutlinedTextField names = new OutlinedTextField();
     names.setPromptText("Enter name");
     names.setId("textField");
-
+    names.setFocusTraversable(true);
 
     Button confirmExpense = new Button("Confirm");
     confirmExpense.setId("actionButton");
+    confirmExpense.setFocusTraversable(true);
 
     names.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
@@ -112,7 +116,15 @@ public class AddExpense {
       }
     });
 
+    confirmExpense.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        confirmExpense.fire();
+      }
+    });
     confirmExpense.setOnAction(e -> {
+
+
+
 
               if (categoryMenu.getValue() == null) {
                 SoundPlayer.play("src/main/resources/error.wav");
