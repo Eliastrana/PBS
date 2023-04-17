@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.UserHandling;
+import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.MyToggleGroupClass;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Pos;
@@ -14,13 +15,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * The type Settings.
+ */
 public class Settings {
 
   private MyToggleGroupClass myToggleGroupClass;
 
 
+  /**
+   * Sets view.
+   *
+   * @return the view
+   */
   public static VBox settingsView() {
-
     VBox vbox = new VBox();
     vbox.getChildren().clear();
 
@@ -184,11 +192,20 @@ public class Settings {
     darkmode.setToggleGroup(toggleGroup);
     colorblind.setToggleGroup(toggleGroup);
 
-    RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-    if (selectedRadioButton != null) {
-      String selectedText = selectedRadioButton.getText();
-      // do something with the selected text
-    }
+    //RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+    //if (selectedRadioButton != null) {
+    //  String selectedText = selectedRadioButton.getText();
+    //  System.out.println("Selected Radio Button - " + selectedText);
+    //  GUI.setStylesheet(selectedText);
+    //  GUI.updatePane();
+    //}
+
+    toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+      if (toggleGroup.getSelectedToggle() != null) {
+        String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+        GUI.setStyle(selectedText);
+      }
+    });
 
 
     viewmodeHbox.getChildren().addAll(lightmode, darkmode, colorblind);

@@ -29,7 +29,9 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 
-
+/**
+ * The type Gui.
+ */
 public class GUI extends Application {
 
     //Each page has its own method, all the buttons are in the same method.
@@ -39,22 +41,50 @@ public class GUI extends Application {
     //The StackPane is then added to the scene, and the scene is added to the stage
 
 
-    //This stackPane holds the method of the overview window, this is done so that it is easier to
+    /**
+     * The constant overviewWindow.
+     */
+//This stackPane holds the method of the overview window, this is done so that it is easier to
     //refresh the overview window.
     protected static StackPane overviewWindow = new StackPane();
+    /**
+     * The constant transferWindow.
+     */
     protected static StackPane transferWindow = new StackPane();
+    /**
+     * The constant reportWindow.
+     */
     protected static StackPane reportWindow = new StackPane();
+    /**
+     * The constant addExpenseWindow.
+     */
     protected static StackPane addExpenseWindow = new StackPane();
+    /**
+     * The constant settingsWindow.
+     */
     protected static StackPane settingsWindow = new StackPane();
+    /**
+     * The constant budgetWindow.
+     */
     protected static StackPane budgetWindow = new StackPane();
+    /**
+     * The constant bankStatementWindow.
+     */
     protected static StackPane bankStatementWindow = new StackPane();
 
+    /**
+     * The constant currentUser.
+     */
     public static String currentUser;
 
     private Stage primaryStage;
     private LoginController loginController;
     private Login loginView;
+    private static String stylesheet = "/Styling.css";
 
+    /**
+     * Instantiates a new Gui.
+     */
     public GUI() {
     }
 
@@ -70,43 +100,57 @@ public class GUI extends Application {
         Scene scene = new Scene(root);
 
 
-        scene.getStylesheets().add("/Styling.css");
+        scene.getStylesheets().add(stylesheet);
 
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+    /**
+     * Navigate to login.
+     */
     public void navigateToLogin() {
         loginController = new LoginController(this);
         loginView = new Login();
 
         Parent root = loginView.loginView(loginController);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/Styling.css");
+        scene.getStylesheets().add(stylesheet);
         updateScene(scene, root);
     }
 
+    /**
+     * Navigate to create user.
+     */
     public void navigateToCreateUser() {
         CreateUserController createUserController = new CreateUserController(this);
         CreateUser createUser = new CreateUser();
 
         Parent root = createUser.createUserView(createUserController);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/Styling.css");
+        scene.getStylesheets().add(stylesheet);
         updateScene(scene, root);
     }
 
+    /**
+     * Navigate to forgot password.
+     */
     public void navigateToForgotPassword() {
         ForgotPasswordController forgotPasswordController = new ForgotPasswordController(this);
         ForgotPassword forgotPasswordView = new ForgotPassword();
 
         Parent root = forgotPasswordView.forgottenPasswordView(forgotPasswordController);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/Styling.css");
+        scene.getStylesheets().add(stylesheet);
         updateScene(scene, root);
     }
 
+    /**
+     * Navigate to main app.
+     *
+     * @throws IOException the io exception
+     */
     public void navigateToMainApp() throws IOException {
         if (LoginBackend.getCurrentUser() != null) {
             setCurrentUser(LoginBackend.getCurrentUser());
@@ -117,32 +161,32 @@ public class GUI extends Application {
         }
 
         overviewWindow.getChildren().add(Overview.overviewView());
-        overviewWindow.getStylesheets().add("/Styling.css");
+        overviewWindow.getStylesheets().add(stylesheet);
 
         transferWindow.getChildren().add(Transfer.transferView());
-        transferWindow.getStylesheets().add("/Styling.css");
+        transferWindow.getStylesheets().add(stylesheet);
 
         reportWindow.getChildren().add(Report.reportView());
-        reportWindow.getStylesheets().add("/Styling.css");
+        reportWindow.getStylesheets().add(stylesheet);
 
         addExpenseWindow.getChildren().add(AddExpense.expenseView());
-        addExpenseWindow.getStylesheets().add("/Styling.css");
+        addExpenseWindow.getStylesheets().add(stylesheet);
 
         settingsWindow.getChildren().add(Settings.settingsView());
-        settingsWindow.getStylesheets().add("/Styling.css");
+        settingsWindow.getStylesheets().add(stylesheet);
 
         budgetWindow.getChildren().add(Budget.budgetView());
-        budgetWindow.getStylesheets().add("/Styling.css");
+        budgetWindow.getStylesheets().add(stylesheet);
 
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
-        bankStatementWindow.getStylesheets().add("/Styling.css");
+        bankStatementWindow.getStylesheets().add(stylesheet);
 
 
 
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1050);
         primaryStage.setHeight(700);
-        overviewWindow.getStylesheets().add("/LightMode.css");
+        overviewWindow.getStylesheets().add(stylesheet);
 
         Image icon = new Image("icons/icon.png");
         primaryStage.getIcons().add(icon);
@@ -180,7 +224,10 @@ public class GUI extends Application {
     }
 
 
-    static void updatePane() {
+    /**
+     * Update pane.
+     */
+    public static void updatePane() {
         // update the contents of the paneToUpdate
 
         try {
@@ -207,12 +254,42 @@ public class GUI extends Application {
 
     }
 
+    /**
+     * Gets current user.
+     *
+     * @return the current user
+     */
     public static String getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Sets current user.
+     *
+     * @param currentUser the current user
+     */
     public static void setCurrentUser(String currentUser) {
         GUI.currentUser = currentUser;
+    }
+    public static void setStylesheet(String stylesheet) {
+        GUI.stylesheet = stylesheet;
+    }
+    public static String getStylesheet() {
+        return stylesheet;
+    }
+    public static void setStyle(String style) {
+        overviewWindow.getStylesheets().clear();
+        transferWindow.getStylesheets().clear();
+        addExpenseWindow.getStylesheets().clear();
+        reportWindow.getStylesheets().clear();
+        budgetWindow.getStylesheets().clear();
+        settingsWindow.getStylesheets().clear();
+        overviewWindow.getStylesheets().add("/" + style + ".css");
+        transferWindow.getStylesheets().add("/" + style + ".css");
+        addExpenseWindow.getStylesheets().add("/" + style + ".css");
+        reportWindow.getStylesheets().add("/" + style + ".css");
+        budgetWindow.getStylesheets().add("/" + style + ".css");
+        settingsWindow.getStylesheets().add("/" + style + ".css");
     }
 
     private void updateScene(Scene scene, Parent root) {
