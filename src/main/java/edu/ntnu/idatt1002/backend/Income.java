@@ -10,8 +10,6 @@ public class Income {
     private int category;
 
     private LocalDate date;
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //String date = dateUnformatted.format(formatter);
 
     public Income(String name, double price, int category, LocalDate date) {
         if (name == null || name.isBlank()){

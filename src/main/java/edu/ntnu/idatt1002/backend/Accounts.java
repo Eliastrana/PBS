@@ -3,11 +3,7 @@ package edu.ntnu.idatt1002.backend;
 import java.util.HashMap;
 
 public class Accounts {
-    public static  HashMap<String, Double> accounts;
-
-    public static void createAccountsHashmap(){
-        accounts = new HashMap<>();
-    }
+    public static HashMap<String, Double> accounts;
 
     public static void addAccount(String accountName, double accountBalance){
         if (accountName == null || accountName.isBlank()){
@@ -19,15 +15,6 @@ public class Accounts {
 
         Account newAccount = new Account(accountName, accountBalance);
         accounts.put(newAccount.getAccountName(), newAccount.getAccountBalance());
-    }
-
-    public static void transferBetweenAccounts(String removeFromAccount, String addToAccount, double amount){
-        if (accounts.get(removeFromAccount)-amount < 0){
-            amount = 0;
-            System.out.println("Invalid input");
-        }
-        accounts.put(removeFromAccount, accounts.get(removeFromAccount)-amount);
-        accounts.put(addToAccount, accounts.get(addToAccount)+amount);
     }
 
     public static void addToAccount(String accountName, double amount){
@@ -51,14 +38,7 @@ public class Accounts {
         return total;
     }
 
-    public static void addExpenseToAccount(Expense expense, String accountName){
-        Account.expenses.add(expense);
-        accounts.put(accountName, accounts.get(accountName)-expense.getPrice());
-    }
-
     public static HashMap<String, Double> getAccounts() {
         return accounts;
     }
-
-
 }

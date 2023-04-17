@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Account;
+import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
@@ -15,25 +16,30 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
@@ -106,14 +112,14 @@ public class Overview {
     currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
     //LeftTable
-    TableView<Account> leftTable = new TableView<>();
-    TableColumn<Account, String> leftColumn1 = new TableColumn<>("Account: ");
+    TableView<Transfers> leftTable = new TableView<>();
+    TableColumn<Transfers, String> leftColumn1 = new TableColumn<>("Account: ");
     leftColumn1.setCellValueFactory(new PropertyValueFactory<>("accountName"));
 
-    TableColumn<Account, Double> leftColumn2 = new TableColumn<>("Amount: ");
+    TableColumn<Transfers, Double> leftColumn2 = new TableColumn<>("Amount: ");
     leftColumn2.setCellValueFactory(new PropertyValueFactory<>("amount"));
 
-    TableColumn<Account, String> leftColumn3 = new TableColumn<>("Date: ");
+    TableColumn<Transfers, String> leftColumn3 = new TableColumn<>("Date: ");
     leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
     try {
@@ -126,14 +132,26 @@ public class Overview {
 
     leftTable.setEditable(true);
 
-    leftTable.setOnMouseClicked(event -> {
-      if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-        leftTable.edit(leftTable.getSelectionModel().getSelectedIndex(), leftColumn1);
+    Button removeButton1 = new Button("Remove Selected");
+    removeButton1.setOnAction(event -> {
+      Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
+      if (selectedTransfer != null) {
+        String transferType = String.valueOf(selectedTransfer.getTransferType());
+        if (transferType.equals("A")) {
+          leftTable.getItems().remove(selectedTransfer);
+          CSVReader.removeTransfer(leftTable.getItems());
+          GUI.updatePane();
+        } else if (transferType.equals("B")) {
+          String errorMessage = ("Cannot remove transfer from account to account");
+          showAlert(errorMessage);
+        }
       }
     });
 
-    vboxSavings.getChildren().add(leftTable);
 
+
+    vboxSavings.getChildren().add(removeButton1);
+    vboxSavings.getChildren().add(leftTable);
 
 
     //TODO vboxSpending.getChildren().add(rightTable);
@@ -155,10 +173,82 @@ public class Overview {
     TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
 
+    rightTable.setEditable(true);
+
+    rightColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
+    rightColumn1.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());       //Add error message if not a string
+
+      // Set the new name value on the expense object
+      expense.setName(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+           CSVReader.getExpensesFromCSV());
+        GUI.updatePane();
+    });
+
+    rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));      //Add errror message if not a double
+    rightColumn2.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setPrice(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+      GUI.updatePane();
+    });
+
+    rightColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));   //Add error message if date is not valid
+    rightColumn3.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setDate(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+      GUI.updatePane();
+    });
+
+    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
+    rightColumn4.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setCategoryAsString(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+      GUI.updatePane();
+    });
+
+    rightColumn5.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid account
+    rightColumn5.setOnEditCommit(event -> {
+      // Get the expense object that was edited
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
+
+      // Set the new name value on the expense object
+      expense.setAccountAsString(event.getNewValue());
+      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          CSVReader.getExpensesFromCSV());
+      GUI.updatePane();
+    });
+
     rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
 
     rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
 
+    Button removeButton = new Button("Remove Selected");
+    removeButton.setOnAction(event -> {
+      ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
+      rightTable.getItems().removeAll(selectedExpenses);
+        CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+            CSVReader.getExpensesFromCSV());
+        GUI.updatePane();
+    });
+
+    vboxSpending.getChildren().add(removeButton);
     vboxSpending.getChildren().add(rightTable);
 
     Text currentAccountStatusText = new Text("Current account status");
@@ -270,7 +360,6 @@ public class Overview {
         }
       }
     }
-
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
 
       return vbox;
