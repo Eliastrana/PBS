@@ -245,8 +245,7 @@ public class Overview {
       rightTable.getItems().removeAll(selectedExpenses);
         CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
             CSVReader.getExpensesFromCSV());
-        GUI.clearOverview();
-        GUI.addOverview();
+        GUI.updatePane();
     });
 
     vboxSpending.getChildren().add(removeButton);
