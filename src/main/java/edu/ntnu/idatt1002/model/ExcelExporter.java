@@ -2,20 +2,14 @@ package edu.ntnu.idatt1002.model;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.Login;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
-import javafx.scene.control.DatePicker;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -178,14 +172,6 @@ public class ExcelExporter {
                 document.add(new Paragraph("\n"));
             }
             document.close();
-        }
-    }
-
-    public static void convertToXlsx(String excelFile, String fileName) throws IOException {
-        try (Workbook workbook = WorkbookFactory.create(new File(excelFile));
-             FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".xlsx")) {
-
-            workbook.write(fos);
         }
     }
 

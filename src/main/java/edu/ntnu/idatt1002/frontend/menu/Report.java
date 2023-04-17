@@ -75,10 +75,10 @@ public class Report {
     printToExcel.setId("actionButton");
     printToExcel.setOnAction(e -> {
       System.out.println("Exporting to PDF");
+      String excelFile = null;
       try {
 
-        ExcelExporter.exportToExcel();
-        ExcelExporter.convertToXlsx(ExcelExporter.exportToExcel(), "XLSX");
+        excelFile = ExcelExporter.exportToExcel();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
@@ -86,7 +86,7 @@ public class Report {
       if (Desktop.isDesktopSupported()) {
         try {
           File myFile =
-                  new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "XLSX.xlsx");
+                  new File(excelFile);
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
           // no application registered for PDFs

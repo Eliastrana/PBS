@@ -1,10 +1,7 @@
 
 package edu.ntnu.idatt1002;
 
-import edu.ntnu.idatt1002.backend.Accounts;
-import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.Expenses;
-import edu.ntnu.idatt1002.backend.Incomes;
+import edu.ntnu.idatt1002.backend.*;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -40,6 +37,7 @@ public class Main extends Application {
         Expenses.createAllAlist();
         Expenses.createAllExpenses();
         Incomes.createAllIncomes();
+
 
         String uniqueID = timeofdaychecker.getCurrentMonth() + timeofdaychecker.getYear();
 

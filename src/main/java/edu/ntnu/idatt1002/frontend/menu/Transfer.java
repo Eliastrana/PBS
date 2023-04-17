@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Income;
+import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -100,8 +101,8 @@ public class Transfer {
       System.out.println("Confirm transfer button pressed");
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-        writer.write(removeFromAccount + "," + (amountToAdd*-1) + "," + LocalDate.now() + "\n");
-        writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "\n");
+        writer.write(removeFromAccount + "," + (amountToAdd*-1) + "," + LocalDate.now() + ","+ 'A' + "\n");
+        writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
       }
@@ -156,7 +157,7 @@ public class Transfer {
       amountIncome.setText(null);
 
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-        writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "\n");
+        writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
       }
@@ -199,7 +200,7 @@ public class Transfer {
 
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-                    writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "\n");
+                    writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'B' + "\n");
                 } catch (IOException f) {
                     System.err.println("Error writing to file: " + f.getMessage());
                 }
