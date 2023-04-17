@@ -180,7 +180,7 @@ public class GUI extends Application {
     }
 
 
-    static void updatePane() {
+    public static void updatePane() {
         // update the contents of the paneToUpdate
 
         try {
@@ -205,6 +205,14 @@ public class GUI extends Application {
         settingsWindow.getChildren().add(Settings.settingsView());
 
 
+    }
+
+    public static void clearOverview(){
+        overviewWindow.getChildren().clear();
+    }
+
+    public static void addOverview(){
+        overviewWindow.getChildren().add(Overview.overviewView());
     }
 
     public static String getCurrentUser() {

@@ -14,10 +14,6 @@ public class Expense {
     private String accountAsString;
 
     private LocalDate date;
-    private Date Date;
-
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    //String date = dateUnformatted.format(formatter);
 
     public Expense(String name, double price, int category, LocalDate date){
         if (name == null || name.isBlank()) {

@@ -2,25 +2,22 @@ package edu.ntnu.idatt1002.model;
 
 import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 public class CSVReader {
     private static String CSV_FILE_PATH_1;
     private static String CSV_FILE_PATH_2;
     private static final String CVS_SPLIT_BY = ",";
     private static String outPutDirectory;
-    private static List<Account> listOfTransfers;
-
     public static HashMap<String, Double> readCSV() throws IOException {
         HashMap<String, Double> newAccounts = new HashMap<>(); // Create a new instance of hashmap
         CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
@@ -82,9 +79,9 @@ public class CSVReader {
         }
     }
 
-    public static List<Account> listOfTransfers() throws IOException {
+    public static List<Transfers> listOfTransfers() throws IOException {
         CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
-        listOfTransfers = new ArrayList<>();
+        Transfers transfers = new Transfers("listConstructor");
         File csvFile1 = new File(CSV_FILE_PATH_1);
         if (!csvFile1.exists()) {
             try {
@@ -97,13 +94,14 @@ public class CSVReader {
             String line;
             while ((line = br1.readLine()) != null) {
                 String[] account = line.split(CVS_SPLIT_BY);
-                listOfTransfers.add(new Account(account[0], Double.parseDouble(account[1]), account[2]));
+                char transferType = account[3].charAt(0);
+                transfers.addTransfer(account[0], Double.parseDouble(account[1]), account[2], transferType);
             }
         }
         catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return listOfTransfers;
+        return transfers.transfersList();
     }
 
     public static List<Expense> getExpensesFromCSV() {
@@ -158,96 +156,38 @@ public class CSVReader {
         }
     }
 
-        public static void removeFromCSVFileIfNotInTable(List<Expense> expensesFromFile,
-                                                     List<Expense> expensesInTable) {
-        for (Expense expenseFromFile : expensesFromFile) {
-            if (!expensesInTable.contains(expenseFromFile)) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_2))) {
-                    for (Expense e : expensesFromFile) {
-                        if (!e.equals(expenseFromFile)) {
-                            writer.write(e.getCategory() + "," + e.getName() + "," + e.getDate() + "," + e.getPrice() + "," + e.getAccount());
-                            writer.newLine();
-                        }
-                    }
-                    writer.flush();
-                    expensesFromFile = Files.readAllLines(Paths.get(CSV_FILE_PATH_2)).stream()
-                        .map(line -> {
-                            List<String> columnsList = new ArrayList<>();
-                            boolean insideQuotes = false;
-                            StringBuilder sb = new StringBuilder();
-
-                            for (char c : line.toCharArray()) {
-                                if (c == '|') {
-                                    insideQuotes = !insideQuotes;
-                                } else if (c == ',' && !insideQuotes) {
-                                    columnsList.add(sb.toString());
-                                    sb = new StringBuilder();
-                                } else {
-                                    sb.append(c);
-                                }
-                            }
-
-                            columnsList.add(sb.toString()); // Add last column
-
-                            String[] columns = columnsList.toArray(new String[0]);
-
-                            for (int i = 0; i < columns.length; i++) {
-                                if (columns[i].startsWith("|") && columns[i].endsWith("|")) {
-                                    // remove the bars from the string
-                                    columns[i] = columns[i].substring(1, columns[i].length() - 1);
-                                }
-                                // remove quotes from the string
-                                columns[i] = columns[i].replaceAll("^\"|\"$", "");
-                            }
-
-                            String month = timeofdaychecker.getSelectedMonth(columns[2]);
-                            String category = columns[0];
-                            String name = columns[1];
-                            String date = columns[2];
-                            String price = columns[3];
-                            String accountName = columns[4];
-
-                            return new Expense(name, Double.parseDouble(price), LocalDate.parse(date), category, accountName);
-                        })
-                        .collect(Collectors.toList());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
     public static void updateRowsThatAreDifferentInTable(List<Expense> expensesInTable,
                                                          List<Expense> expensesFromFile) {
-        List<Expense> updatedExpenses = new ArrayList<>();
+        List<Expense> expensesToBeUpdated = new ArrayList<>();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_2))) {
-            for (Expense e : expensesInTable) {
-                for (Expense expenseInFile : expensesFromFile) {
-                    if (e.equals(expenseInFile)) {
-                        e.setCategoryAsString(expenseInFile.getCategory());
-                        e.setName(expenseInFile.getName());
-                        e.setDate(expenseInFile.getDate());
-                        e.setPrice(expenseInFile.getPrice());
-                        e.setAccountAsString(expenseInFile.getAccount());
-                    } else if (expenseInFile.getDate().getMonthValue() != LocalDate.now().getMonthValue()){
-                        writer.write(expenseInFile.getCategory() + "," + "|" + expenseInFile.getName() + "|" + "," + expenseInFile.getDate() +
-                            "," + expenseInFile.getPrice() + "," + expenseInFile.getAccount());
-                        writer.newLine();
-                    }
+            for (Expense expenseFromFile : expensesFromFile) {
+                if (!(expenseFromFile.getDate().getMonthValue() == LocalDate.now().getMonthValue())){
+                    expensesToBeUpdated.add(expenseFromFile);
                 }
-                LocalDate currentDate = LocalDate.now();
-                int currentMonth = currentDate.getMonthValue();
-                int expenseMonth = e.getDate().getMonthValue();
-                if (currentMonth == expenseMonth) {
-                    writer.write(e.getCategory() + "," + "|" + e.getName() + "|" + "," + e.getDate() +
-                        "," + e.getPrice() + "," + e.getAccount());
-                    writer.newLine();
-                    updatedExpenses.add(e);
-                }
+            }
+            for (Expense expenseInTable : expensesInTable) {
+                expensesToBeUpdated.add(expenseInTable);
+            }
+            for (Expense expense : expensesToBeUpdated) {
+                System.out.println(expense.getName() + " " + expense.getPrice() + " " + expense.getDate() + " " + expense.getCategory() + " " + expense.getAccount());
+            }
+            for (Expense expenseToUpdatedFile : expensesToBeUpdated) {
+                writer.write(expenseToUpdatedFile.getCategory() + ",|" + expenseToUpdatedFile.getName() + "|," + expenseToUpdatedFile.getDate() + "," + expenseToUpdatedFile.getPrice() + "," + expenseToUpdatedFile.getAccount());
+                writer.newLine();
             }
             writer.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static void removeTransfer(List<Transfers> transfersListInTable){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_1))) {
+            for (Transfers transfer : transfersListInTable) {
+                writer.write(String.format(Locale.US, "%s,%.2f,%s,%c\n", transfer.getAccountName(), transfer.getAmount(), transfer.getDate(), transfer.getTransferType()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
