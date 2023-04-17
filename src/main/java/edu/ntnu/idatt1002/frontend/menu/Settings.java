@@ -6,6 +6,7 @@ import edu.ntnu.idatt1002.backend.UserHandling;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.MyToggleGroupClass;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -35,16 +36,21 @@ public class Settings {
     vbox.getChildren().clear();
 
     Label passwordLabel = new Label("Enter current password: ");
+    passwordLabel.setId("bodyText");
     PasswordField passwordField = new PasswordField();
+    passwordField.setId("textField");
+
 
     Button submitButton = new Button("Submit");
-
+    submitButton.setId("actionButton");
     vbox.getChildren().addAll(passwordLabel, passwordField, submitButton);
+    vbox.setSpacing(20);
+    vbox.setPadding(new Insets(20, 20, 20, 20));
+
+
 
     submitButton.setOnAction(event -> {
     if (Objects.equals(passwordField.getText(), UserHandling.getPassword())) {
-
-
 
 
       HBox currentEmailHbox = new HBox();
@@ -181,9 +187,6 @@ public class Settings {
       confirmPasswordUpdate.setId("actionButton");
       confirmPasswordUpdateVBox.getChildren().addAll(confirmPasswordUpdate);
       confirmPasswordUpdateVBox.setAlignment(Pos.CENTER);
-
-
-
 
 
       updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
