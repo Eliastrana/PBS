@@ -5,59 +5,94 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Account Test")
+class AccountTest {
 
-@Nested
-@DisplayName("Constructor Test")
-class  AccountConstructorTest {
+  @Nested
+  @DisplayName("Constructor Test 1")
+  class AccountConstructorTest1 {
 
-  @Test
-  @DisplayName("Test valid constructor")
-  void validConstructorTest() {
-    Account account = new Account("AccountName", 100);
-    assertEquals("AccountName", account.getAccountName());
-    assertEquals(100, account.getAccountBalance());
+    @Test
+    @DisplayName("Test valid constructor")
+    void validConstructorTest() {
+      Account account = new Account("AccountName", 100);
+      assertEquals("AccountName", account.getAccountName());
+      assertEquals(100, account.getAccountBalance());
+    }
+
+    @Test
+    @DisplayName("Test constructor with null accountName")
+    void constructorTestWithNullAccountName() {
+      assertThrows(NullPointerException.class, () -> new Account(null, 100));
+    }
+
+    @Test
+    @DisplayName("Test constructor with empty accountName")
+    void constructorTestWithEmptyAccountName() {
+      assertThrows(NullPointerException.class, () -> new Account("", 100));
+    }
+
+    @Test
+    @DisplayName("Test constructor with negative accountBalance")
+    void constructorTestWithNegativeAccountBalance() {
+      assertThrows(IllegalArgumentException.class, () -> new Account("AccountName", -1));
+    }
   }
 
-  @Test
-  @DisplayName("Test constructor with null accountName")
-  void constructorTestWithNullAccountName() {
-    assertThrows(IllegalArgumentException.class, () -> new Account(null, 100));
+  @Nested
+  @DisplayName("Constructor Test 2")
+  class AccountConstructorTest2 {
+
+    @Test
+    @DisplayName("Test valid constructor")
+    void validConstructorTest() {
+      Account account = new Account("AccountName", 100,"Date");
+      assertEquals("AccountName", account.getAccountName());
+      assertEquals(0, account.getAccountBalance());
+      assertEquals("Date", account.getDate());
+    }
+
+    @Test
+    @DisplayName("Test constructor with null accountName")
+    void constructorTestWithNullAccountName() {
+      assertThrows(NullPointerException.class, () -> new Account(null, 100,"Date"));
+    }
+
+    @Test
+    @DisplayName("Test constructor with empty accountName")
+    void constructorTestWithEmptyAccountName() {
+      assertThrows(NullPointerException.class, () -> new Account("", 100),"Date");
+    }
+
+    @Test
+    @DisplayName("Test constructor with null date")
+    void constructorTestWithNullDate() {
+      assertThrows(NullPointerException.class, () -> new Account("AccountName", 100,null));
+    }
   }
 
-  @Test
-  @DisplayName("Test constructor with empty accountName")
-  void constructorTestWithEmptyAccountName() {
-    assertThrows(IllegalArgumentException.class, () -> new Account("", 100));
+  @Nested
+  @DisplayName("Getters Test")
+  class AccountGettersTest {
+
+    @Test
+    @DisplayName("Test getAccountName")
+    void getAccountName() {
+      Account account = new Account("AccountName", 100);
+      assertEquals("AccountName", account.getAccountName());
+    }
+
+    @Test
+    @DisplayName("Test getAccountBalance")
+    void getAccountBalance() {
+      Account account = new Account("AccountName", 100);
+      assertEquals(100, account.getAccountBalance());
+    }
   }
 
-  @Test
-  @DisplayName("Test constructor with negative accountBalance")
-  void constructorTestWithNegativeAccountBalance() {
-    assertThrows(IllegalArgumentException.class, () -> new Account("AccountName", -1));
-  }
-}
-
-@Nested
-@DisplayName("Getters Test")
-class AccountGettersTest {
-
-  @Test
-  @DisplayName("Test getAccountName")
-  void getAccountName() {
-    Account account = new Account("AccountName", 100);
-    assertEquals("AccountName", account.getAccountName());
-  }
-
-  @Test
-  @DisplayName("Test getAccountBalance")
-  void getAccountBalance() {
-    Account account = new Account("AccountName", 100);
-    assertEquals(100, account.getAccountBalance());
-  }
-}
-@Nested
-@DisplayName("Setters Test")
-class AccountSettersTest {
+  @Nested
+  @DisplayName("Setters Test")
+  class AccountSettersTest {
 
     @Test
     @DisplayName("Test valid setAccountName")
@@ -71,14 +106,14 @@ class AccountSettersTest {
     @DisplayName("Test setAccountName with null value")
     void setAccountNameWithNullValue() {
       Account account = new Account("AccountName", 100);
-      assertThrows(IllegalArgumentException.class, () -> account.setAccountName(null));
+      assertThrows(NullPointerException.class, () -> account.setAccountName(null));
     }
 
     @Test
     @DisplayName("Test setAccountName with empty name")
     void setAccountNameWithEmptyName() {
       Account account = new Account("AccountName", 100);
-      assertThrows(IllegalArgumentException.class, () -> account.setAccountName(""));
+      assertThrows(NullPointerException.class, () -> account.setAccountName(""));
     }
 
     @Test
@@ -95,6 +130,7 @@ class AccountSettersTest {
       Account account = new Account("AccountName", 100);
       assertThrows(IllegalArgumentException.class, () -> account.setAccountBalance(-1));
     }
+  }
 }
 
 

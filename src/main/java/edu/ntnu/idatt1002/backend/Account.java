@@ -12,7 +12,7 @@ public class Account {
 
     public Account(String accountName, double accountBalance){
         if (accountName == null || accountName.isBlank()){
-            throw new IllegalArgumentException("Account name cannot be empty");
+            throw new NullPointerException("Account name cannot be empty");
         }
         if (accountBalance < 0){
             throw new IllegalArgumentException("Account balance cannot be negative");
@@ -23,6 +23,15 @@ public class Account {
     }
 
     public Account(String accountName, double amount, String date){
+        if (accountName == null || accountName.isBlank()){
+            throw new NullPointerException("Account name cannot be empty");
+        }
+        if (amount < 0){
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+        if (date == null || date.isBlank()){
+            throw new NullPointerException("Date cannot be empty");
+        }
         this.accountName = accountName;
         this.amount = amount;
         this.date = date;
@@ -42,7 +51,7 @@ public class Account {
 
     public void setAccountName(String accountName) {
         if (accountName == null || accountName.isBlank()){
-            throw new IllegalArgumentException("Account name cannot be empty");
+            throw new NullPointerException("Account name cannot be empty");
         }
         this.accountName = accountName;
     }

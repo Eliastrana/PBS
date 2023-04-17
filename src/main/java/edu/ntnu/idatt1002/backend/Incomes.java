@@ -23,6 +23,12 @@ public class Incomes {
     }
 
     public static void addToArrayList(Income income, ArrayList<Income> aList){
+        if (income == null) {
+            throw new NullPointerException("Income cannot be null");
+        }
+        if (aList == null) {
+            throw new NullPointerException("List cannot be null");
+        }
         aList.add(income);
     }
 }

@@ -8,95 +8,98 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Nested
-@DisplayName("Constructor1 Test")
-class Constructor1IncomeTest {
+@DisplayName("Income Test")
+class IncomeTest {
 
-  @Test
-  @DisplayName("Test valid constructor")
-  void validConstructorTest() {
-    Income income = new Income("IncomeName", 100, 2, LocalDate.now());
-    assertEquals("IncomeName", income.getName());
-    assertEquals(100, income.getPrice());
-    assertEquals(2, income.getCategory());
-    assertEquals(LocalDate.now(), income.getDate());
+  @Nested
+  @DisplayName("Constructor1 Test")
+  class Constructor1IncomeTest {
+
+    @Test
+    @DisplayName("Test valid constructor")
+    void validConstructorTest() {
+      Income income = new Income("IncomeName", 100, 2, LocalDate.now());
+      assertEquals("IncomeName", income.getName());
+      assertEquals(100, income.getPrice());
+      assertEquals(2, income.getCategory());
+      assertEquals(LocalDate.now(), income.getDate());
+    }
+
+    @Test
+    @DisplayName("Test constructor with null name")
+    void constructorTestWithNullName() {
+      assertThrows(NullPointerException.class, () -> new Income(null, 100, 2, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with empty name")
+    void constructorTestWithEmptyName() {
+      assertThrows(NullPointerException.class, () -> new Income("", 100, 2, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with negative price")
+    void constructorTestWithNegativePrice() {
+      assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", -1, 2, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with category < 1")
+    void constructorTestWithCategoryLessThanOne() {
+      assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, 0, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with category < 6")
+    void constructorTestWithCategoryGreaterThanSix() {
+      assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, 7, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with null date")
+    void constructorTestWithNullDate() {
+      assertThrows(NullPointerException.class, () -> new Income("IncomeName", 100, 2, null));
+    }
+
   }
 
-  @Test
-  @DisplayName("Test constructor with null name")
-  void constructorTestWithNullName() {
-    assertThrows(IllegalArgumentException.class, () -> new Income(null, 100, 2, LocalDate.now()));
+  @Nested
+  @DisplayName("Constructor2 Income Test")
+  class Constructor2IncomeTest {
+
+    @Test
+    @DisplayName("Test valid constructor")
+    void validConstructorTest() {
+      Income income = new Income("IncomeName", 100, LocalDate.now());
+      assertEquals("IncomeName", income.getName());
+      assertEquals(100, income.getPrice());
+      assertEquals(LocalDate.now(), income.getDate());
+    }
+
+    @Test
+    @DisplayName("Test constructor with null name")
+    void constructorTestWithNullName() {
+      assertThrows(NullPointerException.class, () -> new Income(null, 100, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with empty name")
+    void constructorTestWithEmptyName() {
+      assertThrows(NullPointerException.class, () -> new Income("", 100, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with negative price")
+    void constructorTestWithNegativePrice() {
+      assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", -1, LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Test constructor with null date")
+    void constructorTestWithNullDate() {
+      assertThrows(NullPointerException.class, () -> new Income("IncomeName", 100, null));
+    }
   }
-
-  @Test
-  @DisplayName("Test constructor with empty name")
-  void constructorTestWithEmptyName() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("", 100, 2, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with negative price")
-  void constructorTestWithNegativePrice() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", -1, 2, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with category < 1")
-  void constructorTestWithCategoryLessThanOne() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, 0, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with category < 5")
-  void constructorTestWithCategoryGreaterThanFour() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, 6, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with null date")
-  void constructorTestWithNullDate() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, 2, null));
-  }
-
-}
-
-@Nested
-@DisplayName("Constructor2 Income Test")
-class Constructor2IncomeTest {
-
-  @Test
-  @DisplayName("Test valid constructor")
-  void validConstructorTest() {
-    Income income = new Income("IncomeName", 100, LocalDate.now());
-    assertEquals("IncomeName", income.getName());
-    assertEquals(100, income.getPrice());
-    assertEquals(LocalDate.now(), income.getDate());
-  }
-
-  @Test
-  @DisplayName("Test constructor with null name")
-  void constructorTestWithNullName() {
-    assertThrows(IllegalArgumentException.class, () -> new Income(null, 100, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with empty name")
-  void constructorTestWithEmptyName() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("", 100, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with negative price")
-  void constructorTestWithNegativePrice() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", -1, LocalDate.now()));
-  }
-
-  @Test
-  @DisplayName("Test constructor with null date")
-  void constructorTestWithNullDate() {
-    assertThrows(IllegalArgumentException.class, () -> new Income("IncomeName", 100, null));
-  }
-}
   @Nested
   @DisplayName("Getters Test")
   class GettersTest {
@@ -145,7 +148,7 @@ class Constructor2IncomeTest {
     @DisplayName("Test setInvalidName")
     void setInvalidName() {
       Income income = new Income("IncomeName", 100, 2, LocalDate.now());
-      assertThrows(IllegalArgumentException.class, () -> income.setName(""));
+      assertThrows(NullPointerException.class, () -> income.setName(""));
     }
 
     @Test
@@ -175,7 +178,7 @@ class Constructor2IncomeTest {
     @DisplayName("Test setInvalidCategory")
     void setInvalidCategory() {
       Income income = new Income("IncomeName", 100, 2, LocalDate.now());
-      assertThrows(IllegalArgumentException.class, () -> income.setCategory(6));
+      assertThrows(IllegalArgumentException.class, () -> income.setCategory(7));
     }
 
     @Test
@@ -189,6 +192,7 @@ class Constructor2IncomeTest {
     @DisplayName("Test setInvalidDate")
     void setInvalidDate() {
       Income income = new Income("IncomeName", 100, 2, LocalDate.now());
-      assertThrows(IllegalArgumentException.class, () -> income.setDate(null));
+      assertThrows(NullPointerException.class, () -> income.setDate(null));
     }
   }
+}

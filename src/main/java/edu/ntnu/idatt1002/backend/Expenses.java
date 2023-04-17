@@ -63,7 +63,15 @@ public class Expenses {
         allLists.add(entertainment);
     }
 
-    public static void addToArrayList(Expense expense, ArrayList<Expense> aList){
+    public static void addToArrayList(Expense expense, ArrayList<Expense> aList) {
+        if (expense == null) {
+            throw new IllegalArgumentException("Expense cannot be null");
+        }
+        if (aList == null) {
+            throw new IllegalArgumentException("ArrayList cannot be null");
+        }
+
+
         aList.add(expense);
     }
 

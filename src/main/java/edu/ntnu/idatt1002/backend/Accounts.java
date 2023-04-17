@@ -11,7 +11,7 @@ public class Accounts {
 
     public static void addAccount(String accountName, double accountBalance){
         if (accountName == null || accountName.isBlank()){
-            throw new IllegalArgumentException("Account name cannot be empty");
+            throw new NullPointerException("Account name cannot be empty");
         }
         if (accountBalance < 0){
             throw new IllegalArgumentException("Account balance cannot be negative");
@@ -32,9 +32,12 @@ public class Accounts {
 
     public static void addToAccount(String accountName, double amount){
         if (amount < 0){
-            amount = 0;
-            System.out.println("Invalid input");
+            throw new IllegalArgumentException("Amount cannot be negative");
         }
+        if (accountName == null || accountName.isBlank()){
+            throw new NullPointerException("Account name cannot be empty");
+        }
+
         accounts.put(accountName, accounts.get(accountName)+amount);
     }
     public static double getTotalOfAccount(String accountName){

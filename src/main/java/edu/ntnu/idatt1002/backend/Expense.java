@@ -20,7 +20,7 @@ public class Expense {
 
     public Expense(String name, double price, int category, LocalDate date){
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new NullPointerException("Name cannot be null or empty");
         }
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
@@ -40,16 +40,16 @@ public class Expense {
 
     public Expense(String name, Double price, LocalDate date, String category, String account) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new NullPointerException("Name cannot be null or empty");
         }
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new NullPointerException("Date cannot be null");
         }
         if (category == null || category.isBlank()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
+            throw new NullPointerException("Category cannot be null or empty");
         }
         this.name = name;
         this.price = price;
@@ -60,19 +60,19 @@ public class Expense {
 
     public Expense(String name, Double price, LocalDate date, String category, String account, String uniqueID) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new NullPointerException("Name cannot be null or empty");
         }
         if (price < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new NullPointerException("Date cannot be null");
         }
         if (category == null || category.isBlank()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
+            throw new NullPointerException("Category cannot be null or empty");
         }
         if (uniqueID == null || uniqueID.isBlank()) {
-            throw new IllegalArgumentException("UniqueID cannot be null or empty");
+            throw new NullPointerException("UniqueID cannot be null or empty");
         }
 
         this.name = name;
@@ -103,7 +103,7 @@ public class Expense {
 
     public void setName(String name) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new NullPointerException("Name cannot be null or empty");
         }
         this.name = name;
     }
@@ -117,21 +117,21 @@ public class Expense {
 
 
     public void setCategoryInt(int category) {
-        if (category < 1 || category > 5) {
-            throw new IllegalArgumentException("Category must be between 1 and 5");
+        if (category < 1 || category > 6) {
+            throw new IllegalArgumentException("Category must be between 1 and 6");
         }
         this.category = category;
     }
     public void setCategoryAsString(String category) {
         if (category == null || category.isBlank()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
+            throw new NullPointerException("Category cannot be null or empty");
         }
         this.categoryAsString = category;
     }
 
     public void setDate(LocalDate date) {
         if (date == null) {
-            throw new IllegalArgumentException("Date cannot be null");
+            throw new NullPointerException("Date cannot be null");
         }
         this.date = date;
     }
