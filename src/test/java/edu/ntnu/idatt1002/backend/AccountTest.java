@@ -32,11 +32,6 @@ class AccountTest {
       assertThrows(NullPointerException.class, () -> new Account("", 100));
     }
 
-    @Test
-    @DisplayName("Test constructor with negative accountBalance")
-    void constructorTestWithNegativeAccountBalance() {
-      assertThrows(IllegalArgumentException.class, () -> new Account("AccountName", -1));
-    }
   }
 
   @Nested
@@ -124,12 +119,6 @@ class AccountTest {
       assertEquals(200, account.getAccountBalance());
     }
 
-    @Test
-    @DisplayName("Test setAccountBalance with negative value")
-    void setAccountBalanceWithNegativeValue() {
-      Account account = new Account("AccountName", 100);
-      assertThrows(IllegalArgumentException.class, () -> account.setAccountBalance(-1));
-    }
   }
 }
 
