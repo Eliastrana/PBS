@@ -278,18 +278,12 @@ public class GUI extends Application {
         return stylesheet;
     }
     public static void setStyle(String style) {
-        overviewWindow.getStylesheets().clear();
-        transferWindow.getStylesheets().clear();
-        addExpenseWindow.getStylesheets().clear();
-        reportWindow.getStylesheets().clear();
-        budgetWindow.getStylesheets().clear();
-        settingsWindow.getStylesheets().clear();
-        overviewWindow.getStylesheets().add("/" + style + ".css");
-        transferWindow.getStylesheets().add("/" + style + ".css");
-        addExpenseWindow.getStylesheets().add("/" + style + ".css");
-        reportWindow.getStylesheets().add("/" + style + ".css");
-        budgetWindow.getStylesheets().add("/" + style + ".css");
-        settingsWindow.getStylesheets().add("/" + style + ".css");
+        StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow};
+
+        for (StackPane stackPane : stackPanes) {
+            stackPane.getStylesheets().clear();
+            stackPane.getStylesheets().add("/" + style + ".css");
+        }
     }
 
     private void updateScene(Scene scene, Parent root) {
