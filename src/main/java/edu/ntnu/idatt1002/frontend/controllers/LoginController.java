@@ -1,39 +1,53 @@
 package edu.ntnu.idatt1002.frontend.controllers;
 
-import edu.ntnu.idatt1002.backend.LoginBackend;
-import edu.ntnu.idatt1002.frontend.CreateUser;
-import edu.ntnu.idatt1002.frontend.ForgotPassword;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.Login;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * A class that handles the login of a user.
+ * The class is used for navigating between the LoginView and the MainAppView.
+ * The class is used by the LoginView.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class LoginController {
+  /**
+   * The Gui.
+   */
   private GUI gui;
-  public static String currentUser;
-  boolean isAuthenticated = false;
 
+  /**
+   * Instantiates a new Login controller.
+   *
+   * @param gui the gui
+   */
   public LoginController(GUI gui) {
     this.gui = gui;
   }
 
+  /**
+   * A method that handles the login button.
+   *
+   * @throws IOException the io exception
+   */
   public void handleLoginButton() throws IOException {
     gui.navigateToMainApp();
   }
 
+  /**
+   * A method that handles the create user button.
+   */
   public void handleCreateUserButton() {
     gui.navigateToCreateUser();
   }
 
+  /**
+   * A method that handles the forgot password button.
+   */
   public void handleForgotPasswordButton() {
     gui.navigateToForgotPassword();
   }
 
-  // Add other methods for handling CreateUserView and ForgotPasswordView actions
 }
