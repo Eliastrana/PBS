@@ -13,96 +13,89 @@ class AccountsTest {
 
   @Nested
   class AddAccountTest {
-/*
+
     @Test
     @DisplayName("Valid addAccount test")
     void addAccount() {
-      Accounts.createAccountsHashmap();
-      Accounts.addAccount("test", 100.00);
-      assertEquals(100.00, Accounts.getTotalOfAccount("test"));
-      assertEquals("test", Accounts.getAccounts().keySet().toArray()[0]);
+      Accounts instance = Accounts.getInstance();
+      instance.addAccount("test", 100.00);
+      assertEquals(100.00, instance.getTotalOfAccount("test"));
+      //assertEquals("test", instance.getAccounts().keySet().toArray()[0]);
     }
-
- */
 
     @Test
     @DisplayName("Test addAccount with null accountName")
     void addAccountWithNullAccountName() {
-      assertThrows(NullPointerException.class, () -> Accounts.addAccount(null, 100));
+      Accounts instance = Accounts.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.addAccount(null, 100));
     }
 
     @Test
     @DisplayName("Test addAccount with empty accountName")
     void addAccountWithEmptyAccountName() {
-      assertThrows(NullPointerException.class, () -> Accounts.addAccount("", 100));
+      Accounts instance = Accounts.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.addAccount("", 100));
     }
 
     @Test
     @DisplayName("Test addAccount with negative accountBalance")
     void addAccountWithNegativeAccountBalance() {
-      assertThrows(IllegalArgumentException.class, () -> Accounts.addAccount("test", -1));
-
+      Accounts instance = Accounts.getInstance();
+      assertThrows(IllegalArgumentException.class, () -> instance.addAccount("test", -1));
     }
   }
   @Nested
   class GetTotalOfAccountTest {
-/*
+
     @Test
     @DisplayName("Valid getTotalOfAccount test")
     void getTotalOfAccount() {
-      Accounts.createAccountsHashmap();
-      Accounts.addAccount("test", 100);
-      assertEquals(100, Accounts.getTotalOfAccount("test"));
+      Accounts instance = Accounts.getInstance();
+      instance.addAccount("test", 100);
+      assertEquals(100, instance.getTotalOfAccount("test"));
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-
     }
-
- */
     @Test
     @DisplayName("Test getTotalOfAccount with null accountName")
     void getTotalOfAccountWithNullAccountName() {
-      assertThrows(NullPointerException.class, () -> Accounts.getTotalOfAccount(null));
+      Accounts instance = Accounts.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.getTotalOfAccount(null));
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
     }
+
     @Test
     @DisplayName("Test getTotalOfAccount with empty accountName")
     void getTotalOfAccountWithEmptyAccountName() {
-      assertThrows(NullPointerException.class, () -> Accounts.getTotalOfAccount(""));
+      Accounts instance = Accounts.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.getTotalOfAccount(""));
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
     }
   }
 
   @Nested
   class GetTotalOfAllAccountsTest {
-/*
+
     @Test
     @DisplayName("Valid getTotalOfAllAccounts test")
     void getTotalOfAllAccounts() {
-      Accounts.createAccountsHashmap();
-      Accounts.addAccount("test", 100);
-      Accounts.addAccount("test2", 100);
-      assertEquals(200, Accounts.getTotalOfAllAccounts());
+      Accounts instance = Accounts.getInstance();
+      instance.addAccount("test", 100);
+      instance.addAccount("test2", 100);
+      assertEquals(200, instance.getTotalOfAllAccounts());
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
     }
-
- */
   }
-@Nested
+  @Nested
   class GetAccountsTest {
-    /*
     @Test
     @DisplayName("Valid getAccounts test")
     void getAccounts() {
-      Accounts.createAccountsHashmap();
-      Accounts.addAccount("test", 100);
-      Accounts.addAccount("test2", 100);
-      assertEquals(2, Accounts.getAccounts().size());
+      Accounts instance = Accounts.getInstance();
+      instance.addAccount("test", 100);
+      instance.addAccount("test2", 100);
+      assertEquals(2, instance.getAccounts().size());
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
     }
-
-     */
   }
-
-
 }

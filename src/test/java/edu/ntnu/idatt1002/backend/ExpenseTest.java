@@ -53,7 +53,7 @@ class ExpenseTest {
     @DisplayName("Test constructor with category < 6")
     void constructorTestWithCategoryGreaterThanSix() {
       assertThrows(IllegalArgumentException.class, () -> new Expense("ExpenseName", 100, 7, LocalDate.now()));
- }
+    }
 
     @Test
     @DisplayName("Test constructor with null date")
