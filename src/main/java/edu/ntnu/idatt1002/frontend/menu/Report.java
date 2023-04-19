@@ -14,7 +14,19 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A class that creates the report view.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Report {
+  /**
+   * A method that creates the report view.
+   * The method is used by the GUI class.
+   *
+   * @return the vertical box
+   */
   public static VBox reportView() {
 
     VBox reportLayout = new VBox();

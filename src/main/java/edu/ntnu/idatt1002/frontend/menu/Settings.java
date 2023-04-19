@@ -5,7 +5,6 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.UserHandling;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.ContactUs;
-import edu.ntnu.idatt1002.frontend.utility.MyToggleGroupClass;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,17 +20,17 @@ import javafx.scene.text.TextAlignment;
 import java.util.Objects;
 
 /**
- * The type Settings.
+ * A class that creates the settings view.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class Settings {
-
-  private MyToggleGroupClass myToggleGroupClass;
-
-
   /**
-   * Sets view.
+   * A method that creates the settings view.
+   * The method is used by the GUI class.
    *
-   * @return the view
+   * @return the vertical box
    */
   public static VBox settingsView() {
     VBox vbox = new VBox();

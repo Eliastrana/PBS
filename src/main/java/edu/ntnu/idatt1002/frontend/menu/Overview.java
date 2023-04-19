@@ -43,8 +43,24 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
+/**
+ * A class that creates the overview view.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Overview {
+  /**
+   * The name of the current user.
+   */
   public static String name;
+
+  /**
+   * A method that creates the overview view.
+   * The method is used by the GUI class.
+   *
+   * @return the vertical box
+   */
   public static VBox overviewView() {
     ObservableList<PieChart.Data> pieChartData = createData();
     ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.frontend.utility.PieChart.createData2();
