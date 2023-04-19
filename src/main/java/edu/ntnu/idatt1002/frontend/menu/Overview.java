@@ -82,7 +82,7 @@ public class Overview {
     welcome.setFocusTraversable(true);
 
     Text budgetRemaining = new Text("Budget remaining: ");
-    budgetRemaining.setId("goodMorningText");
+    budgetRemaining.setId("goodMorningTextTitle");
     budgetRemaining.setFocusTraversable(true);
 
     ExcelExporter instance = ExcelExporter.getInstance();
