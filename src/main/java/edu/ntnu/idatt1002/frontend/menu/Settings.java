@@ -221,6 +221,7 @@ public class Settings {
       lightmode.setToggleGroup(toggleGroup);
       darkmode.setToggleGroup(toggleGroup);
       colorblind.setToggleGroup(toggleGroup);
+      toggleGroup.selectToggle(lightmode);
 
       //RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
       //if (selectedRadioButton != null) {
