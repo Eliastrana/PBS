@@ -299,6 +299,7 @@ public class Overview {
     vboxSpending.getChildren().add(rightTable);
 
     Text currentAccountStatusText = new Text("Current account status");
+    currentAccountStatusText.setId("titleText");
     currentAccountStatusTextFormat.getChildren().add(currentAccountStatusText);
 
 

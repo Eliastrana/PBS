@@ -3,7 +3,6 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Expenses;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.OutlinedTextField;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -11,10 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -90,13 +86,13 @@ public class AddExpense {
     categoryMenu.setPromptText(originalPromptText);
     categoryMenu.setId("categoryMenuButton");
 
-    OutlinedTextField prices = new OutlinedTextField();
+    TextField prices = new TextField();
     prices.setPromptText("Enter price");
     prices.setId("textField");
     prices.setFocusTraversable(true);
 
     // Replace the TextField object with an instance of the OutlinedTextField class
-    OutlinedTextField names = new OutlinedTextField();
+    TextField names = new TextField();
     names.setPromptText("Enter name");
     names.setId("textField");
     names.setFocusTraversable(true);
