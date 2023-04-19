@@ -14,10 +14,27 @@ import java.io.IOException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+/**
+ * A class that represents the login backend.
+ * The class contains methods for decrypting the password and checking if the password is correct.
+ */
 public class LoginBackend {
+  /**
+   * The constant SECRET_KEY is the secret key used for decrypting the password.
+   */
   private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
+  /**
+   * The constant currentUser is the current user.
+   */
   private static String currentUser;
 
+  /**
+   * A method that decrypts the password.
+   *
+   * @param password the password to decrypt
+   * @param SALT     the salt used for decrypting the password
+   * @return the decrypted password
+   */
   public static String decrypt(String password, String SALT) {
     try {
       byte[] iv = new byte[16];
@@ -37,6 +54,15 @@ public class LoginBackend {
     return null;
   }
 
+  /**
+   * A method that checks if the password is correct.
+   * If the password is correct, the user is logged in.
+   *
+   * @param username   the username or email of the user
+   * @param password   the password of the user
+   * @param controller the controller
+   * @throws IOException the io exception
+   */
   public static void login(String username, String password, LoginController controller) throws IOException {
     String csvFile = "src/main/resources/users.csv";
     String line = "";
@@ -66,10 +92,21 @@ public class LoginBackend {
       }
     }
   }
+
+  /**
+   * Gets current user.
+   *
+   * @return the current user
+   */
   public static String getCurrentUser() {
     return currentUser;
   }
 
+  /**
+   * Sets current user.
+   *
+   * @param currentUser the current user
+   */
   public static void setCurrentUser(String currentUser) {
     LoginBackend.currentUser = currentUser;
   }

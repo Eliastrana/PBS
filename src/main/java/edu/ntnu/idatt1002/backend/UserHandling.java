@@ -1,24 +1,46 @@
 package edu.ntnu.idatt1002.backend;
 
-import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.Login;
 
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A class that handles the user.
+ * Tha class is used for getting and changing the email and password of the user.
+ */
 public class UserHandling {
 
+    /*
+      * The username of the current user.
+     */
     private static String username;
+    /*
+      * The email of the current user.
+     */
     private static String email;
+    /*
+      * The password of the current user.
+     */
     private static String password;
+    /*
+      * A pattern to check if the password is valid.
+     */
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+    /**
+     * A pattern to check if the email is valid.
+     */
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
+    /**
+     * Returns the email of the current user.
+     *
+     * @return the email of the current user
+     */
     public static String getEmail() {
         String line = "";
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/users.csv"))) {
@@ -35,6 +57,11 @@ public class UserHandling {
         return email;
     }
 
+    /**
+     * Returns the password of the current user.
+     *
+     * @return the password of the current user
+     */
     public static String getPassword() {
         String line = "";
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/users.csv"))) {
@@ -55,6 +82,13 @@ public class UserHandling {
         return password;
     }
 
+    /**
+     * Change the email of the current user.
+     * The method checks if the email is valid.
+     *
+     * @param email the new email
+     * @throws Exception the exception
+     */
     public static void changeEmail(String email) throws Exception {
             String csvFile = "src/main/resources/users.csv";
             String tempCsvFile = "src/main/resources/temp_users.csv";
@@ -101,6 +135,13 @@ public class UserHandling {
         }
 
 
+    /**
+     * Change the password of the current user.
+     * The method checks if the password is valid.
+     *
+     * @param password the new password
+     * @throws Exception the exception
+     */
     public static void changePassword(String password) throws Exception {
         String csvFile = "src/main/resources/users.csv";
         String tempCsvFile = "src/main/resources/temp_users.csv";
@@ -147,10 +188,6 @@ public class UserHandling {
             throw new IOException("Failed to delete original file");
         }
         System.out.println("Password reset");
-    }
-
-    public static void setUsername(String username) {
-        UserHandling.username = username;
     }
 }
 
