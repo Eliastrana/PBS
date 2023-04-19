@@ -149,24 +149,30 @@ public class BankStatement {
     TableView<Expense> bankStatementTable = new TableView<>();
     TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
     rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
+    rightColumn1.setPrefWidth(100);
 
     TableColumn<Expense, Double> rightColumn2 = new TableColumn<>("Price: ");
     rightColumn2.setCellValueFactory(new PropertyValueFactory<>("price"));
+    rightColumn2.setPrefWidth(100);
 
     TableColumn<Expense, LocalDate> rightColumn3 = new TableColumn<>("Date: ");
     rightColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
+    rightColumn3.setPrefWidth(100);
 
     TableColumn<Expense, String> rightColumn4 = new TableColumn<>("Category: ");
     rightColumn4.setCellValueFactory(new PropertyValueFactory<>("category"));
+    rightColumn4.setPrefWidth(100);
 
     TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
+    rightColumn5.setPrefWidth(100);
 
     bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
 
     bankStatementTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
 
-    bankStatementTable.setMinWidth(600);
+    bankStatementTable.setMinWidth(400);
+    bankStatementTable.setMaxHeight(200);
 
     tableHbox.getChildren().add(bankStatementTable);
 
