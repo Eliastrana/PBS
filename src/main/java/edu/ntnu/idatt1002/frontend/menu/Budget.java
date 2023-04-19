@@ -3,6 +3,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -218,6 +219,10 @@ public class Budget {
           }
         }
       }
+      categoryMenu.setValue("Select Category");
+      budgetAmountField.clear();
+      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+
     });
 
     String currentMonth = timeofdaychecker.getCurrentMonth();
