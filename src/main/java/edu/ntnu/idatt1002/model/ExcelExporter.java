@@ -366,7 +366,7 @@ public class ExcelExporter {
     public static String uniqueID = timeofdaychecker.getCurrentMonth() + timeofdaychecker.getYear();
 
     /**
-     * Gets total of food.
+     * Returns the total of all expenses in the category food.
      *
      * @param expenses the expenses
      * @return the total of food
@@ -382,10 +382,10 @@ public class ExcelExporter {
     }
 
     /**
-     * Get total of transportation double.
+     * Returns the total of all expenses in the category transportation.
      *
      * @param expenses the expenses
-     * @return the double
+     * @return the total of transportation
      */
     public static double getTotalOfTransportation(List<Expense> expenses){
         double totalTransportation = 0;
@@ -398,10 +398,10 @@ public class ExcelExporter {
     }
 
     /**
-     * Get total of entertainment double.
+     * Returns the total of all expenses in the category entertainment.
      *
      * @param expenses the expenses
-     * @return the double
+     * @return the total of entertainment
      */
     public static double getTotalOfEntertainment(List<Expense> expenses){
         double totalEntertainment = 0;
@@ -414,10 +414,10 @@ public class ExcelExporter {
     }
 
     /**
-     * Get total of clothing double.
+     * Returns the total of all expenses in the category clothing.
      *
      * @param expenses the expenses
-     * @return the double
+     * @return the total of clothing
      */
     public static double getTotalOfClothing(List<Expense> expenses){
         double totalClothing = 0;
@@ -430,10 +430,10 @@ public class ExcelExporter {
     }
 
     /**
-     * Get total of other double.
+     * Returns the total of all expenses in the category other.
      *
      * @param expenses the expenses
-     * @return the double
+     * @return the total of other
      */
     public static double getTotalOfOther(List<Expense> expenses){
         double totalOther = 0;
@@ -446,10 +446,10 @@ public class ExcelExporter {
     }
 
     /**
-     * Get total of rent double.
+     * Returns the total of all expenses in the category rent.
      *
      * @param expenses the expenses
-     * @return the double
+     * @return the total of rent
      */
     public static double getTotalOfRent(List<Expense> expenses){
         double totalRent = 0;
@@ -462,9 +462,9 @@ public class ExcelExporter {
     }
 
     /**
-     * Get monthly total double.
+     * Returns the total of all expenses.
      *
-     * @return the double
+     * @return the total of all expenses
      */
     public static double getMonthlyTotal(){
         double monthlyTotal = 0;
