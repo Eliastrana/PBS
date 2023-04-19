@@ -1,11 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
-import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
 import edu.ntnu.idatt1002.backend.LoginBackend;
-import edu.ntnu.idatt1002.backend.UserHandling;
-import edu.ntnu.idatt1002.frontend.menu.Overview;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -16,7 +12,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class TopMenu {
 
@@ -33,7 +28,6 @@ public class TopMenu {
     topMenu.setAlignment(Pos.TOP_CENTER);
     primaryStage.show();
 
-    topMenu.getStylesheets().add("/Styling.css");
 
     topMenu.setSpacing(20);
     topMenu.setPadding(new Insets(20, 20, 20, 20));
@@ -52,16 +46,12 @@ public class TopMenu {
       }
     });
     overviewButton.setOnAction(event -> {
-
       try {
         GUI.overviewWindow.visibleProperty().addListener((observable, oldValue, newValue) -> {
           System.out.println(newValue);
           if (newValue) { //Redundant, but just to be sure
             GUI.updatePane();
           }});
-
-
-
 
         GUI.overviewWindow.setVisible(true);
         GUI.transferWindow.setVisible(false);
@@ -300,6 +290,8 @@ public class TopMenu {
     topMenu.getChildren().add(settingsButton);
 
 
+
+
     ImageView logOutImage = new ImageView(new Image("/icons/logOut.png"));
     logOutImage.setFitHeight(15);
     logOutImage.setFitWidth(15);
@@ -327,8 +319,6 @@ public class TopMenu {
         throw new RuntimeException(e);
       }
     });
-
-    topMenu.getStylesheets().add("/Styling.css");
 
     return topMenu;
   }
