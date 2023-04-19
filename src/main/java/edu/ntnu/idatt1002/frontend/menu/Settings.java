@@ -232,8 +232,12 @@ public class Settings {
 
       toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
         if (toggleGroup.getSelectedToggle() != null) {
-          String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
-          GUI.setStyle(selectedText);
+          if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(), "Lightmode")) {
+            String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+            GUI.setStyle(selectedText);
+          } else {
+            GUI.setStyle("Styling");
+          }
         }
       });
 
