@@ -14,30 +14,41 @@ public class Income {
      * The name of the income.
      */
     private String name;
+
     /**
      * The price of the income.
      */
     private double price;
+
     /**
      * The category of the income.
      */
     private int category;
+
     /**
      * The date of the income.
      */
     private LocalDate date;
 
     /**
-     * Constructor for Income.
-     * The name must not be null or empty.
-     * The price must not be negative.
-     * The category must be between 1 and 6.
-     * The date must not be null.
-     *
-     * @param name     the name of the income
-     * @param price    the price of the income
-     * @param category the category of the income
-     * @param date     the date of the income
+     * The single instance of the class used in the singleton pattern.
+     */
+    private static Income instance = new Income();
+
+    /**
+     * Returns the single instance of the class.
+     * @return the single instance of the class.
+     */
+    private static Income getInstance(){
+        return instance;
+    }
+
+    /**
+     * Constructor for the Income class.
+     * @param name The name of the income.
+     * @param price The price of the income.
+     * @param category The category of the income.
+     * @param date The date of the income.
      */
     public Income(String name, double price, int category, LocalDate date) {
         if (name == null || name.isBlank()){
@@ -60,19 +71,15 @@ public class Income {
     }
 
     /**
-     * Instantiates a new Income.
+     * Private constructor to avoid multiple instances of the class.
      */
-    public Income(){}
+    private Income(){}
 
     /**
-     * Constructor for Income.
-     * The name must not be null or empty.
-     * The price must not be negative.
-     * The date must not be null.
-     *
-     * @param name  the name of the income
-     * @param price the price of the income
-     * @param date  the date of the income
+     * Constructor for the Income class.
+     * @param name the name of the income.
+     * @param price the price of the income.
+     * @param date the date of the income.
      */
     public Income(String name, double price, LocalDate date){
         if (name == null || name.isBlank()){
@@ -91,8 +98,7 @@ public class Income {
 
     /**
      * Returns the name of the income.
-     *
-     * @return the name of the income
+     * @return the name of the income.
      */
     public String getName() {
         return name;
@@ -100,8 +106,7 @@ public class Income {
 
     /**
      * Returns the price of the income.
-     *
-     * @return the price of the income
+     * @return the price of the income.
      */
     public double getPrice() {
         return price;
@@ -109,8 +114,7 @@ public class Income {
 
     /**
      * Returns the category of the income.
-     *
-     * @return the category of the income
+     * @return the category of the income.
      */
     public int getCategory() {
         return category;
@@ -118,8 +122,7 @@ public class Income {
 
     /**
      * Returns the date of the income.
-     *
-     * @return the date of the income
+     * @return the date of the income.
      */
     public LocalDate getDate() {
         return date;
@@ -127,8 +130,7 @@ public class Income {
 
     /**
      * Sets the name of the income.
-     *
-     * @param name the name of the income
+     * @param name the name of the income.
      */
     public void setName(String name) {
         if (name == null || name.isBlank()){
@@ -139,8 +141,7 @@ public class Income {
 
     /**
      * Sets the price of the income.
-     *
-     * @param price the price of the income
+     * @param price the price of the income.
      */
     public void setPrice(double price) {
         if (price < 0){
@@ -149,11 +150,9 @@ public class Income {
         this.price = price;
     }
 
-
     /**
      * Sets the category of the income.
-     *
-     * @param category the category of the income
+     * @param category the category of the income.
      */
     public void setCategory(int category) {
         if (category < 1 || category > 6){
@@ -164,8 +163,7 @@ public class Income {
 
     /**
      * Sets the date of the income.
-     *
-     * @param date the date of the income
+     * @param date the date of the income.
      */
     public void setDate(LocalDate date) {
         if (date == null){

@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Incomes Test")
 class IncomesTest {
@@ -18,8 +18,9 @@ class IncomesTest {
     @Test
     @DisplayName("Valid createIncomes test")
     void createIncomes() {
-      Incomes.createIncomes();
-      assertEquals(0, Incomes.getIncomes().size());
+      Incomes instance = Incomes.getInstance();
+      instance.createIncomes();
+      assertEquals(0, instance.getIncomes().size());
     }
   }
   @Nested
@@ -28,9 +29,10 @@ class IncomesTest {
     @Test
     @DisplayName("Valid getIncomes test")
     void getIncomes() {
-      Incomes.createIncomes();
-      Incomes.addToArrayList(new Income("test", 100,2, LocalDate.now()),Incomes.getIncomes());
-      assertEquals(1, Incomes.getIncomes().size());
+      Incomes instance = Incomes.getInstance();
+      instance.createIncomes();
+      instance.addToArrayList(new Income("test", 100,2, LocalDate.now()), instance.getIncomes());
+      assertEquals(1, instance.getIncomes().size());
     }
 
   }
@@ -42,14 +44,13 @@ class IncomesTest {
     @Test
     @DisplayName("Valid createAllIncomes test")
     void createAllIncomes() {
-      Incomes.createIncomes();
-      Incomes.addToArrayList(new Income("test", 100,2, LocalDate.now()),Incomes.getIncomes());
-      Incomes.createAllIncomes();
-      assertEquals(1, Incomes.getIncomes().size());
+      Incomes instance = Incomes.getInstance();
+      instance.createIncomes();
+      instance.addToArrayList(new Income("test", 100,2, LocalDate.now()),instance.getIncomes());
+      instance.createAllIncomes();
+      assertEquals(1, instance.getIncomes().size());
     }
-
   }
-
 
   @Nested
   @DisplayName("AddToArrayList Test")
@@ -57,22 +58,24 @@ class IncomesTest {
     @Test
     @DisplayName("Valid addToArrayList test")
     void addToArrayList() {
-      Incomes.createIncomes();
-      Incomes.addToArrayList(new Income("test", 100,2, LocalDate.now()),Incomes.getIncomes());
-      assertEquals(1, Incomes.getIncomes().size());
+      Incomes instance = Incomes.getInstance();
+      instance.createIncomes();
+      instance.addToArrayList(new Income("test", 100,2, LocalDate.now()), instance.getIncomes());
+      assertEquals(1, instance.getIncomes().size());
     }
 
     @Test
     @DisplayName("Invalid addToArrayList test with null income")
     void addToArrayListInvalid() {
-      assertThrows(NullPointerException.class, () -> Incomes.addToArrayList(null,Incomes.getIncomes()));
+      Incomes instance = Incomes.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.addToArrayList(null, instance.getIncomes()));
     }
 
     @Test
     @DisplayName("Invalid addToArrayList test with null arraylist")
     void addToArrayListInvalid2() {
-      assertThrows(NullPointerException.class, () -> Incomes.addToArrayList(new Income("test", 100,2, LocalDate.now()),null));
+      Incomes instance = Incomes.getInstance();
+      assertThrows(NullPointerException.class, () -> instance.addToArrayList(new Income("test", 100,2, LocalDate.now()),null));
     }
   }
-
 }

@@ -1,33 +1,76 @@
 package edu.ntnu.idatt1002.model;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfWriter;
+import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.itextpdf.text.pdf.PdfWriter;
-
-
+/**
+ * A class that exports a csv file to excel.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class ExcelExporter {
+    /**
+     * The Output directory.
+     */
     static String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+    /**
+     * The Output directory file.
+     */
     static File outputDirectoryFile = new File(outputDirectory);
+    /**
+     * The Input file.
+     */
     static String inputFile = outputDirectory + GUI.getCurrentUser() + ".csv";
+    /**
+     * The Output file.
+     */
     static String outputFile = outputDirectory + GUI.getCurrentUser() + ".xlsx";
+    /**
+     * The Output file 1.
+     */
     static String outputFile1 = outputDirectory + GUI.getCurrentUser() + ".pdf";
+    /**
+     * The Output file 2.
+     */
     static String outputFile2 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement.xlsx";
+    /**
+     * The Output file 3.
+     */
     static String outputFile3 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement" +
-        ".pdf";   //Need to rename all outputfiles to be unique
+            ".pdf";   //Need to rename all outputfiles to be unique
+    /**
+     * The constant expensesToTable.
+     */
     public static List<Expense> expensesToTable = new ArrayList<>();
+    public static ExcelExporter instance = new ExcelExporter();
 
-    public static String exportToExcel() throws FileNotFoundException {
+    private ExcelExporter() {
+    }
+
+    public static ExcelExporter getInstance() {
+        return instance;
+    }
+
+    /**
+     * A method that exports a csv file to excel.
+     *
+     * @return the string of the output file
+     * @throws FileNotFoundException the file not found exception
+     */
+    public String exportToExcel() throws FileNotFoundException {
         if (!outputDirectoryFile.exists()) {
             outputDirectoryFile.mkdirs();
         }
@@ -35,7 +78,7 @@ public class ExcelExporter {
         if (inputFileObj.length() == 0) {
             // Create empty workbook with default sheet
             Workbook workbook = new XSSFWorkbook();
-            workbook.createSheet(timeofdaychecker.getCurrentMonth());
+            workbook.createSheet(TimeOfDayChecker.getCurrentMonth());
             try (FileOutputStream outputStream = new FileOutputStream(outputFile)) {
                 workbook.write(outputStream);
             } catch (IOException e) {
@@ -77,7 +120,7 @@ public class ExcelExporter {
                         columns[i] = columns[i].replaceAll("^\"|\"$", "");
                     }
 
-                    String month = timeofdaychecker.getSelectedMonth(columns[2]);
+                    String month = TimeOfDayChecker.getSelectedMonth(columns[2]);
                     String category = columns[0];
                     String name = columns[1];
                     String date = columns[2];
@@ -142,7 +185,15 @@ public class ExcelExporter {
         return outputFile;
     }
 
-    public static void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
+    /**
+     * A method that exports an Excel file to pdf.
+     *
+     * @param excelFile the Excel file
+     * @param fileName  the file name
+     * @throws IOException       the io exception
+     * @throws DocumentException the document exception
+     */
+    public void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
              FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".pdf")){
 
@@ -175,7 +226,18 @@ public class ExcelExporter {
         }
     }
 
-    public static String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
+    /**
+     * A method that creates a bank statement based on the category and date range.
+     *
+     * @param account  the account name
+     * @param category the category name
+     * @param dateFrom the date from
+     * @param dateTo   the date to
+     * @return the file name
+     * @throws IOException       the io exception
+     * @throws DocumentException the document exception
+     */
+    public String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
         // Read CSV file
         BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));
         String row;
@@ -223,9 +285,15 @@ public class ExcelExporter {
 
         return outputFile2;
     }
-    public static List<Expense> getExpensesForMonth(){
+
+    /**
+     * A method that gets the expenses for the current month.
+     *
+     * @return the expenses for month
+     */
+    public List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();
-        String currentMonth = timeofdaychecker.getCurrentMonth();
+        String currentMonth = TimeOfDayChecker.getCurrentMonth();
         try{
             exportToExcel();
         } catch (FileNotFoundException e) {
@@ -299,9 +367,18 @@ public class ExcelExporter {
         return expenses;
     }
 
-    public static String uniqueID = timeofdaychecker.getCurrentMonth() + timeofdaychecker.getYear();
+    /**
+     * A method that exports the expenses to an Excel file.
+     */
+    public static String uniqueID = TimeOfDayChecker.getCurrentMonth() + TimeOfDayChecker.getYear();
 
-    public static double getTotalOfFood(List<Expense> expenses) {
+    /**
+     * Returns the total of all expenses in the category food.
+     *
+     * @param expenses the expenses
+     * @return the total of food
+     */
+    public double getTotalOfFood(List<Expense> expenses) {
         double totalFood = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Food") && expense.getUniqueID().equals(uniqueID)) {
@@ -310,7 +387,14 @@ public class ExcelExporter {
         }
         return totalFood;
     }
-    public static double getTotalOfTransportation(List<Expense> expenses){
+
+    /**
+     * Returns the total of all expenses in the category transportation.
+     *
+     * @param expenses the expenses
+     * @return the total of transportation
+     */
+    public double getTotalOfTransportation(List<Expense> expenses){
         double totalTransportation = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Transportation") && expense.getUniqueID().equals(uniqueID)) {
@@ -319,7 +403,14 @@ public class ExcelExporter {
         }
         return totalTransportation;
     }
-    public static double getTotalOfEntertainment(List<Expense> expenses){
+
+    /**
+     * Returns the total of all expenses in the category entertainment.
+     *
+     * @param expenses the expenses
+     * @return the total of entertainment
+     */
+    public double getTotalOfEntertainment(List<Expense> expenses){
         double totalEntertainment = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Entertainment") && expense.getUniqueID().equals(uniqueID)) {
@@ -328,7 +419,14 @@ public class ExcelExporter {
         }
         return totalEntertainment;
     }
-    public static double getTotalOfClothing(List<Expense> expenses){
+
+    /**
+     * Returns the total of all expenses in the category clothing.
+     *
+     * @param expenses the expenses
+     * @return the total of clothing
+     */
+    public double getTotalOfClothing(List<Expense> expenses){
         double totalClothing = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Clothing") && expense.getUniqueID().equals(uniqueID)) {
@@ -337,7 +435,14 @@ public class ExcelExporter {
         }
         return totalClothing;
     }
-    public static double getTotalOfOther(List<Expense> expenses){
+
+    /**
+     * Returns the total of all expenses in the category other.
+     *
+     * @param expenses the expenses
+     * @return the total of other
+     */
+    public double getTotalOfOther(List<Expense> expenses){
         double totalOther = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Other") && expense.getUniqueID().equals(uniqueID)) {
@@ -346,7 +451,14 @@ public class ExcelExporter {
         }
         return totalOther;
     }
-    public static double getTotalOfRent(List<Expense> expenses){
+
+    /**
+     * Returns the total of all expenses in the category rent.
+     *
+     * @param expenses the expenses
+     * @return the total of rent
+     */
+    public double getTotalOfRent(List<Expense> expenses){
         double totalRent = 0;
         for (Expense expense : expenses) {
             if (expense.getCategory().equals("Rent") && expense.getUniqueID().equals(uniqueID)) {
@@ -356,7 +468,12 @@ public class ExcelExporter {
         return totalRent;
     }
 
-    public static double getMonthlyTotal(){
+    /**
+     * Returns the total of all expenses.
+     *
+     * @return the total of all expenses
+     */
+    public double getMonthlyTotal(){
         double monthlyTotal = 0;
         monthlyTotal += getTotalOfClothing(expensesToTable);
         monthlyTotal += getTotalOfEntertainment(expensesToTable);

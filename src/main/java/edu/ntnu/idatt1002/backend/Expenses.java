@@ -39,63 +39,81 @@ public class Expenses {
      * An ArrayList with all the expenses in the food category.
      */
     public static ArrayList<Expense> food;
+
     /**
-     * An ArrayList with all the arraylists of expenses.
+     * An ArrayList with all the expenses in all categories.
      */
     public static ArrayList<ArrayList<Expense>> allLists;
+
     /**
-     * An ArrayList with all the expenses.
+     * An ArrayList with all the expenses in all categories.
      */
     public static ArrayList<Expense> allExpenses;
 
     /**
-     * Create the arraylists of expenses in the category transportation.
+     * The single instance of the class used in the singleton pattern.
      */
-    public static void createTransportation(){
+    private static Expenses instance = new Expenses();
+
+    /**
+     * Private constructor to avoid multiple instances of the class.
+     */
+    private Expenses(){} // Singleton
+
+    /**
+     * Returns the single instance of the class.
+     * @return the single instance of the class.
+     */
+    public static Expenses getInstance(){
+        return instance;
+    }
+
+    /**
+     * Creates the ArrayLists for the transportation category.
+     */
+    public void createTransportation(){
         transportation = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of expenses in the category entertainment.
+     * Creates the ArrayLists for the entertainment category.
      */
-    public static void createEntertainment(){
+    public void createEntertainment(){
         entertainment = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of expenses in the category clothing.
+     * Creates the ArrayLists for the clothing category.
      */
-    public static void createClothing(){
+    public void createClothing(){
         clothing = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of expenses in the category other.
+     * Creates the ArrayLists for the other category.
      */
-    public static void createOther(){
+    public void createOther(){
         other = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of expenses in the category food.
+     * Creates the ArrayLists for the food category.
      */
-    public static void createFood(){
+    public void createFood(){
         food = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of expenses in the category rent.
+     * Creates the ArrayLists for the rent category.
      */
-    public static void createRent(){
+    public void createRent(){
         rent = new ArrayList<Expense>();
     }
 
     /**
-     * Create the arraylists of all expenses.
-     *
-     * @return the array list of all expenses
+     * Creates the ArrayLists for all categories.
      */
-    public static ArrayList<Expense> createAllExpenses(){
+    public ArrayList<Expense> createAllExpenses(){
         allExpenses = new ArrayList<Expense>();
         allExpenses.addAll(transportation);
         allExpenses.addAll(entertainment);
@@ -107,9 +125,9 @@ public class Expenses {
     }
 
     /**
-     * Create the arraylists of all arraylists of expenses.
+     * Creates the adds the arraylists to the arraylist for all arraylists.
      */
-    public static void createAllAlist(){
+    public void createAllAlist(){
         allLists = new ArrayList<>();
         allLists.add(rent);
         allLists.add(transportation);
@@ -120,30 +138,26 @@ public class Expenses {
     }
 
     /**
-     * Adds an expense to an arraylist.
-     *
-     * @param expense the expense
-     * @param aList   the arraylist
+     * Adds an expense to the ArrayList.
+     * @param expense the expense to be added.
+     * @param aList the ArrayList to add the expense to.
      */
-    public static void addToArrayList(Expense expense, ArrayList<Expense> aList) {
+    public void addToArrayList(Expense expense, ArrayList<Expense> aList) {
         if (expense == null) {
             throw new IllegalArgumentException("Expense cannot be null");
         }
         if (aList == null) {
             throw new IllegalArgumentException("ArrayList cannot be null");
         }
-
-
         aList.add(expense);
     }
 
     /**
-     * Returns the total expenses in an arraylist.
-     *
-     * @param aList the arraylist
-     * @return the total expenses
+     * Gets the total expenses of a category.
+     * @param aList the ArrayList to get the total expenses from.
+     * @return the total expenses of a category.
      */
-    public static double getTotalExpenses(ArrayList<Expense> aList){
+    public double getTotalExpenses(ArrayList<Expense> aList){
         double totalExpense = 0;
         for (int i = 0; i < aList.size(); i++){
             totalExpense += aList.get(i).getPrice();
@@ -152,22 +166,20 @@ public class Expenses {
     }
 
     /**
-     * Returns the total expenses of all categories.
-     *
-     * @return the total expenses of all categories
+     * Gets the total expenses of all categories.
+     * @return the total expenses of all categories.
      */
-    public static double getExpensesOfAllCategories(){
+    public double getExpensesOfAllCategories(){
         double totalExpense = 0;
         totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent) + getTotalExpenses(food) + getTotalExpenses(other) + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
         return totalExpense;
     }
 
     /**
-     * Returns the arraylist of all expenses.
-     *
-     * @return the arraylist of all expenses
+     * Gets the ArrayList with all the expenses in the transportation category.
+     * @return the ArrayList with all the expenses in the transportation category.
      */
-    public static ArrayList<Expense> getExpenses() {
+    public ArrayList<Expense> getExpenses() {
         return allExpenses;
     }
 }

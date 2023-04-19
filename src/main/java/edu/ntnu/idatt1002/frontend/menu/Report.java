@@ -52,9 +52,10 @@ public class Report {
     exportToPDF.setOnAction(e -> {
       System.out.println("Exporting to PDF");
       try {
+        ExcelExporter instance = ExcelExporter.getInstance();
 
-        ExcelExporter.exportToExcel();
-        ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
+        instance.exportToExcel();
+        instance.convertToPdf(instance.exportToExcel(), "report");
       } catch (DocumentException | IOException ex) {
         throw new RuntimeException(ex);
       }
@@ -62,7 +63,7 @@ public class Report {
       if (Desktop.isDesktopSupported()) {
         try {
           File myFile =
-              new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
+                  new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
           // no application registered for PDFs
@@ -84,8 +85,9 @@ public class Report {
       System.out.println("Exporting to PDF");
       String excelFile = null;
       try {
+        ExcelExporter instance = ExcelExporter.getInstance();
 
-        excelFile = ExcelExporter.exportToExcel();
+        excelFile = instance.exportToExcel();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }

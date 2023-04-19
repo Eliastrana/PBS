@@ -2,7 +2,6 @@ package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,27 +14,42 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import javax.crypto.*;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
-import java.security.spec.KeySpec;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.io.IOException;
 import java.util.Random;
 
 
+/**
+ * A class that creates the view for the login page.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Login {
 
+  /**
+   * A text field to enter the username.
+   */
   public static TextField username = new TextField();
+  /**
+   * The current user.
+   */
   public static String currentUser;
 
+  /**
+   * Returns the current user.
+   *
+   * @return the current user
+   */
   public static String getCurrentUser() {
     return currentUser;
   }
 
+  /**
+   * Login view parent.
+   *
+   * @param controller the controller
+   * @return the view as a parent
+   */
   public static Parent loginView(LoginController controller) {
 
     Pane background = new Pane();

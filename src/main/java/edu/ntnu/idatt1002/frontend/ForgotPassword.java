@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
+import edu.ntnu.idatt1002.backend.Email;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -13,26 +14,53 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import static edu.ntnu.idatt1002.backend.ForgotPasswordBackend.handleSubmit;
 
+/**
+ * A class that creates the view for the forgot password page.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class ForgotPassword {
+    /**
+     * The input field for the email.
+     */
     private static TextField emailTextField;
+    /**
+     * The constant errorLabel.
+     */
     public static Label errorLabel;
+    /**
+     * The email.
+     */
     public static String emailString;
+    /**
+     * The new password.
+     */
     public static String newPasswordString;
+    /**
+     * The pattern the password should be.
+     */
     private static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+    /**
+     * The pattern for the password.
+     */
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
 
+    /**
+     * A method that creates the forgot password view.
+     *
+     * @param controller the controller
+     * @return the view as a parent
+     */
     public Parent forgottenPasswordView(ForgotPasswordController controller) {
 
         VBox forgottenPasswordVBox = new VBox();

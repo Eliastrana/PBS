@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
+import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
@@ -10,14 +11,12 @@ import java.io.IOException;
 import java.util.Map;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
-import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAccount;
-import static edu.ntnu.idatt1002.model.ExcelExporter.*;
+import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 /**
  * A class that creates the pie chart.
  */
 public class PieChart {
-
     /**
      * Creates the data for the left pie chart.
      *
@@ -25,15 +24,18 @@ public class PieChart {
      */
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData(){
         try {
-            accounts = CSVReader.readCSV();
+            CSVReader CSVReaderInstance = CSVReader.getInstance();
+
+            accounts = CSVReaderInstance.readCSV();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        Accounts accountsInstance = Accounts.getInstance();
         ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Map.Entry<String, Double> entry : accounts.entrySet()) {
-            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey() + ": \n" + getTotalOfAccount(entry.getKey()), entry.getValue()));
+            pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey() + ": \n" + accountsInstance.getTotalOfAccount(entry.getKey()), entry.getValue()));
         }
         return pieChartData;
     }
@@ -44,15 +46,13 @@ public class PieChart {
      * @return the list of data
      */
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
-
+        ExcelExporter instance = ExcelExporter.getInstance();
         return FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Rent: " +"\n"+ getTotalOfRent(expensesToTable) , ExcelExporter.getTotalOfRent(expensesToTable)),
-                new javafx.scene.chart.PieChart.Data("Transportation: " +"\n"+ getTotalOfTransportation(expensesToTable), ExcelExporter.getTotalOfTransportation(expensesToTable)),
-                new javafx.scene.chart.PieChart.Data("Clothing: " +"\n"+ getTotalOfClothing(expensesToTable), ExcelExporter.getTotalOfClothing(expensesToTable)),
-                new javafx.scene.chart.PieChart.Data("Entertainment: " +"\n"+ getTotalOfEntertainment(expensesToTable), ExcelExporter.getTotalOfEntertainment(expensesToTable)),
-                new javafx.scene.chart.PieChart.Data("Food: " +"\n"+ getTotalOfFood(expensesToTable), ExcelExporter.getTotalOfFood(expensesToTable)),
-                new javafx.scene.chart.PieChart.Data("Other: " +"\n"+ getTotalOfOther(expensesToTable), ExcelExporter.getTotalOfOther(expensesToTable)));
-
-
+                new javafx.scene.chart.PieChart.Data("Rent: " +"\n"+ instance.getTotalOfRent(expensesToTable) , instance.getTotalOfRent(expensesToTable)),
+                new javafx.scene.chart.PieChart.Data("Transportation: " +"\n"+ instance.getTotalOfTransportation(expensesToTable), instance.getTotalOfTransportation(expensesToTable)),
+                new javafx.scene.chart.PieChart.Data("Clothing: " +"\n"+ instance.getTotalOfClothing(expensesToTable), instance.getTotalOfClothing(expensesToTable)),
+                new javafx.scene.chart.PieChart.Data("Entertainment: " +"\n"+ instance.getTotalOfEntertainment(expensesToTable), instance.getTotalOfEntertainment(expensesToTable)),
+                new javafx.scene.chart.PieChart.Data("Food: " +"\n"+ instance.getTotalOfFood(expensesToTable), instance.getTotalOfFood(expensesToTable)),
+                new javafx.scene.chart.PieChart.Data("Other: " +"\n"+ instance.getTotalOfOther(expensesToTable), instance.getTotalOfOther(expensesToTable)));
     }
 }
