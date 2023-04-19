@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
+import edu.ntnu.idatt1002.backend.Email;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -13,11 +14,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
