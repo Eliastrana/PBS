@@ -1,88 +1,104 @@
 package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.backend.ForgotPasswordBackend;
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.frontend.controllers.CreateUserController;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import edu.ntnu.idatt1002.frontend.menu.*;
-import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.application.Application;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.beans.property.BooleanProperty;
-
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 
 /**
- * The type Gui.
+ * A class that controls the main part of the GUI.
+ * The GUI is made using JavaFX.
+ * Each page is a StackPane, and the buttons are added to the StackPane.
+ * The pages are connected to each other using buttons.
+ * The buttons are added to the StackPane, and the StackPane is added to the scene.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class GUI extends Application {
-
-    //Each page has its own method, all the buttons are in the same method.
-    //The buttons are then connected to the methods that open the pages.
-    //The buttons are added to every single page individually, but they should be a separate entity
-    //Each window is a StackPane, and the buttons are added to the StackPane
-    //The StackPane is then added to the scene, and the scene is added to the stage
-
-
     /**
-     * The constant overviewWindow.
+     * The constant overviewWindow that contains the overview page.
      */
-//This stackPane holds the method of the overview window, this is done so that it is easier to
-    //refresh the overview window.
     protected static StackPane overviewWindow = new StackPane();
     /**
-     * The constant transferWindow.
+     * The constant transferWindow that contains the transfer page.
      */
     protected static StackPane transferWindow = new StackPane();
     /**
-     * The constant reportWindow.
+     * The constant reportWindow that contains the report page.
      */
     protected static StackPane reportWindow = new StackPane();
     /**
-     * The constant addExpenseWindow.
+     * The constant addExpenseWindow that contains the add expense page.
      */
     protected static StackPane addExpenseWindow = new StackPane();
     /**
-     * The constant settingsWindow.
+     * The constant settingsWindow that contains the settings page.
      */
     protected static StackPane settingsWindow = new StackPane();
     /**
-     * The constant budgetWindow.
+     * The constant budgetWindow that contains the budget page.
      */
     protected static StackPane budgetWindow = new StackPane();
     /**
-     * The constant bankStatementWindow.
+     * The constant bankStatementWindow that contains the bank statement page.
      */
     protected static StackPane bankStatementWindow = new StackPane();
 
     /**
-     * The constant currentUser.
+     * The current user.
      */
     public static String currentUser;
-
+    /**
+     * The primary stage of the GUI.
+     */
     private Stage primaryStage;
+    /**
+     * The login controller.
+     */
     private LoginController loginController;
+    /**
+     * The login view.
+     */
     private Login loginView;
+    /**
+     * The stylesheet for the GUI.
+     */
     private static String stylesheet = "/Styling.css";
 
+    /**
+     * The Border pane that contains the different panes.
+     */
     static BorderPane borderPane = new BorderPane();
+
+    /**
+     * A map that stores all the panes.
+     * Is used to update the panes when they need to be updated.
+     */
+    private static final Map<String, Pane> paneCache = new HashMap<>();
+    /**
+     * A map that stores the status of the panes.
+     * Is used to update the panes when they need to be updated.
+     */
+    private static final Map<String, Boolean> paneUpdateStatus = new HashMap<>();
 
 
     /**
@@ -91,8 +107,11 @@ public class GUI extends Application {
     public GUI() {
     }
 
-    //HERE END THE DIFFERENT PANES AND BEGINS THE START METHOD, UPDATER AND TOPMENU
-
+    /**
+     * The main method that starts the GUI.
+     *
+     * @param primaryStage the primary stage
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
@@ -110,7 +129,7 @@ public class GUI extends Application {
     }
 
     /**
-     * Navigate to login.
+     * Sets the login view as the current scene.
      */
     public void navigateToLogin() {
         loginController = new LoginController(this);
@@ -123,7 +142,7 @@ public class GUI extends Application {
     }
 
     /**
-     * Navigate to create user.
+     * Sets the create user view as the current scene.
      */
     public void navigateToCreateUser() {
         CreateUserController createUserController = new CreateUserController(this);
@@ -136,7 +155,7 @@ public class GUI extends Application {
     }
 
     /**
-     * Navigate to forgot password.
+     * Sets the forgot password view as the current scene.
      */
     public void navigateToForgotPassword() {
         ForgotPasswordController forgotPasswordController = new ForgotPasswordController(this);
@@ -149,7 +168,12 @@ public class GUI extends Application {
     }
 
     /**
-     * Navigate to main app.
+     * Sets the main app view as the current scene.
+     * The main app view contains the different pages.
+     * The pages are added to the border pane.
+     * The border pane is added to the scene.
+     * The scene is added to the stage.
+     * The stage is shown.
      *
      * @throws IOException the io exception
      */
@@ -183,7 +207,7 @@ public class GUI extends Application {
         bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
         bankStatementWindow.getStylesheets().add(stylesheet);
 
-
+        updatePane();
 
         primaryStage.setTitle("Bank");
         primaryStage.setWidth(1050);
@@ -202,10 +226,6 @@ public class GUI extends Application {
         borderPane.setId("background");
         scrollPane.setId("background");
 
-        //borderPane.setStyle("-fx-background-color: #E6E8E6;");
-        //scrollPane.setStyle("-fx-background-color: #E6E8E6;");
-
-
         scrollPane.setContent(borderPane);
 
         Scene scene = new Scene(scrollPane);
@@ -220,10 +240,7 @@ public class GUI extends Application {
         budgetWindow.setVisible(false);
         bankStatementWindow.setVisible(false);
 
-
         StackPane root = new StackPane();
-
-
 
         root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
         TopMenu topMenu = new TopMenu(this);
@@ -235,38 +252,26 @@ public class GUI extends Application {
 
 
     /**
-     * Update pane.
+     * Updates the panes that need updating.
      */
     public static void updatePane() {
-        // update the contents of the paneToUpdate
-
         try {
             ExcelExporter.exportToExcel();
             ExcelExporter.convertToPdf(ExcelExporter.exportToExcel(), "report");
         } catch (IOException | DocumentException ex) {
             throw new RuntimeException(ex);
         }
-
-        //THIS CODE IS BAD AND MAKES THE WHOLE PROGRAM SLOW
-        overviewWindow.getChildren().clear();
-        overviewWindow.getChildren().add(Overview.overviewView());
-        transferWindow.getChildren().clear();
-        transferWindow.getChildren().add(Transfer.transferView());
-        addExpenseWindow.getChildren().clear();
-        addExpenseWindow.getChildren().add(AddExpense.expenseView());
-        reportWindow.getChildren().clear();
-        reportWindow.getChildren().add(Report.reportView());
-        budgetWindow.getChildren().clear();
-        budgetWindow.getChildren().add(Budget.budgetView());
-        settingsWindow.getChildren().clear();
-        settingsWindow.getChildren().add(Settings.settingsView());
-        bankStatementWindow.getChildren().clear();
-        bankStatementWindow.getChildren().add(BankStatement.bankStatementView());
-
+        updateCachedPane("overview", Overview::overviewView, overviewWindow);
+        updateCachedPane("transfer", Transfer::transferView, transferWindow);
+        updateCachedPane("addExpense", AddExpense::expenseView, addExpenseWindow);
+        updateCachedPane("report", Report::reportView, reportWindow);
+        updateCachedPane("budget", Budget::budgetView, budgetWindow);
+        updateCachedPane("settings", Settings::settingsView, settingsWindow);
+        updateCachedPane("bankStatement", BankStatement::bankStatementView, bankStatementWindow);
     }
 
     /**
-     * Gets current user.
+     * Returns the current user.
      *
      * @return the current user
      */
@@ -275,19 +280,37 @@ public class GUI extends Application {
     }
 
     /**
-     * Sets current user.
+     * Sets the current user.
      *
      * @param currentUser the current user
      */
     public static void setCurrentUser(String currentUser) {
         GUI.currentUser = currentUser;
     }
+
+    /**
+     * Sets the stylesheet.
+     *
+     * @param stylesheet the stylesheet
+     */
     public static void setStylesheet(String stylesheet) {
         GUI.stylesheet = stylesheet;
     }
+
+    /**
+     * Returns the stylesheet.
+     *
+     * @return the stylesheet
+     */
     public static String getStylesheet() {
         return stylesheet;
     }
+
+    /**
+     * Sets the style.
+     *
+     * @param style the style
+     */
     public static void setStyle(String style) {
         StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow};
         BorderPane[] borderPanes = new BorderPane[]{borderPane};
@@ -305,12 +328,62 @@ public class GUI extends Application {
 
     }
 
-
-
+    /**
+     * Updates the scene.
+     *
+     * @param scene the scene to update
+     * @param root  the root of the scene
+     */
     private void updateScene(Scene scene, Parent root) {
         Stage stage = (Stage) primaryStage.getScene().getWindow();
         stage.setScene(scene);
         stage.setMinHeight(700);
         stage.setMinWidth(1000);
+    }
+
+    /**
+     * Updates the cached pane.
+     *
+     * @param paneName      the pane name to update
+     * @param paneSupplier  the pane supplier
+     * @param window        the window to update
+     */
+    private static void updateCachedPane(String paneName, Supplier<Pane> paneSupplier, Pane window) {
+        Pane pane = paneCache.computeIfAbsent(paneName, key -> paneSupplier.get());
+
+        // Check if the pane needs an update
+        if (paneUpdateStatus.getOrDefault(paneName, false)) {
+            pane = paneSupplier.get();
+            paneCache.put(paneName, pane);
+            paneUpdateStatus.put(paneName, false);
+        }
+
+        if (window.getChildren().isEmpty() || !window.getChildren().get(0).equals(pane)) {
+            window.getChildren().setAll(pane);
+        }
+    }
+
+    /**
+     * Sets the pane to update.
+     *
+     * @param paneName the pane name
+     */
+    public static void setPaneToUpdate(String paneName) {
+        paneUpdateStatus.put(paneName, true);
+    }
+
+    /**
+     * Logs out the user.
+     */
+    public static void logout() {
+        setPaneToUpdate("overview");
+        setPaneToUpdate("transfer");
+        setPaneToUpdate("addExpense");
+        setPaneToUpdate("report");
+        setPaneToUpdate("budget");
+        setPaneToUpdate("settings");
+        setPaneToUpdate("bankStatement");
+        LoginBackend.setCurrentUser(null);
+        CreateUser.setCurrentUser(null);
     }
 }
