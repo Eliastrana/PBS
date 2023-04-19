@@ -107,10 +107,10 @@ public class CreateUserBackend {
    * A method that writes the user to a file.
    * The method writes the username, encrypted password, salt and email to a file.
    *
-   * @param username          the username
-   * @param encryptedPassword the encrypted password
-   * @param salt              the salt
-   * @param email             the email
+   * @param username          the username of the user
+   * @param encryptedPassword the encrypted password of the user
+   * @param salt              the salt used to encrypt the password
+   * @param email             the email of the user
    * @throws IOException the io exception
    */
   public static void saveUser(String username, String encryptedPassword, String salt, String email) throws IOException {
