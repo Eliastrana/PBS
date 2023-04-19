@@ -4,6 +4,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.UserHandling;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.ContactUs;
 import edu.ntnu.idatt1002.frontend.utility.MyToggleGroupClass;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
@@ -40,6 +41,7 @@ public class Settings {
     passwordLabel.setId("bodyText");
     PasswordField passwordField = new PasswordField();
     passwordField.setId("textField");
+    passwordField.setMaxWidth(200);
 
     Button submitButton = new Button("Submit");
 
@@ -211,8 +213,6 @@ public class Settings {
 
       HBox viewmodeHbox = new HBox();
 
-
-
       RadioButton lightmode = new RadioButton("Lightmode");
       RadioButton darkmode = new RadioButton("Darkmode");
       RadioButton colorblind = new RadioButton("Colorblindmode");
@@ -222,14 +222,6 @@ public class Settings {
       darkmode.setToggleGroup(toggleGroup);
       colorblind.setToggleGroup(toggleGroup);
       toggleGroup.selectToggle(lightmode);
-
-      //RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
-      //if (selectedRadioButton != null) {
-      //  String selectedText = selectedRadioButton.getText();
-      //  System.out.println("Selected Radio Button - " + selectedText);
-      //  GUI.setStylesheet(selectedText);
-      //  GUI.updatePane();
-      //}
 
       toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
         if (toggleGroup.getSelectedToggle() != null) {
@@ -242,13 +234,25 @@ public class Settings {
         }
       });
 
-
       viewmodeHbox.getChildren().addAll(lightmode, darkmode, colorblind);
       viewmodeHbox.setSpacing(20);
       viewmodeHbox.setAlignment(Pos.CENTER);
 
+      VBox contactUS = new VBox();
+      Button contactUSButton = new Button("Contact Us");
+      contactUSButton.setId("actionButton");
+      contactUSButton.setAlignment(Pos.CENTER);
+
+      contactUSButton.setOnAction(e -> {
+        ContactUs.sendEmail();
+        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      });
+
+      contactUS.getChildren().addAll(contactUSButton);
+      contactUS.setAlignment(Pos.CENTER);
+
       vbox.getChildren().clear();
-      vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox);
+      vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox, contactUS);
       vbox.setSpacing(40);
 
       vbox.setAlignment(Pos.TOP_CENTER);
