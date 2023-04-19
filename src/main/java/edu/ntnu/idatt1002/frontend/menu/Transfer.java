@@ -2,7 +2,6 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Income;
-import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -17,20 +16,30 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
-import static edu.ntnu.idatt1002.backend.Accounts.addToAccount;
 import static edu.ntnu.idatt1002.backend.Incomes.incomes;
 
+/**
+ * A class that creates the transfer view.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Transfer {
+  /**
+   * A method that creates the transfer view.
+   * The method is used by the GUI class.
+   *
+   * @return the vertical box
+   */
   public static VBox transferView() {
     System.out.println("open transfer window");
     VBox transferVBox = new VBox();

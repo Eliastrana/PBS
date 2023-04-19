@@ -1,25 +1,31 @@
 package edu.ntnu.idatt1002.backend;
 
-import edu.ntnu.idatt1002.frontend.Email;
 import edu.ntnu.idatt1002.frontend.ForgotPassword;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
-import java.util.regex.Pattern;
-
+/**
+ * A class that handles the backend of the forgot password screen.
+ * The class checks if the email is valid and if the new password is valid.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class ForgotPasswordBackend {
-
-  private static final String PASSWORD_PATTERN =
-          "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
-  private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-
+  /**
+   * The boolean that checks if the password has been changed.
+   */
   public static boolean changedPassword = false;
 
+  /**
+   * A method that handles the submit button.
+   * The method checks if the email matches the email in the CSV file.
+   * If the email matches, the method changes the password and the salt in the CSV file.
+   *
+   * @param controller the controller
+   * @throws Exception the exception
+   */
   public static void handleSubmit(ForgotPasswordController controller) throws Exception {
     if (ForgotPassword.emailString.isEmpty()) {
       ForgotPassword.errorLabel.setText("Please enter your email.");

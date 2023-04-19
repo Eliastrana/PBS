@@ -1,15 +1,26 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 
+/**
+ * A class that creates an alert window.
+ * The alert window is used to display error messages.
+ */
 public class AlertWindow {
 
 
+    /**
+     * A method that creates an alert window.
+     * The alert window is used to display error messages.
+     *
+     * @param message the message to be displayed
+     */
     public static void showAlert(String message) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Alert");
@@ -39,6 +50,12 @@ public class AlertWindow {
         okButtonNode.setStyle(okButtonStyle);
         okButtonNode.setAlignment(Pos.CENTER);
 
+        okButtonNode.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                okButtonNode.fire();
+            }
+        });
+
         // Add the "OK" button to the vertical box
         content.getChildren().add(okButtonNode);
 
@@ -51,9 +68,4 @@ public class AlertWindow {
         // Show the dialog and wait for the user to respond
         dialog.showAndWait();
     }
-
-
-
-
-
 }

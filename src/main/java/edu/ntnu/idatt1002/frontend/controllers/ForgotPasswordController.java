@@ -1,23 +1,41 @@
 package edu.ntnu.idatt1002.frontend.controllers;
 
-import edu.ntnu.idatt1002.frontend.ForgotPassword;
 import edu.ntnu.idatt1002.frontend.GUI;
 
+/**
+ * A class that handles the forgot password view.
+ * The class is used for navigating between the ForgotPasswordView and the LoginView.
+ * The class is used by the ForgotPasswordView.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class ForgotPasswordController {
+  /**
+   * The Gui.
+   */
   private GUI gui;
-  private ForgotPassword forgotPassword;
 
+  /**
+   * Instantiates a new Forgot password controller.
+   *
+   * @param gui the gui
+   */
   public ForgotPasswordController(GUI gui) {
     this.gui = gui;
   }
 
+  /**
+   * A method that handles the back button.
+   */
   public void handleBackButton() {
     gui.navigateToLogin();
   }
 
+  /**
+   * A method that handles the reset button.
+   */
   public void handleResetButton() {
     gui.navigateToLogin();
   }
-
-  // Other methods for handling UI interactions
 }

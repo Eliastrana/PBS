@@ -1,31 +1,28 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
-import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import static edu.ntnu.idatt1002.backend.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAccount;
-import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfRent;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfTransportation;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfOther;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfClothing;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfEntertainment;
-import static edu.ntnu.idatt1002.model.ExcelExporter.getTotalOfFood;
+import static edu.ntnu.idatt1002.model.ExcelExporter.*;
 
+/**
+ * A class that creates the pie chart.
+ */
 public class PieChart {
 
-    private static Map<String, Double> accountTotals;
-
+    /**
+     * Creates the data for the left pie chart.
+     *
+     * @return the list of data
+     */
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData(){
         try {
             accounts = CSVReader.readCSV();
@@ -41,6 +38,11 @@ public class PieChart {
         return pieChartData;
     }
 
+    /**
+     * Creates the data for the right pie chart.
+     *
+     * @return the list of data
+     */
     public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
 
         return FXCollections.observableArrayList(

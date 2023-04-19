@@ -1,12 +1,20 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
-import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.File;
 
+/**
+ * A class that plays a sound.
+ */
 public class SoundPlayer {
 
 
+    /**
+     * A method that plays a sound.
+     *
+     * @param filename the name of the sound file
+     */
     public static void play(String filename) {
         try {
             File soundFile = new File(filename);
