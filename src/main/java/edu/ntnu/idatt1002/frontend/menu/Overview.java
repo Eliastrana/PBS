@@ -1,10 +1,9 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.LoginBackend;
-import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.CreateUser;
-import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
@@ -18,17 +17,14 @@ import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
-import javafx.scene.text.Font;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
@@ -37,7 +33,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
@@ -147,17 +146,21 @@ public class Overview {
     });
 
     removeButton1.setOnAction(event -> {
-      Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
-      if (selectedTransfer != null) {
-        String transferType = String.valueOf(selectedTransfer.getTransferType());
-        if (transferType.equals("A")) {
-          leftTable.getItems().remove(selectedTransfer);
-          CSVReader.removeTransfer(leftTable.getItems());
-          GUI.updatePane();
-        } else if (transferType.equals("B")) {
-          String errorMessage = ("Cannot remove transfer from account to account");
-          showAlert(errorMessage);
+      try {
+        Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
+        if (selectedTransfer != null) {
+          String transferType = String.valueOf(selectedTransfer.getTransferType());
+          if (transferType.equals("A")) {
+            leftTable.getItems().remove(selectedTransfer);
+            CSVReader.removeTransfer(leftTable.getItems());
+            GUI.updatePane();
+          } else if (transferType.equals("B")) {
+            throw new IllegalArgumentException("Cannot remove transfer from account to account");
+          }
         }
+      } catch (IllegalArgumentException ex) {
+        String errorMessage = ex.getMessage();
+        showAlert(errorMessage);
       }
     });
 
