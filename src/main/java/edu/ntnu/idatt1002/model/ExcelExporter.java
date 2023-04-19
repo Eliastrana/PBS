@@ -1,32 +1,68 @@
 package edu.ntnu.idatt1002.model;
 
-import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfWriter;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
+/**
+ * A class that exports a csv file to excel.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class ExcelExporter {
+    /**
+     * The Output directory.
+     */
     static String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+    /**
+     * The Output directory file.
+     */
     static File outputDirectoryFile = new File(outputDirectory);
+    /**
+     * The Input file.
+     */
     static String inputFile = outputDirectory + GUI.getCurrentUser() + ".csv";
+    /**
+     * The Output file.
+     */
     static String outputFile = outputDirectory + GUI.getCurrentUser() + ".xlsx";
+    /**
+     * The Output file 1.
+     */
     static String outputFile1 = outputDirectory + GUI.getCurrentUser() + ".pdf";
+    /**
+     * The Output file 2.
+     */
     static String outputFile2 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement.xlsx";
+    /**
+     * The Output file 3.
+     */
     static String outputFile3 = outputDirectory + GUI.getCurrentUser() + "_" + "bankstatement" +
         ".pdf";   //Need to rename all outputfiles to be unique
+    /**
+     * The constant expensesToTable.
+     */
     public static List<Expense> expensesToTable = new ArrayList<>();
 
+    /**
+     * A method that exports a csv file to excel.
+     *
+     * @return the string of the output file
+     * @throws FileNotFoundException the file not found exception
+     */
     public static String exportToExcel() throws FileNotFoundException {
         if (!outputDirectoryFile.exists()) {
             outputDirectoryFile.mkdirs();
@@ -142,6 +178,14 @@ public class ExcelExporter {
         return outputFile;
     }
 
+    /**
+     * A method that exports an Excel file to pdf.
+     *
+     * @param excelFile the Excel file
+     * @param fileName  the file name
+     * @throws IOException       the io exception
+     * @throws DocumentException the document exception
+     */
     public static void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
              FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".pdf")){
@@ -175,6 +219,17 @@ public class ExcelExporter {
         }
     }
 
+    /**
+     * A method that creates a bank statement based on the category and date range.
+     *
+     * @param account  the account name
+     * @param category the category name
+     * @param dateFrom the date from
+     * @param dateTo   the date to
+     * @return the file name
+     * @throws IOException       the io exception
+     * @throws DocumentException the document exception
+     */
     public static String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
         // Read CSV file
         BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));
@@ -223,6 +278,12 @@ public class ExcelExporter {
 
         return outputFile2;
     }
+
+    /**
+     * A method that gets the expenses for the current month.
+     *
+     * @return the expenses for month
+     */
     public static List<Expense> getExpensesForMonth(){
         List<Expense> expenses = new ArrayList<>();
         String currentMonth = timeofdaychecker.getCurrentMonth();
@@ -299,8 +360,17 @@ public class ExcelExporter {
         return expenses;
     }
 
+    /**
+     * A method that exports the expenses to an Excel file.
+     */
     public static String uniqueID = timeofdaychecker.getCurrentMonth() + timeofdaychecker.getYear();
 
+    /**
+     * Gets total of food.
+     *
+     * @param expenses the expenses
+     * @return the total of food
+     */
     public static double getTotalOfFood(List<Expense> expenses) {
         double totalFood = 0;
         for (Expense expense : expenses) {
@@ -310,6 +380,13 @@ public class ExcelExporter {
         }
         return totalFood;
     }
+
+    /**
+     * Get total of transportation double.
+     *
+     * @param expenses the expenses
+     * @return the double
+     */
     public static double getTotalOfTransportation(List<Expense> expenses){
         double totalTransportation = 0;
         for (Expense expense : expenses) {
@@ -319,6 +396,13 @@ public class ExcelExporter {
         }
         return totalTransportation;
     }
+
+    /**
+     * Get total of entertainment double.
+     *
+     * @param expenses the expenses
+     * @return the double
+     */
     public static double getTotalOfEntertainment(List<Expense> expenses){
         double totalEntertainment = 0;
         for (Expense expense : expenses) {
@@ -328,6 +412,13 @@ public class ExcelExporter {
         }
         return totalEntertainment;
     }
+
+    /**
+     * Get total of clothing double.
+     *
+     * @param expenses the expenses
+     * @return the double
+     */
     public static double getTotalOfClothing(List<Expense> expenses){
         double totalClothing = 0;
         for (Expense expense : expenses) {
@@ -337,6 +428,13 @@ public class ExcelExporter {
         }
         return totalClothing;
     }
+
+    /**
+     * Get total of other double.
+     *
+     * @param expenses the expenses
+     * @return the double
+     */
     public static double getTotalOfOther(List<Expense> expenses){
         double totalOther = 0;
         for (Expense expense : expenses) {
@@ -346,6 +444,13 @@ public class ExcelExporter {
         }
         return totalOther;
     }
+
+    /**
+     * Get total of rent double.
+     *
+     * @param expenses the expenses
+     * @return the double
+     */
     public static double getTotalOfRent(List<Expense> expenses){
         double totalRent = 0;
         for (Expense expense : expenses) {
@@ -356,6 +461,11 @@ public class ExcelExporter {
         return totalRent;
     }
 
+    /**
+     * Get monthly total double.
+     *
+     * @return the double
+     */
     public static double getMonthlyTotal(){
         double monthlyTotal = 0;
         monthlyTotal += getTotalOfClothing(expensesToTable);

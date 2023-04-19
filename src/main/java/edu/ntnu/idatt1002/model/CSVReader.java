@@ -1,6 +1,5 @@
 package edu.ntnu.idatt1002.model;
 
-import edu.ntnu.idatt1002.backend.Account;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
@@ -13,11 +12,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * A class that reads a csv file.
+ */
 public class CSVReader {
+    /**
+     * The path to the csv file.
+     */
     private static String CSV_FILE_PATH_1;
+    /**
+     * The path to the csv file.
+     */
     private static String CSV_FILE_PATH_2;
+    /**
+     * The delimiter used in the csv file.
+     */
     private static final String CVS_SPLIT_BY = ",";
+    /**
+     * The path to the output directory.
+     */
     private static String outPutDirectory;
+
+    /**
+     * A method that reads a csv file.
+     *
+     * @return a map of expenses
+     * @throws IOException the io exception
+     */
     public static HashMap<String, Double> readCSV() throws IOException {
         HashMap<String, Double> newAccounts = new HashMap<>(); // Create a new instance of hashmap
         CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
@@ -79,6 +100,12 @@ public class CSVReader {
         }
     }
 
+    /**
+     * A method that reads a csv file and returns a list of transfers.
+     *
+     * @return a list of transfers
+     * @throws IOException the io exception
+     */
     public static List<Transfers> listOfTransfers() throws IOException {
         CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
         Transfers transfers = new Transfers("listConstructor");
@@ -104,6 +131,11 @@ public class CSVReader {
         return transfers.transfersList();
     }
 
+    /**
+     * A method that reads a csv file and returns a list of expenses.
+     *
+     * @return a list of expenses
+     */
     public static List<Expense> getExpensesFromCSV() {
         List<Expense> expensesFromFile = new ArrayList<>();
 
@@ -156,6 +188,12 @@ public class CSVReader {
         }
     }
 
+    /**
+     * A method that updates the rows that are different in the table.
+     *
+     * @param expensesInTable  the expenses in table
+     * @param expensesFromFile the expenses from file
+     */
     public static void updateRowsThatAreDifferentInTable(List<Expense> expensesInTable,
                                                          List<Expense> expensesFromFile) {
         List<Expense> expensesToBeUpdated = new ArrayList<>();
@@ -181,6 +219,11 @@ public class CSVReader {
         }
     }
 
+    /**
+     * A method that removes a transfer from the csv file.
+     *
+     * @param transfersListInTable the transfers list in table
+     */
     public static void removeTransfer(List<Transfers> transfersListInTable){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_1))) {
             for (Transfers transfer : transfersListInTable) {

@@ -13,13 +13,32 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+/**
+ * A class that creates the top menu.
+ */
 public class TopMenu {
 
+  /**
+   * The Gui.
+   */
   private static GUI gui;
+
+  /**
+   * Instantiates a new Top menu.
+   *
+   * @param gui the gui
+   */
   public TopMenu(GUI gui) {
     this.gui = gui;
   }
 
+  /**
+   * Creates the top menu bar.
+   * Contains all the buttons for the different windows.
+   *
+   * @param primaryStage the primary stage
+   * @return the horizontal box
+   */
   public static HBox topMenu(Stage primaryStage) {
     BorderPane borderPane = new BorderPane();
     MenuBar menuBar = new MenuBar();
@@ -113,6 +132,14 @@ public class TopMenu {
     return topMenu;
   }
 
+  /**
+   * Creates a button for the top menu.
+   *
+   * @param buttonText the button text
+   * @param iconPath   the icon path
+   * @param action     the action
+   * @return the button
+   */
   private static Button createMenuButton(String buttonText, String iconPath, Runnable action) {
     ImageView buttonImage = new ImageView(new Image(iconPath));
     buttonImage.setFitHeight(20);
@@ -131,6 +158,13 @@ public class TopMenu {
     return button;
   }
 
+  /**
+   * Handles the button click.
+   * Sets the correct window to visible.
+   *
+   * @param paneToShow   the pane to show
+   * @param paneToUpdate the pane to update
+   */
   private static void handleButtonClick(Node paneToShow, String paneToUpdate) {
     GUI.overviewWindow.setVisible(false);
     GUI.transferWindow.setVisible(false);
@@ -146,5 +180,4 @@ public class TopMenu {
     GUI.updatePane();
     System.out.println(paneToUpdate + " button pressed");
   }
-
 }
