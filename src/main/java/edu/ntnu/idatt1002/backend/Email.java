@@ -1,31 +1,63 @@
-package edu.ntnu.idatt1002.frontend;
+package edu.ntnu.idatt1002.backend;
 
-import java.util.Properties;
-import java.util.Random;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
+import java.util.Random;
 
 import static javax.mail.Transport.send;
 
-
-
+/**
+ * A class that sends an email to the user.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Email {
 
-  // Define the email sender's credentials and SMTP server information
-  final String senderEmail = "idatt1002.ntnu.pbs@gmail.com";
-  final String senderPassword = "ewqtptwvusfuzrlm";
-  final String smtpHost = "smtp.gmail.com";
-  final String smtpPort = "587";
+  /**
+   * The email address of the sender.
+   */
+  private final String senderEmail = "idatt1002.ntnu.pbs@gmail.com";
+  /**
+   * The password of the sender email.
+   */
+  private final String senderPassword = "ewqtptwvusfuzrlm";
+  /**
+   * The Smtp host.
+   */
+  private final String smtpHost = "smtp.gmail.com";
+  /**
+   * The Smtp port.
+   */
+  private final String smtpPort = "587";
 
-  // Define the email recipient, subject, and message body
+  /**
+   * The email address of the recipient.
+   */
   String recipientEmail;
+  /**
+   * The password of the recipient.
+   */
   String passwordString;
+  /**
+   * The subject of the email.
+   */
   String subject = "Forgotten your password?";
 
+  /**
+   * Sends an email to the user with their password.
+   *
+   * @param email    the email address
+   * @param password the password of the user
+   * @throws MessagingException the messaging exception
+   */
   public void sendEmail(String email, String password) throws MessagingException {
 
     String message = "Your password is:";

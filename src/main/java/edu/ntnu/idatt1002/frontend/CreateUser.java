@@ -14,33 +14,50 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import java.io.IOException;
+import java.util.Random;
+
+/**
+ * A class that creates the view for the create user page.
+ *
+ * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class CreateUser {
+  /**
+   * A text field to enter the username.
+   */
   public static TextField username = new TextField();
+  /**
+   * The current user.
+   */
   public static String currentUser;
+
+  /**
+   * Returns the current user.
+   *
+   * @return the current user
+   */
   public static String getCurrentUser() {
     return currentUser;
   }
 
+  /**
+   * Sets the current user.
+   *
+   * @param currentUser the current user
+   */
   public static void setCurrentUser(String currentUser) {
     CreateUser.currentUser = currentUser;
   }
 
+  /**
+   * A method that creates the create user view.
+   *
+   * @param controller the controller
+   * @return the view as a parent
+   */
   public Parent createUserView(CreateUserController controller) {
 
     Pane background = new Pane();
