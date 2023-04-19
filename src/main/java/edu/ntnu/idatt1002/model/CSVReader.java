@@ -129,13 +129,15 @@ public class CSVReader {
             String line;
             while ((line = br1.readLine()) != null) {
                 String[] account = line.split(CVS_SPLIT_BY);
-                char transferType = account[3].charAt(0);
-                transfers.addTransfer(account[0], Double.parseDouble(account[1]), account[2], transferType);
+                if (account.length >= 4) { // Check if array has enough elements
+                    char transferType = account[3].charAt(0);
+                    transfers.addTransfer(account[0], Double.parseDouble(account[1]), account[2], transferType);
+                }
             }
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
         return transfers.transfersList();
     }
 
