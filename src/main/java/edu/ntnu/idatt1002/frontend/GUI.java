@@ -255,8 +255,9 @@ public class GUI extends Application {
      * Updates the panes that need updating.
      */
     public static void updatePane() {
-        ExcelExporter instance = ExcelExporter.getInstance();
         try {
+            ExcelExporter instance = ExcelExporter.getInstance();
+
             instance.exportToExcel();
             instance.convertToPdf(instance.exportToExcel(), "report");
         } catch (IOException | DocumentException ex) {

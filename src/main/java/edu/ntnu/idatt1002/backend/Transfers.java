@@ -13,7 +13,7 @@ import java.util.Objects;
  * @author Emil J., Vegard J., Sander S. & Elias T.
  * @version 0.5 - 19.04.2023
  */
-public class Transfers {
+public class  Transfers {
     /**
      * A list of transfers.
      */

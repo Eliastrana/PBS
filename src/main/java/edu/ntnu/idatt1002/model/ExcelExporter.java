@@ -71,6 +71,10 @@ public class ExcelExporter {
      * @throws FileNotFoundException the file not found exception
      */
     public String exportToExcel() throws FileNotFoundException {
+        String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+        String inputFile = outputDirectory + GUI.getCurrentUser() + ".csv";
+        String outputFile = outputDirectory + GUI.getCurrentUser() + ".xlsx";
+        File outputDirectoryFile = new File(outputDirectory);
         if (!outputDirectoryFile.exists()) {
             outputDirectoryFile.mkdirs();
         }
@@ -194,6 +198,7 @@ public class ExcelExporter {
      * @throws DocumentException the document exception
      */
     public void convertToPdf(String excelFile, String fileName) throws IOException, DocumentException {
+        String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(excelFile));
              FileOutputStream fos = new FileOutputStream(outputDirectory + GUI.getCurrentUser() + fileName + ".pdf")){
 
@@ -238,6 +243,8 @@ public class ExcelExporter {
      * @throws DocumentException the document exception
      */
     public String createBankStatement(String account, String category, String dateFrom, String dateTo) throws IOException, DocumentException {
+        String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+        String inputFile = outputDirectory + GUI.getCurrentUser() + ".csv";
         // Read CSV file
         BufferedReader csvReader = new BufferedReader(new FileReader(inputFile));
         String row;
@@ -292,6 +299,8 @@ public class ExcelExporter {
      * @return the expenses for month
      */
     public List<Expense> getExpensesForMonth(){
+        String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+        String outputFile = outputDirectory + GUI.getCurrentUser() + ".xlsx";
         List<Expense> expenses = new ArrayList<>();
         String currentMonth = TimeOfDayChecker.getCurrentMonth();
         try{

@@ -146,9 +146,9 @@ public class Overview {
     TableColumn<Transfers, String> leftColumn3 = new TableColumn<>("Date: ");
     leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-    CSVReader csvInstance = CSVReader.getInstance();
-
     try {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       leftTable.getItems().addAll(csvInstance.listOfTransfers());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -168,6 +168,8 @@ public class Overview {
     });
 
     removeButton1.setOnAction(event -> {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       try {
         Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
         if (selectedTransfer != null) {
@@ -220,6 +222,8 @@ public class Overview {
     rightColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
     rightColumn1.setOnEditCommit(event -> {
       // Get the expense object that was edited
+      CSVReader csvInstance = CSVReader.getInstance();
+
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());       //Add error message if not a string
 
       // Set the new name value on the expense object
@@ -231,6 +235,8 @@ public class Overview {
 
     rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));      //Add errror message if not a double
     rightColumn2.setOnEditCommit(event -> {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
@@ -243,6 +249,8 @@ public class Overview {
 
     rightColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));   //Add error message if date is not valid
     rightColumn3.setOnEditCommit(event -> {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
@@ -255,6 +263,8 @@ public class Overview {
 
     rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
     rightColumn4.setOnEditCommit(event -> {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
@@ -267,6 +277,8 @@ public class Overview {
 
     rightColumn5.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid account
     rightColumn5.setOnEditCommit(event -> {
+      CSVReader csvInstance = CSVReader.getInstance();
+
       // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
@@ -292,7 +304,7 @@ public class Overview {
     });
 
     removeButton.setOnAction(event -> {
-
+      CSVReader csvInstance = CSVReader.getInstance();
 
       ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
       rightTable.getItems().removeAll(selectedExpenses);
