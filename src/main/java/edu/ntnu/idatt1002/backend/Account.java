@@ -10,7 +10,13 @@ import java.util.ArrayList;
  * @version 0.5 - 19.04.2023
  */
 public class Account {
+    /**
+     * The name of the account.
+     */
     private String accountName;
+    /**
+     * The balance of the account.
+     */
     private double accountBalance;
     /**
      * A list of all the expenses in the account.
