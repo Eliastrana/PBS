@@ -4,7 +4,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -104,7 +104,7 @@ public class Budget {
 
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
-      String month = timeofdaychecker.getCurrentMonth();
+      String month = TimeOfDayChecker.getCurrentMonth();
 
       String categorymonth = category + month;
 
@@ -150,8 +150,8 @@ public class Budget {
       }
 
 
-      String currentMonth = timeofdaychecker.getCurrentMonth();
-      String previousMonth = timeofdaychecker.getPreviousMonth();
+      String currentMonth = TimeOfDayChecker.getCurrentMonth();
+      String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
       // Read the CSV file
       File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
@@ -225,8 +225,8 @@ public class Budget {
 
     });
 
-    String currentMonth = timeofdaychecker.getCurrentMonth();
-    String previousMonth = timeofdaychecker.getPreviousMonth();
+    String currentMonth = TimeOfDayChecker.getCurrentMonth();
+    String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
     // Read the CSV file
     String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");

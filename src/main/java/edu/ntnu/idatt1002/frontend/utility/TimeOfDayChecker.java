@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * A class that checks the time of day.
  */
-public class timeofdaychecker {
+public class TimeOfDayChecker {
 
 
     /**

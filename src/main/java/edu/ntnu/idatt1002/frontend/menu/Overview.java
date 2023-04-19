@@ -7,7 +7,7 @@ import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
-import edu.ntnu.idatt1002.frontend.utility.timeofdaychecker;
+import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
@@ -77,7 +77,7 @@ public class Overview {
 
     System.out.println("open overview window");
 
-    Text welcome = new Text(timeofdaychecker.timeofdaychecker()+" " + name + "!");
+    Text welcome = new Text(TimeOfDayChecker.timeofdaychecker()+" " + name + "!");
     welcome.setId("welcomeTitleText");
     welcome.setFocusTraversable(true);
 
@@ -304,7 +304,7 @@ public class Overview {
 
 
     File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
-    String currentMonth = timeofdaychecker.getCurrentMonth();
+    String currentMonth = TimeOfDayChecker.getCurrentMonth();
     if (!csvFile.exists()) {
       try {
         csvFile.createNewFile();
