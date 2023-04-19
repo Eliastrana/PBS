@@ -48,16 +48,11 @@ public class BankStatement {
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
 
-
     Text viewBankStatement = new Text("View bank statement");
     viewBankStatement.setId("titleText");
 
-
     HBox selectAccountHbox = new HBox();
     selectAccountHbox.setAlignment(Pos.CENTER);
-
-    Text selectAccountText = new Text("Select account: ");
-
 
     ObservableList<String> options2 = null;
     try {

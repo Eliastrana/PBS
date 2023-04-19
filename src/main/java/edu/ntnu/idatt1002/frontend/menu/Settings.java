@@ -37,8 +37,9 @@ public class Settings {
     vbox.getChildren().clear();
 
     Label passwordLabel = new Label("Enter current password: ");
-    passwordLabel.setId("bodyText");
+    passwordLabel.setId("smallTitle");
     PasswordField passwordField = new PasswordField();
+    passwordField.setPromptText("Enter password");
     passwordField.setId("textField");
     passwordField.setMaxWidth(200);
 
@@ -140,8 +141,11 @@ public class Settings {
 
       VBox updatePassword = new VBox();
       TextField updateEmailTextField = new TextField();
+      updateEmailTextField.setId("textField");
+      updateEmailTextField.setPromptText("Enter new email");
       updatePassword.getChildren().addAll(updateEmailTextField);
       updatePassword.setAlignment(Pos.CENTER);
+
 
       VBox confirmEmailUpdateVbox = new VBox();
       Button confirmEmailUpdate = new Button("Confirm");
@@ -179,6 +183,8 @@ public class Settings {
 
       VBox currentAndNewPasswordInputFields = new VBox();
       TextField newPasswordTextField = new TextField();
+      newPasswordTextField.setId("textField");
+      newPasswordTextField.setPromptText("Enter new password");
       currentAndNewPasswordInputFields.getChildren().addAll(newPasswordTextField);
       currentAndNewPasswordInputFields.setAlignment(Pos.CENTER);
 
@@ -215,6 +221,9 @@ public class Settings {
       RadioButton lightmode = new RadioButton("Lightmode");
       RadioButton darkmode = new RadioButton("Darkmode");
       RadioButton colorblind = new RadioButton("Colorblindmode");
+      lightmode.setId("radioButton");
+      darkmode.setId("radioButton");
+      colorblind.setId("radioButton");
 
       ToggleGroup toggleGroup = new ToggleGroup();
       lightmode.setToggleGroup(toggleGroup);
