@@ -5,26 +5,47 @@ import java.util.HashMap;
 /**
  * A class that represents a collection of accounts.
  * The collection of accounts is a HashMap with the account name as key and the account balance as value.
+ * Uses singleton pattern to avoid multiple instances of the class, and to ensure data encapsulation and integrity.
  *
  * @author Emil J., Vegard J., Sander S. & Elias T.
  * @version 0.5 - 19.04.2023
  */
+
 public class Accounts {
     /**
-     * A HashMap with all the accounts.
+     * The single instance of the class used in the singleton pattern.
+     */
+    private static Accounts instance = new Accounts();
+
+    /**
+     * A hashmap with all the accounts.
      */
     public static HashMap<String, Double> accounts;
 
     /**
-     * Constructor for Accounts.
-     * Creates a new HashMap
-     * The account name must not be null or empty.
-     * The account balance must not be negative.
-     *
-     * @param accountName    the name of the account
-     * @param accountBalance the balance of the account
+     * Private constructor to avoid multiple instances of the class. Creates the hashmap to be used.
      */
-    public static void addAccount(String accountName, double accountBalance){
+    private Accounts(){
+        accounts = new HashMap<>();
+    }
+
+    /**
+     * Returns the single instance of the class.
+     * @return the single instance of the class.
+     */
+    public static Accounts getInstance(){
+        return instance;
+    }
+
+    /**
+     * Adds an account to the hashmap.
+     * @param accountName the name of the account to be added.
+     * @param accountBalance the balance of the account to be added.
+     * @throws NullPointerException if the account name is null or empty.
+     * @throws IllegalArgumentException if the account balance is negative.
+     *
+     */
+    public void addAccount(String accountName, double accountBalance){
         if (accountName == null || accountName.isBlank()){
             throw new NullPointerException("Account name cannot be empty");
         }
@@ -37,12 +58,14 @@ public class Accounts {
     }
 
     /**
-     * Adds to an account.
-     *
-     * @param accountName the name of the account
-     * @param amount      the amount to be added
+     * Adds an amount to a given account.
+     * @param accountName the name of the account to be removed.
+     * @param amount the amount to be added to the account.
+     * @throws NullPointerException if the account name is null or empty.
+     * @throws IllegalArgumentException if the amount is negative.
      */
-    public static void addToAccount(String accountName, double amount){
+
+    public void addToAccount(String accountName, double amount){
         if (amount < 0){
             throw new IllegalArgumentException("Amount cannot be negative");
         }
@@ -54,21 +77,19 @@ public class Accounts {
     }
 
     /**
-     * Returns the balance of an account.
-     *
-     * @param accountName the name of the account
-     * @return the balance of the account
+     * Gets the total balance of an accout.
+     * @param accountName the name of the account you want to get the balance of.
+     * @return the balance of the account.
      */
-    public static double getTotalOfAccount(String accountName){
+    public double getTotalOfAccount(String accountName){
         return accounts.get(accountName);
     }
 
     /**
-     * Returns the total of all accounts.
-     *
-     * @return the total of all accounts
+     * Gets the total balance of all accounts.
+     * @return the total balance of all accounts.
      */
-    public static double getTotalOfAllAccounts(){
+    public double getTotalOfAllAccounts(){
         double total = 0;
         for (Double value : accounts.values()) {
             total += value;
@@ -77,11 +98,10 @@ public class Accounts {
     }
 
     /**
-     * Returns a map of the accounts.
-     *
-     * @return the accounts
+     * Gets the hashmap of accounts.
+     * @return the hashmap of accounts.
      */
-    public static HashMap<String, Double> getAccounts() {
+    public HashMap<String, Double> getAccounts() {
         return accounts;
     }
 }

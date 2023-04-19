@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.Accounts;
 import edu.ntnu.idatt1002.backend.Expense;
 import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Transfers;
@@ -38,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static edu.ntnu.idatt1002.backend.Accounts.getTotalOfAllAccounts;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
@@ -85,9 +85,11 @@ public class Overview {
     budgetRemaining.setId("goodMorningText");
     budgetRemaining.setFocusTraversable(true);
 
-    Text budgetText = new Text((BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal())+" kr");
+    ExcelExporter instance = ExcelExporter.getInstance();
+
+    Text budgetText = new Text((BudgetCalculator.getTotalBudget() - instance.getMonthlyTotal())+" kr");
     budgetText.setId("goodMorningText");
-    if (BudgetCalculator.getTotalBudget() - ExcelExporter.getMonthlyTotal() < 0) {
+    if (BudgetCalculator.getTotalBudget() - instance.getMonthlyTotal() < 0) {
       budgetText.setFill(Color.RED);
     } else {
       budgetText.setFill(Color.GREEN);
@@ -98,13 +100,15 @@ public class Overview {
 
     HBox hbox2 = new HBox(2);
 
-    Text textSavings = new Text("Total savings: " + "\n" + getTotalOfAllAccounts());
+    Accounts accountsInstance = Accounts.getInstance();
+
+    Text textSavings = new Text("Total savings: " + "\n" + accountsInstance.getTotalOfAllAccounts());
     textSavings.setTextAlignment(TextAlignment.CENTER);
     textSavings.setId("helveticaTitle");
     hbox2.getChildren().add(textSavings);
 
 
-    Text textSpending = new Text("Monthly spending: " + "\n" + ExcelExporter.getMonthlyTotal());
+    Text textSpending = new Text("Monthly spending: " + "\n" + instance.getMonthlyTotal());
     textSpending.setTextAlignment(TextAlignment.CENTER);
     textSpending.setId("helveticaTitle");
     hbox2.getChildren().add(textSpending);
@@ -142,8 +146,10 @@ public class Overview {
     TableColumn<Transfers, String> leftColumn3 = new TableColumn<>("Date: ");
     leftColumn3.setCellValueFactory(new PropertyValueFactory<>("date"));
 
+    CSVReader csvInstance = CSVReader.getInstance();
+
     try {
-      leftTable.getItems().addAll(CSVReader.listOfTransfers());
+      leftTable.getItems().addAll(csvInstance.listOfTransfers());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -168,7 +174,7 @@ public class Overview {
           String transferType = String.valueOf(selectedTransfer.getTransferType());
           if (transferType.equals("A")) {
             leftTable.getItems().remove(selectedTransfer);
-            CSVReader.removeTransfer(leftTable.getItems());
+            csvInstance.removeTransfer(leftTable.getItems());
             GUI.updatePane();
           } else if (transferType.equals("B")) {
             throw new IllegalArgumentException("Cannot remove transfer from account to account");
@@ -218,8 +224,8 @@ public class Overview {
 
       // Set the new name value on the expense object
       expense.setName(event.getNewValue());
-      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-           CSVReader.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+           csvInstance.getExpensesFromCSV());
         GUI.updatePane();
     });
 
@@ -230,8 +236,8 @@ public class Overview {
 
       // Set the new name value on the expense object
       expense.setPrice(event.getNewValue());
-      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          CSVReader.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          csvInstance.getExpensesFromCSV());
       GUI.updatePane();
     });
 
@@ -242,8 +248,8 @@ public class Overview {
 
       // Set the new name value on the expense object
       expense.setDate(event.getNewValue());
-      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          CSVReader.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          csvInstance.getExpensesFromCSV());
       GUI.updatePane();
     });
 
@@ -254,8 +260,8 @@ public class Overview {
 
       // Set the new name value on the expense object
       expense.setCategoryAsString(event.getNewValue());
-      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          CSVReader.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          csvInstance.getExpensesFromCSV());
       GUI.updatePane();
     });
 
@@ -266,14 +272,14 @@ public class Overview {
 
       // Set the new name value on the expense object
       expense.setAccountAsString(event.getNewValue());
-      CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          CSVReader.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+          csvInstance.getExpensesFromCSV());
       GUI.updatePane();
     });
 
     rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
 
-    rightTable.getItems().addAll(ExcelExporter.getExpensesForMonth());
+    rightTable.getItems().addAll(instance.getExpensesForMonth());
 
     Button removeButton = new Button("Remove Selected");
     removeButton.setId("actionButton");
@@ -290,8 +296,8 @@ public class Overview {
 
       ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
       rightTable.getItems().removeAll(selectedExpenses);
-        CSVReader.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-            CSVReader.getExpensesFromCSV());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+            csvInstance.getExpensesFromCSV());
         GUI.updatePane();
     });
 
@@ -328,22 +334,22 @@ public class Overview {
           currentLines.add(data);
         }
         if (data[0].equalsIgnoreCase("Rent")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfRent(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfRent(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Entertainment")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfEntertainment(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfEntertainment(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Food")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfFood(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfFood(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Transportation")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfTransportation(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfTransportation(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Other")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfOther(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfOther(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Clothing")) {
-          expensesToBarChart.put(data[0], ExcelExporter.getTotalOfClothing(expensesToTable));
+          expensesToBarChart.put(data[0], instance.getTotalOfClothing(expensesToTable));
         }
       }
       // Create the bar chart dataset
