@@ -101,7 +101,6 @@ public class Budget {
 
     confirmAmount.setOnAction(e -> {
 
-
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
       String month = TimeOfDayChecker.getCurrentMonth();
@@ -223,6 +222,8 @@ public class Budget {
       budgetAmountField.clear();
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 
+      GUI.setPaneToUpdate("overviewView");
+      GUI.updatePane();
     });
 
     String currentMonth = TimeOfDayChecker.getCurrentMonth();

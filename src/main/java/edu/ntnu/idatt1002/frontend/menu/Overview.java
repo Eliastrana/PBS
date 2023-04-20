@@ -87,10 +87,11 @@ public class Overview {
     budgetRemaining.setFocusTraversable(true);
 
     ExcelExporter instance = ExcelExporter.getInstance();
+    BudgetCalculator budgetInstance = BudgetCalculator.getInstance();
 
-    Text budgetText = new Text((BudgetCalculator.getTotalBudget() - instance.getMonthlyTotal())+" kr");
+    Text budgetText = new Text((budgetInstance.getTotalBudget() - instance.getMonthlyTotal())+" kr");
     budgetText.setId("goodMorningText");
-    if (BudgetCalculator.getTotalBudget() - instance.getMonthlyTotal() < 0) {
+    if (budgetInstance.getTotalBudget() - instance.getMonthlyTotal() < 0) {
       budgetText.setFill(Color.RED);
     } else {
       budgetText.setFill(Color.GREEN);
