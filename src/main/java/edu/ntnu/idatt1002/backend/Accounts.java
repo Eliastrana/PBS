@@ -104,4 +104,8 @@ public class Accounts {
     public HashMap<String, Double> getAccounts() {
         return accounts;
     }
+
+    public boolean validateAccountName(String accountName){
+        return accounts.containsKey(accountName);
+    }
 }

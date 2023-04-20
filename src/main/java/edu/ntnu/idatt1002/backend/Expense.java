@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.backend;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -295,6 +296,15 @@ public class Expense {
      */
     public void setAccountAsString(String accountAsString) {
         this.accountAsString = accountAsString;
+    }
+
+    public boolean validateCategory(String categoryAsString) {
+        String[] categories = {"Food", "Transportation", "Entertainment", "Clothing", "Other", "Rent"};
+        if (categoryAsString == null || categoryAsString.isBlank()) {
+            return false;
+        } else {
+            return Arrays.asList(categories).contains(categoryAsString);
+        }
     }
 
     /**

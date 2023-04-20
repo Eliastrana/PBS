@@ -6,6 +6,7 @@ import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.TopMenu;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
@@ -174,10 +175,16 @@ public class Overview {
         Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
         if (selectedTransfer != null) {
           String transferType = String.valueOf(selectedTransfer.getTransferType());
+
           if (transferType.equals("A")) {
-            leftTable.getItems().remove(selectedTransfer);
-            csvInstance.removeTransfer(leftTable.getItems());
-            GUI.updatePane();
+            if (selectedTransfer.getAmount() > accountsInstance.getTotalOfAccount(selectedTransfer.getAccountName())) {
+              throw new IllegalArgumentException("Cannot remove transfer from account, not enough money");
+            } else {
+              leftTable.getItems().remove(selectedTransfer);
+              csvInstance.removeTransfer(leftTable.getItems());
+              GUI.setPaneToUpdate("overviewView");
+              GUI.updatePane();
+            }
           } else if (transferType.equals("B")) {
             throw new IllegalArgumentException("Cannot remove transfer from account to account");
           }
@@ -224,16 +231,17 @@ public class Overview {
       // Get the expense object that was edited
       CSVReader csvInstance = CSVReader.getInstance();
 
-      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());       //Add error message if not a string
+      Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      expense.setName(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-           csvInstance.getExpensesFromCSV());
+        expense.setName(event.getNewValue());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+                csvInstance.getExpensesFromCSV());
+        GUI.setPaneToUpdate("overviewView");
         GUI.updatePane();
     });
 
-    rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));      //Add errror message if not a double
+    rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
     rightColumn2.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
@@ -241,13 +249,21 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      expense.setPrice(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          csvInstance.getExpensesFromCSV());
-      GUI.updatePane();
+      if (event.getNewValue()>accountsInstance.getTotalOfAccount(expense.getAccount())) {
+        String errorMessage = "Cannot remove transfer from account, not enough money";
+        showAlert(errorMessage);
+        event.getTableView().refresh();
+        GUI.updatePane();
+      } else {
+        expense.setPrice(event.getNewValue());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+                csvInstance.getExpensesFromCSV());
+        GUI.setPaneToUpdate("overviewView");
+        GUI.updatePane();
+      }
     });
 
-    rightColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));   //Add error message if date is not valid
+    rightColumn3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
     rightColumn3.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
@@ -257,11 +273,11 @@ public class Overview {
       // Set the new name value on the expense object
       expense.setDate(event.getNewValue());
       csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          csvInstance.getExpensesFromCSV());
+              csvInstance.getExpensesFromCSV());
       GUI.updatePane();
     });
 
-    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
+    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());
     rightColumn4.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
@@ -269,13 +285,21 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      expense.setCategoryAsString(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          csvInstance.getExpensesFromCSV());
-      GUI.updatePane();
+      if (!expense.validateCategory(event.getNewValue())){
+        String errorMessage = "Category does not exist";
+        showAlert(errorMessage);
+        event.getTableView().refresh();
+        GUI.updatePane();
+      } else {
+        expense.setCategoryAsString(event.getNewValue());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+                csvInstance.getExpensesFromCSV());
+        GUI.setPaneToUpdate("overviewView");
+        GUI.updatePane();
+      }
     });
 
-    rightColumn5.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid account
+    rightColumn5.setCellFactory(TextFieldTableCell.forTableColumn());
     rightColumn5.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
@@ -283,10 +307,18 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      expense.setAccountAsString(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-          csvInstance.getExpensesFromCSV());
-      GUI.updatePane();
+      if (!accountsInstance.validateAccountName(event.getNewValue())){
+        String errorMessage = "Account name does not exist";
+        showAlert(errorMessage);
+        event.getTableView().refresh();
+        GUI.updatePane();
+      } else {
+        expense.setAccountAsString(event.getNewValue());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+                csvInstance.getExpensesFromCSV());
+        GUI.setPaneToUpdate("overviewView");
+        GUI.updatePane();
+      }
     });
 
     rightTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
@@ -308,9 +340,9 @@ public class Overview {
 
       ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
       rightTable.getItems().removeAll(selectedExpenses);
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-            csvInstance.getExpensesFromCSV());
-        GUI.updatePane();
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+              csvInstance.getExpensesFromCSV());
+      GUI.updatePane();
     });
 
     vboxSpending.getChildren().add(removeButton);
@@ -433,7 +465,7 @@ public class Overview {
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
     vbox.setSpacing(20);
 
-      return vbox;
-    }
+    return vbox;
   }
+}
 

@@ -263,6 +263,8 @@ public class GUI extends Application {
         } catch (IOException | DocumentException ex) {
             throw new RuntimeException(ex);
         }
+        overviewWindow.getChildren().clear();
+        overviewWindow.getChildren().add(Overview.overviewView());
         updateCachedPane("overview", Overview::overviewView, overviewWindow);
         updateCachedPane("transfer", Transfer::transferView, transferWindow);
         updateCachedPane("addExpense", AddExpense::expenseView, addExpenseWindow);

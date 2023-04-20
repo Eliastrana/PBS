@@ -313,6 +313,10 @@ public class ExcelExporter {
             if (sheet == null){
                 sheet = workbook.createSheet(currentMonth);
             }
+            if (sheet.getPhysicalNumberOfRows() == 0) {
+                expensesToTable = new ArrayList<>();
+                return expensesToTable; // Return an empty ArrayList if sheet has no rows
+            }
             for (int i = 0; i < sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
                 if (row.getRowNum() == 0) {
@@ -373,7 +377,7 @@ public class ExcelExporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return expenses;
+        return expensesToTable;
     }
 
     /**
