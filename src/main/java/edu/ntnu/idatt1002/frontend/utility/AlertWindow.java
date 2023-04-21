@@ -11,6 +11,9 @@ import javafx.scene.control.Dialog;
 /**
  * A class that creates an alert window.
  * The alert window is used to display error messages.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class AlertWindow {
 

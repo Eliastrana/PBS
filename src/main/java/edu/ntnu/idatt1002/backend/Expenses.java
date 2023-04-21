@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * A class that represents a collection of expenses.
  * The collection of expenses is a HashMap with the expense name as key and the expense amount as value.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Expenses {

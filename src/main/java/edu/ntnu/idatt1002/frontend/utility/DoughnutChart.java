@@ -11,6 +11,9 @@ import javafx.scene.shape.Circle;
 /**
  * A class that creates a doughnut chart.
  * The doughnut chart is a pie chart with a hole in the middle.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class DoughnutChart extends PieChart {
     /**

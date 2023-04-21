@@ -3,10 +3,11 @@ package edu.ntnu.idatt1002.frontend.utility;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.menu.Budget;
 
-import java.io.File;
-
 /**
  * A class that calculates the total budget.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class BudgetCalculator {
     private static BudgetCalculator instance = new BudgetCalculator();

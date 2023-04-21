@@ -7,7 +7,7 @@ import edu.ntnu.idatt1002.frontend.GUI;
  * The class is used for navigating between the ForgotPasswordView and the LoginView.
  * The class is used by the ForgotPasswordView.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class ForgotPasswordController {

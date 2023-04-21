@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * An account has a name and a balance.
  * Singleton is used to ensure data encapsulation and integrity.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Account {
