@@ -8,7 +8,7 @@ The Public Banking System is a accounting system that aids its user to a larger 
 ## Authors
 
 - [@eliastrana](https://www.github.com/eliastrana)
-- [@emiljohnsen](https://www.github.com/emiljohnsen)
+- [@emiljohnsen](https://www.github.com/1Cezzo)
 - [@henrikfredriksen](https://www.github.com/henrikfredriksen)
 - [@sanderskofsrud](https://www.github.com/sanderskofsrud)
 - [@vegardjohnsen](https://www.github.com/vegardjohnsen)
