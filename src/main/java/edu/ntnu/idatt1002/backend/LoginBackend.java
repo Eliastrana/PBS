@@ -27,7 +27,7 @@ public class LoginBackend {
   /**
    * The constant SECRET_KEY is the secret key used for decrypting the password.
    */
-  private static final String SECRET_KEY = System.getProperty("myapp.secretKey");
+  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
   /**
    * The constant currentUser is the current user.
    */

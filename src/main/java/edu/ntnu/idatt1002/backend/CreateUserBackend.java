@@ -28,7 +28,7 @@ public class CreateUserBackend {
   /**
    * The secret key used to encrypt the password.
    */
-  private static final String SECRET_KEY = System.getProperty("myapp.secretKey");
+  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
   /**
    * A pattern that checks if the email is valid.
    */
