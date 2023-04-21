@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -139,9 +140,15 @@ public class CreateUser {
     createUserBox.setSpacing(1);
     createUserBox.getChildren().addAll(usernameBox, emailBox, passwordBox, passwordBox2);
 
+
     Button createUser = new Button("Create user");
     createUser.setId("loginButton");
 
+    password2.setOnKeyPressed(e -> {
+      if (e.getCode() == KeyCode.ENTER) {
+        createUser.fire();
+      }
+    });
 
     createUser.setOnAction( e -> {
         String passwordStringTest1 = password.getText();
