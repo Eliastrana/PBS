@@ -16,7 +16,7 @@ The Public Banking System is a accounting system that aids its user to a larger 
 
 
 
-![Logo](https://eliastrana.no/PBS/logo/icon_small.png)
+![Logo](https://eliastrana.no/PBS/logo/pbslogo.png)
 
 
 ## FAQ
