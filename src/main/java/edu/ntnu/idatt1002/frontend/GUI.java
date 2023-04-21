@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  * The pages are connected to each other using buttons.
  * The buttons are added to the StackPane, and the StackPane is added to the scene.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class GUI extends Application {

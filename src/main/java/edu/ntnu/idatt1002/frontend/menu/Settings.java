@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * A class that creates the settings view.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Settings {
