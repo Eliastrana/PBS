@@ -6,6 +6,9 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * A class that checks the time of day.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class TimeOfDayChecker {
 

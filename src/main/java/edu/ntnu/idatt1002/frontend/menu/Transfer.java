@@ -28,7 +28,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 /**
  * A class that creates the transfer view.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Transfer {
@@ -111,7 +111,7 @@ public class Transfer {
         String errorMessage = "Not enough money";
         showAlert(errorMessage);
         System.out.println("Not enough money");
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play("/src/main/resources/error.wav");
         leftTransfer.setValue(null);
         rightTransfer.setValue(null);
         priceEntry.setText(null);

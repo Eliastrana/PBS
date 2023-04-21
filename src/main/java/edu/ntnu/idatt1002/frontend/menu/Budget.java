@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * A class that creates the budget view.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Budget {
@@ -225,6 +225,9 @@ public class Budget {
         }
       }
       categoryMenu.setValue("Select Category");
+      GUI.setPaneToUpdate("overview");
+      GUI.setPaneToUpdate("budget");
+      GUI.updatePane();
       budgetAmountField.clear();
       SoundPlayer.play("src/main/resources/16bitconfirm.wav");
 

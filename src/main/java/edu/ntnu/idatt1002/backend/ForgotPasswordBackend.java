@@ -9,7 +9,7 @@ import java.io.*;
  * A class that handles the backend of the forgot password screen.
  * The class checks if the email is valid and if the new password is valid.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class ForgotPasswordBackend {

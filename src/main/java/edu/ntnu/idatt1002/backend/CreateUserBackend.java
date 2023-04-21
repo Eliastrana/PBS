@@ -6,9 +6,10 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
  * The class encrypts the password and writes the user to a file.
  * The class also checks if the email and password is valid.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class CreateUserBackend {
@@ -114,10 +115,37 @@ public class CreateUserBackend {
    * @throws IOException the io exception
    */
   public static void saveUser(String username, String encryptedPassword, String salt, String email) throws IOException {
-    BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/users.csv", true));
+    String csvFile = "userdata/users.csv";
+
+    // Read the resource file
+    InputStream inputStream = CreateUserBackend.class.getClassLoader().getResourceAsStream(csvFile);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+    // Create a temporary file to store the updated content
+    Path tempFile = Files.createTempFile("users", ".csv");
+    BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile(), true));
+
+    // Copy the existing content to the temporary file
+    String line;
+    while ((line = reader.readLine()) != null) {
+      writer.write(line);
+      writer.newLine();
+    }
+
+    // Add the new user data to the temporary file
     writer.write(username + "," + encryptedPassword + "," + salt + "," + email);
     writer.newLine();
     writer.close();
+    reader.close();
+
+    // Copy the temporary file back to the resource file (if not in a JAR)
+    if (CreateUserBackend.class.getResource(csvFile).toString().startsWith("file:")) {
+      Path resourcePath = new File(CreateUserBackend.class.getResource(csvFile).getFile()).toPath();
+      Files.copy(tempFile, resourcePath, StandardCopyOption.REPLACE_EXISTING);
+    } else {
+      System.err.println("Cannot modify resource file inside JAR.");
+    }
+
     currentUser = username;
   }
 }

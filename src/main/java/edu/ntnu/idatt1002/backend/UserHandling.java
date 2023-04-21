@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 /**
  * A class that handles the user.
  * Tha class is used for getting and changing the email and password of the user.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class UserHandling {
 

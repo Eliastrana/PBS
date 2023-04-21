@@ -7,7 +7,7 @@ import java.util.HashMap;
  * The collection of accounts is a HashMap with the account name as key and the account balance as value.
  * Uses singleton pattern to avoid multiple instances of the class, and to ensure data encapsulation and integrity.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 

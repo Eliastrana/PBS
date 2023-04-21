@@ -2,7 +2,15 @@ package edu.ntnu.idatt1002.backend;
 
 import java.util.ArrayList;
 
-
+/**
+ * A class that represents a collection of incomes.
+ * The collection of incomes is an ArrayList with the income name as key and the income amount as value.
+ * Uses singleton pattern to avoid multiple instances of the class, and to ensure data encapsulation and integrity.
+ * The class also has methods for creating an ArrayList of all the incomes, and for adding an income to an ArrayList of incomes.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
+ */
 public class Incomes {
     /**
      * An ArrayList consisting of incomes.

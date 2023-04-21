@@ -10,7 +10,7 @@ import java.util.Objects;
  * The class is used for displaying the transfers in the GUI.
  * The class is also used for deleting transfers, depending on the type of the transfer.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class  Transfers {

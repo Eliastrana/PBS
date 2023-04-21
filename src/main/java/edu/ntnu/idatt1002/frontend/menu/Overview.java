@@ -6,7 +6,6 @@ import edu.ntnu.idatt1002.backend.LoginBackend;
 import edu.ntnu.idatt1002.backend.Transfers;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.TopMenu;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
@@ -47,7 +46,7 @@ import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 /**
  * A class that creates the overview view.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class Overview {
@@ -278,7 +277,7 @@ public class Overview {
       GUI.updatePane();
     });
 
-    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());
+    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
     rightColumn4.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 

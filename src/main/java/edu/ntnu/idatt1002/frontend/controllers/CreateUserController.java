@@ -11,7 +11,7 @@ import java.io.IOException;
  * The class also handles the navigation between the CreateUserView and the LoginView.
  * The class is used by the CreateUserView.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class CreateUserController {

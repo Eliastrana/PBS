@@ -28,7 +28,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 /**
  * A class that creates the add expense view.
  *
- * @author Emil J., Vegard J., Sander S. & Elias T.
+ * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
 public class AddExpense {
@@ -119,16 +119,16 @@ public class AddExpense {
 
 
       if (categoryMenu.getValue() == null) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play("/src/main/resources/error.wav");
         String customMessage = "Please select a category.";
         showAlert(customMessage);
         System.out.println("No category selected");
 
       } else if (prices.getText().isEmpty()) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play("/src/main/resources/error.wav");
 
       } else if (names.getText().isEmpty()) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play("/src/main/resources/error.wav");
 
 
       } else if (accounts.get((String) accountMenu.getValue()) - (Double.parseDouble(prices.getText())) < 0) {

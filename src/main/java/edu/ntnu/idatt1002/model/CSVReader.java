@@ -14,6 +14,9 @@ import java.util.Locale;
 
 /**
  * A class that reads a csv file.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class CSVReader {
     /**

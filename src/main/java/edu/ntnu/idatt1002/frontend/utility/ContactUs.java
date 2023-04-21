@@ -5,6 +5,9 @@ import java.net.URI;
 
 /**
  * A class that sends an email to the PBS.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class ContactUs {
     /**

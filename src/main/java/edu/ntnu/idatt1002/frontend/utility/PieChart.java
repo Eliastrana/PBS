@@ -15,6 +15,9 @@ import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 /**
  * A class that creates the pie chart.
+ *
+ * @author Emil J., Vegard J., Sander S. and Elias T.
+ * @version 0.5 - 19.04.2023
  */
 public class PieChart {
     /**
