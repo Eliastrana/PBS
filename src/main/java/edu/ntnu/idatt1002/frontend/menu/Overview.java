@@ -182,7 +182,7 @@ public class Overview {
             } else {
               leftTable.getItems().remove(selectedTransfer);
               csvInstance.removeTransfer(leftTable.getItems());
-              GUI.setPaneToUpdate("overviewView");
+              GUI.setPaneToUpdate("overview");
               GUI.updatePane();
             }
           } else if (transferType.equals("B")) {
@@ -237,7 +237,7 @@ public class Overview {
         expense.setName(event.getNewValue());
         csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
                 csvInstance.getExpensesFromCSV());
-        GUI.setPaneToUpdate("overviewView");
+        GUI.setPaneToUpdate("overview");
         GUI.updatePane();
     });
 
@@ -258,7 +258,7 @@ public class Overview {
         expense.setPrice(event.getNewValue());
         csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
                 csvInstance.getExpensesFromCSV());
-        GUI.setPaneToUpdate("overviewView");
+        GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
     });
@@ -274,6 +274,7 @@ public class Overview {
       expense.setDate(event.getNewValue());
       csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
               csvInstance.getExpensesFromCSV());
+      GUI.setPaneToUpdate("overview");
       GUI.updatePane();
     });
 
@@ -294,7 +295,7 @@ public class Overview {
         expense.setCategoryAsString(event.getNewValue());
         csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
                 csvInstance.getExpensesFromCSV());
-        GUI.setPaneToUpdate("overviewView");
+        GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
     });
@@ -316,7 +317,7 @@ public class Overview {
         expense.setAccountAsString(event.getNewValue());
         csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
                 csvInstance.getExpensesFromCSV());
-        GUI.setPaneToUpdate("overviewView");
+        GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
     });
@@ -342,6 +343,7 @@ public class Overview {
       rightTable.getItems().removeAll(selectedExpenses);
       csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
               csvInstance.getExpensesFromCSV());
+      GUI.setPaneToUpdate("overview");
       GUI.updatePane();
     });
 

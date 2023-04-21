@@ -219,9 +219,6 @@ public class CSVReader {
             for (Expense expenseInTable : expensesInTable) {
                 expensesToBeUpdated.add(expenseInTable);
             }
-            for (Expense expense : expensesToBeUpdated) {
-                System.out.println(expense.getName() + " " + expense.getPrice() + " " + expense.getDate() + " " + expense.getCategory() + " " + expense.getAccount());
-            }
             for (Expense expenseToUpdatedFile : expensesToBeUpdated) {
                 writer.write(expenseToUpdatedFile.getCategory() + ",|" + expenseToUpdatedFile.getName() + "|," + expenseToUpdatedFile.getDate() + "," + expenseToUpdatedFile.getPrice() + "," + expenseToUpdatedFile.getAccount());
                 writer.newLine();
