@@ -389,5 +389,6 @@ public class GUI extends Application {
         setPaneToUpdate("bankStatement");
         LoginBackend.setCurrentUser(null);
         CreateUser.setCurrentUser(null);
+        setStyle("Styling");
     }
 }

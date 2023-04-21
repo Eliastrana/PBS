@@ -115,7 +115,7 @@ public class CreateUserBackend {
    * @throws IOException the io exception
    */
   public static void saveUser(String username, String encryptedPassword, String salt, String email) throws IOException {
-    String csvFile = "userdata/users.csv";
+    String csvFile = "users.csv";
 
     // Read the resource file
     InputStream inputStream = CreateUserBackend.class.getClassLoader().getResourceAsStream(csvFile);

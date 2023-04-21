@@ -69,7 +69,7 @@ public class LoginBackend {
    * @throws IOException the io exception
    */
   public static void login(String username, String password, LoginController controller) throws IOException {
-    String csvFile = "userdata/users.csv";
+    String csvFile = "users.csv";
     String line;
 
     try (InputStream inputStream = LoginBackend.class.getClassLoader().getResourceAsStream(csvFile);
