@@ -125,6 +125,8 @@ public class Budget {
           lines.add(line);
         }
 
+        //Testing gitignore
+
         reader.close();
 
         // Create a new file and write the updated data to it
