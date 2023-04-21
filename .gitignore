@@ -37,3 +37,6 @@ out/
 ##############################
 *.db
 *.DS_Store
+
+src/main/resources/userfiles/
+src/main/resoucres/users.csv

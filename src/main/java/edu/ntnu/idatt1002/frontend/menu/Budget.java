@@ -111,25 +111,25 @@ public class Budget {
 
       try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
 
+        // ...
+
         ArrayList<String> lines = new ArrayList<String>();
 
         // Read the lines of the file into the list
         String line;
-
         while ((line = reader.readLine()) != null) {
           String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
           if (oldCategoryMonth.equals(categorymonth)) {
-            continue;
+            continue; // Skip writing the updated line for existing category and month combination
           }
           lines.add(line);
         }
 
         reader.close();
-        // Remove the old file
-        System.out.println(csvFile.delete());
 
         // Create a new file and write the updated data to it
-        FileWriter fw = new FileWriter(csvFile);
+        File tempFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget_temp.csv");
+        FileWriter fw = new FileWriter(tempFile);
         BufferedWriter bw = new BufferedWriter(fw);
 
         // Write the lines to the new file
@@ -143,6 +143,12 @@ public class Budget {
         bw.newLine();
         bw.flush();
 
+        bw.close();
+        fw.close();
+
+        // Replace the original file with the temporary file
+        csvFile.delete();
+        tempFile.renameTo(csvFile);
 
       } catch (IOException f) {
         System.err.println("Error writing to file: " + f.getMessage());
