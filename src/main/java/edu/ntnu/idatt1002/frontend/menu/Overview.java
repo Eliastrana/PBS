@@ -1,12 +1,13 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
-import edu.ntnu.idatt1002.backend.Accounts;
-import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.LoginBackend;
-import edu.ntnu.idatt1002.backend.Transfers;
+import edu.ntnu.idatt1002.backend.budgeting.Accounts;
+import edu.ntnu.idatt1002.backend.budgeting.Expense;
+import edu.ntnu.idatt1002.backend.budgeting.Transfers;
+import edu.ntnu.idatt1002.backend.user.LoginBackend;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
+import edu.ntnu.idatt1002.frontend.utility.CustomPieChart;
 import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -14,7 +15,6 @@ import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -34,13 +34,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
-import static edu.ntnu.idatt1002.frontend.utility.PieChart.createData;
+import static edu.ntnu.idatt1002.frontend.utility.CustomPieChart.createData;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 /**
@@ -63,7 +60,7 @@ public class Overview {
    */
   public static VBox overviewView() {
     ObservableList<PieChart.Data> pieChartData = createData();
-    ObservableList<PieChart.Data> pieChartData2 = edu.ntnu.idatt1002.frontend.utility.PieChart.createData2();
+    ObservableList<PieChart.Data> pieChartData2 = CustomPieChart.createData2();
 
     VBox welcomeAndTimeOfDay = new VBox();
 
@@ -118,13 +115,13 @@ public class Overview {
     emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
     VBox vboxSavings = new VBox();
-    DoughnutChart pieChart1 = new DoughnutChart(pieChartData);
+    DoughnutChart pieChart1 = new DoughnutChart(pieChartData, GUI.getStylesheet());
     pieChart1.setFocusTraversable(true);
     vboxSavings.setAlignment(Pos.CENTER);
     vboxSavings.getChildren().addAll(textSavings, pieChart1);
 
     VBox vboxSpending = new VBox();
-    DoughnutChart pieChart2 = new DoughnutChart(pieChartData2);
+    DoughnutChart pieChart2 = new DoughnutChart(pieChartData2, GUI.getStylesheet());
     pieChart2.setFocusTraversable(true);
     vboxSpending.setAlignment(Pos.CENTER);
     vboxSpending.getChildren().addAll(textSpending, pieChart2);
@@ -425,6 +422,10 @@ public class Overview {
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
 
+      if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
+        applyDarkModeStyles(barChart);
+      }
+
       // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
@@ -441,33 +442,63 @@ public class Overview {
     barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
     barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
 
-    for (XYChart.Series<String, Number> series : barChart.getData()) {
-      if (series.getName().equals("Income")) {
-        for (XYChart.Data<String, Number> data : series.getData()) {
-          Node node = data.getNode();
-          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
-        }
-      }
-    }
-
-    for (XYChart.Series<String, Number> series : barChart.getData()) {
-      if (series.getName().equals("Expenses")) {
-        for (XYChart.Data<String, Number> data : series.getData()) {
-          Node node = data.getNode();
-          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
-        }
-      }
-    }
+//    for (XYChart.Series<String, Number> series : barChart.getData()) {
+//      if (series.getName().equals("Income")) {
+//        for (XYChart.Data<String, Number> data : series.getData()) {
+//          Node node = data.getNode();
+//          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
+//        }
+//      }
+//    }
+//
+//    for (XYChart.Series<String, Number> series : barChart.getData()) {
+//      if (series.getName().equals("Expenses")) {
+//        for (XYChart.Data<String, Number> data : series.getData()) {
+//          Node node = data.getNode();
+//          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
+//        }
+//      }
+//    }
 
     barChart.setFocusTraversable(true);
-
-
-
 
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
     vbox.setSpacing(20);
 
     return vbox;
   }
+
+  private static void applyDarkModeStyles(BarChart<String, Number> barChart) {
+    barChart.setStyle("-fx-background-color: transparent;");
+
+    CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
+    xAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+
+    NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
+    yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+
+    barChart.lookupAll(".chart-legend-item-text").forEach(node -> {
+      node.setStyle("-fx-text-fill: #FFFFFF;");
+    });
+
+    barChart.lookupAll(".series0 .chart-bar").forEach(node -> {
+      node.setStyle("-fx-bar-fill: #FF0000;"); // Red
+    });
+
+    barChart.lookupAll(".series1 .chart-bar").forEach(node -> {
+      node.setStyle("-fx-bar-fill: #FFFF00;"); // Yellow
+    });
+
+    // Set legend symbol colors
+    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node -> {
+      node.setStyle("-fx-background-color: #FF0000, white;"); // Red
+    });
+
+    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node -> {
+      node.setStyle("-fx-background-color: #FFFF00, white;"); // Yellow
+    });
+  }
+
+
 }
 

@@ -1,7 +1,7 @@
 package edu.ntnu.idatt1002.model;
 
-import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.Transfers;
+import edu.ntnu.idatt1002.backend.budgeting.Expense;
+import edu.ntnu.idatt1002.backend.budgeting.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 

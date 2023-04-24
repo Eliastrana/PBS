@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002.backend;
+package edu.ntnu.idatt1002.backend.user;
 
 import edu.ntnu.idatt1002.frontend.GUI;
 

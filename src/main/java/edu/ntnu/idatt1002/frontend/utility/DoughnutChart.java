@@ -1,12 +1,18 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
+import com.sun.javafx.charts.Legend;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 /**
  * A class that creates a doughnut chart.
@@ -20,19 +26,29 @@ public class DoughnutChart extends PieChart {
      * The inner circle of the doughnut chart.
      */
     private final Circle innerCircle;
+    private String stylesheet;
 
     /**
      * Constructs a new doughnut chart.
      *
      * @param pieData the data to be displayed in the chart
      */
-    public DoughnutChart(ObservableList<Data> pieData) {
+    public DoughnutChart(ObservableList<Data> pieData, String style) {
         super(pieData);
 
-        innerCircle = new Circle();
-        innerCircle.setFill(Color.WHITESMOKE);
-        innerCircle.setStroke(Color.WHITE);
-        innerCircle.setStrokeWidth(3);
+        stylesheet = style;
+        System.out.println(stylesheet);
+        if (Objects.equals(stylesheet, "Darkmode")) {
+            innerCircle = new Circle();
+            innerCircle.setFill(Paint.valueOf("#3b3b3b"));
+            innerCircle.setStroke(Color.WHITE);
+            innerCircle.setStrokeWidth(1);
+        } else {
+            innerCircle = new Circle();
+            innerCircle.setFill(Color.WHITESMOKE);
+            innerCircle.setStroke(Color.WHITE);
+            innerCircle.setStrokeWidth(1);
+        }
     }
 
     /*
@@ -44,6 +60,7 @@ public class DoughnutChart extends PieChart {
 
         addInnerCircleIfNotPresent();
         updateInnerCircleLayout();
+        changeLabelColor();
     }
     /*
       * This method is called whenever the data of the chart is updated.
@@ -93,4 +110,20 @@ public class DoughnutChart extends PieChart {
 
         innerCircle.setRadius((maxX - minX) / 4);
     }
+    private void changeLabelColor() {
+        for (Data data : getData()) {
+            data.nameProperty().addListener((observable, oldValue, newValue) -> {
+                Platform.runLater(() -> {
+                    for (Node node : lookupAll(".chart-pie-label")) {
+                        if (node instanceof Text && !(node.getParent() instanceof Legend)) {
+                            Text textNode = (Text) node;
+                            textNode.getStyleClass().add("chart-pie-label");
+                            // No need to change the fill, as it will be picked up from the CSS
+                        }
+                    }
+                });
+            });
+        }
+    }
+
 }

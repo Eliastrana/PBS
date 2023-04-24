@@ -19,7 +19,7 @@ import javax.mail.MessagingException;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import static edu.ntnu.idatt1002.backend.ForgotPasswordBackend.handleSubmit;
+import static edu.ntnu.idatt1002.backend.user.ForgotPasswordBackend.handleSubmit;
 
 /**
  * A class that creates the view for the forgot password page.

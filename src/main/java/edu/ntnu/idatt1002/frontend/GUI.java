@@ -1,7 +1,7 @@
 package edu.ntnu.idatt1002.frontend;
 
 import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.backend.LoginBackend;
+import edu.ntnu.idatt1002.backend.user.LoginBackend;
 import edu.ntnu.idatt1002.frontend.controllers.CreateUserController;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
@@ -316,6 +316,9 @@ public class GUI extends Application {
      * @param style the style
      */
     public static void setStyle(String style) {
+
+        setStylesheet(style);
+
         StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow};
         BorderPane[] borderPanes = new BorderPane[]{borderPane};
 

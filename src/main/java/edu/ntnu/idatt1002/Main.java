@@ -1,7 +1,8 @@
 
 package edu.ntnu.idatt1002;
 
-import edu.ntnu.idatt1002.backend.*;
+import edu.ntnu.idatt1002.backend.budgeting.Expenses;
+import edu.ntnu.idatt1002.backend.budgeting.Incomes;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import javafx.application.Application;
