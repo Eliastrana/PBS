@@ -1,7 +1,6 @@
 package edu.ntnu.idatt1002.backend;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import edu.ntnu.idatt1002.backend.budgeting.Transfers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
