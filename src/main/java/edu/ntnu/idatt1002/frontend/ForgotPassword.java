@@ -178,6 +178,7 @@ public class ForgotPassword {
         forgottenPasswordVBox.getChildren().addAll(backButtonBox, emailTextField, submitButton, masterPassword, newPassword, confirmNewPassword, changePasswordButton);
         forgottenPasswordVBox.setSpacing(30);
         forgottenPasswordVBox.setAlignment(Pos.CENTER);
+        forgottenPasswordVBox.getStylesheets().add("/Styling.css");
 
         return forgottenPasswordVBox;
     }

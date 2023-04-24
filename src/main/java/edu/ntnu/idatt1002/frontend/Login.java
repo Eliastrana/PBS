@@ -133,6 +133,7 @@ public class Login {
 
     VBox vbox = new VBox(backgroundAndLogin);
     vbox.setAlignment(Pos.TOP_CENTER);
+    vbox.getStylesheets().add("/Styling.css");
     return vbox;
   }
 }
