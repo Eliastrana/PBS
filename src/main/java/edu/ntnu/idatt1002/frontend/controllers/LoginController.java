@@ -16,7 +16,7 @@ public class LoginController {
   /**
    * The Gui.
    */
-  private GUI gui;
+  private final GUI gui;
 
   /**
    * Instantiates a new Login controller.

@@ -53,13 +53,13 @@ public class Login {
   public static Parent loginView(LoginController controller) {
 
     Pane background = new Pane();
-    background.setPrefSize(1000,700);
+    background.setPrefSize(1000, 700);
 
     Random random = new Random();
-    int randomInt = random.nextInt(2)+1;
+    int randomInt = random.nextInt(2) + 1;
     background.getStylesheets().add("/Styling.css");
 
-    background.getStyleClass().add("loginScreen"+randomInt);
+    background.getStyleClass().add("loginScreen" + randomInt);
 
     System.out.println("Opening login page");
 
@@ -127,9 +127,9 @@ public class Login {
       }
     });
 
-    loginVBox.getChildren().addAll(welcomeText,welcomeText2, username, password, logIn, createUser, forgotPassword);
+    loginVBox.getChildren().addAll(welcomeText, welcomeText2, username, password, logIn, createUser, forgotPassword);
 
-    StackPane backgroundAndLogin = new StackPane(background , loginVBox);
+    StackPane backgroundAndLogin = new StackPane(background, loginVBox);
 
     VBox vbox = new VBox(backgroundAndLogin);
     vbox.setAlignment(Pos.TOP_CENTER);

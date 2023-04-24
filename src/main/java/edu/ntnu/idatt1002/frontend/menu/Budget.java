@@ -108,138 +108,138 @@ public class Budget {
         } else if (Integer.parseInt(budgetAmountField.getText()) < 0) {
           throw new NumberFormatException("Please enter a positive number");
         }
-      String category = categoryMenu.getValue().toString();
-      String amount = budgetAmountField.getText();
-      String month = TimeOfDayChecker.getCurrentMonth();
+        String category = categoryMenu.getValue().toString();
+        String amount = budgetAmountField.getText();
+        String month = TimeOfDayChecker.getCurrentMonth();
 
-      String categorymonth = category + month;
+        String categorymonth = category + month;
 
-      File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+        File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
 
-      try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
 
-        // ...
+          // ...
 
-        ArrayList<String> lines = new ArrayList<String>();
+          ArrayList<String> lines = new ArrayList<String>();
 
-        // Read the lines of the file into the list
-        String line;
-        while ((line = reader.readLine()) != null) {
-          String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
-          if (oldCategoryMonth.equals(categorymonth)) {
-            continue; // Skip writing the updated line for existing category and month combination
+          // Read the lines of the file into the list
+          String line;
+          while ((line = reader.readLine()) != null) {
+            String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
+            if (oldCategoryMonth.equals(categorymonth)) {
+              continue; // Skip writing the updated line for existing category and month combination
+            }
+            lines.add(line);
           }
-          lines.add(line);
-        }
 
-        reader.close();
+          reader.close();
 
-        // Create a new file and write the updated data to it
-        File tempFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget_temp.csv");
-        FileWriter fw = new FileWriter(tempFile);
-        BufferedWriter bw = new BufferedWriter(fw);
+          // Create a new file and write the updated data to it
+          File tempFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget_temp.csv");
+          FileWriter fw = new FileWriter(tempFile);
+          BufferedWriter bw = new BufferedWriter(fw);
 
-        // Write the lines to the new file
-        for (String l : lines) {
-          bw.write(l);
+          // Write the lines to the new file
+          for (String l : lines) {
+            bw.write(l);
+            bw.newLine();
+          }
+
+          // Write the updated line to the new file
+          bw.write(category + "," + amount + "," + month);
           bw.newLine();
-        }
+          bw.flush();
 
-        // Write the updated line to the new file
-        bw.write(category + "," + amount + "," + month);
-        bw.newLine();
-        bw.flush();
+          bw.close();
+          fw.close();
 
-        bw.close();
-        fw.close();
+          // Replace the original file with the temporary file
+          csvFile.delete();
+          tempFile.renameTo(csvFile);
 
-        // Replace the original file with the temporary file
-        csvFile.delete();
-        tempFile.renameTo(csvFile);
-
-      } catch (IOException f) {
-        System.err.println("Error writing to file: " + f.getMessage());
-      }
-
-
-      String currentMonth = TimeOfDayChecker.getCurrentMonth();
-      String previousMonth = TimeOfDayChecker.getPreviousMonth();
-
-      // Read the CSV file
-      File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
-      if (!file.exists()) {
-        try {
-          file.createNewFile();
         } catch (IOException f) {
-          f.printStackTrace();
-        }
-      }
-      BufferedReader br = null;
-      String line = "";
-      String csvSplitBy = ",";
-      List<String[]> currentLines = new ArrayList<String[]>();
-      List<String[]> previousLines = new ArrayList<String[]>();
-      BarChart<String, Number> barChart = null;
-      try {
-        br = new BufferedReader(new FileReader(csvFile));
-        while ((line = br.readLine()) != null) {
-          String[] data = line.split(csvSplitBy);
-          // Filter the data by the current month
-          if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
-            currentLines.add(data);
-          }
-          if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
-            previousLines.add(data);
-          }
+          System.err.println("Error writing to file: " + f.getMessage());
         }
 
-        // Create the bar chart dataset
-        ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
-        for (String[] lineData : currentLines) {
-          currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
-        }
-        XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
-        currentSeries.setName(currentMonth);
 
-        ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
-        for (String[] lineData : previousLines) {
-          previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
-        }
-        XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
-        previousSeries.setName(previousMonth);
+        String currentMonth = TimeOfDayChecker.getCurrentMonth();
+        String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
-        // Create the bar chart
-        CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Category");
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Value");
-        barChart = new BarChart<String, Number>(xAxis, yAxis);
-        barChart.setTitle("Bar Chart");
-        barChart.getData().addAll(currentSeries, previousSeries);
-        budgetLayout.getChildren().clear();
-        budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
-
-        // Show the bar chart
-      } catch (IOException f) {
-        f.printStackTrace();
-      } finally {
-        if (br != null) {
+        // Read the CSV file
+        File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+        if (!file.exists()) {
           try {
-            br.close();
+            file.createNewFile();
           } catch (IOException f) {
             f.printStackTrace();
           }
         }
-      }
-      categoryMenu.setValue("Select Category");
-      GUI.setPaneToUpdate("overview");
-      GUI.setPaneToUpdate("budget");
-      GUI.updatePane();
-      budgetAmountField.clear();
-      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+        BufferedReader br = null;
+        String line = "";
+        String csvSplitBy = ",";
+        List<String[]> currentLines = new ArrayList<String[]>();
+        List<String[]> previousLines = new ArrayList<String[]>();
+        BarChart<String, Number> barChart = null;
+        try {
+          br = new BufferedReader(new FileReader(csvFile));
+          while ((line = br.readLine()) != null) {
+            String[] data = line.split(csvSplitBy);
+            // Filter the data by the current month
+            if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
+              currentLines.add(data);
+            }
+            if (data.length >= 3 && data[2].equalsIgnoreCase(previousMonth)) {
+              previousLines.add(data);
+            }
+          }
 
-      GUI.setPaneToUpdate("overviewView");
-      GUI.updatePane();
+          // Create the bar chart dataset
+          ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+          for (String[] lineData : currentLines) {
+            currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+          }
+          XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+          currentSeries.setName(currentMonth);
+
+          ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+          for (String[] lineData : previousLines) {
+            previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+          }
+          XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+          previousSeries.setName(previousMonth);
+
+          // Create the bar chart
+          CategoryAxis xAxis = new CategoryAxis();
+          xAxis.setLabel("Category");
+          NumberAxis yAxis = new NumberAxis();
+          yAxis.setLabel("Value");
+          barChart = new BarChart<String, Number>(xAxis, yAxis);
+          barChart.setTitle("Bar Chart");
+          barChart.getData().addAll(currentSeries, previousSeries);
+          budgetLayout.getChildren().clear();
+          budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
+
+          // Show the bar chart
+        } catch (IOException f) {
+          f.printStackTrace();
+        } finally {
+          if (br != null) {
+            try {
+              br.close();
+            } catch (IOException f) {
+              f.printStackTrace();
+            }
+          }
+        }
+        categoryMenu.setValue("Select Category");
+        GUI.setPaneToUpdate("overview");
+        GUI.setPaneToUpdate("budget");
+        GUI.updatePane();
+        budgetAmountField.clear();
+        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+
+        GUI.setPaneToUpdate("overviewView");
+        GUI.updatePane();
       } catch (Exception f) {
         showAlert(f.getMessage());
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
@@ -304,7 +304,6 @@ public class Budget {
       if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
         applyDarkModeStylesToBudget(barChart);
       }
-
 
 
       // Show the bar chart

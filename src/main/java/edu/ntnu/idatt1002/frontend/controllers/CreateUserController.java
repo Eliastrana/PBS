@@ -18,7 +18,7 @@ public class CreateUserController {
   /**
    * The Gui.
    */
-  private GUI gui;
+  private final GUI gui;
 
   /**
    * Instantiates a new Create user controller.

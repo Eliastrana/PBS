@@ -141,10 +141,13 @@ public class AddExpense {
         double price = Double.parseDouble(tempText);
         Expenses expenseInstance = Expenses.getInstance();
         switch (selectedOption) {
-          case "Entertainment" -> expenseInstance.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
+          case "Entertainment" ->
+                  expenseInstance.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
           case "Food" -> expenseInstance.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
-          case "Transportation" -> expenseInstance.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
-          case "Clothing" -> expenseInstance.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
+          case "Transportation" ->
+                  expenseInstance.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
+          case "Clothing" ->
+                  expenseInstance.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
           case "Other" -> expenseInstance.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
           case "Rent" -> expenseInstance.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
           default -> {

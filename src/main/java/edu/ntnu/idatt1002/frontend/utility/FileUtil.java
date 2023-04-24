@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.utility;
 import java.io.*;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -18,7 +19,7 @@ public class FileUtil {
         // Running from JAR file
         String jarPath = url.getPath().substring(5, url.getPath().indexOf("!")); // Extract JAR file path
         try {
-          JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, "UTF-8")); // Create JarFile object
+          JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8)); // Create JarFile object
           JarEntry jarEntry = jarFile.getJarEntry(fileName); // Get JarEntry for the file
           if (jarEntry != null) {
             File tempFile = File.createTempFile(fileName, ""); // Create a temporary file
@@ -50,13 +51,9 @@ public class FileUtil {
       // Running from JAR file
       if (resourceUrl.getProtocol().equals("jar")) {
         String jarFilePath = resourceUrl.getFile();
-        try {
-          String decodedJarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
-          String jarPath = decodedJarFilePath.substring(0, decodedJarFilePath.lastIndexOf("!"));
-          return jarPath + "!/" + filePath;
-        } catch (UnsupportedEncodingException e) {
-          e.printStackTrace();
-        }
+        String decodedJarFilePath = URLDecoder.decode(jarFilePath, StandardCharsets.UTF_8);
+        String jarPath = decodedJarFilePath.substring(0, decodedJarFilePath.lastIndexOf("!"));
+        return jarPath + "!/" + filePath;
       }
       // Running from local directory
       else if (resourceUrl.getProtocol().equals("file")) {

@@ -70,8 +70,6 @@ public class Email {
     //String emailPhoto = "src/main/resources/icon.png";
 
 
-
-
     // Create a JavaMail session with the SMTP server
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
@@ -103,7 +101,6 @@ public class Email {
             "<p> Best regard, Private Budgeting System.</p>" +
             "</div>" +
             "</body> </html>", "text/html");
-
 
 
 // Create a MimeBodyPart for the image

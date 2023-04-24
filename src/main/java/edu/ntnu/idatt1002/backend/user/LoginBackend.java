@@ -57,7 +57,7 @@ public class LoginBackend {
       cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
       return new String(cipher.doFinal(Base64.getDecoder().decode(password)));
     } catch (Exception e) {
-      System.out.println("Error while decrypting: " + e.toString());
+      System.out.println("Error while decrypting: " + e);
     }
     return null;
   }

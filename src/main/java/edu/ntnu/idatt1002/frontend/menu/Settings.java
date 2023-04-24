@@ -30,6 +30,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  */
 public class Settings {
   private static String currentMode = "Lightmode";
+
   /**
    * A method that creates the settings view.
    * The method is used by the GUI class.
@@ -64,7 +65,6 @@ public class Settings {
     vbox.getChildren().addAll(passwordLabel, passwordField, submitButton);
     vbox.setSpacing(20);
     vbox.setPadding(new Insets(20, 20, 20, 20));
-
 
 
     submitButton.setOnAction(event -> {
@@ -286,7 +286,7 @@ public class Settings {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert(e.getMessage());
       }
-  });
+    });
     return vbox;
   }
 }

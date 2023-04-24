@@ -33,7 +33,7 @@ public class TopMenu {
    * @param gui the gui
    */
   public TopMenu(GUI gui) {
-    this.gui = gui;
+    TopMenu.gui = gui;
   }
 
   /**
@@ -103,8 +103,6 @@ public class TopMenu {
       }
     });
     topMenu.getChildren().add(settingsButton);
-
-
 
 
     ImageView logOutImage = new ImageView(new Image("/icons/logOut.png"));

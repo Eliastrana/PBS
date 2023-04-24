@@ -8,13 +8,13 @@ package edu.ntnu.idatt1002;
  */
 public class GUIStarter {
 
-    /**
-     * The main method.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(final String[] args){
-        Main.main(args);
-    }
+  /**
+   * The main method.
+   *
+   * @param args the command line arguments
+   */
+  public static void main(final String[] args) {
+    Main.main(args);
+  }
 
 }

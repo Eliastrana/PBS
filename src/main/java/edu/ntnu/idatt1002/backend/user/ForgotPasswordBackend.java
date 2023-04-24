@@ -38,7 +38,7 @@ public class ForgotPasswordBackend {
       String newPassword = CreateUserBackend.encrypt(ForgotPassword.newPasswordString, salt);
 
       try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
-      FileWriter fw = new FileWriter(tempCsvFile)) {
+           FileWriter fw = new FileWriter(tempCsvFile)) {
 
         // Loop through each line in the CSV file
         while ((line = br.readLine()) != null) {

@@ -62,14 +62,14 @@ public class CreateUser {
   public Parent createUserView(CreateUserController controller) {
 
     Pane background = new Pane();
-    background.setPrefSize(1000,700);
+    background.setPrefSize(1000, 700);
 
 
     background.getStylesheets().add("/Styling.css");
 
-      Random randomBackground = new Random();
-      int randomInt = randomBackground.nextInt(1)+1;
-      background.getStyleClass().add("loginScreen"+randomInt);
+    Random randomBackground = new Random();
+    int randomInt = randomBackground.nextInt(1) + 1;
+    background.getStyleClass().add("loginScreen" + randomInt);
 
     System.out.println("Opening createUser page");
 
@@ -150,32 +150,32 @@ public class CreateUser {
       }
     });
 
-    createUser.setOnAction( e -> {
-        String passwordStringTest1 = password.getText();
-        String passwordStringTest2 = password2.getText();
+    createUser.setOnAction(e -> {
+      String passwordStringTest1 = password.getText();
+      String passwordStringTest2 = password2.getText();
 
-        String passwordString;
-        usernameError.setText("");
-        emailError.setText("");
-        passwordError.setText("");
-        password2Error.setText("");
+      String passwordString;
+      usernameError.setText("");
+      emailError.setText("");
+      passwordError.setText("");
+      password2Error.setText("");
 
       if (!CreateUserBackend.isValidEmail(email.getText())) {
         emailError.setText("""
-                    Email is not valid. It needs to be in the format:
-                    username@email.domain
-                    """);
+                Email is not valid. It needs to be in the format:
+                username@email.domain
+                """);
         System.out.println("Email is not valid");
         return;
       } else if (!CreateUserBackend.isValidPassword(passwordStringTest1)) {
         passwordError.setText("""
-                            Password is not valid. It must:
-                            Contain 1 uppercase letter
-                            Contain 1 lowercase letter
-                            Contain 1 number
-                            Contain 1 special character
-                            Be between 8 and 20 characters long
-                            """);
+                Password is not valid. It must:
+                Contain 1 uppercase letter
+                Contain 1 lowercase letter
+                Contain 1 number
+                Contain 1 special character
+                Be between 8 and 20 characters long
+                """);
         System.out.println("Password is not valid");
         return;
       } else if (!passwordStringTest1.equals(passwordStringTest2)) {
@@ -209,7 +209,7 @@ public class CreateUser {
     backButton.setOnAction(e -> controller.handleBackButton());
 
 
-    loginVBox.getChildren().addAll(welcomeText,welcomeText2, createUserBox, createUser);
+    loginVBox.getChildren().addAll(welcomeText, welcomeText2, createUserBox, createUser);
 
     StackPane backgroundAndLogin = new StackPane(background, backButtonBox, loginVBox);
     backgroundAndLogin.getStylesheets().add("/Styling.css");

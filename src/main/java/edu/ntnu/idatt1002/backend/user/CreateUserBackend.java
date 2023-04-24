@@ -7,6 +7,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,14 +28,14 @@ import java.util.regex.Pattern;
  */
 public class CreateUserBackend {
   /**
-   * The secret key used to encrypt the password.
-   */
-  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
-  /**
    * A pattern that checks if the email is valid.
    */
   public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
           Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  /**
+   * The secret key used to encrypt the password.
+   */
+  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
   /**
    * A pattern that checks if the password is valid.
    */
@@ -64,9 +65,9 @@ public class CreateUserBackend {
 
       Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
       cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-      return Base64.getEncoder().encodeToString(cipher.doFinal(password.getBytes("UTF-8")));
+      return Base64.getEncoder().encodeToString(cipher.doFinal(password.getBytes(StandardCharsets.UTF_8)));
     } catch (Exception e) {
-      System.out.println("Error while encrypting: " + e.toString());
+      System.out.println("Error while encrypting: " + e);
     }
     return null;
   }

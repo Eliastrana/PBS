@@ -71,7 +71,7 @@ public class Overview {
 
     System.out.println("open overview window");
 
-    Text welcome = new Text(TimeOfDayChecker.timeofdaychecker()+" " + name + "!");
+    Text welcome = new Text(TimeOfDayChecker.timeofdaychecker() + " " + name + "!");
     welcome.setId("welcomeTitleText");
     welcome.setFocusTraversable(true);
 
@@ -82,7 +82,7 @@ public class Overview {
     ExcelExporter instance = ExcelExporter.getInstance();
     BudgetCalculator budgetInstance = BudgetCalculator.getInstance();
 
-    Text budgetText = new Text((budgetInstance.getTotalBudget() - instance.getMonthlyTotal())+" kr");
+    Text budgetText = new Text((budgetInstance.getTotalBudget() - instance.getMonthlyTotal()) + " kr");
     budgetText.setId("goodMorningText");
     if (budgetInstance.getTotalBudget() - instance.getMonthlyTotal() < 0) {
       budgetText.setFill(Color.RED);
@@ -90,7 +90,7 @@ public class Overview {
       budgetText.setFill(Color.GREEN);
     }
 
-    welcomeAndTimeOfDay.getChildren().addAll(welcome,budgetRemaining, budgetText);
+    welcomeAndTimeOfDay.getChildren().addAll(welcome, budgetRemaining, budgetText);
     welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
 
     HBox hbox2 = new HBox(2);
@@ -192,7 +192,6 @@ public class Overview {
     });
 
 
-
     vboxSavings.getChildren().add(removeButton1);
     vboxSavings.getChildren().add(leftTable);
 
@@ -230,11 +229,11 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-        expense.setName(event.getNewValue());
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-                csvInstance.getExpensesFromCSV());
-        GUI.setPaneToUpdate("overview");
-        GUI.updatePane();
+      expense.setName(event.getNewValue());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+              csvInstance.getExpensesFromCSV());
+      GUI.setPaneToUpdate("overview");
+      GUI.updatePane();
     });
 
     rightColumn2.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
@@ -245,7 +244,7 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      if (event.getNewValue()>accountsInstance.getTotalOfAccount(expense.getAccount())) {
+      if (event.getNewValue() > accountsInstance.getTotalOfAccount(expense.getAccount())) {
         String errorMessage = "Cannot remove transfer from account, not enough money";
         showAlert(errorMessage);
         event.getTableView().refresh();
@@ -282,7 +281,7 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      if (!expense.validateCategory(event.getNewValue())){
+      if (!expense.validateCategory(event.getNewValue())) {
         String errorMessage = "Category does not exist";
         showAlert(errorMessage);
         event.getTableView().refresh();
@@ -304,7 +303,7 @@ public class Overview {
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
       // Set the new name value on the expense object
-      if (!accountsInstance.validateAccountName(event.getNewValue())){
+      if (!accountsInstance.validateAccountName(event.getNewValue())) {
         String errorMessage = "Account name does not exist";
         showAlert(errorMessage);
         event.getTableView().refresh();
@@ -334,18 +333,18 @@ public class Overview {
 
     removeButton.setOnAction(event -> {
       try {
-      if (rightTable.getSelectionModel().getSelectedItems().isEmpty()) {
-        throw new IllegalArgumentException("No expense selected");
-      }
-      CSVReader csvInstance = CSVReader.getInstance();
+        if (rightTable.getSelectionModel().getSelectedItems().isEmpty()) {
+          throw new IllegalArgumentException("No expense selected");
+        }
+        CSVReader csvInstance = CSVReader.getInstance();
 
-      ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
-      rightTable.getItems().removeAll(selectedExpenses);
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-              csvInstance.getExpensesFromCSV());
-      GUI.setPaneToUpdate("overview");
-      GUI.updatePane();
-    } catch (IllegalArgumentException e) {
+        ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
+        rightTable.getItems().removeAll(selectedExpenses);
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
+                csvInstance.getExpensesFromCSV());
+        GUI.setPaneToUpdate("overview");
+        GUI.updatePane();
+      } catch (IllegalArgumentException e) {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert(e.getMessage());
       }
@@ -486,7 +485,5 @@ public class Overview {
       node.setStyle("-fx-background-color: #FFFF00, white;"); // Yellow
     });
   }
-
-
 }
 
