@@ -5,6 +5,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.user.UserHandling;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.ContactUs;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -159,13 +160,13 @@ public class Settings {
               if (updateEmailTextField.getText().length() > 8 || updateEmailTextField.getText().length() < 20) {
                 UserHandling.changeEmail(updateEmailTextField.getText());
                 currentEmailLabel.setText(UserHandling.getEmail());
-                SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+                SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
                 updateEmailTextField.clear();
               } else {
                 throw new IllegalArgumentException("Email must be between 8 and 20 characters");
               }
             } catch (Exception ex) {
-              SoundPlayer.play("src/main/resources/error.wav");
+              SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
               showAlert(ex.getMessage());
             }
           });
@@ -201,13 +202,13 @@ public class Settings {
               if (newPasswordTextField.getText().length() > 8 || newPasswordTextField.getText().length() < 20) {
                 UserHandling.changePassword(newPasswordTextField.getText());
                 currentPasswordLabel.setText(UserHandling.getPassword());
-                SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+                SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
                 newPasswordTextField.clear();
               } else {
                 throw new IllegalArgumentException("Password must be between 8 and 20 characters");
               }
             } catch (Exception ex) {
-              SoundPlayer.play("src/main/resources/error.wav");
+              SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
               showAlert(ex.getMessage());
             }
           });
@@ -267,7 +268,7 @@ public class Settings {
 
           contactUSButton.setOnAction(e -> {
             ContactUs.sendEmail();
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+            SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
           });
 
           contactUS.getChildren().addAll(contactUSButton);
@@ -282,7 +283,7 @@ public class Settings {
           throw new IllegalArgumentException("Incorrect password");
         }
       } catch (Exception e) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert(e.getMessage());
       }
   });

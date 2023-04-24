@@ -185,7 +185,7 @@ public class Overview {
           }
         }
       } catch (IllegalArgumentException ex) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String errorMessage = ex.getMessage();
         showAlert(errorMessage);
       }
@@ -346,7 +346,7 @@ public class Overview {
       GUI.setPaneToUpdate("overview");
       GUI.updatePane();
     } catch (IllegalArgumentException e) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert(e.getMessage());
       }
     });

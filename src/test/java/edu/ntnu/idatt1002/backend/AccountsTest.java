@@ -1,12 +1,14 @@
 package edu.ntnu.idatt1002.backend;
 
 import edu.ntnu.idatt1002.backend.budgeting.Accounts;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Accounts Test")
 class AccountsTest {
@@ -54,14 +56,14 @@ class AccountsTest {
       Accounts instance = Accounts.getInstance();
       instance.addAccount("test", 100);
       assertEquals(100, instance.getTotalOfAccount("test"));
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     }
     @Test
     @DisplayName("Test getTotalOfAccount with null accountName")
     void getTotalOfAccountWithNullAccountName() {
       Accounts instance = Accounts.getInstance();
       assertThrows(NullPointerException.class, () -> instance.getTotalOfAccount(null));
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
     }
 
@@ -70,7 +72,7 @@ class AccountsTest {
     void getTotalOfAccountWithEmptyAccountName() {
       Accounts instance = Accounts.getInstance();
       assertThrows(NullPointerException.class, () -> instance.getTotalOfAccount(""));
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     }
   }
 
@@ -84,7 +86,7 @@ class AccountsTest {
       instance.addAccount("test", 100);
       instance.addAccount("test2", 100);
       assertEquals(200, instance.getTotalOfAllAccounts());
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     }
   }
   @Nested
@@ -96,7 +98,7 @@ class AccountsTest {
       instance.addAccount("test", 100);
       instance.addAccount("test2", 100);
       assertEquals(2, instance.getAccounts().size());
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     }
   }
 }

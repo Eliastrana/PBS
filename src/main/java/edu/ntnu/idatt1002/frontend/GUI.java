@@ -217,9 +217,6 @@ public class GUI extends Application {
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add(stylesheet);
 
-        //Image icon = new Image("icons/icon.png");
-        //primaryStage.getIcons().add(icon);
-
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(false);
@@ -245,7 +242,7 @@ public class GUI extends Application {
 
         StackPane root = new StackPane();
 
-        root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow );
+        root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow);
         TopMenu topMenu = new TopMenu(this);
         borderPane.setTop(topMenu.topMenu(primaryStage));
         borderPane.setCenter(root);

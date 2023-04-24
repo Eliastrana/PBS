@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.backend.budgeting.Expenses;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -112,15 +113,15 @@ public class AddExpense {
     });
     confirmExpense.setOnAction(e -> {
       if (categoryMenu.getValue() == null) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select a category.";
         showAlert(customMessage);
         System.out.println("No category selected");
       } else if (prices.getText().isEmpty()) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert("Please enter a price.");
       } else if (names.getText().isEmpty()) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         showAlert("Please enter a name.");
       } else if (accounts.get((String) accountMenu.getValue()) - Double.parseDouble(prices.getText()) < 0) {
         System.out.println("Not enough money in account");

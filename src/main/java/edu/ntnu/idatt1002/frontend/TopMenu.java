@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend;
 
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -122,7 +123,7 @@ public class TopMenu {
       }
     });
     logOutButton.setOnAction(event -> {
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
       try {
         GUI.logout();

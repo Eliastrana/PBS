@@ -6,6 +6,7 @@ import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.AlertWindow;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -13,10 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -106,11 +104,11 @@ public class BankStatement {
 
     export.setOnAction(e -> {
       if (accountMenu.getValue() == null) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select an account";
         AlertWindow.showAlert(customMessage);
       } else if (categoryMenu.getValue() == null) {
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select a category";
         AlertWindow.showAlert(customMessage);
       } else {

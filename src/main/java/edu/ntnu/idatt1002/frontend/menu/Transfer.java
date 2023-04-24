@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 import edu.ntnu.idatt1002.backend.budgeting.Accounts;
 import edu.ntnu.idatt1002.backend.budgeting.Income;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import javafx.collections.FXCollections;
@@ -18,7 +19,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
@@ -106,25 +110,25 @@ public class Transfer {
         String addToAccount = rightTransfer.getValue();
         String tempText = priceEntry.getText();
         if (removeFromAccount == null || addToAccount == null || tempText.isEmpty()) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("Please fill in all fields.");
           throw new IllegalArgumentException("Please fill in all fields.");
         }
         double amountToAdd;
         amountToAdd = Double.parseDouble(tempText);
         if (amountToAdd < 0) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("You cannot transfer a negative amount of money.");
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
         if (amountToAdd > accounts.get(removeFromAccount)) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
           throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
         }
 
         System.out.println("Confirm transfer button pressed");
-        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
           writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
           writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
@@ -187,7 +191,7 @@ public class Transfer {
         String inncomeAccountName = incomeAccount.getValue();
         String tempText = amountIncome.getText();
         if (inncomeAccountName == null || tempText.isEmpty()) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("Please fill in all fields.");
           throw new IllegalArgumentException("Please fill in all fields.");
         }
@@ -195,14 +199,14 @@ public class Transfer {
         double amountToAdd;
         amountToAdd = Double.parseDouble(tempText);
         if (amountToAdd < 0) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("You cannot transfer a negative amount of money.");
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
 
         incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
         System.out.println("Confirm income button pressed");
-        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         incomeAccount.setValue(null);
         amountIncome.setText(null);
 
@@ -250,7 +254,7 @@ public class Transfer {
         String accountName = newAccountName.getText();
         String tempText = newAccountBalance.getText();
         if (accountName == null || tempText.isEmpty()) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("Please fill in all fields.");
           throw new IllegalArgumentException("Please fill in all fields.");
         }
@@ -258,7 +262,7 @@ public class Transfer {
         double accountBalance;
         accountBalance = Double.parseDouble(tempText);
         if (accountBalance < 0) {
-          SoundPlayer.play("src/main/resources/error.wav");
+          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("You cannot transfer a negative amount of money.");
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
@@ -267,7 +271,7 @@ public class Transfer {
 
         accounts.addAccount(accountName, accountBalance);
         System.out.println("Confirm new account button pressed");
-        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         newAccountName.setText(null);
         newAccountBalance.setText(null);
 
@@ -298,7 +302,7 @@ public class Transfer {
       vbox = new VBox(transferVBox);
       vbox.setPadding(new Insets(40, 40, 40, 40));
     } catch (Exception e) {
-      SoundPlayer.play("src/main/resources/error.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
       showAlert(e.getMessage());
     }
     return vbox;

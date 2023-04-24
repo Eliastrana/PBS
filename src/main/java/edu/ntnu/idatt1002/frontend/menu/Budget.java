@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import javafx.collections.FXCollections;
@@ -235,13 +236,13 @@ public class Budget {
       GUI.setPaneToUpdate("budget");
       GUI.updatePane();
       budgetAmountField.clear();
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
       GUI.setPaneToUpdate("overviewView");
       GUI.updatePane();
       } catch (Exception f) {
         showAlert(f.getMessage());
-        SoundPlayer.play("src/main/resources/error.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
       }
     });
 

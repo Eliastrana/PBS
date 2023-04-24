@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.backend.user;
 
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 
 import javax.crypto.Cipher;
@@ -9,7 +10,10 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.spec.KeySpec;
@@ -95,7 +99,7 @@ public class LoginBackend {
           String decryptedPassword = decrypt(encryptedPassword, salt);
           if (password.equals(decryptedPassword)) {
             System.out.println("Logged in");
-            SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+            SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
             currentUser = username;
             controller.handleLoginButton();
           }

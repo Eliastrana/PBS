@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +71,7 @@ public class Report {
           // no application registered for PDFs
         }
       }
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
     });
 
@@ -101,7 +103,7 @@ public class Report {
           // no application registered for PDFs
         }
       }
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+      SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     });
 
     printOutVBox.getChildren().addAll(exportToPDF, printToExcel);

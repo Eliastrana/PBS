@@ -1,5 +1,7 @@
 package edu.ntnu.idatt1002.backend;
 
+import edu.ntnu.idatt1002.frontend.utility.FileUtil;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -95,10 +97,10 @@ public class Email {
     MimeBodyPart htmlPart = new MimeBodyPart();
     htmlPart.setContent("<html> <body style='background-color: #f2f2f2;'> " +
             "<div style='text-align: center;'>" +
-            "<h1>You silly goose!</h1> " +
-            "<img src=\"cid:image1\">" +
+            "<h1>Reset your password!</h1> " +
+            //"<img src=\"cid:image1\">" +
             "<p> Your master-password is: " + passwordString + "</p>" +
-            "<p> Best regard, Public Banking Service.</p>" +
+            "<p> Best regard, Private Budgeting System.</p>" +
             "</div>" +
             "</body> </html>", "text/html");
 
@@ -108,13 +110,14 @@ public class Email {
     MimeBodyPart imagePart = new MimeBodyPart();
     Random rand = new Random();
     int n = rand.nextInt(5) + 1;
-    DataSource fds = new FileDataSource("src/main/resources/memes/mailmeme"+n+".jpg");
+    //DataSource fds = new FileDataSource("src/main/resources/memes/mailmeme"+n+".jpg");
+    DataSource fds = new FileDataSource(FileUtil.getPictureResourceFilePath("memes/mailmeme" + n + ".jpg"));
     imagePart.setDataHandler(new DataHandler(fds));
     imagePart.setHeader("Content-ID", "<image1>");
 
 // Add both parts to the MimeMultipart object
     multipart.addBodyPart(htmlPart);
-    multipart.addBodyPart(imagePart);
+    //multipart.addBodyPart(imagePart);
 
 // Set the content of the MimeMessage to the MimeMultipart object
     emailMessage.setContent(multipart);

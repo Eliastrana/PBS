@@ -65,7 +65,7 @@ public class CreateUser {
     background.setPrefSize(1000,700);
 
 
-    background.getStylesheets().add("/LightMode.css");
+    background.getStylesheets().add("/Styling.css");
 
       Random randomBackground = new Random();
       int randomInt = randomBackground.nextInt(1)+1;
@@ -80,7 +80,7 @@ public class CreateUser {
     loginVBox.setSpacing(20);
     loginVBox.setMaxSize(300, 400);
 
-    loginVBox.getStylesheets().add("/LightMode.css");
+    loginVBox.getStylesheets().add("/Styling.css");
     loginVBox.setId("overlayLogin");
 
     Text welcomeText = new Text("Create user ");
@@ -142,7 +142,7 @@ public class CreateUser {
 
 
     Button createUser = new Button("Create user");
-    createUser.setId("loginButton");
+    createUser.setId("actionButton");
 
     password2.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {

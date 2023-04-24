@@ -11,8 +11,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javax.mail.MessagingException;
@@ -62,6 +64,15 @@ public class ForgotPassword {
      * @return the view as a parent
      */
     public Parent forgottenPasswordView(ForgotPasswordController controller) {
+
+        Pane background = new Pane();
+        background.setPrefSize(1000,700);
+
+        Random randInt = new Random();
+        int randomInt = randInt.nextInt(2)+1;
+        background.getStylesheets().add("/Styling.css");
+
+        background.getStyleClass().add("loginScreen"+randomInt);
 
         VBox forgottenPasswordVBox = new VBox();
 
@@ -180,6 +191,12 @@ public class ForgotPassword {
         forgottenPasswordVBox.setAlignment(Pos.CENTER);
         forgottenPasswordVBox.getStylesheets().add("/Styling.css");
 
-        return forgottenPasswordVBox;
+        StackPane stackPane = new StackPane(background, forgottenPasswordVBox);
+
+        VBox vBox = new VBox(stackPane);
+        vBox.setAlignment(Pos.TOP_CENTER);
+        vBox.getStylesheets().add("/Styling.css");
+
+        return vBox;
     }
 }
