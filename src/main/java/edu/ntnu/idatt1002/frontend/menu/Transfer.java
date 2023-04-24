@@ -220,6 +220,11 @@ public class Transfer {
     confirmNewAccount.setFocusTraversable(true);
     confirmNewAccount.setId("actionButton");
 
+    newAccountBalance.setOnKeyPressed(event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        confirmNewAccount.fire();
+      }
+    });
     confirmNewAccount.setOnKeyPressed(event -> {
       if (event.getCode() == KeyCode.ENTER) {
         confirmNewAccount.fire();
