@@ -6,10 +6,7 @@ import edu.ntnu.idatt1002.backend.budgeting.Transfers;
 import edu.ntnu.idatt1002.backend.user.LoginBackend;
 import edu.ntnu.idatt1002.frontend.CreateUser;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.BudgetCalculator;
-import edu.ntnu.idatt1002.frontend.utility.CustomPieChart;
-import edu.ntnu.idatt1002.frontend.utility.DoughnutChart;
-import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
+import edu.ntnu.idatt1002.frontend.utility.*;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
@@ -170,9 +167,10 @@ public class Overview {
 
       try {
         Transfers selectedTransfer = leftTable.getSelectionModel().getSelectedItem();
-        if (selectedTransfer != null) {
+        if (selectedTransfer == null) {
+          throw new IllegalArgumentException("No transfer selected");
+        } else {
           String transferType = String.valueOf(selectedTransfer.getTransferType());
-
           if (transferType.equals("A")) {
             if (selectedTransfer.getAmount() > accountsInstance.getTotalOfAccount(selectedTransfer.getAccountName())) {
               throw new IllegalArgumentException("Cannot remove transfer from account, not enough money");
@@ -187,6 +185,7 @@ public class Overview {
           }
         }
       } catch (IllegalArgumentException ex) {
+        SoundPlayer.play("src/main/resources/error.wav");
         String errorMessage = ex.getMessage();
         showAlert(errorMessage);
       }
@@ -334,6 +333,10 @@ public class Overview {
     });
 
     removeButton.setOnAction(event -> {
+      try {
+      if (rightTable.getSelectionModel().getSelectedItems().isEmpty()) {
+        throw new IllegalArgumentException("No expense selected");
+      }
       CSVReader csvInstance = CSVReader.getInstance();
 
       ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
@@ -342,6 +345,10 @@ public class Overview {
               csvInstance.getExpensesFromCSV());
       GUI.setPaneToUpdate("overview");
       GUI.updatePane();
+    } catch (IllegalArgumentException e) {
+        SoundPlayer.play("src/main/resources/error.wav");
+        showAlert(e.getMessage());
+      }
     });
 
     vboxSpending.getChildren().add(removeButton);
@@ -441,25 +448,6 @@ public class Overview {
 
     barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
     barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
-
-//    for (XYChart.Series<String, Number> series : barChart.getData()) {
-//      if (series.getName().equals("Income")) {
-//        for (XYChart.Data<String, Number> data : series.getData()) {
-//          Node node = data.getNode();
-//          node.setStyle("-fx-bar-fill: #3F403F; -fx-bar-legend-symbol: #3F403F;");
-//        }
-//      }
-//    }
-//
-//    for (XYChart.Series<String, Number> series : barChart.getData()) {
-//      if (series.getName().equals("Expenses")) {
-//        for (XYChart.Data<String, Number> data : series.getData()) {
-//          Node node = data.getNode();
-//          node.setStyle("-fx-bar-fill: #9FB8AD; -fx-bar-legend-symbol: #9FB8AD;");
-//        }
-//      }
-//    }
-
     barChart.setFocusTraversable(true);
 
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);

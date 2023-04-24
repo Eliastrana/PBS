@@ -39,248 +39,268 @@ public class Transfer {
    * @return the vertical box
    */
   public static VBox transferView() {
-    System.out.println("open transfer window");
-    VBox transferVBox = new VBox();
+    VBox vbox = null;
+    try {
+      System.out.println("open transfer window");
+      VBox transferVBox = new VBox();
 
 
-
-    Text transferBetweenAccounts = new Text("Transfer between accounts:");
-    transferBetweenAccounts.setId("titleText");
-
-
-    HBox transferBetweenAccountsHbox = new HBox();
-    transferBetweenAccountsHbox.setSpacing(20);
-    transferBetweenAccountsHbox.setAlignment(Pos.CENTER);
-
-    ComboBox<String> leftTransfer = new ComboBox<>();
-    leftTransfer.setPromptText("Select Account");
-    leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-    leftTransfer.setFocusTraversable(true);
-    leftTransfer.setId("categoryMenuButton");
+      Text transferBetweenAccounts = new Text("Transfer between accounts:");
+      transferBetweenAccounts.setId("titleText");
 
 
-    ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
-    arrow.setFitHeight(20);
-    arrow.setFitWidth(20);
+      HBox transferBetweenAccountsHbox = new HBox();
+      transferBetweenAccountsHbox.setSpacing(20);
+      transferBetweenAccountsHbox.setAlignment(Pos.CENTER);
+
+      ComboBox<String> leftTransfer = new ComboBox<>();
+      leftTransfer.setPromptText("Select Account");
+      leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+      leftTransfer.setFocusTraversable(true);
+      leftTransfer.setId("categoryMenuButton");
 
 
-    ComboBox<String> rightTransfer = new ComboBox<>();
-    rightTransfer.setPromptText("Select Account");
+      ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
+      arrow.setFitHeight(20);
+      arrow.setFitWidth(20);
 
-    rightTransfer.setDisable(true);
-    rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-    leftTransfer.setOnAction(e -> {
+
+      ComboBox<String> rightTransfer = new ComboBox<>();
+      rightTransfer.setPromptText("Select Account");
+
+      rightTransfer.setDisable(true);
       rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
-      rightTransfer.setDisable(false);
-      rightTransfer.getItems().remove(leftTransfer.getValue());
-    });
-    rightTransfer.setId("categoryMenuButton");
-    rightTransfer.setFocusTraversable(true);
+      leftTransfer.setOnAction(e -> {
+        rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+        rightTransfer.setDisable(false);
+        rightTransfer.getItems().remove(leftTransfer.getValue());
+      });
+      rightTransfer.setId("categoryMenuButton");
+      rightTransfer.setFocusTraversable(true);
 
-    TextField priceEntry = new TextField();
-    priceEntry.setFocusTraversable(true);
-    priceEntry.setPromptText("Enter transfer amount");
-    priceEntry.setId("textField");
+      TextField priceEntry = new TextField();
+      priceEntry.setFocusTraversable(true);
+      priceEntry.setPromptText("Enter transfer amount");
+      priceEntry.setId("textField");
 
-    Button confirmTransfer = new Button("Confirm");
-    confirmTransfer.setId("actionButton");
+      Button confirmTransfer = new Button("Confirm");
+      confirmTransfer.setId("actionButton");
 
-    priceEntry.setOnKeyPressed(e -> {
-      if (e.getCode() == KeyCode.ENTER) {
-        confirmTransfer.fire(); // Simulate a click event on the logIn button
-      }
-    });
+      priceEntry.setOnKeyPressed(e -> {
+        if (e.getCode() == KeyCode.ENTER) {
+          confirmTransfer.fire(); // Simulate a click event on the logIn button
+        }
+      });
 
-    confirmTransfer.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.ENTER) {
-        confirmTransfer.fire();
-      }
-    });
+      confirmTransfer.setOnKeyPressed(event -> {
+        if (event.getCode() == KeyCode.ENTER) {
+          confirmTransfer.fire();
+        }
+      });
 
-    confirmTransfer.setFocusTraversable(true);
-    confirmTransfer.setOnAction(e -> {
+      confirmTransfer.setFocusTraversable(true);
+      confirmTransfer.setOnAction(e -> {
 
 
+        String removeFromAccount = leftTransfer.getValue();
+        String addToAccount = rightTransfer.getValue();
+        String tempText = priceEntry.getText();
+        if (removeFromAccount == null || addToAccount == null || tempText.isEmpty()) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("Please fill in all fields.");
+          throw new IllegalArgumentException("Please fill in all fields.");
+        }
+        double amountToAdd;
+        amountToAdd = Double.parseDouble(tempText);
+        if (amountToAdd < 0) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("You cannot transfer a negative amount of money.");
+          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+        }
+        if (amountToAdd > accounts.get(removeFromAccount)) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
+          throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
+        }
 
-      String removeFromAccount = leftTransfer.getValue();
-      String addToAccount = rightTransfer.getValue();
-      String tempText = priceEntry.getText();
-      double amountToAdd = Double.parseDouble(tempText);
-
-      if (amountToAdd > accounts.get(removeFromAccount)) {
-        String errorMessage = "Not enough money";
-        showAlert(errorMessage);
-        System.out.println("Not enough money");
-        SoundPlayer.play("/src/main/resources/error.wav");
-        leftTransfer.setValue(null);
-        rightTransfer.setValue(null);
-        priceEntry.setText(null);
-        rightTransfer.setDisable(true);
-        rightTransfer.getItems().clear();
-      }
-      else{
         System.out.println("Confirm transfer button pressed");
         SoundPlayer.play("src/main/resources/16bitconfirm.wav");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-          writer.write(removeFromAccount + "," + (amountToAdd*-1) + "," + LocalDate.now() + ","+ 'B' + "\n");
+          writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
           writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
         } catch (IOException f) {
-          System.err.println("Error writing to file: " + f.getMessage());
+          showAlert("An error occurred while trying to write to the file.");
         }
         leftTransfer.setValue(null);
         rightTransfer.setValue(null);
         priceEntry.setText(null);
         rightTransfer.setDisable(true);
         rightTransfer.getItems().clear();
+      });
+
+
+      Text registerIncome = new Text("Register new income:");
+      registerIncome.setId("titleText");
+
+
+      HBox registerIncomeHBox = new HBox();
+      registerIncomeHBox.setSpacing(20);
+      registerIncomeHBox.setAlignment(Pos.CENTER);
+
+
+      ComboBox<String> incomeAccount = new ComboBox<>();
+      incomeAccount.setPromptText("Select Account");
+
+      try {
+        CSVReader CSVReaderInstance = CSVReader.getInstance();
+
+        incomeAccount.setItems(FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet()));
+      } catch (IOException e) {
+        showAlert("An error occurred while trying to read the file.");
       }
-    });
+      incomeAccount.setId("categoryMenuButton");
+      incomeAccount.setFocusTraversable(true);
+
+      TextField amountIncome = new TextField();
+      amountIncome.setPromptText("Enter income amount");
+      amountIncome.setId("textField");
+
+      Button confirmIncome = new Button("Confirm");
+      confirmIncome.setId("actionButton");
+
+      amountIncome.setOnKeyPressed(e -> {
+        if (e.getCode() == KeyCode.ENTER) {
+          confirmIncome.fire(); // Simulate a click event on the logIn button
+        }
+      });
+
+      confirmIncome.setOnKeyPressed(event -> {
+        if (event.getCode() == KeyCode.ENTER) {
+          confirmIncome.fire();
+        }
+      });
+
+      confirmIncome.setFocusTraversable(true);
+      confirmIncome.setOnAction(e -> {
 
 
-    Text registerIncome = new Text("Register new income:");
-    registerIncome.setId("titleText");
+        String inncomeAccountName = incomeAccount.getValue();
+        String tempText = amountIncome.getText();
+        if (inncomeAccountName == null || tempText.isEmpty()) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("Please fill in all fields.");
+          throw new IllegalArgumentException("Please fill in all fields.");
+        }
+
+        double amountToAdd;
+        amountToAdd = Double.parseDouble(tempText);
+        if (amountToAdd < 0) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("You cannot transfer a negative amount of money.");
+          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+        }
+
+        incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
+        System.out.println("Confirm income button pressed");
+        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        incomeAccount.setValue(null);
+        amountIncome.setText(null);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+          writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
+        } catch (IOException f) {
+          showAlert("An error occurred while trying to write to the file.");
+        }
+      });
+      Text addNewAccount = new Text("Add new account:");
+      addNewAccount.setId("titleText");
+      addNewAccount.setFocusTraversable(true);
+
+      HBox addNewAccountHBox = new HBox();
+      addNewAccountHBox.setSpacing(20);
+      addNewAccountHBox.setAlignment(Pos.CENTER);
+
+      TextField newAccountName = new TextField();
+      newAccountName.setFocusTraversable(true);
+      newAccountName.setPromptText("Enter account name");
+      newAccountName.setId("textField");
+
+      TextField newAccountBalance = new TextField();
+      newAccountBalance.setFocusTraversable(true);
+      newAccountBalance.setPromptText("Enter account balance");
+      newAccountBalance.setId("textField");
+
+      Button confirmNewAccount = new Button("Confirm");
+      confirmNewAccount.setFocusTraversable(true);
+      confirmNewAccount.setId("actionButton");
+
+      newAccountBalance.setOnKeyPressed(event -> {
+        if (event.getCode() == KeyCode.ENTER) {
+          confirmNewAccount.fire();
+        }
+      });
+      confirmNewAccount.setOnKeyPressed(event -> {
+        if (event.getCode() == KeyCode.ENTER) {
+          confirmNewAccount.fire();
+        }
+      });
+      confirmNewAccount.setOnAction(e -> {
 
 
-    HBox registerIncomeHBox = new HBox();
-    registerIncomeHBox.setSpacing(20);
-    registerIncomeHBox.setAlignment(Pos.CENTER);
+        String accountName = newAccountName.getText();
+        String tempText = newAccountBalance.getText();
+        if (accountName == null || tempText.isEmpty()) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("Please fill in all fields.");
+          throw new IllegalArgumentException("Please fill in all fields.");
+        }
+
+        double accountBalance;
+        accountBalance = Double.parseDouble(tempText);
+        if (accountBalance < 0) {
+          SoundPlayer.play("src/main/resources/error.wav");
+          showAlert("You cannot transfer a negative amount of money.");
+          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+        }
+
+        Accounts accounts = Accounts.getInstance();
+
+        accounts.addAccount(accountName, accountBalance);
+        System.out.println("Confirm new account button pressed");
+        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        newAccountName.setText(null);
+        newAccountBalance.setText(null);
+
+        leftTransfer.getItems().clear();
+        leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
+
+        incomeAccount.getItems().clear();
+        incomeAccount.getItems().addAll(accounts.getAccounts().keySet());
 
 
-    ComboBox<String> incomeAccount = new ComboBox<>();
-    incomeAccount.setPromptText("Select Account");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+          writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'A' + "\n");
+        } catch (IOException f) {
+          showAlert("An error occurred while trying to write to the file.");
+        }
+      });
 
-    try {
-      CSVReader CSVReaderInstance = CSVReader.getInstance();
 
-      incomeAccount.setItems(FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet()));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      transferBetweenAccountsHbox.getChildren().addAll(leftTransfer, arrow, rightTransfer, priceEntry, confirmTransfer);
+
+      registerIncomeHBox.getChildren().addAll(incomeAccount, amountIncome, confirmIncome);
+
+      addNewAccountHBox.getChildren().addAll(newAccountName, newAccountBalance, confirmNewAccount);
+
+      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, registerIncome, registerIncomeHBox, addNewAccount, addNewAccountHBox);
+      transferVBox.setSpacing(40);
+
+      vbox = new VBox(transferVBox);
+      vbox.setPadding(new Insets(40, 40, 40, 40));
+    } catch (Exception e) {
+      SoundPlayer.play("src/main/resources/error.wav");
+      showAlert(e.getMessage());
     }
-    incomeAccount.setId("categoryMenuButton");
-    incomeAccount.setFocusTraversable(true);
-
-    TextField amountIncome = new TextField();
-    amountIncome.setPromptText("Enter income amount");
-    amountIncome.setId("textField");
-
-    Button confirmIncome = new Button("Confirm");
-    confirmIncome.setId("actionButton");
-
-    amountIncome.setOnKeyPressed(e -> {
-      if (e.getCode() == KeyCode.ENTER) {
-        confirmIncome.fire(); // Simulate a click event on the logIn button
-      }
-    });
-
-    confirmIncome.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.ENTER) {
-        confirmIncome.fire();
-      }
-    });
-
-    confirmIncome.setFocusTraversable(true);
-    confirmIncome.setOnAction(e -> {
-
-
-      String inncomeAccountName = incomeAccount.getValue();
-      String tempText = amountIncome.getText();
-      double amountToAdd = Double.parseDouble(tempText);
-      incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
-      System.out.println("Confirm income button pressed");
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-      incomeAccount.setValue(null);
-      amountIncome.setText(null);
-
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-        writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
-      } catch (IOException f) {
-        System.err.println("Error writing to file: " + f.getMessage());
-      }
-    });
-
-
-    Text addNewAccount = new Text("Add new account:");
-    addNewAccount.setId("titleText");
-    addNewAccount.setFocusTraversable(true);
-
-    HBox addNewAccountHBox = new HBox();
-    addNewAccountHBox.setSpacing(20);
-    addNewAccountHBox.setAlignment(Pos.CENTER);
-
-    TextField newAccountName = new TextField();
-    newAccountName.setFocusTraversable(true);
-    newAccountName.setPromptText("Enter account name");
-    newAccountName.setId("textField");
-
-    TextField newAccountBalance = new TextField();
-    newAccountBalance.setFocusTraversable(true);
-    newAccountBalance.setPromptText("Enter account balance");
-    newAccountBalance.setId("textField");
-
-    Button confirmNewAccount = new Button("Confirm");
-    confirmNewAccount.setFocusTraversable(true);
-    confirmNewAccount.setId("actionButton");
-
-    newAccountBalance.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.ENTER) {
-        confirmNewAccount.fire();
-      }
-    });
-    confirmNewAccount.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.ENTER) {
-        confirmNewAccount.fire();
-      }
-    });
-    confirmNewAccount.setOnAction(e -> {
-
-
-      String accountName = newAccountName.getText();
-      String tempText = newAccountBalance.getText();
-      double accountBalance = Double.parseDouble(tempText);
-
-      Accounts accounts = Accounts.getInstance();
-
-      accounts.addAccount(accountName, accountBalance);
-      System.out.println("Confirm new account button pressed");
-      SoundPlayer.play("src/main/resources/16bitconfirm.wav");
-      newAccountName.setText(null);
-      newAccountBalance.setText(null);
-
-      leftTransfer.getItems().clear();
-      leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
-
-      incomeAccount.getItems().clear();
-      incomeAccount.getItems().addAll(accounts.getAccounts().keySet());
-
-
-
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-        writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'A' + "\n");
-      } catch (IOException f) {
-        System.err.println("Error writing to file: " + f.getMessage());
-      }
-    });
-
-
-
-
-
-
-    transferBetweenAccountsHbox.getChildren().addAll(leftTransfer,arrow, rightTransfer,priceEntry, confirmTransfer);
-
-    registerIncomeHBox.getChildren().addAll(incomeAccount, amountIncome, confirmIncome);
-
-    addNewAccountHBox.getChildren().addAll(newAccountName,newAccountBalance, confirmNewAccount);
-
-    transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox,registerIncome, registerIncomeHBox, addNewAccount, addNewAccountHBox);
-    transferVBox.setSpacing(40);
-
-    VBox vbox = new VBox(transferVBox);
-    vbox.setPadding(new Insets(40, 40, 40, 40));
     return vbox;
-
-
-
-
   }
-
 }

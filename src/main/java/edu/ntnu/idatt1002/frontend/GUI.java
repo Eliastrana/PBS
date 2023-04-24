@@ -115,6 +115,9 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        primaryStage.getIcons().add(new Image("icons/icon.png"));
+        primaryStage.setMinWidth(1050);
+        primaryStage.setMinHeight(700);
         loginController = new LoginController(this);
         loginView = new Login();
 
@@ -214,8 +217,8 @@ public class GUI extends Application {
         primaryStage.setHeight(700);
         overviewWindow.getStylesheets().add(stylesheet);
 
-        Image icon = new Image("icons/icon.png");
-        primaryStage.getIcons().add(icon);
+        //Image icon = new Image("icons/icon.png");
+        //primaryStage.getIcons().add(icon);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToWidth(true);
@@ -344,8 +347,8 @@ public class GUI extends Application {
     private void updateScene(Scene scene, Parent root) {
         Stage stage = (Stage) primaryStage.getScene().getWindow();
         stage.setScene(scene);
-        stage.setMinHeight(700);
-        stage.setMinWidth(1000);
+        primaryStage.setMinWidth(1050);
+        primaryStage.setMinHeight(700);
     }
 
     /**

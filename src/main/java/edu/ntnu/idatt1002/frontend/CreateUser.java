@@ -212,6 +212,7 @@ public class CreateUser {
     loginVBox.getChildren().addAll(welcomeText,welcomeText2, createUserBox, createUser);
 
     StackPane backgroundAndLogin = new StackPane(background, backButtonBox, loginVBox);
+    backgroundAndLogin.getStylesheets().add("/Styling.css");
 
 
     VBox vbox = new VBox(backgroundAndLogin);
