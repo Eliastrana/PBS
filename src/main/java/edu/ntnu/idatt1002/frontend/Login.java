@@ -1,6 +1,6 @@
 package edu.ntnu.idatt1002.frontend;
 
-import edu.ntnu.idatt1002.backend.LoginBackend;
+import edu.ntnu.idatt1002.backend.user.LoginBackend;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

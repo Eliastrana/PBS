@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class that creates the budget view.
@@ -66,7 +67,6 @@ public class Budget {
             );
 
 
-
     final ComboBox categoryMenu = new ComboBox(options);
     categoryMenu.setPromptText("Select category");
     categoryMenu.setId("categoryMenuButton");
@@ -81,7 +81,6 @@ public class Budget {
     TextField budgetAmountField = new TextField();
     budgetAmountField.setPromptText("Set budget for next month: ");
     budgetAmountField.setId("textField");
-
 
 
     Button confirmAmount = new Button("Confirm");
@@ -290,6 +289,11 @@ public class Budget {
       barChart = new BarChart<String, Number>(xAxis, yAxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
+      if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
+        applyDarkModeStylesToBudget(barChart);
+      }
+
+
 
       // Show the bar chart
     } catch (IOException f) {
@@ -313,5 +317,36 @@ public class Budget {
 
     currentBudget = currentLines;
     return budgetLayout;
+  }
+
+  private static void applyDarkModeStylesToBudget(BarChart<String, Number> barChart) {
+    barChart.setStyle("-fx-background-color: transparent;");
+
+    CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
+    xAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+
+    NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
+    yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+
+    barChart.lookupAll(".chart-legend-item-text").forEach(node -> {
+      node.setStyle("-fx-text-fill: #FFFFFF;");
+    });
+
+    barChart.lookupAll(".series0 .chart-bar").forEach(node -> {
+      node.setStyle("-fx-bar-fill: #FF0000;"); // Red
+    });
+
+    barChart.lookupAll(".series1 .chart-bar").forEach(node -> {
+      node.setStyle("-fx-bar-fill: #FFFF00;"); // Yellow
+    });
+
+    // Set legend symbol colors
+    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node -> {
+      node.setStyle("-fx-background-color: #FF0000, white;"); // Red
+    });
+
+    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node -> {
+      node.setStyle("-fx-background-color: #FFFF00, white;"); // Yellow
+    });
   }
 }

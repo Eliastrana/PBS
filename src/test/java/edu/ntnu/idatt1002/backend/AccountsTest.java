@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.backend;
 
+import edu.ntnu.idatt1002.backend.budgeting.Accounts;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

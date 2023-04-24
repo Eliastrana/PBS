@@ -1,7 +1,7 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
-import edu.ntnu.idatt1002.backend.Expense;
-import edu.ntnu.idatt1002.backend.Expenses;
+import edu.ntnu.idatt1002.backend.budgeting.Expense;
+import edu.ntnu.idatt1002.backend.budgeting.Expenses;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -20,9 +20,9 @@ import javafx.scene.text.Text;
 import java.io.*;
 import java.time.LocalDate;
 
-import static edu.ntnu.idatt1002.backend.Accounts.accounts;
-import static edu.ntnu.idatt1002.backend.Expenses.*;
-import static edu.ntnu.idatt1002.backend.Expenses.rent;
+import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
+import static edu.ntnu.idatt1002.backend.budgeting.Expenses.*;
+import static edu.ntnu.idatt1002.backend.budgeting.Expenses.rent;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 /**

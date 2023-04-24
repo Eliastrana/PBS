@@ -3,7 +3,7 @@ package edu.ntnu.idatt1002.model;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfWriter;
-import edu.ntnu.idatt1002.backend.Expense;
+import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import org.apache.poi.ss.usermodel.*;

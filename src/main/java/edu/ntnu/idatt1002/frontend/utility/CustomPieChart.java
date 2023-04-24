@@ -1,6 +1,6 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
-import edu.ntnu.idatt1002.backend.Accounts;
+import edu.ntnu.idatt1002.backend.budgeting.Accounts;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import static edu.ntnu.idatt1002.backend.Accounts.accounts;
+import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 /**
@@ -19,7 +19,7 @@ import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
  * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
-public class PieChart {
+public class CustomPieChart{
     /**
      * Creates the data for the left pie chart.
      *

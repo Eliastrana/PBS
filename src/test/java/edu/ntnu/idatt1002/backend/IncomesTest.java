@@ -1,5 +1,7 @@
 package edu.ntnu.idatt1002.backend;
 
+import edu.ntnu.idatt1002.backend.budgeting.Income;
+import edu.ntnu.idatt1002.backend.budgeting.Incomes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002.backend;
+package edu.ntnu.idatt1002.backend.budgeting;
 
 import java.time.LocalDate;
 import java.util.Arrays;

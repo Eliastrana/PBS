@@ -2,7 +2,7 @@
 
 package edu.ntnu.idatt1002.frontend.menu;
 
-import edu.ntnu.idatt1002.backend.UserHandling;
+import edu.ntnu.idatt1002.backend.user.UserHandling;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.ContactUs;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;

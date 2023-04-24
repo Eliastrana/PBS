@@ -1,4 +1,4 @@
-package edu.ntnu.idatt1002.backend;
+package edu.ntnu.idatt1002.backend.user;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -9,7 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
@@ -137,14 +136,6 @@ public class CreateUserBackend {
     writer.newLine();
     writer.close();
     reader.close();
-
-    // Copy the temporary file back to the resource file (if not in a JAR)
-    if (CreateUserBackend.class.getResource(csvFile).toString().startsWith("file:")) {
-      Path resourcePath = new File(CreateUserBackend.class.getResource(csvFile).getFile()).toPath();
-      Files.copy(tempFile, resourcePath, StandardCopyOption.REPLACE_EXISTING);
-    } else {
-      System.err.println("Cannot modify resource file inside JAR.");
-    }
 
     currentUser = username;
   }
