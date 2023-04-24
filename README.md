@@ -1,9 +1,9 @@
 
-# Public Banking System
+# Private Budgeting System
 
 
 
-The Public Banking System is a accounting system that aids its user to a larger controll of their finances trough elegant and efficient tools.
+The Private Budgeting System is a accounting system that aids its user to a larger controll of their finances trough elegant and efficient tools.
 
 ## Authors
 
