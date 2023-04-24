@@ -26,6 +26,7 @@ import java.util.Objects;
  * @version 0.5 - 19.04.2023
  */
 public class Settings {
+  private static String currentMode = "Lightmode";
   /**
    * A method that creates the settings view.
    * The method is used by the GUI class.
@@ -229,14 +230,20 @@ public class Settings {
       lightmode.setToggleGroup(toggleGroup);
       darkmode.setToggleGroup(toggleGroup);
       colorblind.setToggleGroup(toggleGroup);
-      toggleGroup.selectToggle(lightmode);
+      switch (currentMode) {
+        case "Darkmode" -> darkmode.setSelected(true);
+        case "Colorblindmode" -> colorblind.setSelected(true);
+        default -> lightmode.setSelected(true);
+      }
 
       toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
         if (toggleGroup.getSelectedToggle() != null) {
           if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(), "Lightmode")) {
             String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
+            currentMode = selectedText;
             GUI.setStyle(selectedText);
           } else {
+            currentMode = "Lightmode";
             GUI.setStyle("Styling");
           }
         }
