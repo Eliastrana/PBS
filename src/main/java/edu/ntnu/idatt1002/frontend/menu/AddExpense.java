@@ -27,6 +27,7 @@ import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
 import static edu.ntnu.idatt1002.backend.budgeting.Expenses.*;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
+
 /**
  * A class that creates the add expense view.
  *
@@ -166,7 +167,8 @@ public class AddExpense {
         }
         names.setText(null);
         prices.setText(null);
-        SoundPlayer.play("src/main/resources/16bitconfirm.wav");
+        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
       }
     });
 

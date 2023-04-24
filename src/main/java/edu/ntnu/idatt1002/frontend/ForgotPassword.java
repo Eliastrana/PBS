@@ -75,6 +75,9 @@ public class ForgotPassword {
         background.getStyleClass().add("loginScreen"+randomInt);
 
         VBox forgottenPasswordVBox = new VBox();
+        forgottenPasswordVBox.setId("overlayLogin");
+        forgottenPasswordVBox.setSpacing(20);
+        forgottenPasswordVBox.setMaxSize(300, 600);
 
         forgottenPasswordVBox.getStylesheets().add("/Styling.css");
 

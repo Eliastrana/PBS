@@ -57,7 +57,7 @@ public class Login {
 
     Random random = new Random();
     int randomInt = random.nextInt(2)+1;
-    background.getStylesheets().add("/LightMode.css");
+    background.getStylesheets().add("/Styling.css");
 
     background.getStyleClass().add("loginScreen"+randomInt);
 
@@ -70,7 +70,7 @@ public class Login {
     loginVBox.setSpacing(20);
     loginVBox.setMaxSize(300, 400);
 
-    loginVBox.getStylesheets().add("/LightMode.css");
+    loginVBox.getStylesheets().add("/Styling.css");
 
     loginVBox.setId("overlayLogin");
 
@@ -88,7 +88,7 @@ public class Login {
     password.setId("textField");
 
     Button logIn = new Button("Log in");
-    logIn.setId("loginButton");
+    logIn.setId("actionButton");
 
     password.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
