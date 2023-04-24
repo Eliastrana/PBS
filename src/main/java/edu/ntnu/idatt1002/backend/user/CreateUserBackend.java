@@ -9,6 +9,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
@@ -114,29 +116,46 @@ public class CreateUserBackend {
    * @throws IOException the io exception
    */
   public static void saveUser(String username, String encryptedPassword, String salt, String email) throws IOException {
-    String csvFile = "users.csv";
+    Path tempDirectoryPath = Paths.get("src/main/resources/");
+    File tempDirectory = tempDirectoryPath.toFile();
 
-    // Read the resource file
-    InputStream inputStream = CreateUserBackend.class.getClassLoader().getResourceAsStream(csvFile);
-    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+    if (!tempDirectory.exists()) {
+      boolean created = tempDirectory.mkdirs(); // Use mkdirs() to create parent directories recursively
+      if (!created) {
+        throw new IOException("Failed to create temp directory");
+      }
+    }
+    File file = new File("src/main/resources/users.csv");
+    if (!file.exists()) {
+      boolean created = file.createNewFile(); // Create the file and check if it was created
+      if (!created) {
+        throw new IOException("Failed to create users.csv file");
+      }
+    }
 
     // Create a temporary file to store the updated content
-    Path tempFile = Files.createTempFile("users", ".csv");
+    Path tempFile = Files.createTempFile(tempDirectoryPath, "users", ".csv");
     BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile(), true));
 
     // Copy the existing content to the temporary file
-    String line;
-    while ((line = reader.readLine()) != null) {
-      writer.write(line);
-      writer.newLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        writer.write(line);
+        writer.newLine();
+      }
     }
 
     // Add the new user data to the temporary file
     writer.write(username + "," + encryptedPassword + "," + salt + "," + email);
     writer.newLine();
     writer.close();
-    reader.close();
+
+    // Replace the original file with the temporary file
+    Files.move(tempFile, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
     currentUser = username;
   }
+
+
 }

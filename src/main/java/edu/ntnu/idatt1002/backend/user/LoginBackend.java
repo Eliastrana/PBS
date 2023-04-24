@@ -9,10 +9,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
@@ -69,18 +68,31 @@ public class LoginBackend {
    * @throws IOException the io exception
    */
   public static void login(String username, String password, LoginController controller) throws IOException {
-    String csvFile = "users.csv";
+    Path tempDirectoryPath = Paths.get("src/main/resources/");
+    File tempDirectory = tempDirectoryPath.toFile();
+
+    if (!tempDirectory.exists()) {
+      boolean created = tempDirectory.mkdirs(); // Use mkdirs() to create parent directories recursively
+      if (!created) {
+        throw new IOException("Failed to create temp directory");
+      }
+    }
+
+    File file = new File("src/main/resources/users.csv");
+    if (!file.exists()) {
+      file.createNewFile();
+    }
+
+    String csvFile = "src/main/resources/users.csv";
     String line;
 
-    try (InputStream inputStream = LoginBackend.class.getClassLoader().getResourceAsStream(csvFile);
-         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       while ((line = br.readLine()) != null) {
         String[] user = line.split(",");
         if (user[0].equals(username) || user[3].equals(username)) {
           String encryptedPassword = user[1];
-          String SALT = user[2];
-          String decryptedPassword = decrypt(encryptedPassword, SALT);
+          String salt = user[2];
+          String decryptedPassword = decrypt(encryptedPassword, salt);
           if (password.equals(decryptedPassword)) {
             System.out.println("Logged in");
             SoundPlayer.play("src/main/resources/16bitconfirm.wav");
@@ -93,6 +105,7 @@ public class LoginBackend {
       throw new RuntimeException(ex);
     }
   }
+
 
   /**
    * Gets current user.
