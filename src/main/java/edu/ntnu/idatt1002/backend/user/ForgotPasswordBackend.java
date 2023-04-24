@@ -30,8 +30,8 @@ public class ForgotPasswordBackend {
     if (ForgotPassword.emailString.isEmpty()) {
       ForgotPassword.errorLabel.setText("Please enter your email.");
     } else {
-      String csvFile = "users.csv";
-      String tempCsvFile = "temp_users.csv";
+      String csvFile = "src/main/resources/users.csv";
+      String tempCsvFile = "src/main/resources/temp_users.csv";
       String line = "";
       String csvSplitBy = ",";
       String salt = CreateUserBackend.generateSalt();

@@ -10,6 +10,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
@@ -66,12 +68,22 @@ public class LoginBackend {
    * @throws IOException the io exception
    */
   public static void login(String username, String password, LoginController controller) throws IOException {
-    File file = new File("users.csv");
+    Path tempDirectoryPath = Paths.get("src/main/resources/");
+    File tempDirectory = tempDirectoryPath.toFile();
+
+    if (!tempDirectory.exists()) {
+      boolean created = tempDirectory.mkdirs(); // Use mkdirs() to create parent directories recursively
+      if (!created) {
+        throw new IOException("Failed to create temp directory");
+      }
+    }
+
+    File file = new File("src/main/resources/users.csv");
     if (!file.exists()) {
       file.createNewFile();
     }
 
-    String csvFile = "users.csv";
+    String csvFile = "src/main/resources/users.csv";
     String line;
 
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {

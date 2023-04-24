@@ -46,7 +46,7 @@ public class UserHandling {
      */
     public static String getEmail() {
         String line = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/users.csv"))) {
 
             while ((line = reader.readLine()) != null) {
                 String[] user = line.split(",");
