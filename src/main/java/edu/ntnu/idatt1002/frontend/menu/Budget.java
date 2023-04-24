@@ -1,5 +1,3 @@
-//BUDGET
-
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.frontend.GUI;
@@ -24,6 +22,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 /**
  * A class that creates the budget view.
@@ -99,7 +99,14 @@ public class Budget {
     });
 
     confirmAmount.setOnAction(e -> {
-
+      try {
+        if (categoryMenu.getValue() == null) {
+          throw new NullPointerException("Please select a category");
+        } else if (budgetAmountField.getText().isEmpty()) {
+          throw new NullPointerException("Please enter a budget amount");
+        } else if (Integer.parseInt(budgetAmountField.getText()) < 0) {
+          throw new NumberFormatException("Please enter a positive number");
+        }
       String category = categoryMenu.getValue().toString();
       String amount = budgetAmountField.getText();
       String month = TimeOfDayChecker.getCurrentMonth();
@@ -232,6 +239,10 @@ public class Budget {
 
       GUI.setPaneToUpdate("overviewView");
       GUI.updatePane();
+      } catch (Exception f) {
+        showAlert(f.getMessage());
+        SoundPlayer.play("src/main/resources/error.wav");
+      }
     });
 
     String currentMonth = TimeOfDayChecker.getCurrentMonth();

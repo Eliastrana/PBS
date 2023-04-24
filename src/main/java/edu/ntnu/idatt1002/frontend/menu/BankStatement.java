@@ -5,14 +5,18 @@ package edu.ntnu.idatt1002.frontend.menu;
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.frontend.GUI;
+import edu.ntnu.idatt1002.frontend.utility.AlertWindow;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,25 +30,26 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
-
 /**
- * A class that creates the bank statement view.
- *
- * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+
+ A class that creates the bank statement view.
+
+ @author Emil J., Vegard J., Sander S. and Elias T.
+
+ @version 0.5 - 19.04.2023
  */
 public class BankStatement {
+
   /**
-   * A method that creates the bank statement view.
-   * The method is used by the GUI class.
-   *
-   * @return the vertical box
+
+   A method that creates the bank statement view. The method is used by the GUI class.
+
+   @return the vertical box
    */
   public static VBox bankStatementView() {
 
-
     System.out.println("opening more window");
+
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
 
@@ -57,7 +62,6 @@ public class BankStatement {
     ObservableList<String> options2 = null;
     try {
       CSVReader CSVReaderInstance = CSVReader.getInstance();
-
       options2 = FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -67,37 +71,20 @@ public class BankStatement {
     accountMenu.setPromptText("Select account");
     selectAccountHbox.getChildren().addAll(accountMenu);
 
-
-
     HBox selectCategoryHbox = new HBox();
     selectCategoryHbox.setAlignment(Pos.CENTER);
 
-
-    ObservableList<String> options =
-            FXCollections.observableArrayList(
-                    "Rent",
-                    "Food",
-                    "Transportation",
-                    "Clothing",
-                    "Entertainment",
-                    "Other"
-            );
+    ObservableList<String> options = FXCollections.observableArrayList("Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
     final ComboBox categoryMenu = new ComboBox(options);
     categoryMenu.setPromptText("Pick a category");
     categoryMenu.setId("categoryMenuButton");
     selectCategoryHbox.getChildren().addAll(categoryMenu);
 
-
-
-
     HBox calenderIntervalHbox = new HBox();
     calenderIntervalHbox.setAlignment(Pos.CENTER);
 
-    //this should probably have its own hbox
     Text calenderIntervalText = new Text("Select timeframe: ");
     calenderIntervalText.setId("bodyText");
-
-
 
     DatePicker datePickerFrom = new DatePicker();
     datePickerFrom.setValue(LocalDate.now());
@@ -106,7 +93,6 @@ public class BankStatement {
     ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
     arrow.setFitHeight(20);
     arrow.setFitWidth(20);
-
 
     DatePicker datePickerTo = new DatePicker();
     datePickerTo.setValue(LocalDate.now());
@@ -119,12 +105,14 @@ public class BankStatement {
     export.setId("actionButton");
 
     export.setOnAction(e -> {
-
-      if (categoryMenu.getValue() == null) {
-        SoundPlayer.play("/src/main/resources/error.wav");
+      if (accountMenu.getValue() == null) {
+        SoundPlayer.play("src/main/resources/error.wav");
+        String customMessage = "Please select an account";
+        AlertWindow.showAlert(customMessage);
+      } else if (categoryMenu.getValue() == null) {
+        SoundPlayer.play("src/main/resources/error.wav");
         String customMessage = "Please select a category";
-        showAlert(customMessage);
-
+        AlertWindow.showAlert(customMessage);
       } else {
         String account = (String) accountMenu.getValue();
         String category = (String) categoryMenu.getValue();
@@ -133,26 +121,18 @@ public class BankStatement {
 
         try {
           ExcelExporter instance = ExcelExporter.getInstance();
-
           instance.convertToPdf(instance.createBankStatement(account, category, from, to), "bankstatement");
 
-        } catch (IOException f) {
-          throw new RuntimeException(f);
-        } catch (DocumentException ex) {
-          throw new RuntimeException(ex);
-        }
-        if (Desktop.isDesktopSupported()) {
-          try {
-            File myFile =
-                    new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "bankstatement.pdf");
+          if (Desktop.isDesktopSupported()) {
+            File myFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "bankstatement.pdf");
             Desktop.getDesktop().open(myFile);
-          } catch (IOException ex) {
-            // no application registered for PDFs
           }
+        } catch (IOException | DocumentException exception) {
+          AlertWindow.showAlert(exception.getMessage());
+          throw new RuntimeException(exception);
         }
       }
     });
-
 
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
@@ -192,8 +172,7 @@ public class BankStatement {
       }
     });
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox,calenderIntervalText, calenderIntervalHbox, tableHbox, export);
-
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, tableHbox, export);
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
 
