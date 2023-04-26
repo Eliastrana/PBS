@@ -264,6 +264,9 @@ public class ExcelExporter {
     for (String[] data : rows) {
       String date = data[2];
       if (data[0].equals(category) && data[4].equals(account) && date.compareTo(dateFrom) >= 0 && date.compareTo(dateTo) <= 0) {
+        String name = data[1];
+        name = name.replaceAll("^\\|+|\\|+$", ""); // Remove pipe brackets from start and end
+        data[1] = name;
         filteredRows.add(data);
       }
     }
