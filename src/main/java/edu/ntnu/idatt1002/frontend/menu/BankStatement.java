@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
+
 /**
  * A class that creates the bank statement view.
  *
@@ -42,8 +44,6 @@ public class BankStatement {
    */
   public static VBox bankStatementView() {
 
-    System.out.println("opening more window");
-
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
 
@@ -55,12 +55,12 @@ public class BankStatement {
 
     ObservableList<String> options2 = null;
     try {
-      CSVReader CSVReaderInstance = CSVReader.getInstance();
-      options2 = FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet());
+      CSVReader csvReaderInstance = CSVReader.getInstance();
+      options2 = FXCollections.observableArrayList(csvReaderInstance.readCSV().keySet());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    final ComboBox accountMenu = new ComboBox(options2);
+    final ComboBox<String> accountMenu = new ComboBox<>(options2);
     accountMenu.setId("categoryMenuButton");
     accountMenu.setPromptText("Select account");
     selectAccountHbox.getChildren().addAll(accountMenu);
@@ -69,7 +69,7 @@ public class BankStatement {
     selectCategoryHbox.setAlignment(Pos.CENTER);
 
     ObservableList<String> options = FXCollections.observableArrayList("Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
-    final ComboBox categoryMenu = new ComboBox(options);
+    final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setPromptText("Pick a category");
     categoryMenu.setId("categoryMenuButton");
     selectCategoryHbox.getChildren().addAll(categoryMenu);
@@ -102,14 +102,14 @@ public class BankStatement {
       if (accountMenu.getValue() == null) {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select an account";
-        AlertWindow.showAlert(customMessage);
+        showAlert(customMessage);
       } else if (categoryMenu.getValue() == null) {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select a category";
-        AlertWindow.showAlert(customMessage);
+        showAlert(customMessage);
       } else {
-        String account = (String) accountMenu.getValue();
-        String category = (String) categoryMenu.getValue();
+        String account = accountMenu.getValue();
+        String category = categoryMenu.getValue();
         String from = String.valueOf(datePickerFrom.getValue());
         String to = String.valueOf(datePickerTo.getValue());
 
@@ -118,13 +118,14 @@ public class BankStatement {
           instance.convertToPdf(instance.createBankStatement(account, category, from, to), "bankstatement");
 
           if (Desktop.isDesktopSupported()) {
-            File myFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "bankstatement.pdf");
+            File myFile = new File(ExcelExporter.getBankStatementPath());
             Desktop.getDesktop().open(myFile);
           }
         } catch (IOException | DocumentException exception) {
-          AlertWindow.showAlert(exception.getMessage());
-          throw new RuntimeException(exception);
-        }
+        // Handle IOException
+        showAlert(exception.getMessage());
+        // Additional handling specific to IOException
+      }
       }
     });
 

@@ -45,6 +45,13 @@ public class Expense {
    */
   private LocalDate date;
 
+  private static final String NAME_CANNOT_BE_NULL = "Name cannot be null or empty";
+  private static final String PRICE_CANNOT_BE_NEGATIVE = "Price cannot be negative";
+  private static final String CATEGORY_MUST_BE_BETWEEN_1_AND_6 = "Category must be between 1 and 6";
+  private static final String DATE_CANNOT_BE_NULL = "Date cannot be null";
+  private static final String CATEGORY_CANNOT_BE_NULL = "Category cannot be null";
+  private static final String UNIQUEID_CANNOT_BE_NULL = "UniqueID cannot be null";
+
   /**
    * Private constructor to avoid multiple instances of the class.
    */
@@ -63,16 +70,16 @@ public class Expense {
    */
   public Expense(String name, double price, int category, LocalDate date) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be null or empty");
+      throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     if (category < 1 || category > 6) {
-      throw new IllegalArgumentException("Category must be between 1 and 6");
+      throw new IllegalArgumentException(CATEGORY_MUST_BE_BETWEEN_1_AND_6);
     }
     if (date == null) {
-      throw new IllegalArgumentException("Date cannot be null");
+      throw new IllegalArgumentException(DATE_CANNOT_BE_NULL);
     }
 
     this.name = name;
@@ -93,16 +100,16 @@ public class Expense {
    */
   public Expense(String name, Double price, LocalDate date, String category, String account) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be null or empty");
+      throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     if (date == null) {
-      throw new NullPointerException("Date cannot be null");
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     if (category == null || category.isBlank()) {
-      throw new NullPointerException("Category cannot be null or empty");
+      throw new NullPointerException();
     }
     this.name = name;
     this.price = price;
@@ -124,19 +131,19 @@ public class Expense {
    */
   public Expense(String name, Double price, LocalDate date, String category, String account, String uniqueID) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be null or empty");
+      throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     if (date == null) {
-      throw new NullPointerException("Date cannot be null");
+        throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     if (category == null || category.isBlank()) {
-      throw new NullPointerException("Category cannot be null or empty");
+      throw new NullPointerException(CATEGORY_CANNOT_BE_NULL);
     }
     if (uniqueID == null || uniqueID.isBlank()) {
-      throw new NullPointerException("UniqueID cannot be null or empty");
+      throw new NullPointerException(UNIQUEID_CANNOT_BE_NULL);
     }
 
     this.name = name;
@@ -162,7 +169,7 @@ public class Expense {
    * @return the name of the expense.
    */
   public String getName() {
-    return name.replaceAll("\"", "");
+    return name.replace("\"", "");
   }
 
   /**
@@ -172,7 +179,7 @@ public class Expense {
    */
   public void setName(String name) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be null or empty");
+      throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
     this.name = name;
   }
@@ -193,7 +200,7 @@ public class Expense {
    */
   public void setPrice(double price) {
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     this.price = price;
   }
@@ -214,7 +221,7 @@ public class Expense {
    */
   public void setDate(LocalDate date) {
     if (date == null) {
-      throw new NullPointerException("Date cannot be null");
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     this.date = date;
   }
@@ -235,7 +242,7 @@ public class Expense {
    */
   public void setCategoryInt(int category) {
     if (category < 1 || category > 6) {
-      throw new IllegalArgumentException("Category must be between 1 and 6");
+      throw new IllegalArgumentException(CATEGORY_MUST_BE_BETWEEN_1_AND_6);
     }
     this.category = category;
   }
@@ -245,7 +252,7 @@ public class Expense {
    *
    * @return the category of the expense as a string.
    */
-  public String getCategoryAsString() {
+  public String getCategory() {
     return categoryAsString;
   }
 
@@ -268,15 +275,6 @@ public class Expense {
    */
   public String getAccount() {
     return accountAsString;
-  }
-
-  /**
-   * Gets the category of the expense.
-   *
-   * @return the category of the expense.
-   */
-  public String getCategory() {
-    return categoryAsString;
   }
 
   /**

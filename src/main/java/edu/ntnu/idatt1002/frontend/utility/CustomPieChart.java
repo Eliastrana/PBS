@@ -8,9 +8,9 @@ import javafx.collections.ObservableList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
-import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
 import static edu.ntnu.idatt1002.model.ExcelExporter.expensesToTable;
 
 /**
@@ -26,10 +26,14 @@ public class CustomPieChart {
    * @return the list of data
    */
   public static ObservableList<javafx.scene.chart.PieChart.Data> createData() {
+    HashMap<String, Double> accountsHashmap;
     try {
       CSVReader CSVReaderInstance = CSVReader.getInstance();
+      Accounts accountsInstance = Accounts.getInstance();
 
-      accounts = CSVReaderInstance.readCSV();
+      accountsInstance.setAccountsHashmap(CSVReaderInstance.readCSV());
+
+
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
     } catch (IOException e) {
@@ -37,7 +41,7 @@ public class CustomPieChart {
     }
     Accounts accountsInstance = Accounts.getInstance();
     ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
-    for (Map.Entry<String, Double> entry : accounts.entrySet()) {
+    for (Map.Entry<String, Double> entry : accountsInstance.getAccounts().entrySet()) {
       pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey() + ": \n" + accountsInstance.getTotalOfAccount(entry.getKey()), entry.getValue()));
     }
     return pieChartData;
