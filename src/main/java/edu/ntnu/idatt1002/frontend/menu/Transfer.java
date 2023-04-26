@@ -6,11 +6,13 @@ import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -90,6 +92,14 @@ public class Transfer {
       Button confirmTransfer = new Button("Confirm");
       confirmTransfer.setId("actionButton");
 
+      Label confirmTransferLabel = new Label("The transfer has been confirmed");
+      confirmTransferLabel.setVisible(false);
+      confirmTransferLabel.setId("confirmLabel");
+      confirmTransferLabel.setAlignment(Pos.CENTER);
+
+      HBox confirmTransferHbox = new HBox(confirmTransferLabel);
+      confirmTransferHbox.setAlignment(Pos.CENTER);
+
       priceEntry.setOnKeyPressed(e -> {
         if (e.getCode() == KeyCode.ENTER) {
           confirmTransfer.fire(); // Simulate a click event on the logIn button
@@ -127,7 +137,14 @@ public class Transfer {
           throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
         }
 
+        confirmTransferLabel.setVisible(true);
+
+        FadeTransition ftTransfer = new FadeTransition(javafx.util.Duration.millis(1750), confirmTransferLabel);
+        ftTransfer.setFromValue(1.0);
+        ftTransfer.setToValue(0.0);
+
         System.out.println("Confirm transfer button pressed");
+        ftTransfer.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
           writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
@@ -172,6 +189,14 @@ public class Transfer {
       Button confirmIncome = new Button("Confirm");
       confirmIncome.setId("actionButton");
 
+      Label confirmIncomeLabel = new Label("The income has been confirmed");
+      confirmIncomeLabel.setVisible(false);
+      confirmIncomeLabel.setId("confirmLabel");
+      confirmIncomeLabel.setAlignment(Pos.CENTER);
+
+      HBox confirmIncomeHbox = new HBox(confirmIncomeLabel);
+      confirmIncomeHbox.setAlignment(Pos.CENTER);
+
       amountIncome.setOnKeyPressed(e -> {
         if (e.getCode() == KeyCode.ENTER) {
           confirmIncome.fire(); // Simulate a click event on the logIn button
@@ -204,11 +229,22 @@ public class Transfer {
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
 
+        confirmIncomeLabel.setVisible(true);
+        FadeTransition ftIncome = new FadeTransition(javafx.util.Duration.millis(1750), confirmIncomeLabel);
+        ftIncome.setFromValue(1.0);
+        ftIncome.setToValue(0.0);
+
         incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
         System.out.println("Confirm income button pressed");
+        ftIncome.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         incomeAccount.setValue(null);
         amountIncome.setText(null);
+
+        Accounts accounts = Accounts.getInstance();
+
+        leftTransfer.getItems().clear();
+        leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
           writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
@@ -233,6 +269,14 @@ public class Transfer {
       newAccountBalance.setFocusTraversable(true);
       newAccountBalance.setPromptText("Enter account balance");
       newAccountBalance.setId("textField");
+
+      Label confirmNewAccountLabel = new Label("The account has been confirmed");
+      confirmNewAccountLabel.setVisible(false);
+      confirmNewAccountLabel.setId("confirmLabel");
+      confirmNewAccountLabel.setAlignment(Pos.CENTER);
+
+      HBox confirmNewAccountHbox = new HBox(confirmNewAccountLabel);
+      confirmNewAccountHbox.setAlignment(Pos.CENTER);
 
       Button confirmNewAccount = new Button("Confirm");
       confirmNewAccount.setFocusTraversable(true);
@@ -269,8 +313,14 @@ public class Transfer {
 
         Accounts accounts = Accounts.getInstance();
 
+        confirmNewAccountLabel.setVisible(true);
+        FadeTransition ftNewAccount = new FadeTransition(javafx.util.Duration.millis(1750), confirmNewAccountLabel);
+        ftNewAccount.setFromValue(1.0);
+        ftNewAccount.setToValue(0.0);
+
         accounts.addAccount(accountName, accountBalance);
         System.out.println("Confirm new account button pressed");
+        ftNewAccount.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
         newAccountName.setText(null);
         newAccountBalance.setText(null);
@@ -296,8 +346,8 @@ public class Transfer {
 
       addNewAccountHBox.getChildren().addAll(newAccountName, newAccountBalance, confirmNewAccount);
 
-      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, registerIncome, registerIncomeHBox, addNewAccount, addNewAccountHBox);
-      transferVBox.setSpacing(40);
+      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, confirmTransferHbox, registerIncome, registerIncomeHBox, confirmIncomeHbox, addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
+      transferVBox.setSpacing(25);
 
       vbox = new VBox(transferVBox);
       vbox.setPadding(new Insets(40, 40, 40, 40));
