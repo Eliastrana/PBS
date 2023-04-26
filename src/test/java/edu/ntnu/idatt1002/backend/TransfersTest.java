@@ -1,45 +1,73 @@
 package edu.ntnu.idatt1002.backend;
 
 import edu.ntnu.idatt1002.backend.budgeting.Transfers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Transfers Test")
 public class TransfersTest {
-  private Transfers transfers;
 
-  @BeforeEach
-  public void setUp() {
-    transfers = new Transfers("test");
+  @Nested
+  @DisplayName("Constructor Test")
+  class ConstructorTest {
+
+    @Test
+    @DisplayName("Test valid constructor")
+    void validConstructorTest() {
+      Transfers transfers = new Transfers("Income", 100, "Today", 'A');
+      assertEquals("Income", transfers.getAccountName());
+      assertEquals(100, transfers.getAmount());
+      assertEquals("Today", transfers.getDate());
+      assertEquals('A', transfers.getTransferType());
+    }
+
+    @Test
+    @DisplayName("Test constructor with blank account name")
+    void blankAccountNameTest() {
+      assertThrows(NullPointerException.class, () -> new Transfers("", 100, "Today", 'A'));
+    }
+
+    @Test
+    @DisplayName("Test constructor with negative amount")
+    void negativeAccountAmountTest() {
+      assertThrows(IllegalArgumentException.class, () -> new Transfers("Income", -1, "Today", 'A'));
+    }
+
+    @Test
+    @DisplayName("Test constructor with blank date")
+    void blankAccountDateTest() {
+      assertThrows(NullPointerException.class, () -> new Transfers("Income", 100, "", 'A'));
+    }
   }
 
-  @Test
-  @DisplayName("Test addTransfer()")
-  void testAddTransfer() {
-    transfers.addTransfer("account1", 100, "2023-04-24", 'A');
-    List<Transfers> transfersList = transfers.transfersList();
-    Assertions.assertEquals(1, transfersList.size());
+  @Nested
+  @DisplayName("Add Transfers Test")
+  class addTransfersTest {
 
-    Transfers newTransfer = transfersList.get(0);
-    Assertions.assertEquals("account1", newTransfer.getAccountName());
-    Assertions.assertEquals(100, newTransfer.getAmount());
-    Assertions.assertEquals("2023-04-24", newTransfer.getDate());
-    Assertions.assertEquals('A', newTransfer.getTransferType());
-  }
+    @Test
+    @DisplayName("Test addTransfer")
+    void testAddTransfer() {
+      Transfers transfers = new Transfers("Expense");
+      transfers.addTransfer("Account 1", 100.0, "2023-04-26", 'A');
+      assertEquals("Account 1", transfers.getTransfers().get(0).getAccountName());
+      assertEquals(100.0, transfers.getTransfers().get(0).getAmount());
+      assertEquals("2023-04-26", transfers.getTransfers().get(0).getDate());
+      assertEquals('A', transfers.getTransfers().get(0).getTransferType());
+    }
+    @Test
+    @DisplayName("Test addTransfers with blank account name")
+    void blankAccountNameTest() {
+      Transfers transfers = new Transfers("Income", 100, "Today", 'A');
+      assertThrows(IllegalArgumentException.class, () -> transfers.addTransfer("", 200, "Last day", 'B'));
+    }
 
-  @Test
-  @DisplayName("Test addTransfer()")
-  void testEquals() {
-    Transfers transfer1 = new Transfers("account1", 100, "2023-04-24", 'A');
-    Transfers transfer2 = new Transfers("account1", 100, "2023-04-24", 'A');
-    Transfers transfer3 = new Transfers("account2", 200, "2023-04-25", 'B');
-
-    Assertions.assertEquals(transfer1, transfer2);
-    Assertions.assertNotEquals(transfer1, transfer3);
-    Assertions.assertNotEquals(transfer2, transfer3);
+    @Test
+    @DisplayName("Test addTransfers with negative amount")
+    void negativeAccountAmountTest() {
+      Transfers transfers = new Transfers("Income", 100, "Today", 'A');
+      assertThrows(IllegalArgumentException.class, () -> transfers.addTransfer("accountName2", -200, "Last day", 'B'));
+    }
   }
 }
