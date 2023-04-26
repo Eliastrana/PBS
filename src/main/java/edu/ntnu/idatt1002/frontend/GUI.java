@@ -80,6 +80,7 @@ public class GUI extends Application {
    * The Border pane that contains the different panes.
    */
   static BorderPane borderPane = new BorderPane();
+  static ScrollPane scrollPane = new ScrollPane();
   /**
    * The stylesheet for the GUI.
    */
@@ -102,137 +103,6 @@ public class GUI extends Application {
    * Instantiates a new Gui.
    */
   public GUI() {
-  }
-
-  /**
-   * Updates the panes that need updating.
-   */
-  public static void updatePane() {
-    try {
-      ExcelExporter instance = ExcelExporter.getInstance();
-
-      instance.exportToExcel();
-      instance.convertToPdf(instance.exportToExcel(), "report");
-    } catch (IOException | DocumentException ex) {
-      throw new RuntimeException(ex);
-    }
-    overviewWindow.getChildren().clear();
-    overviewWindow.getChildren().add(Overview.overviewView());
-    updateCachedPane("overview", Overview::overviewView, overviewWindow);
-    updateCachedPane("transfer", Transfer::transferView, transferWindow);
-    updateCachedPane("addExpense", AddExpense::expenseView, addExpenseWindow);
-    updateCachedPane("report", Report::reportView, reportWindow);
-    updateCachedPane("budget", Budget::budgetView, budgetWindow);
-    updateCachedPane("settings", Settings::settingsView, settingsWindow);
-    updateCachedPane("bankStatement", BankStatement::bankStatementView, bankStatementWindow);
-  }
-
-  /**
-   * Returns the current user.
-   *
-   * @return the current user
-   */
-  public static String getCurrentUser() {
-    return currentUser;
-  }
-
-  /**
-   * Sets the current user.
-   *
-   * @param currentUser the current user
-   */
-  public static void setCurrentUser(String currentUser) {
-    GUI.currentUser = currentUser;
-  }
-
-  /**
-   * Returns the stylesheet.
-   *
-   * @return the stylesheet
-   */
-  public static String getStylesheet() {
-    return stylesheet;
-  }
-
-  /**
-   * Sets the stylesheet.
-   *
-   * @param stylesheet the stylesheet
-   */
-  public static void setStylesheet(String stylesheet) {
-    GUI.stylesheet = stylesheet;
-  }
-
-  /**
-   * Sets the style.
-   *
-   * @param style the style
-   */
-  public static void setStyle(String style) {
-
-    setStylesheet(style);
-
-    StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow};
-    BorderPane[] borderPanes = new BorderPane[]{borderPane};
-
-    for (StackPane stackPane : stackPanes) {
-      stackPane.getStylesheets().clear();
-      stackPane.getStylesheets().add("/" + style + ".css");
-    }
-
-    for (BorderPane borderPane : borderPanes) {
-      borderPane.getStylesheets().clear();
-      borderPane.getStylesheets().add("/" + style + ".css");
-    }
-
-
-  }
-
-  /**
-   * Updates the cached pane.
-   *
-   * @param paneName     the pane name to update
-   * @param paneSupplier the pane supplier
-   * @param window       the window to update
-   */
-  private static void updateCachedPane(String paneName, Supplier<Pane> paneSupplier, Pane window) {
-    Pane pane = paneCache.computeIfAbsent(paneName, key -> paneSupplier.get());
-
-    // Check if the pane needs an update
-    if (paneUpdateStatus.getOrDefault(paneName, false)) {
-      pane = paneSupplier.get();
-      paneCache.put(paneName, pane);
-      paneUpdateStatus.put(paneName, false);
-    }
-
-    if (window.getChildren().isEmpty() || !window.getChildren().get(0).equals(pane)) {
-      window.getChildren().setAll(pane);
-    }
-  }
-
-  /**
-   * Sets the pane to update.
-   *
-   * @param paneName the pane name
-   */
-  public static void setPaneToUpdate(String paneName) {
-    paneUpdateStatus.put(paneName, true);
-  }
-
-  /**
-   * Logs out the user.
-   */
-  public static void logout() {
-    setPaneToUpdate("overview");
-    setPaneToUpdate("transfer");
-    setPaneToUpdate("addExpense");
-    setPaneToUpdate("report");
-    setPaneToUpdate("budget");
-    setPaneToUpdate("settings");
-    setPaneToUpdate("bankStatement");
-    LoginBackend.setCurrentUser(null);
-    CreateUser.setCurrentUser(null);
-    setStyle("Styling");
   }
 
   /**
@@ -345,7 +215,6 @@ public class GUI extends Application {
     primaryStage.setHeight(700);
     overviewWindow.getStylesheets().add(stylesheet);
 
-    ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(false);
 
@@ -372,10 +241,33 @@ public class GUI extends Application {
 
     root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow);
     TopMenu topMenu = new TopMenu(this);
-    borderPane.setTop(TopMenu.topMenu(primaryStage));
+    borderPane.setTop(topMenu.topMenu(primaryStage));
     borderPane.setCenter(root);
 
     updatePane();
+  }
+
+  /**
+   * Updates the panes that need updating.
+   */
+  public static void updatePane() {
+    try {
+      ExcelExporter instance = ExcelExporter.getInstance();
+
+      instance.exportToExcel();
+      instance.convertToPdf(instance.exportToExcel(), "report");
+    } catch (IOException | DocumentException ex) {
+      throw new RuntimeException(ex);
+    }
+    overviewWindow.getChildren().clear();
+    overviewWindow.getChildren().add(Overview.overviewView());
+    updateCachedPane("overview", Overview::overviewView, overviewWindow);
+    updateCachedPane("transfer", Transfer::transferView, transferWindow);
+    updateCachedPane("addExpense", AddExpense::expenseView, addExpenseWindow);
+    updateCachedPane("report", Report::reportView, reportWindow);
+    updateCachedPane("budget", Budget::budgetView, budgetWindow);
+    updateCachedPane("settings", Settings::settingsView, settingsWindow);
+    updateCachedPane("bankStatement", BankStatement::bankStatementView, bankStatementWindow);
   }
 
   /**
@@ -389,5 +281,117 @@ public class GUI extends Application {
     stage.setScene(scene);
     primaryStage.setMinWidth(1050);
     primaryStage.setMinHeight(700);
+  }
+
+  /**
+   * Logs out the user.
+   */
+  public static void logout() {
+    setPaneToUpdate("overview");
+    setPaneToUpdate("transfer");
+    setPaneToUpdate("addExpense");
+    setPaneToUpdate("report");
+    setPaneToUpdate("budget");
+    setPaneToUpdate("settings");
+    setPaneToUpdate("bankStatement");
+    LoginBackend.setCurrentUser(null);
+    CreateUser.setCurrentUser(null);
+    setStyle("Styling");
+  }
+
+  /**
+   * Returns the current user.
+   *
+   * @return the current user
+   */
+  public static String getCurrentUser() {
+    return currentUser;
+  }
+
+  /**
+   * Sets the current user.
+   *
+   * @param currentUser the current user
+   */
+  public static void setCurrentUser(String currentUser) {
+    GUI.currentUser = currentUser;
+  }
+
+  /**
+   * Returns the stylesheet.
+   *
+   * @return the stylesheet
+   */
+  public static String getStylesheet() {
+    return stylesheet;
+  }
+
+  /**
+   * Sets the stylesheet.
+   *
+   * @param stylesheet the stylesheet
+   */
+  public static void setStylesheet(String stylesheet) {
+    GUI.stylesheet = stylesheet;
+  }
+
+  /**
+   * Sets the style.
+   *
+   * @param style the style
+   */
+  public static void setStyle(String style) {
+
+    setStylesheet(style);
+
+    StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow, bankStatementWindow};
+    BorderPane[] borderPanes = new BorderPane[]{borderPane};
+
+    for (StackPane stackPane : stackPanes) {
+      stackPane.getStylesheets().clear();
+      stackPane.getStylesheets().add("/" + style + ".css");
+    }
+
+    for (BorderPane borderPane : borderPanes) {
+      borderPane.getStylesheets().clear();
+      borderPane.getStylesheets().add("/" + style + ".css");
+    }
+
+
+  }
+
+  /**
+   * Updates the cached pane.
+   *
+   * @param paneName     the pane name to update
+   * @param paneSupplier the pane supplier
+   * @param window       the window to update
+   */
+  private static void updateCachedPane(String paneName, Supplier<Pane> paneSupplier, Pane window) {
+    Pane pane = paneCache.computeIfAbsent(paneName, key -> paneSupplier.get());
+
+    // Check if the pane needs an update
+    if (paneUpdateStatus.getOrDefault(paneName, false)) {
+      pane = paneSupplier.get();
+      paneCache.put(paneName, pane);
+      paneUpdateStatus.put(paneName, false);
+    }
+
+    if (window.getChildren().isEmpty() || !window.getChildren().get(0).equals(pane)) {
+      window.getChildren().setAll(pane);
+    }
+  }
+
+  /**
+   * Sets the pane to update.
+   *
+   * @param paneName the pane name
+   */
+  public static void setPaneToUpdate(String paneName) {
+    paneUpdateStatus.put(paneName, true);
+  }
+
+  public Scene getScene() {
+    return primaryStage.getScene();
   }
 }
