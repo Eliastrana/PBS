@@ -95,7 +95,7 @@ public class BankStatement {
     calenderIntervalHbox.getChildren().addAll(datePickerFrom, arrow, datePickerTo);
     calenderIntervalHbox.setSpacing(20);
 
-    Button export = new Button("Confirm");
+    Button export = new Button("Export to PDF");
     export.setId("actionButton");
 
     export.setOnAction(e -> {
@@ -128,6 +128,8 @@ public class BankStatement {
       }
     });
 
+
+
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
 
@@ -157,16 +159,11 @@ public class BankStatement {
 
     tableHbox.getChildren().add(bankStatementTable);
 
-    Button exportToExcel = new Button("Export to Excel");
-    exportToExcel.setId("actionButton");
 
-    calenderIntervalHbox.setOnKeyPressed(event -> {
-      if (event.getCode() == KeyCode.ENTER) {
-        exportToExcel.fire();
-      }
-    });
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, tableHbox, export);
+
+
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, export,tableHbox);
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
 
