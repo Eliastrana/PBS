@@ -47,7 +47,7 @@ public class Transfer {
   public static VBox transferView() {
     VBox vbox = null;
     try {
-      System.out.println("open transfer window");
+      System.out.println("open accounts window");
       VBox transferVBox = new VBox();
 
 
