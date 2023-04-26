@@ -57,7 +57,7 @@ public class TopMenu {
     Button overviewButton = createMenuButton("Overview", "/icons/overview.png", () -> handleButtonClick(GUI.overviewWindow, "overview"));
     topMenu.getChildren().add(overviewButton);
 
-    Button transferButton = createMenuButton("Transfer", "/icons/transfer.png", () -> handleButtonClick(GUI.transferWindow, "transfer"));
+    Button transferButton = createMenuButton("Accounts", "/icons/transfer.png", () -> handleButtonClick(GUI.transferWindow, "transfer"));
     topMenu.getChildren().add(transferButton);
 
     Button addExpenseButton = createMenuButton("Add Expense", "/icons/addExpense.png", () -> handleButtonClick(GUI.addExpenseWindow, "addExpense"));

@@ -387,3 +387,9 @@
 .date-picker .disabled {
     -fx-opacity: 0.5;
 }
+
+#confirmLabel {
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-font: 15px "Helvetica Neue";
+}
