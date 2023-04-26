@@ -157,6 +157,10 @@ public class Transfer {
         priceEntry.setText(null);
         rightTransfer.setDisable(true);
         rightTransfer.getItems().clear();
+        ftTransfer.setOnFinished(event1 -> {
+          GUI.setPaneToUpdate("transfer");
+          GUI.updatePane();
+        });
       });
 
 
@@ -251,6 +255,11 @@ public class Transfer {
         } catch (IOException f) {
           showAlert("An error occurred while trying to write to the file.");
         }
+
+        ftIncome.setOnFinished(event1 -> {
+          GUI.setPaneToUpdate("transfer");
+          GUI.updatePane();
+        });
       });
       Text addNewAccount = new Text("Add new account:");
       addNewAccount.setId("titleText");
@@ -347,7 +356,7 @@ public class Transfer {
       addNewAccountHBox.getChildren().addAll(newAccountName, newAccountBalance, confirmNewAccount);
 
       transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, confirmTransferHbox, registerIncome, registerIncomeHBox, confirmIncomeHbox, addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
-      transferVBox.setSpacing(25);
+      transferVBox.setSpacing(13);
 
       vbox = new VBox(transferVBox);
       vbox.setPadding(new Insets(40, 40, 40, 40));
