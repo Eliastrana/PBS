@@ -169,7 +169,6 @@ public class Budget {
           Logger.getLogger(Budget.class.getName()).info("File not found.");
         }
 
-
         String currentMonth = TimeOfDayChecker.getCurrentMonth();
         String previousMonth = TimeOfDayChecker.getPreviousMonth();
 

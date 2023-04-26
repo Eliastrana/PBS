@@ -45,9 +45,9 @@ public class CreateUserController {
    * @throws IOException the io exception
    */
   public void handleCreateButton(String username, String password, String email) throws IOException {
-    String SALT = CreateUserBackend.generateSalt();
-    String encryptedPassword = CreateUserBackend.encrypt(password, SALT);
-    CreateUserBackend.saveUser(username, encryptedPassword, SALT, email);
+    String salt = CreateUserBackend.generateSalt();
+    String encryptedPassword = CreateUserBackend.encrypt(password, salt);
+    CreateUserBackend.saveUser(username, encryptedPassword, salt, email);
     gui.navigateToMainApp();
   }
 }
