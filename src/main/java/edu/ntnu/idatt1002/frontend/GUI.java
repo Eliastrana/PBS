@@ -47,6 +47,7 @@ public class GUI extends Application {
   /**
    * The current user.
    */
+  private static final String REPORT = "report";
   public static String currentUser;
   /**
    * The constant overviewWindow that contains the overview page.
@@ -215,18 +216,18 @@ public class GUI extends Application {
     primaryStage.setHeight(700);
     overviewWindow.getStylesheets().add(stylesheet);
 
-    ScrollPane scrollPane = new ScrollPane();
-    scrollPane.setFitToWidth(true);
-    scrollPane.setFitToHeight(false);
+    ScrollPane newScrollPane = new ScrollPane();
+    newScrollPane.setFitToWidth(true);
+    newScrollPane.setFitToHeight(false);
 
-    borderPane.getStylesheets().add(stylesheet);
+    newScrollPane.getStylesheets().add(stylesheet);
 
-    borderPane.setId("background");
-    scrollPane.setId("background");
+    newScrollPane.setId("background");
+    newScrollPane.setId("background");
 
-    scrollPane.setContent(borderPane);
+    newScrollPane.setContent(borderPane);
 
-    Scene scene = new Scene(scrollPane);
+    Scene scene = new Scene(newScrollPane);
     primaryStage.setScene(scene);
     primaryStage.show();
 
@@ -256,16 +257,16 @@ public class GUI extends Application {
       ExcelExporter instance = ExcelExporter.getInstance();
 
       instance.exportToExcel();
-      instance.convertToPdf(instance.exportToExcel(), "report");
+      instance.convertToPdf(instance.exportToExcel(), REPORT);
     } catch (IOException | DocumentException ex) {
-      throw new RuntimeException(ex);
+      throw new IllegalArgumentException("Could not export to pdf");
     }
     overviewWindow.getChildren().clear();
     overviewWindow.getChildren().add(Overview.overviewView());
     updateCachedPane("overview", Overview::overviewView, overviewWindow);
     updateCachedPane("transfer", Transfer::transferView, transferWindow);
     updateCachedPane("addExpense", AddExpense::expenseView, addExpenseWindow);
-    updateCachedPane("report", Report::reportView, reportWindow);
+    updateCachedPane(REPORT, Report::reportView, reportWindow);
     updateCachedPane("budget", Budget::budgetView, budgetWindow);
     updateCachedPane("settings", Settings::settingsView, settingsWindow);
     updateCachedPane("bankStatement", BankStatement::bankStatementView, bankStatementWindow);
@@ -291,7 +292,7 @@ public class GUI extends Application {
     setPaneToUpdate("overview");
     setPaneToUpdate("transfer");
     setPaneToUpdate("addExpense");
-    setPaneToUpdate("report");
+    setPaneToUpdate(REPORT);
     setPaneToUpdate("budget");
     setPaneToUpdate("settings");
     setPaneToUpdate("bankStatement");
