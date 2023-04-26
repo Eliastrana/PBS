@@ -131,7 +131,7 @@ class ExpenseTest {
       assertEquals(100.00, expense.getPrice());
       assertEquals("Food", expense.getCategoryAsString());
       assertEquals(LocalDate.now(), expense.getDate());
-      assertEquals("123", expense.getUniqueID());
+      assertEquals("123", expense.getUniqueId());
     }
 
     @Test
@@ -220,7 +220,7 @@ class ExpenseTest {
     @DisplayName("Test getUniqueID()")
     void getUniqueIDTest() {
       Expense expense = new Expense("ExpenseName", 100.00, LocalDate.now(), "Food", "Cash", "123");
-      assertEquals("123", expense.getUniqueID());
+      assertEquals("123", expense.getUniqueId());
     }
   }
 
@@ -298,8 +298,8 @@ class ExpenseTest {
     @DisplayName("Test setUniqueID()")
     void setUniqueIDTest() {
       Expense expense = new Expense("ExpenseName", 100.00, LocalDate.now(), "Food", "Cash", "123");
-      expense.setUniqueID("456");
-      assertEquals("456", expense.getUniqueID());
+      expense.setUniqueId("456");
+      assertEquals("456", expense.getUniqueId());
     }
   }
 }

@@ -397,7 +397,7 @@ public class ExcelExporter {
   public double getTotalOfFood(List<Expense> expenses) {
     double totalFood = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Food") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Food") && expense.getUniqueId().equals(uniqueID)) {
         totalFood += expense.getPrice();
       }
     }
@@ -413,7 +413,7 @@ public class ExcelExporter {
   public double getTotalOfTransportation(List<Expense> expenses) {
     double totalTransportation = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Transportation") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Transportation") && expense.getUniqueId().equals(uniqueID)) {
         totalTransportation += expense.getPrice();
       }
     }
@@ -429,7 +429,7 @@ public class ExcelExporter {
   public double getTotalOfEntertainment(List<Expense> expenses) {
     double totalEntertainment = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Entertainment") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Entertainment") && expense.getUniqueId().equals(uniqueID)) {
         totalEntertainment += expense.getPrice();
       }
     }
@@ -445,7 +445,7 @@ public class ExcelExporter {
   public double getTotalOfClothing(List<Expense> expenses) {
     double totalClothing = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Clothing") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Clothing") && expense.getUniqueId().equals(uniqueID)) {
         totalClothing += expense.getPrice();
       }
     }
@@ -461,7 +461,7 @@ public class ExcelExporter {
   public double getTotalOfOther(List<Expense> expenses) {
     double totalOther = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Other") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Other") && expense.getUniqueId().equals(uniqueID)) {
         totalOther += expense.getPrice();
       }
     }
@@ -477,7 +477,7 @@ public class ExcelExporter {
   public double getTotalOfRent(List<Expense> expenses) {
     double totalRent = 0;
     for (Expense expense : expenses) {
-      if (expense.getCategory().equals("Rent") && expense.getUniqueID().equals(uniqueID)) {
+      if (expense.getCategory().equals("Rent") && expense.getUniqueId().equals(uniqueID)) {
         totalRent += expense.getPrice();
       }
     }

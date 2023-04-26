@@ -31,7 +31,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 import static edu.ntnu.idatt1002.frontend.utility.CustomPieChart.createData;
@@ -56,10 +59,6 @@ public class Overview {
    * @return the vertical box
    */
   public static VBox overviewView() {
-    ObservableList<PieChart.Data> pieChartData = createData();
-    ObservableList<PieChart.Data> pieChartData2 = CustomPieChart.createData2();
-
-    VBox welcomeAndTimeOfDay = new VBox();
 
     if (LoginBackend.getCurrentUser() != null) {
       name = LoginBackend.getCurrentUser();
@@ -90,6 +89,8 @@ public class Overview {
       budgetText.setFill(Color.GREEN);
     }
 
+    VBox welcomeAndTimeOfDay = new VBox();
+
     welcomeAndTimeOfDay.getChildren().addAll(welcome, budgetRemaining, budgetText);
     welcomeAndTimeOfDay.setPadding(new javafx.geometry.Insets(30));
 
@@ -111,11 +112,15 @@ public class Overview {
     Text emptySpace = new Text("\n");
     emptySpace.setFont(Font.font("Helvetica", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
+    ObservableList<PieChart.Data> pieChartData = createData();
+
     VBox vboxSavings = new VBox();
     DoughnutChart pieChart1 = new DoughnutChart(pieChartData, GUI.getStylesheet());
     pieChart1.setFocusTraversable(true);
     vboxSavings.setAlignment(Pos.CENTER);
     vboxSavings.getChildren().addAll(textSavings, pieChart1);
+
+    ObservableList<PieChart.Data> pieChartData2 = CustomPieChart.createData2();
 
     VBox vboxSpending = new VBox();
     DoughnutChart pieChart2 = new DoughnutChart(pieChartData2, GUI.getStylesheet());
@@ -130,7 +135,6 @@ public class Overview {
     HBox currentAccountStatusTextFormat = new HBox();
     currentAccountStatusTextFormat.setAlignment(Pos.CENTER);
 
-    //LeftTable
     TableView<Transfers> leftTable = new TableView<>();
     TableColumn<Transfers, String> leftColumn1 = new TableColumn<>("Account: ");
     leftColumn1.setCellValueFactory(new PropertyValueFactory<>("accountName"));
@@ -198,10 +202,6 @@ public class Overview {
     vboxSavings.setSpacing(20);
     vboxSpending.setSpacing(20);
 
-
-    //TODO vboxSpending.getChildren().add(rightTable);
-
-    //RightTable
     TableView<Expense> rightTable = new TableView<>();
     rightTable.setFocusTraversable(true);
     TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
@@ -223,15 +223,12 @@ public class Overview {
 
     rightColumn1.setCellFactory(TextFieldTableCell.forTableColumn());
     rightColumn1.setOnEditCommit(event -> {
-      // Get the expense object that was edited
       CSVReader csvInstance = CSVReader.getInstance();
 
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
-      // Set the new name value on the expense object
       expense.setName(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-              csvInstance.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
       GUI.setPaneToUpdate("overview");
       GUI.updatePane();
     });
@@ -240,10 +237,8 @@ public class Overview {
     rightColumn2.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
-      // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
-      // Set the new name value on the expense object
       if (event.getNewValue() > accountsInstance.getTotalOfAccount(expense.getAccount())) {
         String errorMessage = "Cannot remove transfer from account, not enough money";
         showAlert(errorMessage);
@@ -251,8 +246,7 @@ public class Overview {
         GUI.updatePane();
       } else {
         expense.setPrice(event.getNewValue());
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-                csvInstance.getExpensesFromCSV());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
         GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
@@ -262,25 +256,20 @@ public class Overview {
     rightColumn3.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
-      // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
-      // Set the new name value on the expense object
       expense.setDate(event.getNewValue());
-      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-              csvInstance.getExpensesFromCSV());
+      csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
       GUI.setPaneToUpdate("overview");
       GUI.updatePane();
     });
 
-    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());                                 //Add error message if not a valid category
+    rightColumn4.setCellFactory(TextFieldTableCell.forTableColumn());
     rightColumn4.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
-      // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
-      // Set the new name value on the expense object
       if (!expense.validateCategory(event.getNewValue())) {
         String errorMessage = "Category does not exist";
         showAlert(errorMessage);
@@ -288,8 +277,7 @@ public class Overview {
         GUI.updatePane();
       } else {
         expense.setCategoryAsString(event.getNewValue());
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-                csvInstance.getExpensesFromCSV());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
         GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
@@ -299,10 +287,8 @@ public class Overview {
     rightColumn5.setOnEditCommit(event -> {
       CSVReader csvInstance = CSVReader.getInstance();
 
-      // Get the expense object that was edited
       Expense expense = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
-      // Set the new name value on the expense object
       if (!accountsInstance.validateAccountName(event.getNewValue())) {
         String errorMessage = "Account name does not exist";
         showAlert(errorMessage);
@@ -310,8 +296,7 @@ public class Overview {
         GUI.updatePane();
       } else {
         expense.setAccountAsString(event.getNewValue());
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-                csvInstance.getExpensesFromCSV());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
         GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       }
@@ -340,8 +325,7 @@ public class Overview {
 
         ObservableList<Expense> selectedExpenses = rightTable.getSelectionModel().getSelectedItems();
         rightTable.getItems().removeAll(selectedExpenses);
-        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(),
-                csvInstance.getExpensesFromCSV());
+        csvInstance.updateRowsThatAreDifferentInTable(rightTable.getItems(), csvInstance.getExpensesFromCSV());
         GUI.setPaneToUpdate("overview");
         GUI.updatePane();
       } catch (IllegalArgumentException e) {
@@ -374,7 +358,7 @@ public class Overview {
     List<String[]> previousLines = new ArrayList<String[]>();
     BarChart<String, Number> barChart = null;
     HashMap<String, Double> expensesToBarChart = new HashMap<>();
-    String [] categoriesToDisplay = {"Rent", "Entertainment", "Food", "Transportation", "Other"};
+    String[] categoriesToDisplay = {"Rent", "Entertainment", "Food", "Transportation", "Other"};
     try {
       br = new BufferedReader(new FileReader(csvFile));
       while ((line = br.readLine()) != null) {
@@ -414,7 +398,6 @@ public class Overview {
           expensesToBarChart.put("Clothing", instance.getTotalOfClothing(expensesToTable));
         }
       }
-      // Create the bar chart dataset
       ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
       for (String[] lineData : currentLines) {
         currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
@@ -424,19 +407,18 @@ public class Overview {
       currentSeries.setName(currentMonth);
 
       ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
-      for (String category : categoriesToDisplay) { // replace categoriesToDisplay with a list of all categories you want to display
+      for (String category : categoriesToDisplay) {
         previousData.add(new XYChart.Data<String, Number>(category, expensesToBarChart.getOrDefault(category, 0.0)));
       }
 
       XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
       previousSeries.setName("Expenses for " + currentMonth);
 
-      // Create the bar chart
-      CategoryAxis xAxis = new CategoryAxis();
-      xAxis.setLabel("Category");
-      NumberAxis yAxis = new NumberAxis();
-      yAxis.setLabel("Value");
-      barChart = new BarChart<>(xAxis, yAxis);
+      CategoryAxis xaxis = new CategoryAxis();
+      xaxis.setLabel("Category");
+      NumberAxis yaxis = new NumberAxis();
+      yaxis.setLabel("Value");
+      barChart = new BarChart<>(xaxis, yaxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
 
@@ -444,7 +426,6 @@ public class Overview {
         applyDarkModeStyles(barChart);
       }
 
-    // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
     } finally {
@@ -457,8 +438,8 @@ public class Overview {
       }
     }
 
-    barChart.setCategoryGap(50); // Gap of 10 pixels between Category 1 and Category 2
-    barChart.setBarGap(5); // Gap of 20 pixels between Category 2 and Category 3
+    barChart.setCategoryGap(50);
+    barChart.setBarGap(5);
     barChart.setFocusTraversable(true);
 
     VBox vbox = new VBox(welcomeAndTimeOfDay, hboxPieLayout, emptySpace, currentAccountStatusTextFormat, barChart);
@@ -470,31 +451,31 @@ public class Overview {
   private static void applyDarkModeStyles(BarChart<String, Number> barChart) {
     barChart.setStyle("-fx-background-color: transparent;");
 
-    CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
-    xAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    CategoryAxis xaxis = (CategoryAxis) barChart.getXAxis();
+    xaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
-    NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
-    yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    NumberAxis yaxis = (NumberAxis) barChart.getYAxis();
+    yaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
     barChart.lookupAll(".chart-legend-item-text").forEach(node -> {
       node.setStyle("-fx-text-fill: #FFFFFF;");
     });
 
     barChart.lookupAll(".series0 .chart-bar").forEach(node -> {
-      node.setStyle("-fx-bar-fill: #FF0000;"); // Red
+      node.setStyle("-fx-bar-fill: #FF0000;");
     });
 
     barChart.lookupAll(".series1 .chart-bar").forEach(node -> {
-      node.setStyle("-fx-bar-fill: #FFFF00;"); // Yellow
+      node.setStyle("-fx-bar-fill: #FFFF00;");
     });
 
     // Set legend symbol colors
     barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node -> {
-      node.setStyle("-fx-background-color: #FF0000, white;"); // Red
+      node.setStyle("-fx-background-color: #FF0000, white;");
     });
 
     barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node -> {
-      node.setStyle("-fx-background-color: #FFFF00, white;"); // Yellow
+      node.setStyle("-fx-background-color: #FFFF00, white;");
     });
   }
 }

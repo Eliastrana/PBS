@@ -5,9 +5,12 @@ import java.util.List;
 
 /**
  * A class that represents a collection of incomes.
- * The collection of incomes is an ArrayList with the income name as key and the income amount as value.
- * Uses singleton pattern to avoid multiple instances of the class, and to ensure data encapsulation and integrity.
- * The class also has methods for creating an ArrayList of all the incomes, and for adding an income to an ArrayList of incomes.
+ * The collection of incomes is an ArrayList with the income name as key
+ * and the income amount as value.
+ * Uses singleton pattern to avoid multiple instances of the class,
+ * and to ensure data encapsulation and integrity.
+ * The class also has methods for creating an ArrayList of all the incomes,
+ * and for adding an income to an ArrayList of incomes.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
@@ -70,15 +73,15 @@ public class Incomes {
    * Adds an income to an ArrayList of incomes.
    *
    * @param income the income to be added.
-   * @param aList  the ArrayList to which the income is to be added.
+   * @param arrayList  the ArrayList to which the income is to be added.
    */
-  public void addToArrayList(Income income, List<Income> aList) {
+  public void addToArrayList(Income income, List<Income> arrayList) {
     if (income == null) {
       throw new NullPointerException("Income cannot be null");
     }
-    if (aList == null) {
+    if (arrayList == null) {
       throw new NullPointerException("List cannot be null");
     }
-    aList.add(income);
+    arrayList.add(income);
   }
 }

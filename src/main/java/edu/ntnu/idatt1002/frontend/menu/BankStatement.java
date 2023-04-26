@@ -1,11 +1,7 @@
-//BANK STATEMENT
-
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
-import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.AlertWindow;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -68,7 +64,8 @@ public class BankStatement {
     HBox selectCategoryHbox = new HBox();
     selectCategoryHbox.setAlignment(Pos.CENTER);
 
-    ObservableList<String> options = FXCollections.observableArrayList("Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
+    ObservableList<String> options = FXCollections.observableArrayList(
+            "Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
     final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setPromptText("Pick a category");
     categoryMenu.setId("categoryMenuButton");
@@ -115,26 +112,23 @@ public class BankStatement {
 
         try {
           ExcelExporter instance = ExcelExporter.getInstance();
-          instance.convertToPdf(instance.createBankStatement(account, category, from, to), "bankstatement");
+          instance.convertToPdf(instance.createBankStatement(account,
+                  category, from, to), "bankstatement");
 
           if (Desktop.isDesktopSupported()) {
             File myFile = new File(ExcelExporter.getBankStatementPath());
             Desktop.getDesktop().open(myFile);
           }
         } catch (IOException | DocumentException exception) {
-        // Handle IOException
-        showAlert(exception.getMessage());
-        // Additional handling specific to IOException
-      }
+          showAlert(exception.getMessage());
+        }
       }
     });
-
 
 
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
 
-    TableView<Expense> bankStatementTable = new TableView<>();
     TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
     rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -150,7 +144,9 @@ public class BankStatement {
     TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
 
-    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+    TableView<Expense> bankStatementTable = new TableView<>();
+    bankStatementTable.getColumns().addAll(rightColumn1,
+            rightColumn2, rightColumn3, rightColumn4, rightColumn5);
 
     ExcelExporter instance = ExcelExporter.getInstance();
 
@@ -161,10 +157,8 @@ public class BankStatement {
     tableHbox.getChildren().add(bankStatementTable);
 
 
-
-
-
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, export,tableHbox);
+    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox,
+            selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, export, tableHbox);
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
 

@@ -7,22 +7,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * The type File util.
+ */
 public class FileUtil {
+  /**
+   * Gets resource file path.
+   *
+   * @param fileName the file name
+   * @return the resource file path
+   */
   public static String getResourceFilePath(String fileName) {
     String filePath = null;
-    URL url = FileUtil.class.getResource("/" + fileName); // Get resource URL
+    URL url = FileUtil.class.getResource("/" + fileName);
     if (url != null) {
       if (url.getProtocol().equals("file")) {
-        // Running from IDE or as loose files
         filePath = url.getPath();
       } else if (url.getProtocol().equals("jar")) {
-        // Running from JAR file
-        String jarPath = url.getPath().substring(5, url.getPath().indexOf("!")); // Extract JAR file path
+        String jarPath = url.getPath().substring(5, url.getPath().indexOf("!"));
         try {
-          JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8)); // Create JarFile object
-          JarEntry jarEntry = jarFile.getJarEntry(fileName); // Get JarEntry for the file
+          JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8));
+          JarEntry jarEntry = jarFile.getJarEntry(fileName);
           if (jarEntry != null) {
-            File tempFile = File.createTempFile(fileName, ""); // Create a temporary file
+            File tempFile = File.createTempFile(fileName, "");
             try (InputStream is = jarFile.getInputStream(jarEntry);
                  OutputStream os = new FileOutputStream(tempFile)) {
               byte[] buffer = new byte[4096];
@@ -32,9 +39,11 @@ public class FileUtil {
               }
             } catch (IOException e) {
               throw new RuntimeException(e);
+            } finally {
+              jarFile.close();
             }
             filePath = tempFile.getAbsolutePath();
-            tempFile.deleteOnExit(); // Delete temporary file on exit
+            tempFile.deleteOnExit();
           }
           jarFile.close();
         } catch (IOException e) {
@@ -45,22 +54,24 @@ public class FileUtil {
     return filePath;
   }
 
+  /**
+   * Gets picture resource file path.
+   *
+   * @param filePath the file path
+   * @return the picture resource file path
+   */
   public static String getPictureResourceFilePath(String filePath) {
     URL resourceUrl = FileUtil.class.getClassLoader().getResource(filePath);
     if (resourceUrl != null) {
-      // Running from JAR file
       if (resourceUrl.getProtocol().equals("jar")) {
         String jarFilePath = resourceUrl.getFile();
         String decodedJarFilePath = URLDecoder.decode(jarFilePath, StandardCharsets.UTF_8);
         String jarPath = decodedJarFilePath.substring(0, decodedJarFilePath.lastIndexOf("!"));
         return jarPath + "!/" + filePath;
-      }
-      // Running from local directory
-      else if (resourceUrl.getProtocol().equals("file")) {
+      } else if (resourceUrl.getProtocol().equals("file")) {
         return new File("src/main/resources", filePath).getPath();
       }
     }
-    // Resource not found
     return null;
   }
 }

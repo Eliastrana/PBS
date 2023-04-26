@@ -37,8 +37,6 @@ public class Report {
 
     Text printOutAReport = new Text("Print out a report");
     printOutAReport.setId("titleText");
-    HBox selectReportHBox = new HBox();
-
 
     HBox printOutVBox = new HBox();
     printOutVBox.setAlignment(Pos.CENTER);
@@ -64,18 +62,17 @@ public class Report {
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile =
-                  new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
+          File myFile = new File("src/main/resources/userfiles/"
+                  + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-          // no application registered for PDFs
+          throw new RuntimeException("Could not open file");
         }
       }
       SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
     });
 
-    //THIS ONE DOES NOT WORK BUT EMIL IS SICK SO WE DONT KNOW WHAT TO DO
     Button printToExcel = new Button("Print to Excel");
     printToExcel.setId("actionButton");
     printToExcel.setOnKeyPressed(event -> {
@@ -96,15 +93,16 @@ public class Report {
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile =
-                  new File(excelFile);
+          File myFile = new File(excelFile);
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-          // no application registered for PDFs
+          throw new RuntimeException("Could not open file");
         }
       }
       SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
     });
+
+    HBox selectReportHBox = new HBox();
 
     printOutVBox.getChildren().addAll(exportToPDF, printToExcel);
     printOutVBox.setSpacing(30);

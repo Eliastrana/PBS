@@ -5,7 +5,8 @@ import java.util.List;
 
 /**
  * A class that represents a collection of expenses.
- * The collection of expenses is a HashMap with the expense name as key and the expense amount as value.
+ * The collection of expenses is a HashMap with the expense name as key
+ * and the expense amount as value.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
@@ -110,6 +111,8 @@ public class Expenses {
 
   /**
    * Creates the ArrayLists for all categories.
+   *
+   * @return the list
    */
   public List<Expense> createAllExpenses() {
     allExpenses = new ArrayList<>();
@@ -140,27 +143,27 @@ public class Expenses {
    * Adds an expense to the ArrayList.
    *
    * @param expense the expense to be added.
-   * @param aList   the ArrayList to add the expense to.
+   * @param arrayList   the ArrayList to add the expense to.
    */
-  public void addToArrayList(Expense expense, List<Expense> aList) {
+  public void addToArrayList(Expense expense, List<Expense> arrayList) {
     if (expense == null) {
       throw new IllegalArgumentException("Expense cannot be null");
     }
-    if (aList == null) {
+    if (arrayList == null) {
       throw new IllegalArgumentException("ArrayList cannot be null");
     }
-    aList.add(expense);
+    arrayList.add(expense);
   }
 
   /**
    * Gets the total expenses of a category.
    *
-   * @param aList the ArrayList to get the total expenses from.
+   * @param arrayList the ArrayList to get the total expenses from.
    * @return the total expenses of a category.
    */
-  public double getTotalExpenses(List<Expense> aList) {
+  public double getTotalExpenses(List<Expense> arrayList) {
     double totalExpense = 0;
-    for (Expense expense : aList) {
+    for (Expense expense : arrayList) {
       totalExpense += expense.getPrice();
     }
     return totalExpense;
@@ -173,7 +176,9 @@ public class Expenses {
    */
   public double getExpensesOfAllCategories() {
     double totalExpense = 0;
-    totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent) + getTotalExpenses(food) + getTotalExpenses(other) + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
+    totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent)
+            + getTotalExpenses(food) + getTotalExpenses(other)
+            + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
     return totalExpense;
   }
 
@@ -186,26 +191,56 @@ public class Expenses {
     return allExpenses;
   }
 
+  /**
+   * Gets transportation.
+   *
+   * @return the transportation
+   */
   public List<Expense> getTransportation() {
     return transportation;
   }
 
+  /**
+   * Gets entertainment.
+   *
+   * @return the entertainment
+   */
   public List<Expense> getEntertainment() {
-      return entertainment;
-    }
+    return entertainment;
+  }
 
+  /**
+   * Gets clothing.
+   *
+   * @return the clothing
+   */
   public List<Expense> getClothing() {
     return clothing;
   }
 
+  /**
+   * Gets rent.
+   *
+   * @return the rent
+   */
   public List<Expense> getRent() {
     return rent;
   }
 
+  /**
+   * Gets other.
+   *
+   * @return the other
+   */
   public List<Expense> getOther() {
     return other;
   }
 
+  /**
+   * Gets food.
+   *
+   * @return the food
+   */
   public List<Expense> getFood() {
     return food;
   }

@@ -2,7 +2,6 @@ package edu.ntnu.idatt1002.frontend.controllers;
 
 import edu.ntnu.idatt1002.backend.user.CreateUserBackend;
 import edu.ntnu.idatt1002.frontend.GUI;
-
 import java.io.IOException;
 
 /**
@@ -21,7 +20,7 @@ public class CreateUserController {
   private final GUI gui;
 
   /**
-   * Instantiates a new Create user controller.
+   * Instantiates a new create user controller.
    *
    * @param gui the gui
    */
@@ -44,7 +43,8 @@ public class CreateUserController {
    * @param email    the email of the user
    * @throws IOException the io exception
    */
-  public void handleCreateButton(String username, String password, String email) throws IOException {
+  public void handleCreateButton(String username, String password,
+                                 String email) throws IOException {
     String salt = CreateUserBackend.generateSalt();
     String encryptedPassword = CreateUserBackend.encrypt(password, salt);
     CreateUserBackend.saveUser(username, encryptedPassword, salt, email);

@@ -19,6 +19,11 @@ public class BudgetCalculator {
   private BudgetCalculator() {
   }
 
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
   public static BudgetCalculator getInstance() {
     return instance;
   }
@@ -31,14 +36,12 @@ public class BudgetCalculator {
   public double getTotalBudget() {
     String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
     String budgetFile = outputDirectory + "budget.csv";
-    totalBudget = 0; // Move initialization outside the loop
+    totalBudget = 0;
     for (String[] lineData : Budget.currentBudget) {
       try {
-        totalBudget += Double.parseDouble(lineData[1]); // Convert budget value to double
+        totalBudget += Double.parseDouble(lineData[1]);
       } catch (NumberFormatException e) {
-        // Handle the case where lineData[1] is not a valid double
-        // You can log an error, display a message, or take other appropriate action
-        e.printStackTrace(); // Example of printing the stack trace
+        throw new RuntimeException("Could not parse double from " + lineData[1]);
       }
     }
     return totalBudget;

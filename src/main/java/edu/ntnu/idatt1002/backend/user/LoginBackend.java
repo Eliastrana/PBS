@@ -3,7 +3,6 @@ package edu.ntnu.idatt1002.backend.user;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -40,16 +39,16 @@ public class LoginBackend {
    * A method that decrypts the password.
    *
    * @param password the password to decrypt
-   * @param SALT     the salt used for decrypting the password
+   * @param salt     the salt used for decrypting the password
    * @return the decrypted password
    */
-  public static String decrypt(String password, String SALT) {
+  public static String decrypt(String password, String salt) {
     try {
       byte[] iv = new byte[16];
       IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
       SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
+      KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), salt.getBytes(), 65536, 256);
       SecretKey tmp = factory.generateSecret(spec);
       SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 
@@ -71,12 +70,13 @@ public class LoginBackend {
    * @param controller the controller
    * @throws IOException the io exception
    */
-  public static void login(String username, String password, LoginController controller) throws IOException {
+  public static void login(String username, String password,
+                           LoginController controller) throws IOException {
     Path tempDirectoryPath = Paths.get("src/main/resources/");
     File tempDirectory = tempDirectoryPath.toFile();
 
     if (!tempDirectory.exists()) {
-      boolean created = tempDirectory.mkdirs(); // Use mkdirs() to create parent directories recursively
+      boolean created = tempDirectory.mkdirs();
       if (!created) {
         throw new IOException("Failed to create temp directory");
       }
@@ -87,7 +87,6 @@ public class LoginBackend {
       file.createNewFile();
     }
 
-    String csvFile = "src/main/resources/users.csv";
     String line;
 
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -106,7 +105,7 @@ public class LoginBackend {
         }
       }
     } catch (IOException ex) {
-      throw new RuntimeException(ex);
+      throw new IOException("Error while reading file");
     }
   }
 

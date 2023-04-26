@@ -45,6 +45,8 @@ public class Transfers {
 
   /**
    * Constructor to initialize an object of the transfers arraylist.
+   *
+   * @param type the type
    */
   public Transfers(String type) {
     transfersList = new ArrayList<>();
@@ -60,10 +62,11 @@ public class Transfers {
   /**
    * Adds a transfer to the list of transfers.
    *
-   * @param accountName  the account name of the account that made/recieved the transfer.
+   * @param accountName  the account name of the account that made/received the transfer.
    * @param amount       the amount of the transfer.
    * @param date         the date of the transfer.
-   * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
+   * @param transferType the type of the transfer. A for adding to an account,
+   *                     B for transferring between accounts.
    */
   public Transfers(String accountName, double amount, String date, char transferType) {
     if (accountName.isBlank()) {
@@ -72,7 +75,6 @@ public class Transfers {
     if (date.isBlank()) {
       throw new NullPointerException("Date cannot be blank");
     }
-
 
 
     this.accountName = accountName;
@@ -102,10 +104,11 @@ public class Transfers {
   /**
    * Adds a transfer to the list of transfers.
    *
-   * @param account      the account name of the account that made/recieved the transfer.
+   * @param account      the account name of the account that made/received the transfer.
    * @param amount       the amount of the transfer.
    * @param date         the date of the transfer.
-   * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
+   * @param transferType the type of the transfer. A for adding to an account,
+   *                     B for transferring between accounts.
    */
   public void addTransfer(String account, double amount, String date, char transferType) {
     if (account == null || date == null) {
@@ -220,10 +223,18 @@ public class Transfers {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Transfers transfers = (Transfers) o;
-    return Double.compare(transfers.amount, amount) == 0 && transferType == transfers.transferType && Objects.equals(accountName, transfers.accountName) && Objects.equals(date, transfers.date) && Objects.equals(type, transfers.type);
+    return Double.compare(transfers.amount, amount) == 0
+            && transferType == transfers.transferType
+            && Objects.equals(accountName, transfers.accountName)
+            && Objects.equals(date, transfers.date)
+            && Objects.equals(type, transfers.type);
   }
 
   /**

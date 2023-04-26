@@ -46,9 +46,9 @@ public class TimeOfDayChecker {
    * @return the selected month from the DatePicker control
    */
   public static String getSelectedMonth(String datePicker) {
-    LocalDate selectedDate = LocalDate.parse(datePicker); // Get the selected date from the DatePicker control
-    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
-    return selectedDate.format(monthFormatter); // Return the month as a string
+    LocalDate selectedDate = LocalDate.parse(datePicker);
+    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM");
+    return selectedDate.format(monthFormatter);
   }
 
   /**
@@ -57,9 +57,9 @@ public class TimeOfDayChecker {
    * @return the current month
    */
   public static String getCurrentMonth() {
-    LocalDate currentDate = LocalDate.now(); // Get the current date
-    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
-    return currentDate.format(monthFormatter); // Return the month as a string
+    LocalDate currentDate = LocalDate.now();
+    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM");
+    return currentDate.format(monthFormatter);
   }
 
   /**
@@ -69,8 +69,8 @@ public class TimeOfDayChecker {
    */
   public static String getPreviousMonth() {
     LocalDate currentDate = LocalDate.now().minusMonths(1);
-    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM"); // Format the month as a string
-    return currentDate.format(monthFormatter); // Return the month as a string
+    DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM");
+    return currentDate.format(monthFormatter);
   }
 
   /**

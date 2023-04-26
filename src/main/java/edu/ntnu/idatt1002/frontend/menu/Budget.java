@@ -61,15 +61,8 @@ public class Budget {
     HBox categorySelectorHbox = new HBox();
 
 
-    ObservableList<String> options =
-            FXCollections.observableArrayList(
-                    "Rent",
-                    "Food",
-                    "Transportation",
-                    "Clothing",
-                    "Entertainment",
-                    "Other"
-            );
+    ObservableList<String> options = FXCollections.observableArrayList(
+            "Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
 
 
     final ComboBox categoryMenu = new ComboBox(options);
@@ -121,35 +114,28 @@ public class Budget {
         File csvFile = new File(ExcelExporter.getBudgetPath());
 
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-
-          // ...
-
           ArrayList<String> lines = new ArrayList<String>();
 
-          // Read the lines of the file into the list
           String line;
           while ((line = reader.readLine()) != null) {
             String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
             if (oldCategoryMonth.equals(categorymonth)) {
-              continue; // Skip writing the updated line for existing category and month combination
+              continue;
             }
             lines.add(line);
           }
 
           reader.close();
 
-          // Create a new file and write the updated data to it
           File tempFile = new File(ExcelExporter.getTempBudgetPath());
           FileWriter fw = new FileWriter(tempFile);
           BufferedWriter bw = new BufferedWriter(fw);
 
-          // Write the lines to the new file
           for (String l : lines) {
             bw.write(l);
             bw.newLine();
           }
 
-          // Write the updated line to the new file
           bw.write(category + "," + amount + "," + month);
           bw.newLine();
           bw.flush();
@@ -157,9 +143,8 @@ public class Budget {
           bw.close();
           fw.close();
 
-          // Replace the original file with the temporary file
           Files.delete(Path.of(ExcelExporter.getBudgetPath()));
-          if (tempFile.renameTo(csvFile)){
+          if (tempFile.renameTo(csvFile)) {
             Logger.getLogger(Budget.class.getName()).info("File renamed successfully.");
           } else {
             Logger.getLogger(Budget.class.getName()).info("File rename failed.");
@@ -172,7 +157,6 @@ public class Budget {
         String currentMonth = TimeOfDayChecker.getCurrentMonth();
         String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
-        // Read the CSV file
         File file = new File(ExcelExporter.getBudgetPath());
         if (!file.exists()) {
           try {
@@ -191,7 +175,6 @@ public class Budget {
           String line;
           while ((line = br.readLine()) != null) {
             String[] data = line.split(csvSplitBy);
-            // Filter the data by the current month
             if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
               currentLines.add(data);
             }
@@ -200,33 +183,37 @@ public class Budget {
             }
           }
 
-          // Create the bar chart dataset
-          ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+          ObservableList<XYChart.Data<String, Number>> currentData
+                  = FXCollections.observableArrayList();
           for (String[] lineData : currentLines) {
-            currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+            currentData.add(new XYChart.Data<String, Number>(
+                    lineData[0], Double.parseDouble(lineData[1])));
           }
-          XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+          XYChart.Series<String, Number> currentSeries =
+                  new XYChart.Series<String, Number>(currentData);
           currentSeries.setName(currentMonth);
 
-          ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+          ObservableList<XYChart.Data<String, Number>> previousData 
+                  = FXCollections.observableArrayList();
           for (String[] lineData : previousLines) {
-            previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+            previousData.add(new XYChart.Data<String, Number>(
+                    lineData[0], Double.parseDouble(lineData[1])));
           }
-          XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+          XYChart.Series<String, Number> previousSeries = 
+                  new XYChart.Series<String, Number>(previousData);
           previousSeries.setName(previousMonth);
 
-          // Create the bar chart
-          CategoryAxis xAxis = new CategoryAxis();
-          xAxis.setLabel("Category");
-          NumberAxis yAxis = new NumberAxis();
-          yAxis.setLabel("Value");
-          barChart = new BarChart<String, Number>(xAxis, yAxis);
+          CategoryAxis xaxis = new CategoryAxis();
+          xaxis.setLabel("Category");
+          NumberAxis yaxis = new NumberAxis();
+          yaxis.setLabel("Value");
+          barChart = new BarChart<String, Number>(xaxis, yaxis);
           barChart.setTitle("Bar Chart");
           barChart.getData().addAll(currentSeries, previousSeries);
           budgetLayout.getChildren().clear();
-          budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
+          budgetLayout.getChildren().addAll(editMonthBudget, 
+                  categorySelectorHbox, budgetAmountHbox, barChart);
 
-          // Show the bar chart
         } catch (IOException exception) {
           exception.printStackTrace();
         }
@@ -249,13 +236,14 @@ public class Budget {
     String currentMonth = TimeOfDayChecker.getCurrentMonth();
     String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
-    // Read the CSV file
-    String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+    String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser()
+            + "/" + GUI.getCurrentUser() + "budget.csv");
     File file = new File(csvFile);
     if (!file.exists()) {
       try {
         if (file.createNewFile()) {
-          Logger.getLogger(Budget.class.getName()).info("File created successfully.");
+          Logger.getLogger(Budget.class.getName()).info(
+                  "File created successfully.");
         }
       } catch (IOException e) {
         e.printStackTrace();
@@ -269,7 +257,6 @@ public class Budget {
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
-        // Filter the data by the current month
         if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
           currentLines.add(data);
         }
@@ -278,34 +265,37 @@ public class Budget {
         }
       }
 
-      // Create the bar chart dataset
-      ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
+      ObservableList<XYChart.Data<String, Number>> currentData
+              = FXCollections.observableArrayList();
       for (String[] lineData : currentLines) {
-        currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
+        currentData.add(new XYChart.Data<>(lineData[0],
+                Double.parseDouble(lineData[1])));
       }
-      XYChart.Series<String, Number> currentSeries = new XYChart.Series<>(currentData);
+      XYChart.Series<String, Number> currentSeries = 
+              new XYChart.Series<>(currentData);
       currentSeries.setName(currentMonth);
 
-      ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
+      ObservableList<XYChart.Data<String, Number>> previousData
+              = FXCollections.observableArrayList();
       for (String[] lineData : previousLines) {
-        previousData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
+        previousData.add(new XYChart.Data<>(lineData[0], 
+                Double.parseDouble(lineData[1])));
       }
-      XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
+      XYChart.Series<String, Number> previousSeries =
+              new XYChart.Series<>(previousData);
       previousSeries.setName(previousMonth);
 
-      // Create the bar chart
-      CategoryAxis xAxis = new CategoryAxis();
-      xAxis.setLabel("Category");
-      NumberAxis yAxis = new NumberAxis();
-      yAxis.setLabel("Value");
-      barChart = new BarChart<>(xAxis, yAxis);
+      CategoryAxis xaxis = new CategoryAxis();
+      xaxis.setLabel("Category");
+      NumberAxis yaxis = new NumberAxis();
+      yaxis.setLabel("Value");
+      barChart = new BarChart<>(xaxis, yaxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
       if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
         applyDarkModeStylesToBudget(barChart);
       }
 
-      // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
     }
@@ -315,7 +305,8 @@ public class Budget {
     budgetAmountHbox.setAlignment(Pos.CENTER);
     budgetAmountHbox.setSpacing(20);
 
-    budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
+    budgetLayout.getChildren().addAll(editMonthBudget, 
+            categorySelectorHbox, budgetAmountHbox, barChart);
     budgetLayout.setAlignment(Pos.TOP_CENTER);
 
     currentBudget = currentLines;
@@ -325,27 +316,25 @@ public class Budget {
   private static void applyDarkModeStylesToBudget(BarChart<String, Number> barChart) {
     barChart.setStyle("-fx-background-color: transparent;");
 
-    CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
-    xAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    CategoryAxis xaxis = (CategoryAxis) barChart.getXAxis();
+    xaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
-    NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
-    yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    NumberAxis yaxis = (NumberAxis) barChart.getYAxis();
+    yaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
-    barChart.lookupAll(".chart-legend-item-text").forEach(node ->
-      node.setStyle("-fx-text-fill: #FFFFFF;"));
+    barChart.lookupAll(".chart-legend-item-text").forEach(
+            node -> node.setStyle("-fx-text-fill: #FFFFFF;"));
 
-    barChart.lookupAll(".series0 .chart-bar").forEach(node ->
-      node.setStyle("-fx-bar-fill: #FF0000;"));
+    barChart.lookupAll(".series0 .chart-bar").forEach(
+            node -> node.setStyle("-fx-bar-fill: #FF0000;"));
 
-    barChart.lookupAll(".series1 .chart-bar").forEach(node ->
-      node.setStyle("-fx-bar-fill: #FFFF00;")); // Yellow
+    barChart.lookupAll(".series1 .chart-bar").forEach(
+            node -> node.setStyle("-fx-bar-fill: #FFFF00;"));
 
-    // Set legend symbol colors
-    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node ->
-      node.setStyle("-fx-background-color: #FF0000, white;")); // Red
+    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(
+            node -> node.setStyle("-fx-background-color: #FF0000, white;"));
 
-    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node ->
-      node.setStyle("-fx-background-color: #FFFF00, white;") // Yellow
-    );
+    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(
+            node -> node.setStyle("-fx-background-color: #FFFF00, white;"));
   }
 }

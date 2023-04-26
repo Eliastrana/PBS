@@ -17,9 +17,10 @@ public class Expense {
    */
   private static final Expense instance = new Expense();
   /**
-   * The uniqueID of the expense, used for creating the bankstatement, where uniqueID is the month and category
+   * The uniqueID of the expense, used for creating the bank statement,
+   * where uniqueID is the month and category.
    */
-  private String uniqueID;
+  private String uniqueId;
   /**
    * The name of the expense.
    */
@@ -66,7 +67,8 @@ public class Expense {
    * @param category the category of the expense.
    * @param date     the date of the expense.
    * @throws NullPointerException     if the name is null or empty.
-   * @throws IllegalArgumentException if the price is negative or the category is not between 1 and 6.
+   * @throws IllegalArgumentException if the price is negative or the category is
+   *                                  not between 1 and 6.
    */
   public Expense(String name, double price, int category, LocalDate date) {
     if (name == null || name.isBlank()) {
@@ -93,10 +95,12 @@ public class Expense {
    *
    * @param name     the name of the expense.
    * @param price    the price of the expense.
-   * @param category the category of the expense.
    * @param date     the date of the expense.
+   * @param category the category of the expense.
+   * @param account  the account
    * @throws NullPointerException     if the name is null or empty.
-   * @throws IllegalArgumentException if the price is negative or the category is not between 1 and 6.
+   * @throws IllegalArgumentException if the price is negative or the category is
+   *                                  not between 1 and 6.
    */
   public Expense(String name, Double price, LocalDate date, String category, String account) {
     if (name == null || name.isBlank()) {
@@ -123,13 +127,16 @@ public class Expense {
    *
    * @param name     the name of the expense.
    * @param price    the price of the expense.
-   * @param category the category of the expense.
    * @param date     the date of the expense.
-   * @param uniqueID the uniqueID of the expense.
+   * @param category the category of the expense.
+   * @param account  the account
+   * @param uniqueId the uniqueID of the expense.
    * @throws NullPointerException     if the name is null or empty.
-   * @throws IllegalArgumentException if the price is negative or the category is not between 1 and 6.
+   * @throws IllegalArgumentException if the price is negative or the category is
+   *                                  not between 1 and 6.
    */
-  public Expense(String name, Double price, LocalDate date, String category, String account, String uniqueID) {
+  public Expense(String name, Double price, LocalDate date, String category,
+                 String account, String uniqueId) {
     if (name == null || name.isBlank()) {
       throw new NullPointerException(NAME_CANNOT_BE_NULL);
     }
@@ -137,12 +144,12 @@ public class Expense {
       throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     if (date == null) {
-        throw new NullPointerException(DATE_CANNOT_BE_NULL);
+      throw new NullPointerException(DATE_CANNOT_BE_NULL);
     }
     if (category == null || category.isBlank()) {
       throw new NullPointerException(CATEGORY_CANNOT_BE_NULL);
     }
-    if (uniqueID == null || uniqueID.isBlank()) {
+    if (uniqueId == null || uniqueId.isBlank()) {
       throw new NullPointerException(UNIQUEID_CANNOT_BE_NULL);
     }
 
@@ -151,7 +158,7 @@ public class Expense {
     this.date = date;
     this.categoryAsString = category;
     this.accountAsString = account;
-    this.uniqueID = uniqueID;
+    this.uniqueId = uniqueId;
   }
 
   /**
@@ -282,20 +289,20 @@ public class Expense {
    *
    * @return the uniqueID of the expense.
    */
-  public String getUniqueID() {
-    return uniqueID;
+  public String getUniqueId() {
+    return uniqueId;
   }
 
   /**
    * Sets the uniqueID of the expense.
    *
-   * @param uniqueID the new uniqueID of the expense.
+   * @param uniqueId the new uniqueID of the expense.
    */
-  public void setUniqueID(String uniqueID) {
-    if (uniqueID == null || uniqueID.isBlank()) {
+  public void setUniqueId(String uniqueId) {
+    if (uniqueId == null || uniqueId.isBlank()) {
       throw new IllegalArgumentException("UniqueID cannot be null or empty");
     }
-    this.uniqueID = uniqueID;
+    this.uniqueId = uniqueId;
   }
 
 
@@ -308,6 +315,12 @@ public class Expense {
     this.accountAsString = accountAsString;
   }
 
+  /**
+   * Validate category boolean.
+   *
+   * @param categoryAsString the category as string
+   * @return the boolean
+   */
   public boolean validateCategory(String categoryAsString) {
     String[] categories = {"Food", "Transportation", "Entertainment", "Clothing", "Other", "Rent"};
     if (categoryAsString == null || categoryAsString.isBlank()) {
@@ -325,10 +338,17 @@ public class Expense {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Expense expense = (Expense) o;
-    return Double.compare(expense.price, price) == 0 && Objects.equals(name, expense.name) && Objects.equals(categoryAsString, expense.categoryAsString) && Objects.equals(accountAsString, expense.accountAsString) && Objects.equals(date, expense.date);
+    return Double.compare(expense.price, price) == 0 && Objects.equals(name, expense.name)
+            && Objects.equals(categoryAsString, expense.categoryAsString)
+            && Objects.equals(accountAsString, expense.accountAsString)
+            && Objects.equals(date, expense.date);
   }
 
   /**

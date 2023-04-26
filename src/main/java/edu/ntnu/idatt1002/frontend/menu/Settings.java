@@ -1,5 +1,3 @@
-//SETTINGS PANE
-
 package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.user.UserHandling;
@@ -18,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
@@ -71,11 +70,6 @@ public class Settings {
       try {
         if (Objects.equals(passwordField.getText(), UserHandling.getPassword())) {
 
-
-          HBox currentEmailHbox = new HBox();
-
-          VBox currentStatus = new VBox();
-
           Text title = new Text("Settings");
           title.setId("titleText");
           Text currentEmailText = new Text("Current email: ");
@@ -85,22 +79,23 @@ public class Settings {
           currentPasswordText.setId("bodyText");
           currentPasswordText.setTextAlignment(TextAlignment.RIGHT);
 
+          VBox currentStatus = new VBox();
           currentStatus.getChildren().addAll(currentEmailText, currentPasswordText);
           currentStatus.setAlignment(Pos.TOP_RIGHT);
 
-          VBox currentPassword = new VBox();
-
-          Text currentEmailLabel = new Text(UserHandling.getEmail()); //eksempel email, legg inn variabel
+          Text currentEmailLabel = new Text(UserHandling.getEmail());
           currentEmailLabel.setId("bodyText");
           currentEmailLabel.setVisible(false);
           currentEmailLabel.setTextAlignment(TextAlignment.LEFT);
-          Text currentPasswordLabel = new Text(UserHandling.getPassword()); //Eksempel passord, legg inn variabel
+          Text currentPasswordLabel = new Text(UserHandling.getPassword());
           currentPasswordLabel.setVisible(false);
           currentPasswordLabel.setId("bodyText");
 
           ImageView visibilityImage = new ImageView(new Image("icons/visibility.png"));
           visibilityImage.setFitHeight(20);
           visibilityImage.setFitWidth(20);
+
+          VBox currentPassword = new VBox();
 
           Button showPrivateInformation = new Button();
           showPrivateInformation.setOnAction(e -> {
@@ -115,7 +110,11 @@ public class Settings {
 
           showPrivateInformation.setOnAction(e -> {
             if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
-              currentEmailLabel.setText(UserHandling.getEmail());
+              try {
+                currentEmailLabel.setText(UserHandling.getEmail());
+              } catch (IOException ex) {
+                throw new RuntimeException("Could not get email");
+              }
               currentPasswordLabel.setText(UserHandling.getPassword());
               currentEmailLabel.setVisible(false);
               currentPasswordLabel.setVisible(false);
@@ -129,13 +128,13 @@ public class Settings {
 
           currentPassword.getChildren().addAll(currentEmailLabel, currentPasswordLabel);
 
-          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword, showPrivateInformation);
+          HBox currentEmailHbox = new HBox();
+
+          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword,
+                  showPrivateInformation);
 
           currentEmailHbox.setSpacing(20);
           currentEmailHbox.setAlignment(Pos.CENTER);
-
-
-          HBox emailUpdateHbox = new HBox();
 
           VBox updateEmail = new VBox();
           Text updateEmailText = new Text("Update email: ");
@@ -157,7 +156,8 @@ public class Settings {
 
           confirmEmailUpdate.setOnAction(e -> {
             try {
-              if (updateEmailTextField.getText().length() > 8 || updateEmailTextField.getText().length() < 20) {
+              if (updateEmailTextField.getText().length() > 8
+                      || updateEmailTextField.getText().length() < 20) {
                 UserHandling.changeEmail(updateEmailTextField.getText());
                 currentEmailLabel.setText(UserHandling.getEmail());
                 SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
@@ -175,12 +175,11 @@ public class Settings {
           confirmEmailUpdateVbox.getChildren().addAll(confirmEmailUpdate);
           confirmEmailUpdateVbox.setAlignment(Pos.TOP_CENTER);
 
+          HBox emailUpdateHbox = new HBox();
+
           emailUpdateHbox.getChildren().addAll(updateEmail, updatePassword, confirmEmailUpdateVbox);
           emailUpdateHbox.setSpacing(20);
           emailUpdateHbox.setAlignment(Pos.CENTER);
-
-
-          HBox updatePasswordHbox = new HBox();
 
           VBox currentAndNewPasswordHbox = new VBox();
           Text currentPasswordText2 = new Text("Update password: ");
@@ -199,7 +198,8 @@ public class Settings {
           Button confirmPasswordUpdate = new Button("Confirm");
           confirmPasswordUpdate.setOnAction(e -> {
             try {
-              if (newPasswordTextField.getText().length() > 8 || newPasswordTextField.getText().length() < 20) {
+              if (newPasswordTextField.getText().length() > 8
+                      || newPasswordTextField.getText().length() < 20) {
                 UserHandling.changePassword(newPasswordTextField.getText());
                 currentPasswordLabel.setText(UserHandling.getPassword());
                 SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
@@ -216,16 +216,15 @@ public class Settings {
           confirmPasswordUpdateVBox.getChildren().addAll(confirmPasswordUpdate);
           confirmPasswordUpdateVBox.setAlignment(Pos.CENTER);
 
-
-          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
+          HBox updatePasswordHbox = new HBox();
+          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox,
+                  currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
           updatePasswordHbox.setAlignment(Pos.CENTER);
           updatePasswordHbox.setSpacing(20);
 
           Text prefrences = new Text("Preferences");
           prefrences.setId("titleText");
           prefrences.setTextAlignment(TextAlignment.CENTER);
-
-          HBox viewmodeHbox = new HBox();
 
           RadioButton lightmode = new RadioButton("Lightmode");
           RadioButton darkmode = new RadioButton("Darkmode");
@@ -246,7 +245,8 @@ public class Settings {
 
           toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (toggleGroup.getSelectedToggle() != null) {
-              if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(), "Lightmode")) {
+              if (!Objects.equals(((RadioButton)
+                      toggleGroup.getSelectedToggle()).getText(), "Lightmode")) {
                 String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
                 currentMode = selectedText;
                 GUI.setStyle(selectedText);
@@ -257,11 +257,11 @@ public class Settings {
             }
           });
 
+          HBox viewmodeHbox = new HBox();
           viewmodeHbox.getChildren().addAll(lightmode, darkmode, colorblind);
           viewmodeHbox.setSpacing(20);
           viewmodeHbox.setAlignment(Pos.CENTER);
 
-          VBox contactUS = new VBox();
           Button contactUSButton = new Button("Contact Us");
           contactUSButton.setId("actionButton");
           contactUSButton.setAlignment(Pos.CENTER);
@@ -271,11 +271,13 @@ public class Settings {
             SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
           });
 
+          VBox contactUS = new VBox();
           contactUS.getChildren().addAll(contactUSButton);
           contactUS.setAlignment(Pos.CENTER);
 
           vbox.getChildren().clear();
-          vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox, contactUS);
+          vbox.getChildren().addAll(title, currentEmailHbox,
+                  emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox, contactUS);
           vbox.setSpacing(40);
 
           vbox.setAlignment(Pos.TOP_CENTER);

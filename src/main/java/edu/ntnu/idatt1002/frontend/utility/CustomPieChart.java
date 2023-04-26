@@ -40,9 +40,13 @@ public class CustomPieChart {
       throw new RuntimeException(e);
     }
     Accounts accountsInstance = Accounts.getInstance();
-    ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = FXCollections.observableArrayList();
-    for (Map.Entry<String, Double> entry : accountsInstance.getAccounts().entrySet()) {
-      pieChartData.add(new javafx.scene.chart.PieChart.Data(entry.getKey() + ": \n" + accountsInstance.getTotalOfAccount(entry.getKey()), entry.getValue()));
+    ObservableList<javafx.scene.chart.PieChart.Data> pieChartData =
+            FXCollections.observableArrayList();
+    for (Map.Entry<String, Double> entry : accountsInstance.getAccounts()
+            .entrySet()) {
+      pieChartData.add(new javafx.scene.chart.PieChart.Data(
+              entry.getKey() + ": \n" + accountsInstance
+                      .getTotalOfAccount(entry.getKey()), entry.getValue()));
     }
     return pieChartData;
   }
@@ -54,12 +58,23 @@ public class CustomPieChart {
    */
   public static ObservableList<javafx.scene.chart.PieChart.Data> createData2() {
     ExcelExporter instance = ExcelExporter.getInstance();
-    return FXCollections.observableArrayList(
-            new javafx.scene.chart.PieChart.Data("Rent: " + "\n" + instance.getTotalOfRent(expensesToTable), instance.getTotalOfRent(expensesToTable)),
-            new javafx.scene.chart.PieChart.Data("Transportation: " + "\n" + instance.getTotalOfTransportation(expensesToTable), instance.getTotalOfTransportation(expensesToTable)),
-            new javafx.scene.chart.PieChart.Data("Clothing: " + "\n" + instance.getTotalOfClothing(expensesToTable), instance.getTotalOfClothing(expensesToTable)),
-            new javafx.scene.chart.PieChart.Data("Entertainment: " + "\n" + instance.getTotalOfEntertainment(expensesToTable), instance.getTotalOfEntertainment(expensesToTable)),
-            new javafx.scene.chart.PieChart.Data("Food: " + "\n" + instance.getTotalOfFood(expensesToTable), instance.getTotalOfFood(expensesToTable)),
-            new javafx.scene.chart.PieChart.Data("Other: " + "\n" + instance.getTotalOfOther(expensesToTable), instance.getTotalOfOther(expensesToTable)));
+    return FXCollections.observableArrayList(new javafx.scene.chart.PieChart.Data(
+                    "Rent: " + "\n" + instance.getTotalOfRent(expensesToTable),
+                    instance.getTotalOfRent(expensesToTable)),
+            new javafx.scene.chart.PieChart.Data(
+                    "Transportation: " + "\n" + instance.getTotalOfTransportation(expensesToTable),
+                    instance.getTotalOfTransportation(expensesToTable)),
+            new javafx.scene.chart.PieChart.Data(
+                    "Clothing: " + "\n" + instance.getTotalOfClothing(expensesToTable),
+                    instance.getTotalOfClothing(expensesToTable)),
+            new javafx.scene.chart.PieChart.Data(
+                    "Entertainment: " + "\n" + instance.getTotalOfEntertainment(expensesToTable),
+                    instance.getTotalOfEntertainment(expensesToTable)),
+            new javafx.scene.chart.PieChart.Data(
+                    "Food: " + "\n" + instance.getTotalOfFood(expensesToTable),
+                    instance.getTotalOfFood(expensesToTable)),
+            new javafx.scene.chart.PieChart.Data("Other: "
+                    + "\n" + instance.getTotalOfOther(expensesToTable),
+                    instance.getTotalOfOther(expensesToTable)));
   }
 }

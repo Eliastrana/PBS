@@ -49,9 +49,6 @@ public class Transfer {
     Accounts instance = Accounts.getInstance();
     Incomes incomesInstance = Incomes.getInstance();
     try {
-      System.out.println("open accounts window");
-      VBox transferVBox = new VBox();
-
 
       Text transferBetweenAccounts = new Text("Transfer between accounts:");
       transferBetweenAccounts.setId("titleText");
@@ -104,7 +101,7 @@ public class Transfer {
 
       priceEntry.setOnKeyPressed(e -> {
         if (e.getCode() == KeyCode.ENTER) {
-          confirmTransfer.fire(); // Simulate a click event on the logIn button
+          confirmTransfer.fire();
         }
       });
 
@@ -135,21 +132,29 @@ public class Transfer {
         }
         if (amountToAdd > instance.getAccounts().get(removeFromAccount)) {
           SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
-          throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
+          showAlert("You do not have enough money in the " + removeFromAccount
+                  + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
+          throw new IllegalArgumentException("You do not have enough money in the "
+                  + removeFromAccount + " account to transfer " + amountToAdd
+                  + " to the " + addToAccount + " account");
         }
 
         confirmTransferLabel.setVisible(true);
 
-        FadeTransition ftTransfer = new FadeTransition(javafx.util.Duration.millis(1750), confirmTransferLabel);
+        FadeTransition ftTransfer = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmTransferLabel);
         ftTransfer.setFromValue(1.0);
         ftTransfer.setToValue(0.0);
 
         System.out.println("Confirm transfer button pressed");
         ftTransfer.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-          writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File("src/main/resources/userfiles/"
+                        + GUI.getCurrentUser() + "/", GUI.getCurrentUser()
+                        + "transfer.csv"), true))) {
+          writer.write(removeFromAccount + "," + (amountToAdd * -1)
+                  + "," + LocalDate.now() + "," + 'B' + "\n");
           writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
         } catch (IOException f) {
           showAlert("An error occurred while trying to write to the file.");
@@ -181,7 +186,8 @@ public class Transfer {
       try {
         CSVReader CSVReaderInstance = CSVReader.getInstance();
 
-        incomeAccount.setItems(FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet()));
+        incomeAccount.setItems(
+                FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet()));
       } catch (IOException e) {
         showAlert("An error occurred while trying to read the file.");
       }
@@ -205,7 +211,7 @@ public class Transfer {
 
       amountIncome.setOnKeyPressed(e -> {
         if (e.getCode() == KeyCode.ENTER) {
-          confirmIncome.fire(); // Simulate a click event on the logIn button
+          confirmIncome.fire();
         }
       });
 
@@ -236,11 +242,13 @@ public class Transfer {
         }
 
         confirmIncomeLabel.setVisible(true);
-        FadeTransition ftIncome = new FadeTransition(javafx.util.Duration.millis(1750), confirmIncomeLabel);
+        FadeTransition ftIncome = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmIncomeLabel);
         ftIncome.setFromValue(1.0);
         ftIncome.setToValue(0.0);
 
-        incomesInstance.getIncomes().add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
+        incomesInstance.getIncomes().add(new Income(inncomeAccountName,
+                amountToAdd, 1, LocalDate.now()));
         System.out.println("Confirm income button pressed");
         ftIncome.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
@@ -252,8 +260,12 @@ public class Transfer {
         leftTransfer.getItems().clear();
         leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-          writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File("src/main/resources/userfiles/"
+                        + GUI.getCurrentUser() + "/", GUI.getCurrentUser()
+                        + "transfer.csv"), true))) {
+          writer.write(inncomeAccountName + "," + amountToAdd + ","
+                  + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
           showAlert("An error occurred while trying to write to the file.");
         }
@@ -322,13 +334,13 @@ public class Transfer {
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
 
-        Accounts accounts = Accounts.getInstance();
-
         confirmNewAccountLabel.setVisible(true);
-        FadeTransition ftNewAccount = new FadeTransition(javafx.util.Duration.millis(1750), confirmNewAccountLabel);
+        FadeTransition ftNewAccount = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmNewAccountLabel);
         ftNewAccount.setFromValue(1.0);
         ftNewAccount.setToValue(0.0);
 
+        Accounts accounts = Accounts.getInstance();
         accounts.addAccount(accountName, accountBalance);
         System.out.println("Confirm new account button pressed");
         ftNewAccount.play();
@@ -343,21 +355,29 @@ public class Transfer {
         incomeAccount.getItems().addAll(accounts.getAccounts().keySet());
 
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
-          writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'A' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File("src/main/resources/userfiles/"
+                        + GUI.getCurrentUser() + "/", GUI.getCurrentUser()
+                        + "transfer.csv"), true))) {
+          writer.write(accountName + "," + accountBalance + ","
+                  + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
           showAlert("An error occurred while trying to write to the file.");
         }
       });
 
 
-      transferBetweenAccountsHbox.getChildren().addAll(leftTransfer, arrow, rightTransfer, priceEntry, confirmTransfer);
+      transferBetweenAccountsHbox.getChildren().addAll(leftTransfer,
+              arrow, rightTransfer, priceEntry, confirmTransfer);
 
       registerIncomeHBox.getChildren().addAll(incomeAccount, amountIncome, confirmIncome);
 
       addNewAccountHBox.getChildren().addAll(newAccountName, newAccountBalance, confirmNewAccount);
 
-      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, confirmTransferHbox, registerIncome, registerIncomeHBox, confirmIncomeHbox, addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
+      VBox transferVBox = new VBox();
+      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox,
+              confirmTransferHbox, registerIncome, registerIncomeHBox, confirmIncomeHbox,
+              addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
       transferVBox.setSpacing(13);
 
       vbox = new VBox(transferVBox);

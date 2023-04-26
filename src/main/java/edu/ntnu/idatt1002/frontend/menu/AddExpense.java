@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +35,10 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * @version 0.5 - 19.04.2023
  */
 public class AddExpense {
-  public static void playErrorSound(){
+  /**
+   * Play error sound.
+   */
+  public static void playErrorSound() {
     SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
   }
 
@@ -58,15 +60,8 @@ public class AddExpense {
     text3.setId("titleText");
     text3.setLineSpacing(10);
 
-    ObservableList<String> options =
-            FXCollections.observableArrayList(
-                    "Rent",
-                    "Food",
-                    "Transportation",
-                    "Clothing",
-                    "Entertainment",
-                    "Other"
-            );
+    ObservableList<String> options = FXCollections.observableArrayList(
+            "Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
 
     final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setFocusTraversable(true);
@@ -97,7 +92,6 @@ public class AddExpense {
     prices.setId("textField");
     prices.setFocusTraversable(true);
 
-    // Replace the TextField object with an instance of the OutlinedTextField class
     TextField names = new TextField();
     names.setPromptText("Enter name");
     names.setId("textField");
@@ -113,7 +107,7 @@ public class AddExpense {
 
     names.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
-        confirmExpense.fire(); // Simulate a click event on the logIn button
+        confirmExpense.fire();
       }
     });
 
@@ -133,7 +127,8 @@ public class AddExpense {
       } else if (names.getText().isEmpty()) {
         playErrorSound();
         showAlert("Please enter a name.");
-      } else if (accountsInstance.getAccounts().get(accountMenu.getValue()) - Double.parseDouble(prices.getText()) < 0) {
+      } else if (accountsInstance.getAccounts().get(accountMenu.getValue())
+              - Double.parseDouble(prices.getText()) < 0) {
         showAlert("Not enough money in account.");
         categoryMenu.setValue(null);
         categoryMenu.setPromptText(originalPromptText);
@@ -143,20 +138,29 @@ public class AddExpense {
         String selectedOption = categoryMenu.getValue();
         String name = ('|' + names.getText() + '|');
         String tempText = prices.getText();
-        String accountName = (String) accountMenu.getValue();
+        String accountName = accountMenu.getValue();
         LocalDate date = datePicker.getValue();
         double price = Double.parseDouble(tempText);
         Expenses expenseInstance = Expenses.getInstance();
         switch (selectedOption) {
           case "Entertainment" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), expenseInstance.getEntertainment());
-          case "Food" -> expenseInstance.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), expenseInstance.getFood());
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          1, datePicker.getValue()), expenseInstance.getEntertainment());
+          case "Food" ->
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          2, datePicker.getValue()), expenseInstance.getFood());
           case "Transportation" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), expenseInstance.getTransportation());
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          3, datePicker.getValue()), expenseInstance.getTransportation());
           case "Clothing" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), expenseInstance.getClothing());
-          case "Other" -> expenseInstance.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), expenseInstance.getOther());
-          case "Rent" -> expenseInstance.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), expenseInstance.getRent());
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          4, datePicker.getValue()), expenseInstance.getClothing());
+          case "Other" ->
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          5, datePicker.getValue()), expenseInstance.getOther());
+          case "Rent" ->
+                  expenseInstance.addToArrayList(new Expense(name, price,
+                          6, datePicker.getValue()), expenseInstance.getRent());
           default -> showAlert("Error: invalid category selected.");
         }
 
@@ -171,8 +175,10 @@ public class AddExpense {
         } catch (IOException ioException) {
           showAlert("Error exporting to Excel: " + ioException.getMessage());
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(), GUI.getCurrentUser() + ".csv"), true))) {
-          writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
+                ExcelExporter.getOutputDirectory(), GUI.getCurrentUser() + ".csv"), true))) {
+          writer.write(selectedOption + "," + name
+                  + "," + date + "," + price + "," + accountName + "\n");
         } catch (IOException f) {
           showAlert("Error writing to file: " + f.getMessage());
         }

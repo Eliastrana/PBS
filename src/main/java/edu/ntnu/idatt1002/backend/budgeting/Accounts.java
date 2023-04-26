@@ -5,13 +5,14 @@ import java.util.Map;
 
 /**
  * A class that represents a collection of accounts.
- * The collection of accounts is a HashMap with the account name as key and the account balance as value.
- * Uses singleton pattern to avoid multiple instances of the class, and to ensure data encapsulation and integrity.
+ * The collection of accounts is a HashMap with the account name as key
+ * and the account balance as value.
+ * Uses singleton pattern to avoid multiple instances of the class,
+ * and to ensure data encapsulation and integrity.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
  * @version 0.5 - 19.04.2023
  */
-
 public class Accounts {
   /**
    * A hashmap with all the accounts.
@@ -66,7 +67,6 @@ public class Accounts {
    * @throws NullPointerException     if the account name is null or empty.
    * @throws IllegalArgumentException if the amount is negative.
    */
-
   public void addToAccount(String accountName, double amount) {
     if (amount < 0) {
       throw new IllegalArgumentException("Amount cannot be negative");
@@ -110,10 +110,21 @@ public class Accounts {
     return accountsHashmap;
   }
 
+  /**
+   * Validate account name boolean.
+   *
+   * @param accountName the account name
+   * @return the boolean
+   */
   public boolean validateAccountName(String accountName) {
     return accountsHashmap.containsKey(accountName);
   }
 
+  /**
+   * Sets accounts hashmap.
+   *
+   * @param accountsHashmap the accounts hashmap
+   */
   public void setAccountsHashmap(Map<String, Double> accountsHashmap) {
     this.accountsHashmap = (HashMap<String, Double>) accountsHashmap;
   }
