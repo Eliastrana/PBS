@@ -32,13 +32,11 @@ public class DoughnutChart extends PieChart {
    * Constructs a new doughnut chart.
    *
    * @param pieData the data to be displayed in the chart
-   * @param style   the style
    */
   public DoughnutChart(ObservableList<Data> pieData, String style) {
     super(pieData);
 
     stylesheet = style;
-    System.out.println(stylesheet);
     if (Objects.equals(stylesheet, "Darkmode")) {
       innerCircle = new Circle();
       innerCircle.setFill(Paint.valueOf("#3b3b3b"));
@@ -56,8 +54,7 @@ public class DoughnutChart extends PieChart {
    * This method is called whenever the layout of the chart is updated.
    */
   @Override
-  protected void layoutChartChildren(double top, double left, double contentWidth,
-                                     double contentHeight) {
+  protected void layoutChartChildren(double top, double left, double contentWidth, double contentHeight) {
     super.layoutChartChildren(top, left, contentWidth, contentHeight);
 
     addInnerCircleIfNotPresent();
@@ -70,13 +67,10 @@ public class DoughnutChart extends PieChart {
    */
 
   private void addInnerCircleIfNotPresent() {
-    if (getData().size() > 0) {
+    if (!getData().isEmpty()) {
       Node pie = getData().get(0).getNode();
-      if (pie.getParent() instanceof Pane parent) {
-
-        if (!parent.getChildren().contains(innerCircle)) {
+      if (pie.getParent() instanceof Pane parent && (!parent.getChildren().contains(innerCircle))) {
           parent.getChildren().add(innerCircle);
-        }
       }
     }
   }
@@ -116,16 +110,15 @@ public class DoughnutChart extends PieChart {
 
   private void changeLabelColor() {
     for (Data data : getData()) {
-      data.nameProperty().addListener((observable, oldValue, newValue) -> {
+      data.nameProperty().addListener((observable, oldValue, newValue) ->
         Platform.runLater(() -> {
           for (Node node : lookupAll(".chart-pie-label")) {
             if (node instanceof Text textNode && !(node.getParent() instanceof Legend)) {
-              textNode.getStyleClass().add("chart-pie-label");
+                textNode.getStyleClass().add("chart-pie-label");
               // No need to change the fill, as it will be picked up from the CSS
             }
           }
-        });
-      });
+        }));
     }
   }
 

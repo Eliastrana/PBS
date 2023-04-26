@@ -52,6 +52,14 @@ public class ForgotPassword {
    * The input field for the email.
    */
   private static TextField emailTextField;
+  private static final Random random = new Random();
+  private static final String CSS_FILE = "/Styling.css";
+  private static final String TEXTFIELD = "textField";
+
+
+  public static int getRandomInt (){
+    return random.nextInt(1) +1;
+  }
 
   /**
    * A method that creates the forgot password view.
@@ -64,11 +72,9 @@ public class ForgotPassword {
     Pane background = new Pane();
     background.setPrefSize(1000, 700);
 
-    Random randInt = new Random();
-    int randomInt = randInt.nextInt(2) + 1;
-    background.getStylesheets().add("/Styling.css");
+    background.getStylesheets().add(CSS_FILE);
 
-    background.getStyleClass().add("loginScreen" + randomInt);
+    background.getStyleClass().add("loginScreen" + getRandomInt());
 
     VBox forgottenPasswordVBox = new VBox();
     forgottenPasswordVBox.setId("overlayLogin");

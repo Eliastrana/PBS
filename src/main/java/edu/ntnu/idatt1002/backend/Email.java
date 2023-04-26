@@ -20,19 +20,19 @@ public class Email {
   /**
    * The email address of the sender.
    */
-  private final String senderEmail = "idatt1002.ntnu.pbs@gmail.com";
+  private static final String SENDER_EMAIL = "idatt1002.ntnu.pbs@gmail.com";
   /**
    * The password of the sender email.
    */
-  private final String senderPassword = "ewqtptwvusfuzrlm";
+  private static final String SENDER_PASSWORD = "ewqtptwvusfuzrlm";
   /**
    * The Smtp host.
    */
-  private final String smtpHost = "smtp.gmail.com";
+  private static final String SMTPHOST = "smtp.gmail.com";
   /**
    * The Smtp port.
    */
-  private final String smtpPort = "587";
+  private static final String SMTPPORT = "587";
 
   /**
    * The email address of the recipient.
@@ -56,40 +56,64 @@ public class Email {
    */
   public void sendEmail(String email, String password) throws MessagingException {
 
-    String message = "Your password is:";
-
     recipientEmail = email;
     passwordString = password;
 
+    //String emailPhoto = "src/main/resources/icon.png";
+
+
+    // Create a JavaMail session with the SMTP server
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", smtpHost);
-    props.put("mail.smtp.port", smtpPort);
+    props.put("mail.smtp.host", SMTPHOST);
+    props.put("mail.smtp.port", SMTPPORT);
 
     Session session = Session.getInstance(props, new Authenticator() {
+      @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(senderEmail, senderPassword);
+        return new PasswordAuthentication(SENDER_EMAIL, SENDER_PASSWORD);
       }
     });
 
+    // Create a new email message
     MimeMessage emailMessage = new MimeMessage(session);
-    emailMessage.setFrom(new InternetAddress(senderEmail));
+    emailMessage.setFrom(new InternetAddress(SENDER_EMAIL));
     emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
     emailMessage.setSubject(subject);
-
-    MimeBodyPart htmlPart = new MimeBodyPart();
-    htmlPart.setContent("<html> <body style='background-color: #f2f2f2;'> "
-            + "<div style='text-align: center;'>"
-            + "<h1>Reset your password!</h1> "
-            + "<p> Your master-password is: " + passwordString + "</p>"
-            + "<p> Best regard, Private Budgeting System.</p>" + "</div>"
-            + "</body> </html>", "text/html");
-
+    // Create a MimeMultipart object for the HTML content and the image
     MimeMultipart multipart = new MimeMultipart("related");
+
+// Create a MimeBodyPart for the HTML content
+    MimeBodyPart htmlPart = new MimeBodyPart();
+    htmlPart.setContent("<html> <body style='background-color: #f2f2f2;'> " +
+            "<div style='text-align: center;'>" +
+            "<h1>Reset your password!</h1> " +
+            //"<img src=\"cid:image1\">" +
+            "<p> Your master-password is: " + passwordString + "</p>" +
+            "<p> Best regard, Private Budgeting System.</p>" +
+            "</div>" +
+            "</body> </html>", "text/html");
+
+
+// Create a MimeBodyPart for the image
+//    MimeBodyPart imagePart = new MimeBodyPart();
+////    Random rand = new Random();
+//    int n = rand.nextInt(5) + 1;
+//    DataSource fds = new FileDataSource("src/main/resources/memes/mailmeme"+n+".jpg");
+//    DataSource fds = new FileDataSource(FileUtil.getPictureResourceFilePath("memes/mailmeme" + n + ".jpg"));
+//    imagePart.setDataHandler(new DataHandler(fds));
+//    imagePart.setHeader("Content-ID", "<image1>");
+
+// Add both parts to the MimeMultipart object
     multipart.addBodyPart(htmlPart);
+    //multipart.addBodyPart(imagePart);
+
+// Set the content of the MimeMessage to the MimeMultipart object
     emailMessage.setContent(multipart);
 
-    send(emailMessage, senderEmail, senderPassword);
+
+    // Send the email message
+    send(emailMessage, SENDER_EMAIL, SENDER_PASSWORD);
   }
 }

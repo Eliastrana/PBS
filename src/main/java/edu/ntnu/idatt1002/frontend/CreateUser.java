@@ -26,14 +26,19 @@ import java.util.Random;
  * @version 0.5 - 19.04.2023
  */
 public class CreateUser {
+  private static final String CSS_FILE = "/Styling.css";
+  private static final String TEXTFIELD = "textField";
+  private static final String ERRORTEXT = "errorText";
+  private static final String PASSWORD_REQUIREMENTS = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.";
+  private static final Random random = new Random();
   /**
    * A text field to enter the username.
    */
-  public static TextField username = new TextField();
+  private static TextField username = new TextField();
   /**
    * The current user.
    */
-  public static String currentUser;
+  private static String currentUser;
 
   /**
    * Returns the current user.
@@ -52,6 +57,9 @@ public class CreateUser {
   public static void setCurrentUser(String currentUser) {
     CreateUser.currentUser = currentUser;
   }
+  public static int getRandomInt (){
+    return random.nextInt(1) +1;
+  }
 
   /**
    * A method that creates the create user view.
@@ -59,19 +67,15 @@ public class CreateUser {
    * @param controller the controller
    * @return the view as a parent
    */
-  public Parent createUserView(CreateUserController controller) {
+  public static Parent createUserView(CreateUserController controller) {
 
     Pane background = new Pane();
     background.setPrefSize(1000, 700);
 
 
-    background.getStylesheets().add("/Styling.css");
+    background.getStylesheets().add(CSS_FILE);
 
-    Random randomBackground = new Random();
-    int randomInt = randomBackground.nextInt(1) + 1;
-    background.getStyleClass().add("loginScreen" + randomInt);
-
-    System.out.println("Opening createUser page");
+    background.getStyleClass().add("loginScreen" + getRandomInt());
 
     VBox loginVBox = new VBox();
     loginVBox.setPadding(new Insets(10));
@@ -80,7 +84,7 @@ public class CreateUser {
     loginVBox.setSpacing(20);
     loginVBox.setMaxSize(300, 400);
 
-    loginVBox.getStylesheets().add("/Styling.css");
+    loginVBox.getStylesheets().add(CSS_FILE);
     loginVBox.setId("overlayLogin");
 
     Text welcomeText = new Text("Create user ");
@@ -93,10 +97,10 @@ public class CreateUser {
     usernameBox.setSpacing(1);
 
     username.setPromptText("Enter username");
-    username.setId("textField");
+    username.setId(TEXTFIELD);
 
     Text usernameError = new Text();
-    usernameError.setId("errorText");
+    usernameError.setId(ERRORTEXT);
 
     usernameBox.getChildren().addAll(username, usernameError);
 
@@ -105,10 +109,10 @@ public class CreateUser {
 
     TextField email = new TextField();
     email.setPromptText("Enter email");
-    email.setId("textField");
+    email.setId(TEXTFIELD);
 
     Text emailError = new Text();
-    emailError.setId("errorText");
+    emailError.setId(ERRORTEXT);
 
     emailBox.getChildren().addAll(email, emailError);
 
@@ -117,10 +121,10 @@ public class CreateUser {
 
     PasswordField password = new PasswordField();
     password.setPromptText("Enter password");
-    password.setId("textField");
+    password.setId(TEXTFIELD);
 
     Text passwordError = new Text();
-    passwordError.setId("errorText");
+    passwordError.setId(ERRORTEXT);
 
     passwordBox.getChildren().addAll(password, passwordError);
 
@@ -129,10 +133,10 @@ public class CreateUser {
 
     PasswordField password2 = new PasswordField();
     password2.setPromptText("Repeat password");
-    password2.setId("textField");
+    password2.setId(TEXTFIELD);
 
     Text password2Error = new Text();
-    password2Error.setId("errorText");
+    password2Error.setId(ERRORTEXT);
 
     passwordBox2.getChildren().addAll(password2, password2Error);
 
@@ -165,22 +169,12 @@ public class CreateUser {
                 Email is not valid. It needs to be in the format:
                 username@email.domain
                 """);
-        System.out.println("Email is not valid");
         return;
       } else if (!CreateUserBackend.isValidPassword(passwordStringTest1)) {
-        passwordError.setText("""
-                Password is not valid. It must:
-                Contain 1 uppercase letter
-                Contain 1 lowercase letter
-                Contain 1 number
-                Contain 1 special character
-                Be between 8 and 20 characters long
-                """);
-        System.out.println("Password is not valid");
+        passwordError.setText(PASSWORD_REQUIREMENTS);
         return;
       } else if (!passwordStringTest1.equals(passwordStringTest2)) {
         password2Error.setText("Passwords do not match");
-        System.out.println("Passwords do not match");
         return;
       } else {
         passwordString = passwordStringTest1;
@@ -190,7 +184,7 @@ public class CreateUser {
         currentUser = username.getText();
         controller.handleCreateButton(username.getText(), passwordString, email.getText());
       } catch (IOException ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException("Something went wrong with the file");
       }
     });
 
@@ -212,7 +206,7 @@ public class CreateUser {
     loginVBox.getChildren().addAll(welcomeText, welcomeText2, createUserBox, createUser);
 
     StackPane backgroundAndLogin = new StackPane(background, backButtonBox, loginVBox);
-    backgroundAndLogin.getStylesheets().add("/Styling.css");
+    backgroundAndLogin.getStylesheets().add(CSS_FILE);
 
 
     VBox vbox = new VBox(backgroundAndLogin);
