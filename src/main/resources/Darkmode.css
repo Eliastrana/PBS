@@ -469,3 +469,9 @@
 .chart-legend-item .symbol {
     -fx-background-radius: 0;
 }
+
+#confirmLabel {
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-font: 15px "Helvetica Neue";
+}
