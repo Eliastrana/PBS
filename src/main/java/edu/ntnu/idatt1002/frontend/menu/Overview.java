@@ -374,6 +374,7 @@ public class Overview {
     List<String[]> previousLines = new ArrayList<String[]>();
     BarChart<String, Number> barChart = null;
     HashMap<String, Double> expensesToBarChart = new HashMap<>();
+    String [] categoriesToDisplay = {"Rent", "Entertainment", "Food", "Transportation", "Other"};
     try {
       br = new BufferedReader(new FileReader(csvFile));
       while ((line = br.readLine()) != null) {
@@ -384,39 +385,50 @@ public class Overview {
         }
         if (data[0].equalsIgnoreCase("Rent")) {
           expensesToBarChart.put(data[0], instance.getTotalOfRent(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Rent")) {
+          expensesToBarChart.put("Rent", instance.getTotalOfRent(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Entertainment")) {
           expensesToBarChart.put(data[0], instance.getTotalOfEntertainment(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Entertainment")) {
+          expensesToBarChart.put("Entertainment", instance.getTotalOfEntertainment(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Food")) {
           expensesToBarChart.put(data[0], instance.getTotalOfFood(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Food")) {
+          expensesToBarChart.put("Food", instance.getTotalOfFood(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Transportation")) {
           expensesToBarChart.put(data[0], instance.getTotalOfTransportation(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Transportation")) {
+          expensesToBarChart.put("Transportation", instance.getTotalOfTransportation(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Other")) {
           expensesToBarChart.put(data[0], instance.getTotalOfOther(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Other")) {
+          expensesToBarChart.put("Other", instance.getTotalOfOther(expensesToTable));
         }
         if (data[0].equalsIgnoreCase("Clothing")) {
           expensesToBarChart.put(data[0], instance.getTotalOfClothing(expensesToTable));
+        } else if (!expensesToBarChart.containsKey("Clothing")) {
+          expensesToBarChart.put("Clothing", instance.getTotalOfClothing(expensesToTable));
         }
       }
       // Create the bar chart dataset
       ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
       for (String[] lineData : currentLines) {
-        currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+        currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
       }
-      XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+
+      XYChart.Series<String, Number> currentSeries = new XYChart.Series<>(currentData);
       currentSeries.setName(currentMonth);
 
       ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
-      for (Map.Entry<String, Double> entry : expensesToBarChart.entrySet()) {
-        String category = entry.getKey();
-        double total = entry.getValue();
-        previousData.add(new XYChart.Data<String, Number>(category, total));
+      for (String category : categoriesToDisplay) { // replace categoriesToDisplay with a list of all categories you want to display
+        previousData.add(new XYChart.Data<String, Number>(category, expensesToBarChart.getOrDefault(category, 0.0)));
       }
 
-      XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+      XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
       previousSeries.setName("Expenses for " + currentMonth);
 
       // Create the bar chart
@@ -424,7 +436,7 @@ public class Overview {
       xAxis.setLabel("Category");
       NumberAxis yAxis = new NumberAxis();
       yAxis.setLabel("Value");
-      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart = new BarChart<>(xAxis, yAxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
 
@@ -432,7 +444,7 @@ public class Overview {
         applyDarkModeStyles(barChart);
       }
 
-      // Show the bar chart
+    // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
     } finally {
