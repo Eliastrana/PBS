@@ -93,7 +93,7 @@ public class LoginBackend {
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       while ((line = br.readLine()) != null) {
         String[] user = line.split(",");
-        if (user[0].equals(username) || user[3].equals(username)) {
+        if (user[0].equals(username)) {
           String encryptedPassword = user[1];
           String salt = user[2];
           String decryptedPassword = decrypt(encryptedPassword, salt);
