@@ -215,6 +215,7 @@ public class GUI extends Application {
     primaryStage.setHeight(700);
     overviewWindow.getStylesheets().add(stylesheet);
 
+    ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(false);
 

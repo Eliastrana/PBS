@@ -66,6 +66,15 @@ public class Transfers {
    * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
    */
   public Transfers(String accountName, double amount, String date, char transferType) {
+    if (accountName.isBlank()) {
+      throw new NullPointerException("Account name cannot be blank");
+    }
+    if (date.isBlank()) {
+      throw new NullPointerException("Date cannot be blank");
+    }
+
+
+
     this.accountName = accountName;
     this.date = date;
     this.amount = amount;
@@ -99,6 +108,16 @@ public class Transfers {
    * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
    */
   public void addTransfer(String account, double amount, String date, char transferType) {
+    if (account == null || date == null) {
+      throw new NullPointerException("Account or date cannot be null");
+    }
+
+    if (date.isBlank()) {
+      throw new IllegalArgumentException("Date cannot be blank");
+    }
+    if (account.isBlank()) {
+      throw new IllegalArgumentException("Account cannot be blank");
+    }
     Transfers newTransfer = new Transfers(account, amount, date, transferType);
     transfersList.add(newTransfer);
   }
