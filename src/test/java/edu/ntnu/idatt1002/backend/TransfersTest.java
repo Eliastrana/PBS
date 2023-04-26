@@ -29,11 +29,7 @@ public class TransfersTest {
       assertThrows(NullPointerException.class, () -> new Transfers("", 100, "Today", 'A'));
     }
 
-    @Test
-    @DisplayName("Test constructor with negative amount")
-    void negativeAccountAmountTest() {
-      assertThrows(IllegalArgumentException.class, () -> new Transfers("Income", -1, "Today", 'A'));
-    }
+
 
     @Test
     @DisplayName("Test constructor with blank date")
@@ -61,13 +57,6 @@ public class TransfersTest {
     void blankAccountNameTest() {
       Transfers transfers = new Transfers("Income", 100, "Today", 'A');
       assertThrows(IllegalArgumentException.class, () -> transfers.addTransfer("", 200, "Last day", 'B'));
-    }
-
-    @Test
-    @DisplayName("Test addTransfers with negative amount")
-    void negativeAccountAmountTest() {
-      Transfers transfers = new Transfers("Income", 100, "Today", 'A');
-      assertThrows(IllegalArgumentException.class, () -> transfers.addTransfer("accountName2", -200, "Last day", 'B'));
     }
   }
 }

@@ -69,9 +69,6 @@ public class Transfers {
     if (accountName.isBlank()) {
       throw new NullPointerException("Account name cannot be blank");
     }
-    if (amount < 0) {
-      throw new IllegalArgumentException("Amount cannot be negative");
-    }
     if (date.isBlank()) {
       throw new NullPointerException("Date cannot be blank");
     }
@@ -114,9 +111,7 @@ public class Transfers {
     if (account == null || date == null) {
       throw new NullPointerException("Account or date cannot be null");
     }
-    if (amount < 0) {
-      throw new IllegalArgumentException("Amount cannot be negative");
-    }
+
     if (date.isBlank()) {
       throw new IllegalArgumentException("Date cannot be blank");
     }
