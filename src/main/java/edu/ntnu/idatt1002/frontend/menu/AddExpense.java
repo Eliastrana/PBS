@@ -7,6 +7,7 @@ import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
 import edu.ntnu.idatt1002.model.ExcelExporter;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -16,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -97,6 +99,10 @@ public class AddExpense {
     names.setId("textField");
     names.setFocusTraversable(true);
 
+    Label confirmLabel = new Label("The expense has been added.");
+    confirmLabel.setVisible(false);
+    confirmLabel.setId("confirmLabel");
+
     Button confirmExpense = new Button("Confirm");
     confirmExpense.setId("actionButton");
     confirmExpense.setFocusTraversable(true);
@@ -157,6 +163,13 @@ public class AddExpense {
         }
         System.out.println("Purchase confirmed");
         System.out.println("Category: " + selectedOption);
+
+        confirmLabel.setVisible(true);
+
+        FadeTransition ft = new FadeTransition(Duration.millis(1750), confirmLabel);
+        ft.setFromValue(1.0);
+        ft.setToValue(0.0);
+
         try {
           ExcelExporter instance = ExcelExporter.getInstance();
           instance.exportToExcel();
@@ -170,7 +183,7 @@ public class AddExpense {
         }
         names.setText(null);
         prices.setText(null);
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        ft.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
       }
     });
@@ -179,7 +192,7 @@ public class AddExpense {
     title.setAlignment(Pos.CENTER);
     title.setSpacing(40);
 
-    VBox categoryNamePrice = new VBox(accountMenu, categoryMenu, prices, names);
+    VBox categoryNamePrice = new VBox(accountMenu, categoryMenu, names, prices);
     categoryNamePrice.setPadding(new Insets(25));
     categoryNamePrice.setSpacing(20);
     categoryNamePrice.setAlignment(Pos.TOP_LEFT);
@@ -193,7 +206,7 @@ public class AddExpense {
     dateAndInput.setAlignment(Pos.CENTER);
     dateAndInput.setPadding(new Insets(15));
 
-    VBox dateAndInputAndConfirm = new VBox(title, dateAndInput, confirmExpense);
+    VBox dateAndInputAndConfirm = new VBox(title, dateAndInput, confirmExpense, confirmLabel);
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
     dateAndInputAndConfirm.setSpacing(20);
 
