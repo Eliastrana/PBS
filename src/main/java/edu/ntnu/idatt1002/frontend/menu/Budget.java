@@ -4,6 +4,7 @@ import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -20,9 +21,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
@@ -114,7 +118,7 @@ public class Budget {
 
         String categorymonth = category + month;
 
-        File csvFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+        File csvFile = new File(ExcelExporter.getBudgetPath());
 
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
 
@@ -135,7 +139,7 @@ public class Budget {
           reader.close();
 
           // Create a new file and write the updated data to it
-          File tempFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget_temp.csv");
+          File tempFile = new File(ExcelExporter.getTempBudgetPath());
           FileWriter fw = new FileWriter(tempFile);
           BufferedWriter bw = new BufferedWriter(fw);
 
@@ -154,34 +158,37 @@ public class Budget {
           fw.close();
 
           // Replace the original file with the temporary file
-          csvFile.delete();
-          tempFile.renameTo(csvFile);
+          Files.delete(Path.of(ExcelExporter.getBudgetPath()));
+          if (tempFile.renameTo(csvFile)){
+            Logger.getLogger(Budget.class.getName()).info("File renamed successfully.");
+          } else {
+            Logger.getLogger(Budget.class.getName()).info("File rename failed.");
+          }
 
         } catch (IOException f) {
-          System.err.println("Error writing to file: " + f.getMessage());
+          Logger.getLogger(Budget.class.getName()).info("File not found.");
         }
-
 
         String currentMonth = TimeOfDayChecker.getCurrentMonth();
         String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
         // Read the CSV file
-        File file = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
+        File file = new File(ExcelExporter.getBudgetPath());
         if (!file.exists()) {
           try {
-            file.createNewFile();
+            if (file.createNewFile()) {
+              Logger.getLogger(Budget.class.getName()).info("File created successfully.");
+            }
           } catch (IOException f) {
             f.printStackTrace();
           }
         }
-        BufferedReader br = null;
-        String line = "";
         String csvSplitBy = ",";
         List<String[]> currentLines = new ArrayList<String[]>();
         List<String[]> previousLines = new ArrayList<String[]>();
         BarChart<String, Number> barChart = null;
-        try {
-          br = new BufferedReader(new FileReader(csvFile));
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+          String line;
           while ((line = br.readLine()) != null) {
             String[] data = line.split(csvSplitBy);
             // Filter the data by the current month
@@ -220,17 +227,10 @@ public class Budget {
           budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
 
           // Show the bar chart
-        } catch (IOException f) {
-          f.printStackTrace();
-        } finally {
-          if (br != null) {
-            try {
-              br.close();
-            } catch (IOException f) {
-              f.printStackTrace();
-            }
-          }
+        } catch (IOException exception) {
+          exception.printStackTrace();
         }
+
         categoryMenu.setValue("Select Category");
         GUI.setPaneToUpdate("overview");
         GUI.setPaneToUpdate("budget");
@@ -254,19 +254,19 @@ public class Budget {
     File file = new File(csvFile);
     if (!file.exists()) {
       try {
-        file.createNewFile();
+        if (file.createNewFile()) {
+          Logger.getLogger(Budget.class.getName()).info("File created successfully.");
+        }
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
-    BufferedReader br = null;
     String line = "";
     String csvSplitBy = ",";
-    List<String[]> currentLines = new ArrayList<String[]>();
-    List<String[]> previousLines = new ArrayList<String[]>();
+    List<String[]> currentLines = new ArrayList<>();
+    List<String[]> previousLines = new ArrayList<>();
     BarChart<String, Number> barChart = null;
-    try {
-      br = new BufferedReader(new FileReader(csvFile));
+    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
         // Filter the data by the current month
@@ -281,16 +281,16 @@ public class Budget {
       // Create the bar chart dataset
       ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
       for (String[] lineData : currentLines) {
-        currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+        currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
       }
-      XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+      XYChart.Series<String, Number> currentSeries = new XYChart.Series<>(currentData);
       currentSeries.setName(currentMonth);
 
       ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
       for (String[] lineData : previousLines) {
-        previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+        previousData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
       }
-      XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+      XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
       previousSeries.setName(previousMonth);
 
       // Create the bar chart
@@ -298,26 +298,18 @@ public class Budget {
       xAxis.setLabel("Category");
       NumberAxis yAxis = new NumberAxis();
       yAxis.setLabel("Value");
-      barChart = new BarChart<String, Number>(xAxis, yAxis);
+      barChart = new BarChart<>(xAxis, yAxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
       if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
         applyDarkModeStylesToBudget(barChart);
       }
 
-
       // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
-    } finally {
-      if (br != null) {
-        try {
-          br.close();
-        } catch (IOException f) {
-          f.printStackTrace();
-        }
-      }
     }
+
 
     budgetAmountHbox.getChildren().addAll(budgetAmountField, confirmAmount);
     budgetAmountHbox.setAlignment(Pos.CENTER);
@@ -339,25 +331,21 @@ public class Budget {
     NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
     yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
-    barChart.lookupAll(".chart-legend-item-text").forEach(node -> {
-      node.setStyle("-fx-text-fill: #FFFFFF;");
-    });
+    barChart.lookupAll(".chart-legend-item-text").forEach(node ->
+      node.setStyle("-fx-text-fill: #FFFFFF;"));
 
-    barChart.lookupAll(".series0 .chart-bar").forEach(node -> {
-      node.setStyle("-fx-bar-fill: #FF0000;"); // Red
-    });
+    barChart.lookupAll(".series0 .chart-bar").forEach(node ->
+      node.setStyle("-fx-bar-fill: #FF0000;"));
 
-    barChart.lookupAll(".series1 .chart-bar").forEach(node -> {
-      node.setStyle("-fx-bar-fill: #FFFF00;"); // Yellow
-    });
+    barChart.lookupAll(".series1 .chart-bar").forEach(node ->
+      node.setStyle("-fx-bar-fill: #FFFF00;")); // Yellow
 
     // Set legend symbol colors
-    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node -> {
-      node.setStyle("-fx-background-color: #FF0000, white;"); // Red
-    });
+    barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node ->
+      node.setStyle("-fx-background-color: #FF0000, white;")); // Red
 
-    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node -> {
-      node.setStyle("-fx-background-color: #FFFF00, white;"); // Yellow
-    });
+    barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node ->
+      node.setStyle("-fx-background-color: #FFFF00, white;") // Yellow
+    );
   }
 }

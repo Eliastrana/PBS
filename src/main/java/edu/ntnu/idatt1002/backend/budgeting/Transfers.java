@@ -17,7 +17,7 @@ public class Transfers {
   /**
    * A list of transfers.
    */
-  public static List<Transfers> transfers;
+  private List<Transfers> transfersList;
   /**
    * The single instance of the class used in the singleton pattern.
    */
@@ -47,7 +47,7 @@ public class Transfers {
    * Constructor to initialize an object of the transfers arraylist.
    */
   public Transfers(String type) {
-    transfers = new ArrayList<Transfers>();
+    transfersList = new ArrayList<>();
     this.type = type;
   }
 
@@ -96,7 +96,7 @@ public class Transfers {
    * @return the list of transfers.
    */
   public List<Transfers> transfersList() {
-    return transfers;
+    return transfersList;
   }
 
   /**
@@ -119,7 +119,7 @@ public class Transfers {
       throw new IllegalArgumentException("Account cannot be blank");
     }
     Transfers newTransfer = new Transfers(account, amount, date, transferType);
-    transfers.add(newTransfer);
+    transfersList.add(newTransfer);
   }
 
   /**
@@ -146,7 +146,7 @@ public class Transfers {
    * @return the account name.
    */
   public List<Transfers> getTransfers() {
-    return transfers;
+    return transfersList;
   }
 
   /**
@@ -155,7 +155,7 @@ public class Transfers {
    * @param transfers the account name.
    */
   public void setTransfers(List<Transfers> transfers) {
-    Transfers.transfers = transfers;
+    this.transfersList = transfers;
   }
 
   /**

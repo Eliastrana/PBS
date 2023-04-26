@@ -34,7 +34,7 @@ public class ExcelExporter {
   /**
    * The Output directory.
    */
-  static String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
+  private static final String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
   /**
    * The Output directory file.
    */
@@ -498,5 +498,21 @@ public class ExcelExporter {
     monthlyTotal += getTotalOfRent(expensesToTable);
     monthlyTotal += getTotalOfTransportation(expensesToTable);
     return monthlyTotal;
+  }
+
+  public static String getOutputDirectory() {
+    return outputDirectory;
+  }
+
+  public static String getBankStatementPath(){
+    return outputDirectory + GUI.getCurrentUser() + "bankstatement.pdf";
+  }
+
+  public static String getBudgetPath(){
+    return outputDirectory + GUI.getCurrentUser() + "budget.csv";
+  }
+
+  public static String getTempBudgetPath(){
+    return outputDirectory + GUI.getCurrentUser() + "budget_temp.csv";
   }
 }

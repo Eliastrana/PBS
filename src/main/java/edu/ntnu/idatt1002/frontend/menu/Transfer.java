@@ -2,6 +2,7 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import edu.ntnu.idatt1002.backend.budgeting.Accounts;
 import edu.ntnu.idatt1002.backend.budgeting.Income;
+import edu.ntnu.idatt1002.backend.budgeting.Incomes;
 import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
@@ -27,8 +28,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
-import static edu.ntnu.idatt1002.backend.budgeting.Incomes.incomes;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 /**
@@ -46,6 +45,9 @@ public class Transfer {
    */
   public static VBox transferView() {
     VBox vbox = null;
+
+    Accounts instance = Accounts.getInstance();
+    Incomes incomesInstance = Incomes.getInstance();
     try {
       System.out.println("open accounts window");
       VBox transferVBox = new VBox();
@@ -61,7 +63,7 @@ public class Transfer {
 
       ComboBox<String> leftTransfer = new ComboBox<>();
       leftTransfer.setPromptText("Select Account");
-      leftTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+      leftTransfer.setItems(FXCollections.observableArrayList(instance.getAccounts().keySet()));
       leftTransfer.setFocusTraversable(true);
       leftTransfer.setId("categoryMenuButton");
 
@@ -75,9 +77,9 @@ public class Transfer {
       rightTransfer.setPromptText("Select Account");
 
       rightTransfer.setDisable(true);
-      rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+      rightTransfer.setItems(FXCollections.observableArrayList(instance.getAccounts().keySet()));
       leftTransfer.setOnAction(e -> {
-        rightTransfer.setItems(FXCollections.observableArrayList(accounts.keySet()));
+        rightTransfer.setItems(FXCollections.observableArrayList(instance.getAccounts().keySet()));
         rightTransfer.setDisable(false);
         rightTransfer.getItems().remove(leftTransfer.getValue());
       });
@@ -131,7 +133,7 @@ public class Transfer {
           showAlert("You cannot transfer a negative amount of money.");
           throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
         }
-        if (amountToAdd > accounts.get(removeFromAccount)) {
+        if (amountToAdd > instance.getAccounts().get(removeFromAccount)) {
           SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
           showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
           throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
@@ -238,7 +240,7 @@ public class Transfer {
         ftIncome.setFromValue(1.0);
         ftIncome.setToValue(0.0);
 
-        incomes.add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
+        incomesInstance.getIncomes().add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
         System.out.println("Confirm income button pressed");
         ftIncome.play();
         SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));

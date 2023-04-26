@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.backend.budgeting;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that represents a collection of incomes.
@@ -15,12 +16,7 @@ public class Incomes {
   /**
    * An ArrayList consisting of incomes.
    */
-  public static ArrayList<Income> incomes;
-
-  /**
-   * An ArrayList of all the incomes.
-   */
-  public static ArrayList<Income> allIncomes;
+  private List<Income> incomesList;
 
   /**
    * The single instance of the class used in the singleton pattern.
@@ -30,7 +26,7 @@ public class Incomes {
   /**
    * Private constructor to avoid multiple instances of the class.
    */
-  public Incomes() {
+  private Incomes() {
   } // Singleton
 
   /**
@@ -46,7 +42,7 @@ public class Incomes {
    * Creates an ArrayList of incomes.
    */
   public void createIncomes() {
-    incomes = new ArrayList<>();
+    incomesList = new ArrayList<>();
   }
 
   /**
@@ -54,8 +50,8 @@ public class Incomes {
    *
    * @return the ArrayList of incomes.
    */
-  public ArrayList<Income> getIncomes() {
-    return incomes;
+  public List<Income> getIncomes() {
+    return incomesList;
   }
 
   /**
@@ -63,9 +59,10 @@ public class Incomes {
    *
    * @return an ArrayList of all the incomes.
    */
-  public ArrayList<Income> createAllIncomes() {
+  public List<Income> createAllIncomes() {
+    List<Income> allIncomes;
     allIncomes = new ArrayList<>();
-    allIncomes.addAll(incomes);
+    allIncomes.addAll(incomesList);
     return allIncomes;
   }
 
@@ -75,7 +72,7 @@ public class Incomes {
    * @param income the income to be added.
    * @param aList  the ArrayList to which the income is to be added.
    */
-  public void addToArrayList(Income income, ArrayList<Income> aList) {
+  public void addToArrayList(Income income, List<Income> aList) {
     if (income == null) {
       throw new NullPointerException("Income cannot be null");
     }

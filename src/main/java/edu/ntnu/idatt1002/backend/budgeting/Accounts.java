@@ -1,6 +1,7 @@
 package edu.ntnu.idatt1002.backend.budgeting;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class that represents a collection of accounts.
@@ -15,7 +16,7 @@ public class Accounts {
   /**
    * A hashmap with all the accounts.
    */
-  public static HashMap<String, Double> accounts;
+  private HashMap<String, Double> accountsHashmap;
   /**
    * The single instance of the class used in the singleton pattern.
    */
@@ -25,7 +26,7 @@ public class Accounts {
    * Private constructor to avoid multiple instances of the class. Creates the hashmap to be used.
    */
   private Accounts() {
-    accounts = new HashMap<>();
+    accountsHashmap = new HashMap<>();
   }
 
   /**
@@ -54,7 +55,7 @@ public class Accounts {
     }
 
     Account newAccount = new Account(accountName, accountBalance);
-    accounts.put(newAccount.getAccountName(), newAccount.getAccountBalance());
+    accountsHashmap.put(newAccount.getAccountName(), newAccount.getAccountBalance());
   }
 
   /**
@@ -74,7 +75,7 @@ public class Accounts {
       throw new NullPointerException("Account name cannot be empty");
     }
 
-    accounts.put(accountName, accounts.get(accountName) + amount);
+    accountsHashmap.put(accountName, accountsHashmap.get(accountName) + amount);
   }
 
   /**
@@ -84,7 +85,7 @@ public class Accounts {
    * @return the balance of the account.
    */
   public double getTotalOfAccount(String accountName) {
-    return accounts.get(accountName);
+    return accountsHashmap.get(accountName);
   }
 
   /**
@@ -94,7 +95,7 @@ public class Accounts {
    */
   public double getTotalOfAllAccounts() {
     double total = 0;
-    for (Double value : accounts.values()) {
+    for (Double value : accountsHashmap.values()) {
       total += value;
     }
     return total;
@@ -105,11 +106,15 @@ public class Accounts {
    *
    * @return the hashmap of accounts.
    */
-  public HashMap<String, Double> getAccounts() {
-    return accounts;
+  public Map<String, Double> getAccounts() {
+    return accountsHashmap;
   }
 
   public boolean validateAccountName(String accountName) {
-    return accounts.containsKey(accountName);
+    return accountsHashmap.containsKey(accountName);
+  }
+
+  public void setAccountsHashmap(Map<String, Double> accountsHashmap) {
+    this.accountsHashmap = (HashMap<String, Double>) accountsHashmap;
   }
 }
