@@ -1,7 +1,6 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
-import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.ExcelExporter;
@@ -52,20 +51,19 @@ public class Report {
     });
 
     exportToPDF.setOnAction(e -> {
-      System.out.println("Exporting to PDF");
       try {
         ExcelExporter instance = ExcelExporter.getInstance();
 
         instance.exportToExcel();
         instance.convertToPdf(instance.exportToExcel(), "report");
       } catch (DocumentException | IOException ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException(ex);
       }
 
       if (Desktop.isDesktopSupported()) {
         try {
           File myFile =
-                  new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "report.pdf");
+                  new File(ExcelExporter.getReportPDFPath());
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
           // no application registered for PDFs
@@ -84,14 +82,13 @@ public class Report {
       }
     });
     printToExcel.setOnAction(e -> {
-      System.out.println("Exporting to PDF");
       String excelFile = null;
       try {
         ExcelExporter instance = ExcelExporter.getInstance();
 
         excelFile = instance.exportToExcel();
       } catch (IOException ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException(ex);
       }
 
       if (Desktop.isDesktopSupported()) {

@@ -37,7 +37,6 @@ public class DoughnutChart extends PieChart {
     super(pieData);
 
     stylesheet = style;
-    System.out.println(stylesheet);
     if (Objects.equals(stylesheet, "Darkmode")) {
       innerCircle = new Circle();
       innerCircle.setFill(Paint.valueOf("#3b3b3b"));
@@ -68,13 +67,10 @@ public class DoughnutChart extends PieChart {
    */
 
   private void addInnerCircleIfNotPresent() {
-    if (getData().size() > 0) {
+    if (!getData().isEmpty()) {
       Node pie = getData().get(0).getNode();
-      if (pie.getParent() instanceof Pane parent) {
-
-          if (!parent.getChildren().contains(innerCircle)) {
+      if (pie.getParent() instanceof Pane parent && (!parent.getChildren().contains(innerCircle))) {
           parent.getChildren().add(innerCircle);
-        }
       }
     }
   }
@@ -84,8 +80,10 @@ public class DoughnutChart extends PieChart {
    * It is used to update the layout of the inner circle when the data is updated.
    */
   private void updateInnerCircleLayout() {
-    double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
-    double maxX = Double.MIN_VALUE, maxY = Double.MIN_VALUE;
+    double minX = Double.MAX_VALUE;
+    double minY = Double.MAX_VALUE;
+    double maxX = Double.MIN_VALUE;
+    double maxY = Double.MIN_VALUE;
     for (PieChart.Data data : getData()) {
       Node node = data.getNode();
 
@@ -112,7 +110,7 @@ public class DoughnutChart extends PieChart {
 
   private void changeLabelColor() {
     for (Data data : getData()) {
-      data.nameProperty().addListener((observable, oldValue, newValue) -> {
+      data.nameProperty().addListener((observable, oldValue, newValue) ->
         Platform.runLater(() -> {
           for (Node node : lookupAll(".chart-pie-label")) {
             if (node instanceof Text textNode && !(node.getParent() instanceof Legend)) {
@@ -120,8 +118,7 @@ public class DoughnutChart extends PieChart {
               // No need to change the fill, as it will be picked up from the CSS
             }
           }
-        });
-      });
+        }));
     }
   }
 

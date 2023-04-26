@@ -97,9 +97,8 @@ public class TopMenu {
         GUI.bankStatementWindow.setVisible(false);
 
         GUI.setPaneToUpdate("settings");
-        System.out.println("settings button pressed");
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
     });
     topMenu.getChildren().add(settingsButton);
@@ -127,7 +126,7 @@ public class TopMenu {
         GUI.logout();
         gui.navigateToLogin();
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
     });
 
@@ -180,6 +179,5 @@ public class TopMenu {
 
     GUI.setPaneToUpdate(paneToUpdate);
     GUI.updatePane();
-    System.out.println(paneToUpdate + " button pressed");
   }
 }

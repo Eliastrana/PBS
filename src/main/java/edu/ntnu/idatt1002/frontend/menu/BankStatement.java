@@ -4,8 +4,6 @@ package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
-import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.AlertWindow;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;

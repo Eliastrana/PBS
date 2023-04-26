@@ -7,6 +7,7 @@ import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
+import edu.ntnu.idatt1002.model.ExcelExporter;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -37,6 +38,20 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * @version 0.5 - 19.04.2023
  */
 public class Transfer {
+  private static final String TITLETEXT = "titleText";
+  private static final String SELECTACCOUNT = "Select Account";
+  private static final String CATEGORYMENUBUTTON = "categoryMenuButton";
+  private static final String ACTIONBUTTON = "actionButton";
+  private static final String TEXTFIELD = "textField";
+  private static final String CONFIRM = "confirm";
+  private static final String CONFIRMLABEL = "confirmLabel";
+  private static final String CANNOT_TRANSFER_NEGATIVE_AMOUNT = "You cannot transfer a negative " +
+      "amount of money";
+  private static final String FILL_ALL_FIELDS = "Please fill in all fields.";
+  private static final String CONFIRMSOUND = "16bitconfirm.wav";
+  private static final String ERROR = "error.wav";
+  private static final String TRANSFER_CSV = "transfer.csv";
+  private static final String ERRORMESSAGE = "An error occurred while trying to write to the file.";
   /**
    * A method that creates the transfer view.
    * The method is used by the GUI class.
@@ -49,12 +64,11 @@ public class Transfer {
     Accounts instance = Accounts.getInstance();
     Incomes incomesInstance = Incomes.getInstance();
     try {
-      System.out.println("open accounts window");
       VBox transferVBox = new VBox();
 
 
       Text transferBetweenAccounts = new Text("Transfer between accounts:");
-      transferBetweenAccounts.setId("titleText");
+      transferBetweenAccounts.setId(TITLETEXT);
 
 
       HBox transferBetweenAccountsHbox = new HBox();
@@ -62,10 +76,10 @@ public class Transfer {
       transferBetweenAccountsHbox.setAlignment(Pos.CENTER);
 
       ComboBox<String> leftTransfer = new ComboBox<>();
-      leftTransfer.setPromptText("Select Account");
+      leftTransfer.setPromptText(SELECTACCOUNT);
       leftTransfer.setItems(FXCollections.observableArrayList(instance.getAccounts().keySet()));
       leftTransfer.setFocusTraversable(true);
-      leftTransfer.setId("categoryMenuButton");
+      leftTransfer.setId(CATEGORYMENUBUTTON);
 
 
       ImageView arrow = new ImageView(new Image("icons/fromTo.png"));
@@ -74,7 +88,7 @@ public class Transfer {
 
 
       ComboBox<String> rightTransfer = new ComboBox<>();
-      rightTransfer.setPromptText("Select Account");
+      rightTransfer.setPromptText(SELECTACCOUNT);
 
       rightTransfer.setDisable(true);
       rightTransfer.setItems(FXCollections.observableArrayList(instance.getAccounts().keySet()));
@@ -83,20 +97,20 @@ public class Transfer {
         rightTransfer.setDisable(false);
         rightTransfer.getItems().remove(leftTransfer.getValue());
       });
-      rightTransfer.setId("categoryMenuButton");
+      rightTransfer.setId(CATEGORYMENUBUTTON);
       rightTransfer.setFocusTraversable(true);
 
       TextField priceEntry = new TextField();
       priceEntry.setFocusTraversable(true);
       priceEntry.setPromptText("Enter transfer amount");
-      priceEntry.setId("textField");
+      priceEntry.setId(TEXTFIELD);
 
-      Button confirmTransfer = new Button("Confirm");
-      confirmTransfer.setId("actionButton");
+      Button confirmTransfer = new Button(CONFIRM);
+      confirmTransfer.setId(ACTIONBUTTON);
 
       Label confirmTransferLabel = new Label("The transfer has been confirmed");
       confirmTransferLabel.setVisible(false);
-      confirmTransferLabel.setId("confirmLabel");
+      confirmTransferLabel.setId(CONFIRMLABEL);
       confirmTransferLabel.setAlignment(Pos.CENTER);
 
       HBox confirmTransferHbox = new HBox(confirmTransferLabel);
@@ -122,19 +136,19 @@ public class Transfer {
         String addToAccount = rightTransfer.getValue();
         String tempText = priceEntry.getText();
         if (removeFromAccount == null || addToAccount == null || tempText.isEmpty()) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("Please fill in all fields.");
-          throw new IllegalArgumentException("Please fill in all fields.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(FILL_ALL_FIELDS);
+          throw new IllegalArgumentException(FILL_ALL_FIELDS);
         }
         double amountToAdd;
         amountToAdd = Double.parseDouble(tempText);
         if (amountToAdd < 0) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("You cannot transfer a negative amount of money.");
-          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
+          throw new IllegalArgumentException(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
         }
         if (amountToAdd > instance.getAccounts().get(removeFromAccount)) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
           showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
           throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
         }
@@ -145,14 +159,14 @@ public class Transfer {
         ftTransfer.setFromValue(1.0);
         ftTransfer.setToValue(0.0);
 
-        System.out.println("Confirm transfer button pressed");
         ftTransfer.play();
-        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+        SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
           writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
           writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
         } catch (IOException f) {
-          showAlert("An error occurred while trying to write to the file.");
+          showAlert(ERRORMESSAGE);
         }
         leftTransfer.setValue(null);
         rightTransfer.setValue(null);
@@ -167,7 +181,7 @@ public class Transfer {
 
 
       Text registerIncome = new Text("Register new income:");
-      registerIncome.setId("titleText");
+      registerIncome.setId(TITLETEXT);
 
 
       HBox registerIncomeHBox = new HBox();
@@ -176,28 +190,25 @@ public class Transfer {
 
 
       ComboBox<String> incomeAccount = new ComboBox<>();
-      incomeAccount.setPromptText("Select Account");
+      incomeAccount.setPromptText(SELECTACCOUNT);
 
-      try {
-        CSVReader CSVReaderInstance = CSVReader.getInstance();
+      CSVReader csvReaderInstance = CSVReader.getInstance();
 
-        incomeAccount.setItems(FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet()));
-      } catch (IOException e) {
-        showAlert("An error occurred while trying to read the file.");
-      }
-      incomeAccount.setId("categoryMenuButton");
+      incomeAccount.setItems(FXCollections.observableArrayList(csvReaderInstance.readCSV().keySet()));
+
+      incomeAccount.setId(CATEGORYMENUBUTTON);
       incomeAccount.setFocusTraversable(true);
 
       TextField amountIncome = new TextField();
       amountIncome.setPromptText("Enter income amount");
-      amountIncome.setId("textField");
+      amountIncome.setId(TEXTFIELD);
 
       Button confirmIncome = new Button("Confirm");
-      confirmIncome.setId("actionButton");
+      confirmIncome.setId(ACTIONBUTTON);
 
       Label confirmIncomeLabel = new Label("The income has been confirmed");
       confirmIncomeLabel.setVisible(false);
-      confirmIncomeLabel.setId("confirmLabel");
+      confirmIncomeLabel.setId(CONFIRMLABEL);
       confirmIncomeLabel.setAlignment(Pos.CENTER);
 
       HBox confirmIncomeHbox = new HBox(confirmIncomeLabel);
@@ -222,17 +233,17 @@ public class Transfer {
         String inncomeAccountName = incomeAccount.getValue();
         String tempText = amountIncome.getText();
         if (inncomeAccountName == null || tempText.isEmpty()) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("Please fill in all fields.");
-          throw new IllegalArgumentException("Please fill in all fields.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(FILL_ALL_FIELDS);
+          throw new IllegalArgumentException(FILL_ALL_FIELDS);
         }
 
         double amountToAdd;
         amountToAdd = Double.parseDouble(tempText);
         if (amountToAdd < 0) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("You cannot transfer a negative amount of money.");
-          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
+          throw new IllegalArgumentException(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
         }
 
         confirmIncomeLabel.setVisible(true);
@@ -241,9 +252,8 @@ public class Transfer {
         ftIncome.setToValue(0.0);
 
         incomesInstance.getIncomes().add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
-        System.out.println("Confirm income button pressed");
         ftIncome.play();
-        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+        SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
         incomeAccount.setValue(null);
         amountIncome.setText(null);
 
@@ -252,10 +262,11 @@ public class Transfer {
         leftTransfer.getItems().clear();
         leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
           writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
-          showAlert("An error occurred while trying to write to the file.");
+          showAlert(ERRORMESSAGE);
         }
 
         ftIncome.setOnFinished(event1 -> {
@@ -264,7 +275,7 @@ public class Transfer {
         });
       });
       Text addNewAccount = new Text("Add new account:");
-      addNewAccount.setId("titleText");
+      addNewAccount.setId(TITLETEXT);
       addNewAccount.setFocusTraversable(true);
 
       HBox addNewAccountHBox = new HBox();
@@ -274,16 +285,16 @@ public class Transfer {
       TextField newAccountName = new TextField();
       newAccountName.setFocusTraversable(true);
       newAccountName.setPromptText("Enter account name");
-      newAccountName.setId("textField");
+      newAccountName.setId(TEXTFIELD);
 
       TextField newAccountBalance = new TextField();
       newAccountBalance.setFocusTraversable(true);
       newAccountBalance.setPromptText("Enter account balance");
-      newAccountBalance.setId("textField");
+      newAccountBalance.setId(TEXTFIELD);
 
       Label confirmNewAccountLabel = new Label("The account has been confirmed");
       confirmNewAccountLabel.setVisible(false);
-      confirmNewAccountLabel.setId("confirmLabel");
+      confirmNewAccountLabel.setId(CONFIRMLABEL);
       confirmNewAccountLabel.setAlignment(Pos.CENTER);
 
       HBox confirmNewAccountHbox = new HBox(confirmNewAccountLabel);
@@ -291,7 +302,7 @@ public class Transfer {
 
       Button confirmNewAccount = new Button("Confirm");
       confirmNewAccount.setFocusTraversable(true);
-      confirmNewAccount.setId("actionButton");
+      confirmNewAccount.setId(ACTIONBUTTON);
 
       newAccountBalance.setOnKeyPressed(event -> {
         if (event.getCode() == KeyCode.ENTER) {
@@ -309,17 +320,17 @@ public class Transfer {
         String accountName = newAccountName.getText();
         String tempText = newAccountBalance.getText();
         if (accountName == null || tempText.isEmpty()) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("Please fill in all fields.");
-          throw new IllegalArgumentException("Please fill in all fields.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(FILL_ALL_FIELDS);
+          throw new IllegalArgumentException(FILL_ALL_FIELDS);
         }
 
         double accountBalance;
         accountBalance = Double.parseDouble(tempText);
         if (accountBalance < 0) {
-          SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-          showAlert("You cannot transfer a negative amount of money.");
-          throw new IllegalArgumentException("You cannot transfer a negative amount of money.");
+          SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
+          showAlert(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
+          throw new IllegalArgumentException(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
         }
 
         Accounts accounts = Accounts.getInstance();
@@ -330,9 +341,8 @@ public class Transfer {
         ftNewAccount.setToValue(0.0);
 
         accounts.addAccount(accountName, accountBalance);
-        System.out.println("Confirm new account button pressed");
         ftNewAccount.play();
-        SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+        SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
         newAccountName.setText(null);
         newAccountBalance.setText(null);
 
@@ -343,10 +353,11 @@ public class Transfer {
         incomeAccount.getItems().addAll(accounts.getAccounts().keySet());
 
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + "transfer.csv"), true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
           writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
-          showAlert("An error occurred while trying to write to the file.");
+          showAlert(ERRORMESSAGE);
         }
       });
 
@@ -363,7 +374,7 @@ public class Transfer {
       vbox = new VBox(transferVBox);
       vbox.setPadding(new Insets(40, 40, 40, 40));
     } catch (Exception e) {
-      SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+      SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
       showAlert(e.getMessage());
     }
     return vbox;

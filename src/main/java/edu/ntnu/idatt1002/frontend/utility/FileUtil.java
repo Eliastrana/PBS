@@ -18,29 +18,33 @@ public class FileUtil {
       } else if (url.getProtocol().equals("jar")) {
         // Running from JAR file
         String jarPath = url.getPath().substring(5, url.getPath().indexOf("!")); // Extract JAR file path
-        try {
-          JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8)); // Create JarFile object
-          JarEntry jarEntry = jarFile.getJarEntry(fileName); // Get JarEntry for the file
-          if (jarEntry != null) {
-            File tempFile = File.createTempFile(fileName, ""); // Create a temporary file
-            try (InputStream is = jarFile.getInputStream(jarEntry);
-                 OutputStream os = new FileOutputStream(tempFile)) {
-              byte[] buffer = new byte[4096];
-              int bytesRead;
-              while ((bytesRead = is.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-              }
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
-            filePath = tempFile.getAbsolutePath();
-            tempFile.deleteOnExit(); // Delete temporary file on exit
-          }
-          jarFile.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+        filePath = extractFileFromJar(jarPath, fileName);
       }
+    }
+    return filePath;
+  }
+
+  private static String extractFileFromJar(String jarPath, String fileName) {
+    String filePath = null;
+    try (JarFile jarFile = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8))) { // Create JarFile object
+      JarEntry jarEntry = jarFile.getJarEntry(fileName); // Get JarEntry for the file
+      if (jarEntry != null) {
+        File tempFile = File.createTempFile(fileName, ""); // Create a temporary file
+        try (InputStream is = jarFile.getInputStream(jarEntry);
+             OutputStream os = new FileOutputStream(tempFile)) {
+          byte[] buffer = new byte[4096];
+          int bytesRead;
+          while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+          }
+        } catch (IOException e) {
+          throw new IllegalArgumentException("Unable to create temporary file");
+        }
+        filePath = tempFile.getAbsolutePath();
+        tempFile.deleteOnExit(); // Delete temporary file on exit
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
     return filePath;
   }

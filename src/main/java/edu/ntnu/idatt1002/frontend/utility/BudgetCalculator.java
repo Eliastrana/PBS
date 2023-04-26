@@ -1,6 +1,5 @@
 package edu.ntnu.idatt1002.frontend.utility;
 
-import edu.ntnu.idatt1002.frontend.GUI;
 import edu.ntnu.idatt1002.frontend.menu.Budget;
 
 /**
@@ -14,7 +13,6 @@ public class BudgetCalculator {
   /**
    * The total budget of a user.
    */
-  private double totalBudget;
 
   private BudgetCalculator() {
   }
@@ -29,10 +27,8 @@ public class BudgetCalculator {
    * @return the total budget of a user
    */
   public double getTotalBudget() {
-    String outputDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
-    String budgetFile = outputDirectory + "budget.csv";
-    totalBudget = 0; // Move initialization outside the loop
-    for (String[] lineData : Budget.currentBudget) {
+    double totalBudget = 0; // Move initialization outside the loop
+    for (String[] lineData : Budget.getCurrentBudget()) {
       try {
         totalBudget += Double.parseDouble(lineData[1]); // Convert budget value to double
       } catch (NumberFormatException e) {

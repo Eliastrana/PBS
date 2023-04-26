@@ -80,8 +80,7 @@ public class TimeOfDayChecker {
    */
   public static int getYear() {
     LocalDate currentDate = LocalDate.now();
-    int year = currentDate.getYear();
-    return year;
+    return currentDate.getYear();
   }
 
   /**

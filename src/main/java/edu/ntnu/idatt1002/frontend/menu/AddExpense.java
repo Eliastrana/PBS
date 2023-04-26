@@ -143,7 +143,7 @@ public class AddExpense {
         String selectedOption = categoryMenu.getValue();
         String name = ('|' + names.getText() + '|');
         String tempText = prices.getText();
-        String accountName = (String) accountMenu.getValue();
+        String accountName = accountMenu.getValue();
         LocalDate date = datePicker.getValue();
         double price = Double.parseDouble(tempText);
         Expenses expenseInstance = Expenses.getInstance();

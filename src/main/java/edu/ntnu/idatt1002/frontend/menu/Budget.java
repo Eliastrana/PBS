@@ -37,10 +37,17 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * @version 0.5 - 19.04.2023
  */
 public class Budget {
+  public static void playErrorSound(){
+    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+  }
   /**
    * A list that contains the current budget.
    */
-  public static List<String[]> currentBudget = new ArrayList<String[]>();
+  protected static List<String[]> currentBudget = new ArrayList<>();
+
+  public static List<String[]> getCurrentBudget() {
+    return currentBudget;
+  }
 
   /**
    * A method that creates the budget view.
@@ -72,7 +79,7 @@ public class Budget {
             );
 
 
-    final ComboBox categoryMenu = new ComboBox(options);
+    final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setPromptText("Select category");
     categoryMenu.setId("categoryMenuButton");
 
@@ -104,15 +111,20 @@ public class Budget {
     });
 
     confirmAmount.setOnAction(e -> {
-      try {
         if (categoryMenu.getValue() == null) {
+          playErrorSound();
+          showAlert("Please select a category");
           throw new NullPointerException("Please select a category");
         } else if (budgetAmountField.getText().isEmpty()) {
+          playErrorSound();
+          showAlert("Please enter a budget amount");
           throw new NullPointerException("Please enter a budget amount");
         } else if (Integer.parseInt(budgetAmountField.getText()) < 0) {
+          playErrorSound();
+          showAlert("Please enter a positive number");
           throw new NumberFormatException("Please enter a positive number");
         }
-        String category = categoryMenu.getValue().toString();
+        String category = categoryMenu.getValue();
         String amount = budgetAmountField.getText();
         String month = TimeOfDayChecker.getCurrentMonth();
 
@@ -124,7 +136,7 @@ public class Budget {
 
           // ...
 
-          ArrayList<String> lines = new ArrayList<String>();
+          ArrayList<String> lines = new ArrayList<>();
 
           // Read the lines of the file into the list
           String line;
@@ -184,8 +196,8 @@ public class Budget {
           }
         }
         String csvSplitBy = ",";
-        List<String[]> currentLines = new ArrayList<String[]>();
-        List<String[]> previousLines = new ArrayList<String[]>();
+        List<String[]> currentLines = new ArrayList<>();
+        List<String[]> previousLines = new ArrayList<>();
         BarChart<String, Number> barChart = null;
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
           String line;
@@ -203,16 +215,16 @@ public class Budget {
           // Create the bar chart dataset
           ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
           for (String[] lineData : currentLines) {
-            currentData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+            currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
           }
-          XYChart.Series<String, Number> currentSeries = new XYChart.Series<String, Number>(currentData);
+          XYChart.Series<String, Number> currentSeries = new XYChart.Series<>(currentData);
           currentSeries.setName(currentMonth);
 
           ObservableList<XYChart.Data<String, Number>> previousData = FXCollections.observableArrayList();
           for (String[] lineData : previousLines) {
-            previousData.add(new XYChart.Data<String, Number>(lineData[0], Double.parseDouble(lineData[1])));
+            previousData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
           }
-          XYChart.Series<String, Number> previousSeries = new XYChart.Series<String, Number>(previousData);
+          XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
           previousSeries.setName(previousMonth);
 
           // Create the bar chart
@@ -220,7 +232,7 @@ public class Budget {
           xAxis.setLabel("Category");
           NumberAxis yAxis = new NumberAxis();
           yAxis.setLabel("Value");
-          barChart = new BarChart<String, Number>(xAxis, yAxis);
+          barChart = new BarChart<>(xAxis, yAxis);
           barChart.setTitle("Bar Chart");
           barChart.getData().addAll(currentSeries, previousSeries);
           budgetLayout.getChildren().clear();
@@ -240,10 +252,6 @@ public class Budget {
 
         GUI.setPaneToUpdate("overviewView");
         GUI.updatePane();
-      } catch (Exception f) {
-        showAlert(f.getMessage());
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-      }
     });
 
     String currentMonth = TimeOfDayChecker.getCurrentMonth();
