@@ -62,6 +62,7 @@ pages:
   stage: package
   script:
     - mvn clean package
+    - mvn jacoco:report
     - mvn javadoc:javadoc
     - mkdir .public
     - cp -rf target/site/apidocs/* .public
