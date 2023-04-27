@@ -59,9 +59,6 @@ public class Email {
     recipientEmail = email;
     passwordString = password;
 
-    //String emailPhoto = "src/main/resources/icon.png";
-
-
     // Create a JavaMail session with the SMTP server
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
@@ -95,19 +92,7 @@ public class Email {
             "</div>" +
             "</body> </html>", "text/html");
 
-
-// Create a MimeBodyPart for the image
-//    MimeBodyPart imagePart = new MimeBodyPart();
-////    Random rand = new Random();
-//    int n = rand.nextInt(5) + 1;
-//    DataSource fds = new FileDataSource("src/main/resources/memes/mailmeme"+n+".jpg");
-//    DataSource fds = new FileDataSource(FileUtil.getPictureResourceFilePath("memes/mailmeme" + n + ".jpg"));
-//    imagePart.setDataHandler(new DataHandler(fds));
-//    imagePart.setHeader("Content-ID", "<image1>");
-
-// Add both parts to the MimeMultipart object
     multipart.addBodyPart(htmlPart);
-    //multipart.addBodyPart(imagePart);
 
 // Set the content of the MimeMessage to the MimeMultipart object
     emailMessage.setContent(multipart);
