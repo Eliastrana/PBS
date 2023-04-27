@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javax.swing.text.html.CSS;
 import java.io.IOException;
 import java.util.Random;
 
@@ -25,7 +26,8 @@ import java.util.Random;
  * @version 0.5 - 19.04.2023
  */
 public class Login {
-
+  private static final String CSS_FILE = "/Styling.css";
+  private static final Random random = new Random();
   /**
    * A text field to enter the username.
    */
@@ -43,7 +45,9 @@ public class Login {
   public static String getCurrentUser() {
     return currentUser;
   }
-
+  public static int getRandomInt (){
+    return random.nextInt(2) +1;
+  }
   /**
    * Login view parent.
    *
@@ -55,13 +59,9 @@ public class Login {
     Pane background = new Pane();
     background.setPrefSize(1000, 700);
 
-    Random random = new Random();
-    int randomInt = random.nextInt(2) + 1;
-    background.getStylesheets().add("/Styling.css");
+    background.getStylesheets().add(CSS_FILE);
 
-    background.getStyleClass().add("loginScreen" + randomInt);
-
-    System.out.println("Opening login page");
+    background.getStyleClass().add("loginScreen" + getRandomInt());
 
     VBox loginVBox = new VBox();
     loginVBox.setPadding(new Insets(10));
@@ -70,7 +70,7 @@ public class Login {
     loginVBox.setSpacing(20);
     loginVBox.setMaxSize(300, 400);
 
-    loginVBox.getStylesheets().add("/Styling.css");
+    loginVBox.getStylesheets().add(CSS_FILE);
 
     loginVBox.setId("overlayLogin");
 
@@ -100,7 +100,7 @@ public class Login {
       try {
         LoginBackend.login(username.getText(), password.getText(), controller);
       } catch (IOException ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException(ex);
       }
     });
 
@@ -108,22 +108,20 @@ public class Login {
     createUser.setId("linkSmallText");
 
     createUser.setOnMouseClicked(e -> {
-      System.out.println("Opening create user page");
       try {
         controller.handleCreateUserButton();
       } catch (Exception ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException(ex);
       }
     });
 
     Text forgotPassword = new Text("Forgot password");
     forgotPassword.setId("linkSmallText");
     forgotPassword.setOnMouseClicked(e -> {
-      System.out.println("Opening forgot password page");
       try {
         controller.handleForgotPasswordButton();
       } catch (Exception ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException(ex);
       }
     });
 
@@ -133,7 +131,7 @@ public class Login {
 
     VBox vbox = new VBox(backgroundAndLogin);
     vbox.setAlignment(Pos.TOP_CENTER);
-    vbox.getStylesheets().add("/Styling.css");
+    vbox.getStylesheets().add(CSS_FILE);
     return vbox;
   }
 }

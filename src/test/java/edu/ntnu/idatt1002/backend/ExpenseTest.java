@@ -73,7 +73,7 @@ class ExpenseTest {
       Expense expense = new Expense("ExpenseName", 100.00, LocalDate.now(),"Food", "Cash");
       assertEquals("ExpenseName", expense.getName());
       assertEquals(100.00, expense.getPrice());
-      assertEquals("Food", expense.getCategoryAsString());
+      assertEquals("Food", expense.getCategory());
       assertEquals(LocalDate.now(), expense.getDate());
     }
 
@@ -129,7 +129,7 @@ class ExpenseTest {
       Expense expense = new Expense("ExpenseName", 100.00, LocalDate.now(), "Food", "Cash", "123");
       assertEquals("ExpenseName", expense.getName());
       assertEquals(100.00, expense.getPrice());
-      assertEquals("Food", expense.getCategoryAsString());
+      assertEquals("Food", expense.getCategory());
       assertEquals(LocalDate.now(), expense.getDate());
       assertEquals("123", expense.getUniqueId());
     }
@@ -276,7 +276,7 @@ class ExpenseTest {
     void setCategoryAsStringTest() {
       Expense expense = new Expense("ExpenseName", 100, 2, LocalDate.now());
       expense.setCategoryAsString("Food");
-      assertEquals("Food", expense.getCategoryAsString());
+      assertEquals("Food", expense.getCategory());
     }
 
     @Test

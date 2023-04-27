@@ -31,7 +31,7 @@ public class ForgotPassword {
    * The pattern the password should be.
    */
   private static final String PASSWORD_PATTERN =
-          "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+          "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
   /**
    * The pattern for the password.
    */
@@ -51,14 +51,12 @@ public class ForgotPassword {
   /**
    * The input field for the email.
    */
-  private static TextField emailTextField;
   private static final Random random = new Random();
   private static final String CSS_FILE = "/Styling.css";
   private static final String TEXTFIELD = "textField";
 
-
-  public static int getRandomInt (){
-    return random.nextInt(1) +1;
+  public static int getRandomInt (int length){
+    return random.nextInt(length) ;
   }
 
   /**
@@ -68,41 +66,42 @@ public class ForgotPassword {
    * @return the view as a parent
    */
   public Parent forgottenPasswordView(ForgotPasswordController controller) {
+    TextField emailTextField;
 
     Pane background = new Pane();
     background.setPrefSize(1000, 700);
 
     background.getStylesheets().add(CSS_FILE);
 
-    background.getStyleClass().add("loginScreen" + getRandomInt());
+    background.getStyleClass().add("loginScreen" + getRandomInt(1)+1);
 
     VBox forgottenPasswordVBox = new VBox();
     forgottenPasswordVBox.setId("overlayLogin");
     forgottenPasswordVBox.setSpacing(20);
     forgottenPasswordVBox.setMaxSize(300, 600);
 
-    forgottenPasswordVBox.getStylesheets().add("/Styling.css");
+    forgottenPasswordVBox.getStylesheets().add(CSS_FILE);
 
     forgottenPasswordVBox.setPadding(new Insets(10));
 
     emailTextField = new TextField();
     emailTextField.setPromptText("Enter email");
-    emailTextField.setId("textField");
+    emailTextField.setId(TEXTFIELD);
     emailTextField.setMaxWidth(250);
 
     TextField masterPassword = new TextField();
     masterPassword.setPromptText("Enter master password");
-    masterPassword.setId("textField");
+    masterPassword.setId(TEXTFIELD);
     masterPassword.setMaxWidth(250);
 
     PasswordField newPassword = new PasswordField();
     newPassword.setPromptText("Enter new password");
-    newPassword.setId("textField");
+    newPassword.setId(TEXTFIELD);
     newPassword.setMaxWidth(250);
 
     PasswordField confirmNewPassword = new PasswordField();
     confirmNewPassword.setPromptText("Confirm new password");
-    confirmNewPassword.setId("textField");
+    confirmNewPassword.setId(TEXTFIELD);
     confirmNewPassword.setMaxWidth(250);
 
     Button changePasswordButton = new Button("Update Password");
@@ -146,10 +145,9 @@ public class ForgotPassword {
 
       String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
       StringBuilder sb = new StringBuilder();
-      Random random = new Random();
       int length = 10;
       for (int i = 0; i < length; i++) {
-        int index = random.nextInt(alphabet.length());
+        int index = getRandomInt(alphabet.length());
         char randomChar = alphabet.charAt(index);
         sb.append(randomChar);
       }
@@ -157,7 +155,7 @@ public class ForgotPassword {
       try {
         email.sendEmail(emailString, masterPasswordString);
       } catch (MessagingException ex) {
-        throw new RuntimeException(ex);
+        throw new IllegalArgumentException("Email could not be sent.");
       }
       masterPassword.setVisible(true);
       newPassword.setVisible(true);
@@ -185,7 +183,7 @@ public class ForgotPassword {
           try {
             handleSubmit(controller);
           } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new IllegalArgumentException(ex);
           }
         }
       }
@@ -194,13 +192,13 @@ public class ForgotPassword {
     forgottenPasswordVBox.getChildren().addAll(backButtonBox, emailTextField, submitButton, masterPassword, newPassword, confirmNewPassword, changePasswordButton);
     forgottenPasswordVBox.setSpacing(30);
     forgottenPasswordVBox.setAlignment(Pos.CENTER);
-    forgottenPasswordVBox.getStylesheets().add("/Styling.css");
+    forgottenPasswordVBox.getStylesheets().add(CSS_FILE);
 
     StackPane stackPane = new StackPane(background, forgottenPasswordVBox);
 
     VBox vBox = new VBox(stackPane);
     vBox.setAlignment(Pos.TOP_CENTER);
-    vBox.getStylesheets().add("/Styling.css");
+    vBox.getStylesheets().add(CSS_FILE);
 
     return vBox;
   }
