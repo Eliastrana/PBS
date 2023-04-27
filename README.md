@@ -45,5 +45,8 @@ The reasons for our principles are clear. Our program comes as an addition to th
 
 [GitLab Wiki](https://gitlab.stud.idi.ntnu.no/idatt1002_2023_13/idatt1002/-/wikis/home)
 
-
+##Access 
+If you wish to log in to the program, and there is something wrong with the creation of your own user, you can log in with this:
+Username: Example User
+Password: Password1!
 
