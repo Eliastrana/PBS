@@ -103,6 +103,9 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.7</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/jacoco-report</outputDirectory> <!-- Add this line -->
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
