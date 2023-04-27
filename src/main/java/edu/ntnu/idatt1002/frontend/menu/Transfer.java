@@ -35,23 +35,63 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the transfer view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class Transfer {
+  /*
+   * The constant TITLETEXT used to set the id of the title text.
+   */
   private static final String TITLETEXT = "titleText";
+  /*
+   * The constant SELECTACCOUNT used for prompt text.
+   */
   private static final String SELECTACCOUNT = "Select Account";
+  /*
+   * The constant CATEGORYMENUBUTTON used to set the id of the category menu button.
+   */
   private static final String CATEGORYMENUBUTTON = "categoryMenuButton";
+  /*
+   * The constant ACTIONBUTTON used to set the id of the action button.
+   */
   private static final String ACTIONBUTTON = "actionButton";
+  /*
+   * The constant TEXTFIELD used to set the id of the text field.
+   */
   private static final String TEXTFIELD = "textField";
-  private static final String CONFIRM = "confirm";
+  /*
+   * The constant CONFIRM used for prompt text.
+   */
+  private static final String CONFIRM = "Confirm";
+  /*
+   * The constant CONFIRMLABEL used to set the id of the confirm label.
+   */
   private static final String CONFIRMLABEL = "confirmLabel";
-  private static final String CANNOT_TRANSFER_NEGATIVE_AMOUNT = "You cannot transfer a negative " +
-      "amount of money";
+  /*
+   * The constant CANNOT_TRANSFER_NEGATIVE_AMOUNT used for error message.
+   */
+  private static final String CANNOT_TRANSFER_NEGATIVE_AMOUNT
+          = "You cannot transfer a negative " + "amount of money";
+  /*
+   * The constant FILL_ALL_FIELDS used for error message.
+   */
   private static final String FILL_ALL_FIELDS = "Please fill in all fields.";
+  /*
+   * The constant CONFIRMSOUND used for the sound when the user confirms the transfer.
+   */
   private static final String CONFIRMSOUND = "16bitconfirm.wav";
+  /*
+   * The constant ERROR used for the sound when an error occurs.
+   */
   private static final String ERROR = "error.wav";
+  /*
+   * The constant TRANSFER_CSV used for the name of the transfer csv file.
+   */
   private static final String TRANSFER_CSV = "transfer.csv";
+  /*
+   * The constant ERRORMESSAGE used for the error message.
+   */
   private static final String ERRORMESSAGE = "An error occurred while trying to write to the file.";
+
   /**
    * A method that creates the transfer view.
    * The method is used by the GUI class.
@@ -149,21 +189,28 @@ public class Transfer {
         }
         if (amountToAdd > instance.getAccounts().get(removeFromAccount)) {
           SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
-          showAlert("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
-          throw new IllegalArgumentException("You do not have enough money in the " + removeFromAccount + " account to transfer " + amountToAdd + " to the " + addToAccount + " account");
+          showAlert("You do not have enough money in the " + removeFromAccount
+                  + " account to transfer " + amountToAdd + " to the "
+                  + addToAccount + " account");
+          throw new IllegalArgumentException("You do not have enough money in the "
+                  + removeFromAccount + " account to transfer " + amountToAdd + " to the "
+                  + addToAccount + " account");
         }
 
         confirmTransferLabel.setVisible(true);
 
-        FadeTransition ftTransfer = new FadeTransition(javafx.util.Duration.millis(1750), confirmTransferLabel);
+        FadeTransition ftTransfer = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmTransferLabel);
         ftTransfer.setFromValue(1.0);
         ftTransfer.setToValue(0.0);
 
         ftTransfer.play();
         SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
-            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
-          writer.write(removeFromAccount + "," + (amountToAdd * -1) + "," + LocalDate.now() + "," + 'B' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+                        GUI.getCurrentUser() + TRANSFER_CSV), true))) {
+          writer.write(removeFromAccount + "," + (amountToAdd * -1)
+                  + "," + LocalDate.now() + "," + 'B' + "\n");
           writer.write(addToAccount + "," + amountToAdd + "," + LocalDate.now() + "," + 'B' + "\n");
         } catch (IOException f) {
           showAlert(ERRORMESSAGE);
@@ -194,7 +241,8 @@ public class Transfer {
 
       CSVReader csvReaderInstance = CSVReader.getInstance();
 
-      incomeAccount.setItems(FXCollections.observableArrayList(csvReaderInstance.readCSV().keySet()));
+      incomeAccount.setItems(FXCollections.observableArrayList(
+              csvReaderInstance.readCSV().keySet()));
 
       incomeAccount.setId(CATEGORYMENUBUTTON);
       incomeAccount.setFocusTraversable(true);
@@ -216,7 +264,7 @@ public class Transfer {
 
       amountIncome.setOnKeyPressed(e -> {
         if (e.getCode() == KeyCode.ENTER) {
-          confirmIncome.fire(); // Simulate a click event on the logIn button
+          confirmIncome.fire();
         }
       });
 
@@ -247,11 +295,13 @@ public class Transfer {
         }
 
         confirmIncomeLabel.setVisible(true);
-        FadeTransition ftIncome = new FadeTransition(javafx.util.Duration.millis(1750), confirmIncomeLabel);
+        FadeTransition ftIncome = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmIncomeLabel);
         ftIncome.setFromValue(1.0);
         ftIncome.setToValue(0.0);
 
-        incomesInstance.getIncomes().add(new Income(inncomeAccountName, amountToAdd, 1, LocalDate.now()));
+        incomesInstance.getIncomes().add(new Income(
+                inncomeAccountName, amountToAdd, 1, LocalDate.now()));
         ftIncome.play();
         SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
         incomeAccount.setValue(null);
@@ -262,9 +312,11 @@ public class Transfer {
         leftTransfer.getItems().clear();
         leftTransfer.getItems().addAll(accounts.getAccounts().keySet());
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
-            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
-          writer.write(inncomeAccountName + "," + amountToAdd + "," + LocalDate.now() + "," + 'A' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+                        GUI.getCurrentUser() + TRANSFER_CSV), true))) {
+          writer.write(inncomeAccountName + "," + amountToAdd
+                  + "," + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
           showAlert(ERRORMESSAGE);
         }
@@ -333,13 +385,13 @@ public class Transfer {
           throw new IllegalArgumentException(CANNOT_TRANSFER_NEGATIVE_AMOUNT);
         }
 
-        Accounts accounts = Accounts.getInstance();
-
         confirmNewAccountLabel.setVisible(true);
-        FadeTransition ftNewAccount = new FadeTransition(javafx.util.Duration.millis(1750), confirmNewAccountLabel);
+        FadeTransition ftNewAccount = new FadeTransition(
+                javafx.util.Duration.millis(1750), confirmNewAccountLabel);
         ftNewAccount.setFromValue(1.0);
         ftNewAccount.setToValue(0.0);
 
+        Accounts accounts = Accounts.getInstance();
         accounts.addAccount(accountName, accountBalance);
         ftNewAccount.play();
         SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRMSOUND));
@@ -353,22 +405,28 @@ public class Transfer {
         incomeAccount.getItems().addAll(accounts.getAccounts().keySet());
 
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(ExcelExporter.getOutputDirectory(),
-            GUI.getCurrentUser() + TRANSFER_CSV), true))) {
-          writer.write(accountName + "," + accountBalance + "," + LocalDate.now() + "," + 'A' + "\n");
+        try (BufferedWriter writer = new BufferedWriter(
+                new FileWriter(new File(ExcelExporter.getOutputDirectory(),
+                        GUI.getCurrentUser() + TRANSFER_CSV), true))) {
+          writer.write(accountName + "," + accountBalance + ","
+                  + LocalDate.now() + "," + 'A' + "\n");
         } catch (IOException f) {
           showAlert(ERRORMESSAGE);
         }
       });
 
 
-      transferBetweenAccountsHbox.getChildren().addAll(leftTransfer, arrow, rightTransfer, priceEntry, confirmTransfer);
+      transferBetweenAccountsHbox.getChildren().addAll(
+              leftTransfer, arrow, rightTransfer, priceEntry, confirmTransfer);
 
       registerIncomeHBox.getChildren().addAll(incomeAccount, amountIncome, confirmIncome);
 
       addNewAccountHBox.getChildren().addAll(newAccountName, newAccountBalance, confirmNewAccount);
 
-      transferVBox.getChildren().addAll(transferBetweenAccounts, transferBetweenAccountsHbox, confirmTransferHbox, registerIncome, registerIncomeHBox, confirmIncomeHbox, addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
+      transferVBox.getChildren().addAll(transferBetweenAccounts,
+              transferBetweenAccountsHbox, confirmTransferHbox,
+              registerIncome, registerIncomeHBox, confirmIncomeHbox,
+              addNewAccount, addNewAccountHBox, confirmNewAccountHbox);
       transferVBox.setSpacing(13);
 
       vbox = new VBox(transferVBox);

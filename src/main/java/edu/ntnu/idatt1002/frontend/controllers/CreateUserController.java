@@ -11,18 +11,18 @@ import java.io.IOException;
  * The class is used by the CreateUserView.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 27.04.2023
  */
 public class CreateUserController {
   /**
-   * The Gui.
+   * An instance of the GUI class.
    */
   private final GUI gui;
 
   /**
    * Instantiates a new create user controller.
    *
-   * @param gui the gui
+   * @param gui the gui instance
    */
   public CreateUserController(GUI gui) {
     this.gui = gui;
@@ -46,7 +46,9 @@ public class CreateUserController {
   public void handleCreateButton(String username, String password,
                                  String email) throws IOException {
     String salt = CreateUserBackend.generateSalt();
+    System.out.println(salt);
     String encryptedPassword = CreateUserBackend.encrypt(password, salt);
+    System.out.println(encryptedPassword);
     CreateUserBackend.saveUser(username, encryptedPassword, salt, email);
     gui.navigateToMainApp();
   }

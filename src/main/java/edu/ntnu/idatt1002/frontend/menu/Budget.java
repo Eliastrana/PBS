@@ -34,20 +34,9 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the budget view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.3 - 19.04.2023
  */
 public class Budget {
-  public static void playErrorSound(){
-    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-  }
-  /**
-   * A list that contains the current budget.
-   */
-  protected static List<String[]> currentBudget = new ArrayList<>();
-
-  public static List<String[]> getCurrentBudget() {
-    return currentBudget;
-  }
 
   /**
    * A method that creates the budget view.
@@ -133,35 +122,27 @@ public class Budget {
         File csvFile = new File(ExcelExporter.getBudgetPath());
 
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-
-          // ...
-
           ArrayList<String> lines = new ArrayList<>();
 
-          // Read the lines of the file into the list
           String line;
           while ((line = reader.readLine()) != null) {
             String oldCategoryMonth = line.split(",")[0] + line.split(",")[2];
             if (oldCategoryMonth.equals(categorymonth)) {
-              continue; // Skip writing the updated line for existing category and month combination
+              continue;
             }
             lines.add(line);
           }
 
           reader.close();
 
-          // Create a new file and write the updated data to it
           File tempFile = new File(ExcelExporter.getTempBudgetPath());
           FileWriter fw = new FileWriter(tempFile);
           BufferedWriter bw = new BufferedWriter(fw);
-
-          // Write the lines to the new file
           for (String l : lines) {
             bw.write(l);
             bw.newLine();
           }
 
-          // Write the updated line to the new file
           bw.write(category + "," + amount + "," + month);
           bw.newLine();
           bw.flush();
@@ -169,7 +150,6 @@ public class Budget {
           bw.close();
           fw.close();
 
-          // Replace the original file with the temporary file
           Files.delete(Path.of(ExcelExporter.getBudgetPath()));
           if (tempFile.renameTo(csvFile)){
             Logger.getLogger(Budget.class.getName()).info("File renamed successfully.");
@@ -203,7 +183,6 @@ public class Budget {
           String line;
           while ((line = br.readLine()) != null) {
             String[] data = line.split(csvSplitBy);
-            // Filter the data by the current month
             if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
               currentLines.add(data);
             }
@@ -212,7 +191,6 @@ public class Budget {
             }
           }
 
-          // Create the bar chart dataset
           ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
           for (String[] lineData : currentLines) {
             currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
@@ -227,18 +205,16 @@ public class Budget {
           XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
           previousSeries.setName(previousMonth);
 
-          // Create the bar chart
-          CategoryAxis xAxis = new CategoryAxis();
-          xAxis.setLabel("Category");
-          NumberAxis yAxis = new NumberAxis();
-          yAxis.setLabel("Value");
-          barChart = new BarChart<>(xAxis, yAxis);
+          CategoryAxis xaxis = new CategoryAxis();
+          xaxis.setLabel("Category");
+          NumberAxis yaxis = new NumberAxis();
+          yaxis.setLabel("Value");
+          barChart = new BarChart<>(xaxis, yaxis);
           barChart.setTitle("Bar Chart");
           barChart.getData().addAll(currentSeries, previousSeries);
           budgetLayout.getChildren().clear();
           budgetLayout.getChildren().addAll(editMonthBudget, categorySelectorHbox, budgetAmountHbox, barChart);
 
-          // Show the bar chart
         } catch (IOException exception) {
           exception.printStackTrace();
         }
@@ -257,7 +233,6 @@ public class Budget {
     String currentMonth = TimeOfDayChecker.getCurrentMonth();
     String previousMonth = TimeOfDayChecker.getPreviousMonth();
 
-    // Read the CSV file
     String csvFile = ("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "budget.csv");
     File file = new File(csvFile);
     if (!file.exists()) {
@@ -277,7 +252,6 @@ public class Budget {
     try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
       while ((line = br.readLine()) != null) {
         String[] data = line.split(csvSplitBy);
-        // Filter the data by the current month
         if (data.length >= 3 && data[2].equalsIgnoreCase(currentMonth)) {
           currentLines.add(data);
         }
@@ -286,7 +260,6 @@ public class Budget {
         }
       }
 
-      // Create the bar chart dataset
       ObservableList<XYChart.Data<String, Number>> currentData = FXCollections.observableArrayList();
       for (String[] lineData : currentLines) {
         currentData.add(new XYChart.Data<>(lineData[0], Double.parseDouble(lineData[1])));
@@ -301,19 +274,17 @@ public class Budget {
       XYChart.Series<String, Number> previousSeries = new XYChart.Series<>(previousData);
       previousSeries.setName(previousMonth);
 
-      // Create the bar chart
-      CategoryAxis xAxis = new CategoryAxis();
-      xAxis.setLabel("Category");
-      NumberAxis yAxis = new NumberAxis();
-      yAxis.setLabel("Value");
-      barChart = new BarChart<>(xAxis, yAxis);
+      CategoryAxis xaxis = new CategoryAxis();
+      xaxis.setLabel("Category");
+      NumberAxis yaxis = new NumberAxis();
+      yaxis.setLabel("Value");
+      barChart = new BarChart<>(xaxis, yaxis);
       barChart.setTitle("Bar Chart");
       barChart.getData().addAll(currentSeries, previousSeries);
       if (Objects.equals(GUI.getStylesheet(), "Darkmode")) {
         applyDarkModeStylesToBudget(barChart);
       }
 
-      // Show the bar chart
     } catch (IOException f) {
       f.printStackTrace();
     }
@@ -330,14 +301,17 @@ public class Budget {
     return budgetLayout;
   }
 
+  /*
+    * Applies dark mode styles to bar chart
+   */
   private static void applyDarkModeStylesToBudget(BarChart<String, Number> barChart) {
     barChart.setStyle("-fx-background-color: transparent;");
 
-    CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
-    xAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    CategoryAxis xaxis = (CategoryAxis) barChart.getXAxis();
+    xaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
-    NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
-    yAxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
+    NumberAxis yaxis = (NumberAxis) barChart.getYAxis();
+    yaxis.setStyle("-fx-tick-label-fill: #FFFFFF;");
 
     barChart.lookupAll(".chart-legend-item-text").forEach(node ->
       node.setStyle("-fx-text-fill: #FFFFFF;"));
@@ -346,14 +320,30 @@ public class Budget {
       node.setStyle("-fx-bar-fill: #FF0000;"));
 
     barChart.lookupAll(".series1 .chart-bar").forEach(node ->
-      node.setStyle("-fx-bar-fill: #FFFF00;")); // Yellow
+      node.setStyle("-fx-bar-fill: #FFFF00;"));
 
-    // Set legend symbol colors
     barChart.lookupAll(".series0 .chart-legend-symbol").forEach(node ->
-      node.setStyle("-fx-background-color: #FF0000, white;")); // Red
-
+      node.setStyle("-fx-background-color: #FF0000, white;"));
     barChart.lookupAll(".series1 .chart-legend-symbol").forEach(node ->
-      node.setStyle("-fx-background-color: #FFFF00, white;") // Yellow
-    );
+      node.setStyle("-fx-background-color: #FFFF00, white;"));
+  }
+
+  /*
+    * This method is used to play the error sound.
+   */
+  public static void playErrorSound(){
+    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+  }
+  /**
+   * A list that contains the current budget.
+   */
+  protected static List<String[]> currentBudget = new ArrayList<>();
+
+  /**
+   * A method that returns the current budget.
+   * @return currentBudget
+   */
+  public static List<String[]> getCurrentBudget() {
+    return currentBudget;
   }
 }

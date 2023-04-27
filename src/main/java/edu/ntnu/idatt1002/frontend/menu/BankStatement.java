@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +28,7 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the bank statement view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.0 - 26.04.2023
  */
 public class BankStatement {
 
@@ -112,8 +111,8 @@ public class BankStatement {
 
         try {
           ExcelExporter instance = ExcelExporter.getInstance();
-          instance.convertToPdf(instance.createBankStatement(account,
-                  category, from, to), "bankstatement");
+          instance.convertToPdf(instance.createBankStatement(
+                  account, category, from, to), "bankstatement");
 
           if (Desktop.isDesktopSupported()) {
             File myFile = new File(ExcelExporter.getBankStatementPath());
@@ -145,8 +144,8 @@ public class BankStatement {
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
 
     TableView<Expense> bankStatementTable = new TableView<>();
-    bankStatementTable.getColumns().addAll(rightColumn1,
-            rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2,
+            rightColumn3, rightColumn4, rightColumn5);
 
     ExcelExporter instance = ExcelExporter.getInstance();
 
@@ -157,8 +156,10 @@ public class BankStatement {
     tableHbox.getChildren().add(bankStatementTable);
 
 
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox,
-            selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, export, tableHbox);
+    bankStatementVbox.getChildren().addAll(viewBankStatement,
+            selectAccountHbox, selectCategoryHbox,
+            calenderIntervalText, calenderIntervalHbox,
+            export, tableHbox);
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
 

@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
@@ -26,16 +27,40 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the settings view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Settings {
+  /*
+    * Tht constant LIGHTMODE is used to set the CSS style to lightmode.
+   */
   private static final String LIGHTMODE = "Lightmode";
+  /*
+    * Tht constant TEXTFIELD is used to set the CSS style to textfield.
+   */
   private static final String TEXTFIELD = "textField";
+  /*
+    * Tht constant ACTIONBUTTON is used to set the CSS style to actionButton.
+   */
   private static final String ACTIONBUTTON = "actionButton";
+  /*
+    * Tht constant BODYTEXT is used to set the CSS style to bodyText.
+   */
   private static final String BODYTEXT = "bodyText";
+  /*
+    * Tht constant CONFIRM is used to play the confirmation sound.
+   */
   private static final String CONFIRM = "16bitconfirm.wav";
+  /*
+    * Tht constant ERROR is used to play the error sound.
+   */
   private static final String ERROR = "error.wav";
+  /*
+    * Tht constant RADIOBUTTON is used to set the CSS style to radioButton.
+   */
   private static final String RADIOBUTTON = "radioButton";
+  /*
+    * The current css mode, default is lightmode.
+   */
   private static String currentMode = LIGHTMODE;
 
   /**
@@ -97,11 +122,11 @@ public class Settings {
 
           VBox currentPassword = new VBox();
 
-          Text currentEmailLabel = new Text(UserHandling.getEmail()); //eksempel email, legg inn variabel
+          Text currentEmailLabel = new Text(UserHandling.getEmail());
           currentEmailLabel.setId(BODYTEXT);
           currentEmailLabel.setVisible(false);
           currentEmailLabel.setTextAlignment(TextAlignment.LEFT);
-          Text currentPasswordLabel = new Text(UserHandling.getPassword()); //Eksempel passord, legg inn variabel
+          Text currentPasswordLabel = new Text(UserHandling.getPassword());
           currentPasswordLabel.setVisible(false);
           currentPasswordLabel.setId(BODYTEXT);
 
@@ -122,7 +147,11 @@ public class Settings {
 
           showPrivateInformation.setOnAction(e -> {
             if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
-              currentEmailLabel.setText(UserHandling.getEmail());
+              try {
+                currentEmailLabel.setText(UserHandling.getEmail());
+              } catch (IOException ex) {
+                throw new RuntimeException(ex);
+              }
               currentPasswordLabel.setText(UserHandling.getPassword());
               currentEmailLabel.setVisible(false);
               currentPasswordLabel.setVisible(false);
@@ -136,11 +165,11 @@ public class Settings {
 
           currentPassword.getChildren().addAll(currentEmailLabel, currentPasswordLabel);
 
-          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword, showPrivateInformation);
+          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword,
+                  showPrivateInformation);
 
           currentEmailHbox.setSpacing(20);
           currentEmailHbox.setAlignment(Pos.CENTER);
-
 
           HBox emailUpdateHbox = new HBox();
 
@@ -164,7 +193,8 @@ public class Settings {
 
           confirmEmailUpdate.setOnAction(e -> {
             try {
-              if (updateEmailTextField.getText().length() > 8 || updateEmailTextField.getText().length() < 20) {
+              if (updateEmailTextField.getText().length() > 8
+                      || updateEmailTextField.getText().length() < 20) {
                 UserHandling.changeEmail(updateEmailTextField.getText());
                 currentEmailLabel.setText(UserHandling.getEmail());
                 SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRM));
@@ -186,7 +216,6 @@ public class Settings {
           emailUpdateHbox.setSpacing(20);
           emailUpdateHbox.setAlignment(Pos.CENTER);
 
-
           HBox updatePasswordHbox = new HBox();
 
           VBox currentAndNewPasswordHbox = new VBox();
@@ -206,7 +235,8 @@ public class Settings {
           Button confirmPasswordUpdate = new Button("Confirm");
           confirmPasswordUpdate.setOnAction(e -> {
             try {
-              if (newPasswordTextField.getText().length() > 8 || newPasswordTextField.getText().length() < 20) {
+              if (newPasswordTextField.getText().length() > 8
+                      || newPasswordTextField.getText().length() < 20) {
                 UserHandling.changePassword(newPasswordTextField.getText());
                 currentPasswordLabel.setText(UserHandling.getPassword());
                 SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRM));
@@ -224,7 +254,8 @@ public class Settings {
           confirmPasswordUpdateVBox.setAlignment(Pos.CENTER);
 
 
-          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
+          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox,
+                  currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
           updatePasswordHbox.setAlignment(Pos.CENTER);
           updatePasswordHbox.setSpacing(20);
 
@@ -251,10 +282,11 @@ public class Settings {
             default -> lightmode.setSelected(true);
           }
 
-          toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+          toggleGroup.selectedToggleProperty().addListener((
+                  observable, oldValue, newValue) -> {
             if (toggleGroup.getSelectedToggle() != null) {
               if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(),
-                  LIGHTMODE)) {
+                      LIGHTMODE)) {
                 String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
                 currentMode = selectedText;
                 GUI.setStyle(selectedText);
@@ -283,7 +315,9 @@ public class Settings {
           contactUS.setAlignment(Pos.CENTER);
 
           vbox.getChildren().clear();
-          vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox, contactUS);
+          vbox.getChildren().addAll(title, currentEmailHbox,
+                  emailUpdateHbox, updatePasswordHbox,
+                  prefrences, viewmodeHbox, contactUS);
           vbox.setSpacing(40);
 
           vbox.setAlignment(Pos.TOP_CENTER);

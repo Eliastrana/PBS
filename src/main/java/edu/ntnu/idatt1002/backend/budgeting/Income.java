@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * An income has a name, a price, a category and a date.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.3 - 27.04.2023
  */
 public class Income {
   /**
@@ -27,9 +27,21 @@ public class Income {
    */
   private LocalDate date;
 
+  /*
+   * Exception message for when the name is empty.
+   */
   private static final String NAME_CANNOT_BE_EMPTY = "Name cannot be empty";
+  /*
+   * Exception message for when the category is not between 1 and 6.
+   */
   private static final String CATEGORY_MUST_BE_BETWEEN_1_AND_6 = "Category must be between 1 and 6";
+  /*
+   * Exception message for when the date is empty.
+   */
   private static final String DATE_CANNOT_BE_EMPTY = "Date cannot be empty";
+  /*
+   * Exception message for when the price is negative.
+   */
   private static final String PRICE_CANNOT_BE_NEGATIVE = "Price cannot be negative";
 
   /**
@@ -61,7 +73,7 @@ public class Income {
   }
 
   /**
-   * Private constructor to for barhcart.
+   * Private constructor to for barchart.
    */
   private Income() {
   }

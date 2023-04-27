@@ -1,11 +1,7 @@
 package edu.ntnu.idatt1002.backend.user;
 
 import edu.ntnu.idatt1002.frontend.GUI;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +10,7 @@ import java.util.regex.Pattern;
  * Tha class is used for getting and changing the email and password of the user.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class UserHandling {
 

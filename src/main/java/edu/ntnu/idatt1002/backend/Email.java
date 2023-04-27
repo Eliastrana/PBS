@@ -13,7 +13,7 @@ import static javax.mail.Transport.send;
  * A class that sends an email to the user.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class Email {
 
@@ -59,7 +59,6 @@ public class Email {
     recipientEmail = email;
     passwordString = password;
 
-    // Create a JavaMail session with the SMTP server
     Properties props = new Properties();
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
@@ -73,20 +72,16 @@ public class Email {
       }
     });
 
-    // Create a new email message
     MimeMessage emailMessage = new MimeMessage(session);
     emailMessage.setFrom(new InternetAddress(SENDER_EMAIL));
     emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
     emailMessage.setSubject(subject);
-    // Create a MimeMultipart object for the HTML content and the image
     MimeMultipart multipart = new MimeMultipart("related");
 
-// Create a MimeBodyPart for the HTML content
     MimeBodyPart htmlPart = new MimeBodyPart();
     htmlPart.setContent("<html> <body style='background-color: #f2f2f2;'> " +
             "<div style='text-align: center;'>" +
             "<h1>Reset your password!</h1> " +
-            //"<img src=\"cid:image1\">" +
             "<p> Your master-password is: " + passwordString + "</p>" +
             "<p> Best regard, Private Budgeting System.</p>" +
             "</div>" +
@@ -94,11 +89,8 @@ public class Email {
 
     multipart.addBodyPart(htmlPart);
 
-// Set the content of the MimeMessage to the MimeMultipart object
     emailMessage.setContent(multipart);
 
-
-    // Send the email message
     send(emailMessage, SENDER_EMAIL, SENDER_PASSWORD);
   }
 }

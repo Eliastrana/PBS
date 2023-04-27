@@ -16,7 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +30,7 @@ import java.util.function.Supplier;
  * The buttons are added to the StackPane, and the StackPane is added to the scene.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.4 - 27.04.2023
  */
 public class GUI extends Application {
   /**
@@ -48,6 +47,9 @@ public class GUI extends Application {
    * The current user.
    */
   private static final String REPORT = "report";
+  /**
+   * The constant currentUser.
+   */
   public static String currentUser;
   /**
    * The constant overviewWindow that contains the overview page.
@@ -81,6 +83,9 @@ public class GUI extends Application {
    * The Border pane that contains the different panes.
    */
   static BorderPane borderPane = new BorderPane();
+  /**
+   * The Scroll pane.
+   */
   static ScrollPane scrollPane = new ScrollPane();
   /**
    * The stylesheet for the GUI.
@@ -150,7 +155,7 @@ public class GUI extends Application {
     CreateUserController createUserController = new CreateUserController(this);
     CreateUser createUser = new CreateUser();
 
-    Parent root = createUser.createUserView(createUserController);
+    Parent root = CreateUser.createUserView(createUserController);
     Scene scene = new Scene(root);
     scene.getStylesheets().add(stylesheet);
     updateScene(scene, root);
@@ -222,7 +227,7 @@ public class GUI extends Application {
 
     newScrollPane.getStylesheets().add(stylesheet);
 
-    newScrollPane.setId("background");
+    borderPane.setId("background");
     newScrollPane.setId("background");
 
     newScrollPane.setContent(borderPane);
@@ -241,9 +246,11 @@ public class GUI extends Application {
 
     StackPane root = new StackPane();
 
-    root.getChildren().addAll(overviewWindow, transferWindow, addExpenseWindow, reportWindow, settingsWindow, budgetWindow, bankStatementWindow);
+    root.getChildren().addAll(overviewWindow, transferWindow,
+            addExpenseWindow, reportWindow, settingsWindow,
+            budgetWindow, bankStatementWindow);
     TopMenu topMenu = new TopMenu(this);
-    borderPane.setTop(topMenu.topMenu(primaryStage));
+    borderPane.setTop(TopMenu.topMenu(primaryStage));
     borderPane.setCenter(root);
 
     updatePane();
@@ -346,7 +353,9 @@ public class GUI extends Application {
 
     setStylesheet(style);
 
-    StackPane[] stackPanes = new StackPane[]{overviewWindow, transferWindow, addExpenseWindow, reportWindow, budgetWindow, settingsWindow, bankStatementWindow};
+    StackPane[] stackPanes = new StackPane[]{overviewWindow,
+        transferWindow, addExpenseWindow, reportWindow,
+        budgetWindow, settingsWindow, bankStatementWindow};
     BorderPane[] borderPanes = new BorderPane[]{borderPane};
 
     for (StackPane stackPane : stackPanes) {
@@ -393,6 +402,11 @@ public class GUI extends Application {
     paneUpdateStatus.put(paneName, true);
   }
 
+  /**
+   * Gets scene.
+   *
+   * @return the scene
+   */
   public Scene getScene() {
     return primaryStage.getScene();
   }

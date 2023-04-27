@@ -8,11 +8,11 @@ import edu.ntnu.idatt1002.frontend.GUI;
  * The class is used by the ForgotPasswordView.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 19.04.2023
  */
 public class ForgotPasswordController {
   /**
-   * The Gui.
+   * An instance of the GUI class.
    */
   private final GUI gui;
 

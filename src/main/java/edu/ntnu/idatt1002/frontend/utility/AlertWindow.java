@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
  * The alert window is used to display error messages.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class AlertWindow {
 
@@ -42,13 +42,16 @@ public class AlertWindow {
 
     ButtonType okButton = new ButtonType("OK");
 
+
     dialog.getDialogPane().getButtonTypes().add(okButton);
 
-    String okButtonStyle = "-fx-font-size: 30px; -fx-min-width: 60px; -fx-min-height: "
-            + "30px;-fx-background-color: #9FB8AD; -fx-border-width: 2; "
-            + "-fx-padding: 10px; -fx-background-radius: 0.5em;";
+
+    String okButtonStyle = "-fx-font-size: 15px; -fx-min-width: 40px;"
+            + " -fx-min-height: " + "20px;-fx-background-color: #9FB8AD;"
+            + " -fx-border-width: 2; " + "-fx-padding: 5px; -fx-background-radius: 0.5em;";
     Button okButtonNode = (Button) dialog.getDialogPane().lookupButton(okButton);
     okButtonNode.setStyle(okButtonStyle);
+    okButtonNode.setId("actionButton");
     okButtonNode.setAlignment(Pos.CENTER);
 
     okButtonNode.setOnKeyPressed(event -> {

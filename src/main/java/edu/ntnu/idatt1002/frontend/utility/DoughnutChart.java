@@ -19,7 +19,7 @@ import java.util.Objects;
  * The doughnut chart is a pie chart with a hole in the middle.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class DoughnutChart extends PieChart {
   /**
@@ -32,6 +32,7 @@ public class DoughnutChart extends PieChart {
    * Constructs a new doughnut chart.
    *
    * @param pieData the data to be displayed in the chart
+   * @param style   the style
    */
   public DoughnutChart(ObservableList<Data> pieData, String style) {
     super(pieData);
@@ -54,7 +55,8 @@ public class DoughnutChart extends PieChart {
    * This method is called whenever the layout of the chart is updated.
    */
   @Override
-  protected void layoutChartChildren(double top, double left, double contentWidth, double contentHeight) {
+  protected void layoutChartChildren(double top, double left, double contentWidth,
+                                     double contentHeight) {
     super.layoutChartChildren(top, left, contentWidth, contentHeight);
 
     addInnerCircleIfNotPresent();
@@ -70,7 +72,7 @@ public class DoughnutChart extends PieChart {
     if (!getData().isEmpty()) {
       Node pie = getData().get(0).getNode();
       if (pie.getParent() instanceof Pane parent && (!parent.getChildren().contains(innerCircle))) {
-          parent.getChildren().add(innerCircle);
+        parent.getChildren().add(innerCircle);
       }
     }
   }
@@ -108,17 +110,19 @@ public class DoughnutChart extends PieChart {
     innerCircle.setRadius((maxX - minX) / 4);
   }
 
+  /*
+   * This method is called whenever the data of the chart is updated.
+   * It is used to change the color of the labels of the chart.
+   */
   private void changeLabelColor() {
     for (Data data : getData()) {
-      data.nameProperty().addListener((observable, oldValue, newValue) ->
-        Platform.runLater(() -> {
-          for (Node node : lookupAll(".chart-pie-label")) {
-            if (node instanceof Text textNode && !(node.getParent() instanceof Legend)) {
-                textNode.getStyleClass().add("chart-pie-label");
-              // No need to change the fill, as it will be picked up from the CSS
-            }
+      data.nameProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> {
+        for (Node node : lookupAll(".chart-pie-label")) {
+          if (node instanceof Text textNode && !(node.getParent() instanceof Legend)) {
+            textNode.getStyleClass().add("chart-pie-label");
           }
-        }));
+        }
+      }));
     }
   }
 

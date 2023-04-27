@@ -24,7 +24,7 @@ import static edu.ntnu.idatt1002.backend.user.ForgotPasswordBackend.handleSubmit
  * A class that creates the view for the forgot password page.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class ForgotPassword {
   /**
@@ -49,14 +49,26 @@ public class ForgotPassword {
    */
   public static String newPasswordString;
   /**
-   * The input field for the email.
+   * An instance of the Random library.
    */
   private static final Random random = new Random();
+  /**
+   * The constant CSS_FILE that contains the styling for the page.
+   */
   private static final String CSS_FILE = "/Styling.css";
+  /**
+   * The constant TEXTFIELD that is used for the id of text fields.
+   */
   private static final String TEXTFIELD = "textField";
 
-  public static int getRandomInt (int length){
-    return random.nextInt(length) ;
+  /**
+   * Gets random int.
+   *
+   * @param length the length
+   * @return the random int
+   */
+  public static int getRandomInt(int length) {
+    return random.nextInt(length);
   }
 
   /**
@@ -73,7 +85,7 @@ public class ForgotPassword {
 
     background.getStylesheets().add(CSS_FILE);
 
-    background.getStyleClass().add("loginScreen" + getRandomInt(1)+1);
+    background.getStyleClass().add("loginScreen" + getRandomInt(1) + 1);
 
     VBox forgottenPasswordVBox = new VBox();
     forgottenPasswordVBox.setId("overlayLogin");
@@ -176,7 +188,10 @@ public class ForgotPassword {
         if (!pattern.matcher(newPassword.getText()).matches()) {
           Alert alert = new Alert(Alert.AlertType.ERROR);
           alert.setTitle("Error");
-          alert.setHeaderText("Password must contain at least one uppercase letter, one lowercase letter, one number, one special character and be between 8 and 20 characters long.");
+          alert.setHeaderText("Password must contain at least one uppercase letter,"
+                  + " one lowercase letter, one number,"
+                  + " one special character "
+                  + "and be between 8 and 20 characters long.");
           alert.showAndWait();
         } else {
           newPasswordString = newPassword.getText();
@@ -189,7 +204,9 @@ public class ForgotPassword {
       }
     });
 
-    forgottenPasswordVBox.getChildren().addAll(backButtonBox, emailTextField, submitButton, masterPassword, newPassword, confirmNewPassword, changePasswordButton);
+    forgottenPasswordVBox.getChildren().addAll(backButtonBox,
+            emailTextField, submitButton, masterPassword,
+            newPassword, confirmNewPassword, changePasswordButton);
     forgottenPasswordVBox.setSpacing(30);
     forgottenPasswordVBox.setAlignment(Pos.CENTER);
     forgottenPasswordVBox.getStylesheets().add(CSS_FILE);

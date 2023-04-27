@@ -32,15 +32,9 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the add expense view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class AddExpense {
-  /**
-   * Play error sound.
-   */
-  public static void playErrorSound() {
-    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
-  }
 
   /**
    * A method that creates the add expense view.
@@ -49,9 +43,6 @@ public class AddExpense {
    * @return the vertical box
    */
   public static VBox expenseView() {
-    Accounts accountsInstance = Accounts.getInstance();
-    ExcelExporter instance = ExcelExporter.getInstance();
-
     VBox addExpenseVBox = new VBox();
     addExpenseVBox.setAlignment(Pos.CENTER);
     addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
@@ -105,7 +96,7 @@ public class AddExpense {
     confirmExpense.setId("actionButton");
     confirmExpense.setFocusTraversable(true);
 
-    names.setOnKeyPressed(e -> {
+    prices.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
         confirmExpense.fire();
       }
@@ -116,6 +107,10 @@ public class AddExpense {
         confirmExpense.fire();
       }
     });
+
+    Accounts accountsInstance = Accounts.getInstance();
+    ExcelExporter instance = ExcelExporter.getInstance();
+
     confirmExpense.setOnAction(e -> {
       if (categoryMenu.getValue() == null) {
         playErrorSound();
@@ -143,24 +138,18 @@ public class AddExpense {
         double price = Double.parseDouble(tempText);
         Expenses expenseInstance = Expenses.getInstance();
         switch (selectedOption) {
-          case "Entertainment" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          1, datePicker.getValue()), expenseInstance.getEntertainment());
-          case "Food" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          2, datePicker.getValue()), expenseInstance.getFood());
-          case "Transportation" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          3, datePicker.getValue()), expenseInstance.getTransportation());
-          case "Clothing" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          4, datePicker.getValue()), expenseInstance.getClothing());
-          case "Other" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          5, datePicker.getValue()), expenseInstance.getOther());
-          case "Rent" ->
-                  expenseInstance.addToArrayList(new Expense(name, price,
-                          6, datePicker.getValue()), expenseInstance.getRent());
+          case "Entertainment" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  1, datePicker.getValue()), expenseInstance.getEntertainment());
+          case "Food" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  2, datePicker.getValue()), expenseInstance.getFood());
+          case "Transportation" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  3, datePicker.getValue()), expenseInstance.getTransportation());
+          case "Clothing" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  4, datePicker.getValue()), expenseInstance.getClothing());
+          case "Other" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  5, datePicker.getValue()), expenseInstance.getOther());
+          case "Rent" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  6, datePicker.getValue()), expenseInstance.getRent());
           default -> showAlert("Error: invalid category selected.");
         }
 
@@ -213,4 +202,12 @@ public class AddExpense {
 
     return new VBox(dateAndInputAndConfirm);
   }
+
+  /**
+   * Plays an error sound.
+   */
+  public static void playErrorSound() {
+    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+  }
+
 }

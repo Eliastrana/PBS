@@ -6,7 +6,7 @@ package edu.ntnu.idatt1002.backend.budgeting;
  * Singleton is used to ensure data encapsulation and integrity.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Account {
   /**

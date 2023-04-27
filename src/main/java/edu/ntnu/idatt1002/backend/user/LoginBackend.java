@@ -3,6 +3,7 @@ package edu.ntnu.idatt1002.backend.user;
 import edu.ntnu.idatt1002.frontend.controllers.LoginController;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -23,13 +24,13 @@ import java.util.Base64;
  * The class contains methods for decrypting the password and checking if the password is correct.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class LoginBackend {
   /**
    * The constant SECRET_KEY is the secret key used for decrypting the password.
    */
-  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
+  private static final String SECRET_KEY = "PASSWORD";
   /**
    * The constant currentUser is the current user.
    */

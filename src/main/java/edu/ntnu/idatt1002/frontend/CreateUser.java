@@ -23,18 +23,40 @@ import java.util.Random;
  * A class that creates the view for the create user page.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.5 - 27.04.2023
  */
 public class CreateUser {
+  /*
+   * The constant CSS_FILE that contains the styling for the page.
+   */
   private static final String CSS_FILE = "/Styling.css";
+  /*
+   * The constant TEXTFIELD that is used for the id of text fields.
+   */
   private static final String TEXTFIELD = "textField";
+  /*
+   * The constant ERRORTEXT that is used for the id of error texts.
+   */
   private static final String ERRORTEXT = "errorText";
-  private static final String PASSWORD_REQUIREMENTS = "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.";
+  /*
+   * The constant PASSWORD_REQUIREMENTS that is used to define
+   * the requirements of a password.
+   */
+  private static final String PASSWORD_REQUIREMENTS =
+          """
+          Password must contain at least 8 characters,
+          one uppercase letter,
+          one lowercase letter,
+          one number and one special character.\s
+          """;
+  /*
+   * An instance of the Random library.
+   */
   private static final Random random = new Random();
   /**
    * A text field to enter the username.
    */
-  private static TextField username = new TextField();
+  private static final TextField username = new TextField();
   /**
    * The current user.
    */
@@ -57,8 +79,14 @@ public class CreateUser {
   public static void setCurrentUser(String currentUser) {
     CreateUser.currentUser = currentUser;
   }
-  public static int getRandomInt (){
-    return random.nextInt(1) +1;
+
+  /**
+   * Gets random int.
+   *
+   * @return the random int
+   */
+  public static int getRandomInt() {
+    return random.nextInt(1) + 1;
   }
 
   /**
@@ -164,7 +192,12 @@ public class CreateUser {
       passwordError.setText("");
       password2Error.setText("");
 
-      if (!CreateUserBackend.isValidEmail(email.getText())) {
+      if (!CreateUserBackend.isValidUsername(username.getText())) {
+        usernameError.setText("""
+                A user with this username already exists.
+                """);
+        return;
+      } else if (!CreateUserBackend.isValidEmail(email.getText())) {
         emailError.setText("""
                 Email is not valid. It needs to be in the format:
                 username@email.domain
@@ -178,11 +211,12 @@ public class CreateUser {
         return;
       } else {
         passwordString = passwordStringTest1;
+        setCurrentUser(username.getText());
       }
 
       try {
-        currentUser = username.getText();
         controller.handleCreateButton(username.getText(), passwordString, email.getText());
+        username.clear();
       } catch (IOException ex) {
         throw new IllegalArgumentException("Something went wrong with the file");
       }

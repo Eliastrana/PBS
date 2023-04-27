@@ -13,7 +13,7 @@ import java.util.List;
  * and for adding an income to an ArrayList of incomes.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Incomes {
   /**
@@ -30,7 +30,7 @@ public class Incomes {
    * Private constructor to avoid multiple instances of the class.
    */
   private Incomes() {
-  } // Singleton
+  }
 
   /**
    * Returns the single instance of the class.
@@ -72,8 +72,8 @@ public class Incomes {
   /**
    * Adds an income to an ArrayList of incomes.
    *
-   * @param income the income to be added.
-   * @param arrayList  the ArrayList to which the income is to be added.
+   * @param income    the income to be added.
+   * @param arrayList the ArrayList to which the income is to be added.
    */
   public void addToArrayList(Income income, List<Income> arrayList) {
     if (income == null) {

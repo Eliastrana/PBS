@@ -19,7 +19,7 @@ import java.io.IOException;
  * A class that creates the report view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Report {
   /**
@@ -37,7 +37,6 @@ public class Report {
     Text printOutAReport = new Text("Print out a report");
     printOutAReport.setId("titleText");
     HBox selectReportHBox = new HBox();
-
 
     HBox printOutVBox = new HBox();
     printOutVBox.setAlignment(Pos.CENTER);
@@ -62,18 +61,16 @@ public class Report {
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile =
-                  new File(ExcelExporter.getReportPDFPath());
+          File myFile = new File(ExcelExporter.getReportPDFPath());
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-          // no application registered for PDFs
+          throw new IllegalArgumentException("No application registered for PDFs");
         }
       }
       SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
 
     });
 
-    //THIS ONE DOES NOT WORK BUT EMIL IS SICK SO WE DONT KNOW WHAT TO DO
     Button printToExcel = new Button("Print to Excel");
     printToExcel.setId("actionButton");
     printToExcel.setOnKeyPressed(event -> {
@@ -88,16 +85,15 @@ public class Report {
 
         excelFile = instance.exportToExcel();
       } catch (IOException ex) {
-        throw new IllegalArgumentException(ex);
+        throw new IllegalArgumentException("No application registered for PDFs");
       }
 
       if (Desktop.isDesktopSupported()) {
         try {
-          File myFile =
-                  new File(excelFile);
+          File myFile = new File(excelFile);
           Desktop.getDesktop().open(myFile);
         } catch (IOException ex) {
-          // no application registered for PDFs
+          throw new IllegalArgumentException("No application registered for PDFs");
         }
       }
       SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));

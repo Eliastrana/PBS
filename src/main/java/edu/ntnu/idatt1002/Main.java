@@ -10,12 +10,12 @@ import javafx.stage.Stage;
  * A class that starts the GUI.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 19.04.2023
  */
 public class Main extends Application {
 
   /**
-   * The entry point of the application
+   * The entry point of the application.
    *
    * @param args the input arguments
    */
@@ -40,7 +40,7 @@ public class Main extends Application {
   }
 
   /**
-   * A method that starts the GUI
+   * A method that starts the GUI.
    *
    * @param stage the primary stage for this application, onto which
    *              the application scene can be set.

@@ -11,7 +11,7 @@ import java.util.Objects;
  * The class is also used for deleting transfers, depending on the type of the transfer.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.0 - 24.04.2023
  */
 public class Transfers {
   /**
@@ -23,7 +23,7 @@ public class Transfers {
    */
   private static final Transfers instance = new Transfers();
   /**
-   * The account name of the account that made/recieved the transfer.
+   * The account name of the account that made/received the transfer.
    */
   private String accountName;
   /**
@@ -35,7 +35,7 @@ public class Transfers {
    */
   private double amount;
   /**
-   * The type of the transfer. A for adding to an account, B for transfering between accounts.
+   * The type of the transfer. A for adding to an account, B for transferring between accounts.
    */
   private char transferType;
   /**

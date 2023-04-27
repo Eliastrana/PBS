@@ -25,7 +25,13 @@ import java.util.Random;
  * @version 0.5 - 19.04.2023
  */
 public class Login {
+  /**
+   * The constant CSS_FILE that contains the styling for the page.
+   */
   private static final String CSS_FILE = "/Styling.css";
+  /**
+   * An instance of the Random library.
+   */
   private static final Random random = new Random();
   /**
    * A text field to enter the username.
@@ -44,9 +50,16 @@ public class Login {
   public static String getCurrentUser() {
     return currentUser;
   }
-  public static int getRandomInt (){
-    return random.nextInt(2) +1;
+
+  /**
+   * Gets random int.
+   *
+   * @return the random int
+   */
+  public static int getRandomInt() {
+    return random.nextInt(2) + 1;
   }
+
   /**
    * Login view parent.
    *
@@ -91,7 +104,7 @@ public class Login {
 
     password.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
-        logIn.fire(); // Simulate a click event on the logIn button
+        logIn.fire();
       }
     });
 
@@ -124,7 +137,9 @@ public class Login {
       }
     });
 
-    loginVBox.getChildren().addAll(welcomeText, welcomeText2, username, password, logIn, createUser, forgotPassword);
+    loginVBox.getChildren().addAll(welcomeText,
+            welcomeText2, username, password,
+            logIn, createUser, forgotPassword);
 
     StackPane backgroundAndLogin = new StackPane(background, loginVBox);
 

@@ -9,7 +9,7 @@ import java.util.Objects;
  * An expense has a name, a price, a category and a date.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.0 - 26.04.2023
  */
 public class Expense {
   /**
@@ -46,11 +46,29 @@ public class Expense {
    */
   private LocalDate date;
 
+  /**
+   * The exception message for when the name is null or empty.
+   */
   private static final String NAME_CANNOT_BE_NULL = "Name cannot be null or empty";
+  /**
+   * The exception message for when the price is negative.
+   */
   private static final String PRICE_CANNOT_BE_NEGATIVE = "Price cannot be negative";
+  /**
+   * The exception message for when the category is not between 1 and 6.
+   */
   private static final String CATEGORY_MUST_BE_BETWEEN_1_AND_6 = "Category must be between 1 and 6";
+  /**
+   * The exception message for when the date is null.
+   */
   private static final String DATE_CANNOT_BE_NULL = "Date cannot be null";
+  /**
+   * The exception message for when the category is null.
+   */
   private static final String CATEGORY_CANNOT_BE_NULL = "Category cannot be null";
+  /**
+   * The exception message for when the uniqueID is null.
+   */
   private static final String UNIQUEID_CANNOT_BE_NULL = "UniqueID cannot be null";
 
   /**
@@ -345,7 +363,8 @@ public class Expense {
       return false;
     }
     Expense expense = (Expense) o;
-    return Double.compare(expense.price, price) == 0 && Objects.equals(name, expense.name)
+    return Double.compare(expense.price, price) == 0
+            && Objects.equals(name, expense.name)
             && Objects.equals(categoryAsString, expense.categoryAsString)
             && Objects.equals(accountAsString, expense.accountAsString)
             && Objects.equals(date, expense.date);

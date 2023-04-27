@@ -9,7 +9,7 @@ import java.util.List;
  * and the expense amount as value.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class Expenses {
   /**
@@ -142,8 +142,8 @@ public class Expenses {
   /**
    * Adds an expense to the ArrayList.
    *
-   * @param expense the expense to be added.
-   * @param arrayList   the ArrayList to add the expense to.
+   * @param expense   the expense to be added.
+   * @param arrayList the ArrayList to add the expense to.
    */
   public void addToArrayList(Expense expense, List<Expense> arrayList) {
     if (expense == null) {

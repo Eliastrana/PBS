@@ -24,24 +24,24 @@ import java.util.regex.Pattern;
  * The class also checks if the email and password is valid.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 27.04.2023
  */
 public class CreateUserBackend {
   /**
    * A pattern that checks if the email is valid.
    */
-  public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-          Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+  public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(
+          "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
   /**
    * The secret key used to encrypt the password.
    */
-  private static final String SECRET_KEY = "EliasErHeltSinnsyktKul";
+  private static final String SECRET_KEY = "PASSWORD";
   /**
    * A pattern that checks if the password is valid.
    */
-  private static final Pattern VALID_PASSWORD_REGEX =
-          Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])"
-                  + "(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+  private static final Pattern VALID_PASSWORD_REGEX = Pattern.compile(
+          "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+  private static String currentUser;
 
   /**
    * A method that encrypts the password.
@@ -82,6 +82,29 @@ public class CreateUserBackend {
     random.nextBytes(salt);
     return Base64.getEncoder().encodeToString(salt);
   }
+
+  /*
+    * A method that checks if the username is valid.
+    * The method checks if the username is already in use.
+    *
+    * @param username the username to be checked
+   */
+  public static boolean isValidUsername(String username) {
+    String file = "src/main/resources/users.csv";
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        String[] values = line.split(",");
+        if (values[0].equals(username)) {
+          return false;
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return true;
+  }
+
 
   /**
    * Checks if the email and password is valid.
@@ -137,14 +160,12 @@ public class CreateUserBackend {
     Path tempFile = Files.createTempFile(tempDirectoryPath, "users", ".csv");
     BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile.toFile(), true));
 
-    try (writer; BufferedReader reader = new BufferedReader(new FileReader(file))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = reader.readLine()) != null) {
         writer.write(line);
         writer.newLine();
       }
-    } catch (IOException e) {
-      throw new IOException("Failed to read users.csv file");
     }
 
     writer.write(username + "," + encryptedPassword + "," + salt + "," + email);
@@ -152,5 +173,8 @@ public class CreateUserBackend {
     writer.close();
 
     Files.move(tempFile, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+    currentUser = username;
   }
+
 }

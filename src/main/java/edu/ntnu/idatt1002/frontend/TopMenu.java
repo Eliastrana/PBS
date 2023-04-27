@@ -18,12 +18,12 @@ import javafx.stage.Stage;
  * A class that creates the top menu.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.3 - 27.04.2023
  */
 public class TopMenu {
 
   /**
-   * The Gui.
+   * An instance of the GUI class.
    */
   private static GUI gui;
 
@@ -54,22 +54,34 @@ public class TopMenu {
     topMenu.setSpacing(20);
     topMenu.setPadding(new Insets(20, 20, 20, 20));
 
-    Button overviewButton = createMenuButton("Overview", "/icons/overview.png", () -> handleButtonClick(GUI.overviewWindow, "overview"));
+    Button overviewButton = createMenuButton("Overview",
+            "/icons/overview.png", () -> handleButtonClick(
+                    GUI.overviewWindow, "overview"));
     topMenu.getChildren().add(overviewButton);
 
-    Button transferButton = createMenuButton("Accounts", "/icons/transfer.png", () -> handleButtonClick(GUI.transferWindow, "transfer"));
+    Button transferButton = createMenuButton("Accounts",
+            "/icons/transfer.png", () -> handleButtonClick(
+                    GUI.transferWindow, "transfer"));
     topMenu.getChildren().add(transferButton);
 
-    Button addExpenseButton = createMenuButton("Add Expense", "/icons/addExpense.png", () -> handleButtonClick(GUI.addExpenseWindow, "addExpense"));
+    Button addExpenseButton = createMenuButton("Add Expense",
+            "/icons/addExpense.png", () -> handleButtonClick(
+                    GUI.addExpenseWindow, "addExpense"));
     topMenu.getChildren().add(addExpenseButton);
 
-    Button reportButton = createMenuButton("Report", "/icons/report.png", () -> handleButtonClick(GUI.reportWindow, "report"));
+    Button reportButton = createMenuButton("Report",
+            "/icons/report.png", () -> handleButtonClick(
+                    GUI.reportWindow, "report"));
     topMenu.getChildren().add(reportButton);
 
-    Button budgetButton = createMenuButton("Budget", "/icons/budget.png", () -> handleButtonClick(GUI.budgetWindow, "budget"));
+    Button budgetButton = createMenuButton("Budget",
+            "/icons/budget.png", () -> handleButtonClick(
+                    GUI.budgetWindow, "budget"));
     topMenu.getChildren().add(budgetButton);
 
-    Button bankStatementButton = createMenuButton("Bank Statement", "/icons/bankStatement.png", () -> handleButtonClick(GUI.bankStatementWindow, "bankStatement"));
+    Button bankStatementButton = createMenuButton("Bank Statement",
+            "/icons/bankStatement.png", () -> handleButtonClick(
+                    GUI.bankStatementWindow, "bankStatement"));
     topMenu.getChildren().add(bankStatementButton);
 
 
