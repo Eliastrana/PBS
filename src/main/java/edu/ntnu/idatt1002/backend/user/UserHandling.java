@@ -1,7 +1,6 @@
 package edu.ntnu.idatt1002.backend.user;
 
 import edu.ntnu.idatt1002.frontend.GUI;
-
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +10,7 @@ import java.util.regex.Pattern;
  * Tha class is used for getting and changing the email and password of the user.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class UserHandling {
 
@@ -23,12 +22,8 @@ public class UserHandling {
   /*
    * A pattern to check if the password is valid.
    */
-  private static final Pattern PASSWORD_PATTERN =
-          Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
-  /*
-   * The username of the current user.
-   */
-  private static String username;
+  private static final Pattern PASSWORD_PATTERN = Pattern.compile(
+          "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
   /*
    * The email of the current user.
    */
@@ -42,10 +37,12 @@ public class UserHandling {
    * Returns the email of the current user.
    *
    * @return the email of the current user
+   * @throws IOException the io exception
    */
-  public static String getEmail() {
+  public static String getEmail() throws IOException {
     String line = "";
-    try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/users.csv"))) {
+    try (BufferedReader reader = new BufferedReader(
+            new FileReader("src/main/resources/users.csv"))) {
 
       while ((line = reader.readLine()) != null) {
         String[] user = line.split(",");
@@ -54,7 +51,7 @@ public class UserHandling {
         }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new IOException("Could not read file");
     }
     return email;
   }
@@ -66,8 +63,8 @@ public class UserHandling {
    */
   public static String getPassword() {
     String line = "";
-    try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/users.csv"))) {
-
+    try (BufferedReader reader = new BufferedReader(
+            new FileReader("src/main/resources/users.csv"))) {
       GUI.getCurrentUser();
       while ((line = reader.readLine()) != null) {
         String[] user = line.split(",");
@@ -75,7 +72,6 @@ public class UserHandling {
           String salt = user[2];
           password = user[1];
           password = LoginBackend.decrypt(password, salt);
-
         }
       }
     } catch (IOException e) {
@@ -101,29 +97,19 @@ public class UserHandling {
     if (!emailMatcher.matches()) {
       throw new Exception("Invalid email");
     }
-    try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
-         FileWriter fw = new FileWriter(tempCsvFile)) {
-
-      // Loop through each line in the CSV file
+    try (BufferedReader br = new BufferedReader(
+            new FileReader(csvFile)); FileWriter fw = new FileWriter(tempCsvFile)) {
       while ((line = br.readLine()) != null) {
-
-        // Split the line by commas
         String[] user = line.split(csvSplitBy);
-
-        // Check if the email matches the input email
         if (user[3].equals(getEmail())) {
-          // Update the password and salt
           user[3] = email;
         }
-
-        // Write the line to the temporary CSV file
         fw.write(String.join(",", user) + "\n");
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    // Replace the original CSV file with the updated content
     File originalFile = new File(csvFile);
     File tempFile = new File(tempCsvFile);
     if (originalFile.delete()) {
@@ -156,30 +142,20 @@ public class UserHandling {
     if (!passwordMatcher.matches()) {
       throw new Exception("Invalid password");
     }
-    try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
-         FileWriter fw = new FileWriter(tempCsvFile)) {
-
-      // Loop through each line in the CSV file
+    try (BufferedReader br = new BufferedReader(
+            new FileReader(csvFile)); FileWriter fw = new FileWriter(tempCsvFile)) {
       while ((line = br.readLine()) != null) {
-
-        // Split the line by commas
         String[] user = line.split(csvSplitBy);
-
-        // Check if the email matches the input email
         if (user[3].equals(getEmail())) {
-          // Update the password and salt
           user[1] = newPassword;
           user[2] = salt;
         }
-
-        // Write the line to the temporary CSV file
         fw.write(String.join(",", user) + "\n");
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    // Replace the original CSV file with the updated content
     File originalFile = new File(csvFile);
     File tempFile = new File(tempCsvFile);
     if (originalFile.delete()) {

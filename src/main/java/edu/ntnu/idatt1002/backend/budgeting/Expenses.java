@@ -1,54 +1,51 @@
 package edu.ntnu.idatt1002.backend.budgeting;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that represents a collection of expenses.
- * The collection of expenses is a HashMap with the expense name as key and the expense amount as value.
+ * The collection of expenses is a HashMap with the expense name as key
+ * and the expense amount as value.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class Expenses {
   /**
    * An ArrayList with all the expenses in the transportation category.
    */
-  public static ArrayList<Expense> transportation;
+  private List<Expense> transportation;
 
   /**
    * An ArrayList with all the expenses in the entertainment category.
    */
-  public static ArrayList<Expense> entertainment;
+  private List<Expense> entertainment;
 
   /**
    * An ArrayList with all the expenses in the clothing category.
    */
-  public static ArrayList<Expense> clothing;
+  private List<Expense> clothing;
 
   /**
    * An ArrayList with all the expenses in the rent category.
    */
-  public static ArrayList<Expense> rent;
+  private List<Expense> rent;
 
   /**
    * An ArrayList with all the expenses in the other category.
    */
-  public static ArrayList<Expense> other;
+  private List<Expense> other;
 
   /**
    * An ArrayList with all the expenses in the food category.
    */
-  public static ArrayList<Expense> food;
+  private List<Expense> food;
 
   /**
    * An ArrayList with all the expenses in all categories.
    */
-  public static ArrayList<ArrayList<Expense>> allLists;
-
-  /**
-   * An ArrayList with all the expenses in all categories.
-   */
-  public static ArrayList<Expense> allExpenses;
+  private List<Expense> allExpenses;
 
   /**
    * The single instance of the class used in the singleton pattern.
@@ -74,49 +71,51 @@ public class Expenses {
    * Creates the ArrayLists for the transportation category.
    */
   public void createTransportation() {
-    transportation = new ArrayList<Expense>();
+    transportation = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for the entertainment category.
    */
   public void createEntertainment() {
-    entertainment = new ArrayList<Expense>();
+    entertainment = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for the clothing category.
    */
   public void createClothing() {
-    clothing = new ArrayList<Expense>();
+    clothing = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for the other category.
    */
   public void createOther() {
-    other = new ArrayList<Expense>();
+    other = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for the food category.
    */
   public void createFood() {
-    food = new ArrayList<Expense>();
+    food = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for the rent category.
    */
   public void createRent() {
-    rent = new ArrayList<Expense>();
+    rent = new ArrayList<>();
   }
 
   /**
    * Creates the ArrayLists for all categories.
+   *
+   * @return the list
    */
-  public ArrayList<Expense> createAllExpenses() {
-    allExpenses = new ArrayList<Expense>();
+  public List<Expense> createAllExpenses() {
+    allExpenses = new ArrayList<>();
     allExpenses.addAll(transportation);
     allExpenses.addAll(entertainment);
     allExpenses.addAll(clothing);
@@ -130,6 +129,7 @@ public class Expenses {
    * Creates the adds the arraylists to the arraylist for all arraylists.
    */
   public void createAllAlist() {
+    List<List<Expense>> allLists;
     allLists = new ArrayList<>();
     allLists.add(rent);
     allLists.add(transportation);
@@ -142,29 +142,29 @@ public class Expenses {
   /**
    * Adds an expense to the ArrayList.
    *
-   * @param expense the expense to be added.
-   * @param aList   the ArrayList to add the expense to.
+   * @param expense   the expense to be added.
+   * @param arrayList the ArrayList to add the expense to.
    */
-  public void addToArrayList(Expense expense, ArrayList<Expense> aList) {
+  public void addToArrayList(Expense expense, List<Expense> arrayList) {
     if (expense == null) {
       throw new IllegalArgumentException("Expense cannot be null");
     }
-    if (aList == null) {
+    if (arrayList == null) {
       throw new IllegalArgumentException("ArrayList cannot be null");
     }
-    aList.add(expense);
+    arrayList.add(expense);
   }
 
   /**
    * Gets the total expenses of a category.
    *
-   * @param aList the ArrayList to get the total expenses from.
+   * @param arrayList the ArrayList to get the total expenses from.
    * @return the total expenses of a category.
    */
-  public double getTotalExpenses(ArrayList<Expense> aList) {
+  public double getTotalExpenses(List<Expense> arrayList) {
     double totalExpense = 0;
-    for (int i = 0; i < aList.size(); i++) {
-      totalExpense += aList.get(i).getPrice();
+    for (Expense expense : arrayList) {
+      totalExpense += expense.getPrice();
     }
     return totalExpense;
   }
@@ -176,7 +176,9 @@ public class Expenses {
    */
   public double getExpensesOfAllCategories() {
     double totalExpense = 0;
-    totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent) + getTotalExpenses(food) + getTotalExpenses(other) + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
+    totalExpense += (getTotalExpenses(transportation) + getTotalExpenses(rent)
+            + getTotalExpenses(food) + getTotalExpenses(other)
+            + getTotalExpenses(entertainment) + getTotalExpenses(clothing));
     return totalExpense;
   }
 
@@ -185,7 +187,61 @@ public class Expenses {
    *
    * @return the ArrayList with all the expenses in the transportation category.
    */
-  public ArrayList<Expense> getExpenses() {
+  public List<Expense> getExpenses() {
     return allExpenses;
+  }
+
+  /**
+   * Gets transportation.
+   *
+   * @return the transportation
+   */
+  public List<Expense> getTransportation() {
+    return transportation;
+  }
+
+  /**
+   * Gets entertainment.
+   *
+   * @return the entertainment
+   */
+  public List<Expense> getEntertainment() {
+    return entertainment;
+  }
+
+  /**
+   * Gets clothing.
+   *
+   * @return the clothing
+   */
+  public List<Expense> getClothing() {
+    return clothing;
+  }
+
+  /**
+   * Gets rent.
+   *
+   * @return the rent
+   */
+  public List<Expense> getRent() {
+    return rent;
+  }
+
+  /**
+   * Gets other.
+   *
+   * @return the other
+   */
+  public List<Expense> getOther() {
+    return other;
+  }
+
+  /**
+   * Gets food.
+   *
+   * @return the food
+   */
+  public List<Expense> getFood() {
+    return food;
   }
 }

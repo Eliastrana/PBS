@@ -7,13 +7,9 @@ import java.time.LocalDate;
  * An income has a name, a price, a category and a date.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.3 - 27.04.2023
  */
 public class Income {
-  /**
-   * The single instance of the class used in the singleton pattern.
-   */
-  private static final Income instance = new Income();
   /**
    * The name of the income.
    */
@@ -31,6 +27,23 @@ public class Income {
    */
   private LocalDate date;
 
+  /*
+   * Exception message for when the name is empty.
+   */
+  private static final String NAME_CANNOT_BE_EMPTY = "Name cannot be empty";
+  /*
+   * Exception message for when the category is not between 1 and 6.
+   */
+  private static final String CATEGORY_MUST_BE_BETWEEN_1_AND_6 = "Category must be between 1 and 6";
+  /*
+   * Exception message for when the date is empty.
+   */
+  private static final String DATE_CANNOT_BE_EMPTY = "Date cannot be empty";
+  /*
+   * Exception message for when the price is negative.
+   */
+  private static final String PRICE_CANNOT_BE_NEGATIVE = "Price cannot be negative";
+
   /**
    * Constructor for the Income class.
    *
@@ -41,16 +54,16 @@ public class Income {
    */
   public Income(String name, double price, int category, LocalDate date) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be empty");
+      throw new NullPointerException(NAME_CANNOT_BE_EMPTY);
     }
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException();
     }
     if (category < 1 || category > 6) {
-      throw new IllegalArgumentException("Category must be between 1 and 6");
+      throw new IllegalArgumentException(CATEGORY_MUST_BE_BETWEEN_1_AND_6);
     }
     if (date == null) {
-      throw new NullPointerException("Date cannot be empty");
+      throw new NullPointerException(DATE_CANNOT_BE_EMPTY);
     }
 
     this.name = name;
@@ -60,7 +73,7 @@ public class Income {
   }
 
   /**
-   * Private constructor to avoid multiple instances of the class.
+   * Private constructor to for barchart.
    */
   private Income() {
   }
@@ -74,26 +87,17 @@ public class Income {
    */
   public Income(String name, double price, LocalDate date) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be empty");
+      throw new NullPointerException(NAME_CANNOT_BE_EMPTY);
     }
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     if (date == null) {
-      throw new NullPointerException("Date cannot be empty");
+      throw new NullPointerException(DATE_CANNOT_BE_EMPTY);
     }
     this.name = name;
     this.price = price;
     this.date = date;
-  }
-
-  /**
-   * Returns the single instance of the class.
-   *
-   * @return the single instance of the class.
-   */
-  private static Income getInstance() {
-    return instance;
   }
 
   /**
@@ -112,7 +116,7 @@ public class Income {
    */
   public void setName(String name) {
     if (name == null || name.isBlank()) {
-      throw new NullPointerException("Name cannot be empty");
+      throw new NullPointerException(NAME_CANNOT_BE_EMPTY);
     }
     this.name = name;
   }
@@ -133,7 +137,7 @@ public class Income {
    */
   public void setPrice(double price) {
     if (price < 0) {
-      throw new IllegalArgumentException("Price cannot be negative");
+      throw new IllegalArgumentException(PRICE_CANNOT_BE_NEGATIVE);
     }
     this.price = price;
   }
@@ -154,7 +158,7 @@ public class Income {
    */
   public void setCategory(int category) {
     if (category < 1 || category > 6) {
-      throw new IllegalArgumentException("Category must be between 1 and 6");
+      throw new IllegalArgumentException(CATEGORY_MUST_BE_BETWEEN_1_AND_6);
     }
     this.category = category;
   }
@@ -175,7 +179,7 @@ public class Income {
    */
   public void setDate(LocalDate date) {
     if (date == null) {
-      throw new NullPointerException("Date cannot be empty");
+      throw new NullPointerException(DATE_CANNOT_BE_EMPTY);
     }
     this.date = date;
   }

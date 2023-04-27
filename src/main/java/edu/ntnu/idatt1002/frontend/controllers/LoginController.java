@@ -1,7 +1,6 @@
 package edu.ntnu.idatt1002.frontend.controllers;
 
 import edu.ntnu.idatt1002.frontend.GUI;
-
 import java.io.IOException;
 
 /**
@@ -10,11 +9,11 @@ import java.io.IOException;
  * The class is used by the LoginView.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 26.04.2023
  */
 public class LoginController {
   /**
-   * The Gui.
+   * An instance of the GUI class.
    */
   private final GUI gui;
 

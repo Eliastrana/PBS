@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
  * The alert window is used to display error messages.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class AlertWindow {
 
@@ -33,25 +33,25 @@ public class AlertWindow {
     dialog.setWidth(300);
     dialog.setHeight(200);
 
-    // Create a label with the message
     Label messageLabel = new Label(message);
     messageLabel.setStyle("-fx-font-size: 20px;");
 
-    // Create a vertical box to hold the label and the button
     VBox content = new VBox(messageLabel);
     content.setAlignment(Pos.CENTER);
     content.setPadding(new Insets(10, 10, 10, 10));
 
-    // Create an "OK" button
     ButtonType okButton = new ButtonType("OK");
 
-    // Add the "OK" button to the dialog's button types
+
     dialog.getDialogPane().getButtonTypes().add(okButton);
 
-    // Style the "OK" button using CSS
-    String okButtonStyle = "-fx-font-size: 30px; -fx-min-width: 60px; -fx-min-height: 30px;-fx-background-color: #9FB8AD; -fx-border-width: 2; -fx-padding: 10px; -fx-background-radius: 0.5em;";
+
+    String okButtonStyle = "-fx-font-size: 15px; -fx-min-width: 40px;"
+            + " -fx-min-height: " + "20px;-fx-background-color: #9FB8AD;"
+            + " -fx-border-width: 2; " + "-fx-padding: 5px; -fx-background-radius: 0.5em;";
     Button okButtonNode = (Button) dialog.getDialogPane().lookupButton(okButton);
     okButtonNode.setStyle(okButtonStyle);
+    okButtonNode.setId("actionButton");
     okButtonNode.setAlignment(Pos.CENTER);
 
     okButtonNode.setOnKeyPressed(event -> {
@@ -59,17 +59,9 @@ public class AlertWindow {
         okButtonNode.fire();
       }
     });
-
-    // Add the "OK" button to the vertical box
     content.getChildren().add(okButtonNode);
-
-    // Set the spacing between the label and the button to help center the button within the dialog box
     content.setSpacing(20);
-
-    // Set the content of the dialog to the vertical box
     dialog.getDialogPane().setContent(content);
-
-    // Show the dialog and wait for the user to respond
     dialog.showAndWait();
   }
 }

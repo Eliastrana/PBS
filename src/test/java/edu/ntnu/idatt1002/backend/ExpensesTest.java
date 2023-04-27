@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,15 +37,15 @@ class ExpensesTest {
   @DisplayName("Test addToArrayList")
   public void testAddToArrayList() {
     Expenses instance = Expenses.getInstance();
-    instance.addToArrayList(testExpense, Expenses.transportation);
-    assertTrue(Expenses.transportation.contains(testExpense));
+    instance.addToArrayList(testExpense, instance.getTransportation());
+    assertTrue(instance.getTransportation().contains(testExpense));
   }
 
   @Test
   @DisplayName("Test addToArray with null expense")
   public void testAddToArrayListNullExpense() {
     Expenses instance = Expenses.getInstance();
-    assertThrows(IllegalArgumentException.class, () -> instance.addToArrayList(null, Expenses.transportation));
+    assertThrows(IllegalArgumentException.class, () -> instance.addToArrayList(null, instance.getTransportation()));
   }
 
 
@@ -53,20 +53,20 @@ class ExpensesTest {
   @DisplayName("Test getTotalExpenses")
   public void testGetTotalExpenses() {
     Expenses instance = Expenses.getInstance();
-    instance.addToArrayList(testExpense, Expenses.transportation);
-    assertEquals(100.0, instance.getTotalExpenses(Expenses.transportation));
+    instance.addToArrayList(testExpense, instance.getTransportation());
+    assertEquals(100.0, instance.getTotalExpenses(instance.getTransportation()));
   }
 
   @Test
   @DisplayName("Test getExpensesOfAllCategories")
   public void testGetExpensesOfAllCategories() {
     Expenses instance = Expenses.getInstance();
-    instance.addToArrayList(testExpense, Expenses.transportation);
-    instance.addToArrayList(testExpense, Expenses.entertainment);
-    instance.addToArrayList(testExpense, Expenses.clothing);
-    instance.addToArrayList(testExpense, Expenses.other);
-    instance.addToArrayList(testExpense, Expenses.food);
-    instance.addToArrayList(testExpense, Expenses.rent);
+    instance.addToArrayList(testExpense,instance.getTransportation());
+    instance.addToArrayList(testExpense, instance.getEntertainment());
+    instance.addToArrayList(testExpense, instance.getClothing());
+    instance.addToArrayList(testExpense, instance.getOther());
+    instance.addToArrayList(testExpense, instance.getFood());
+    instance.addToArrayList(testExpense, instance.getRent());
     assertEquals(600.0, instance.getExpensesOfAllCategories());
   }
 
@@ -74,13 +74,13 @@ class ExpensesTest {
   @DisplayName("Test createAllExpenses")
   public void testCreateAllExpenses() {
     Expenses instance = Expenses.getInstance();
-    instance.addToArrayList(testExpense, instance.transportation);
-    instance.addToArrayList(testExpense, instance.entertainment);
-    instance.addToArrayList(testExpense, instance.clothing);
-    instance.addToArrayList(testExpense, instance.other);
-    instance.addToArrayList(testExpense, instance.food);
-    instance.addToArrayList(testExpense, instance.rent);
-    ArrayList<Expense> allExpenses = instance.createAllExpenses();
+    instance.addToArrayList(testExpense, instance.getTransportation());
+    instance.addToArrayList(testExpense, instance.getEntertainment());
+    instance.addToArrayList(testExpense, instance.getClothing());
+    instance.addToArrayList(testExpense, instance.getOther());
+    instance.addToArrayList(testExpense, instance.getFood());
+    instance.addToArrayList(testExpense, instance.getRent());
+    List<Expense> allExpenses = instance.createAllExpenses();
     assertEquals(6, allExpenses.size());
   }
 
@@ -88,14 +88,14 @@ class ExpensesTest {
   @DisplayName("Test getExpenses")
   public void testGetExpenses() {
     Expenses instance = Expenses.getInstance();
-    instance.addToArrayList(testExpense, instance.transportation);
-    instance.addToArrayList(testExpense, instance.entertainment);
-    instance.addToArrayList(testExpense, instance.clothing);
-    instance.addToArrayList(testExpense, instance.other);
-    instance.addToArrayList(testExpense, instance.food);
-    instance.addToArrayList(testExpense, instance.rent);
+    instance.addToArrayList(testExpense, instance.getTransportation());
+    instance.addToArrayList(testExpense, instance.getEntertainment());
+    instance.addToArrayList(testExpense, instance.getClothing());
+    instance.addToArrayList(testExpense, instance.getOther());
+    instance.addToArrayList(testExpense, instance.getFood());
+    instance.addToArrayList(testExpense, instance.getRent());
     instance.createAllExpenses();
-    ArrayList<Expense> allExpenses = instance.getExpenses();
+    List<Expense> allExpenses = instance.getExpenses();
     assertEquals(6, allExpenses.size());
   }
 }

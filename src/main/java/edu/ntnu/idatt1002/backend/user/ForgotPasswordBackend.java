@@ -2,15 +2,15 @@ package edu.ntnu.idatt1002.backend.user;
 
 import edu.ntnu.idatt1002.frontend.ForgotPassword;
 import edu.ntnu.idatt1002.frontend.controllers.ForgotPasswordController;
-
 import java.io.*;
+
 
 /**
  * A class that handles the backend of the forgot password screen.
  * The class checks if the email is valid and if the new password is valid.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class ForgotPasswordBackend {
   /**
@@ -37,31 +37,20 @@ public class ForgotPasswordBackend {
       String salt = CreateUserBackend.generateSalt();
       String newPassword = CreateUserBackend.encrypt(ForgotPassword.newPasswordString, salt);
 
-      try (BufferedReader br = new BufferedReader(new FileReader(csvFile));
-           FileWriter fw = new FileWriter(tempCsvFile)) {
-
-        // Loop through each line in the CSV file
+      try (BufferedReader br = new BufferedReader(
+              new FileReader(csvFile)); FileWriter fw = new FileWriter(tempCsvFile)) {
         while ((line = br.readLine()) != null) {
-
-          // Split the line by commas
           String[] user = line.split(csvSplitBy);
-
-          // Check if the email matches the input email
           if (user[3].equals(ForgotPassword.emailString)) {
-
-            // Update the password and salt
             user[1] = newPassword;
             user[2] = salt;
           }
-
-          // Write the line to the temporary CSV file
           fw.write(String.join(",", user) + "\n");
         }
       } catch (IOException e) {
         e.printStackTrace();
       }
 
-      // Replace the original CSV file with the updated content
       File originalFile = new File(csvFile);
       File tempFile = new File(tempCsvFile);
       if (originalFile.delete()) {

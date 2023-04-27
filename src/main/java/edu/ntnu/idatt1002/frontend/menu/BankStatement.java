@@ -1,11 +1,7 @@
-//BANK STATEMENT
-
 package edu.ntnu.idatt1002.frontend.menu;
 
 import com.itextpdf.text.DocumentException;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
-import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.AlertWindow;
 import edu.ntnu.idatt1002.frontend.utility.FileUtil;
 import edu.ntnu.idatt1002.frontend.utility.SoundPlayer;
 import edu.ntnu.idatt1002.model.CSVReader;
@@ -21,17 +17,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
+
 /**
  * A class that creates the bank statement view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.0 - 26.04.2023
  */
 public class BankStatement {
 
@@ -41,8 +38,6 @@ public class BankStatement {
    * @return the vertical box
    */
   public static VBox bankStatementView() {
-
-    System.out.println("opening more window");
 
     VBox bankStatementVbox = new VBox();
     bankStatementVbox.setSpacing(40);
@@ -55,12 +50,12 @@ public class BankStatement {
 
     ObservableList<String> options2 = null;
     try {
-      CSVReader CSVReaderInstance = CSVReader.getInstance();
-      options2 = FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet());
+      CSVReader csvReaderInstance = CSVReader.getInstance();
+      options2 = FXCollections.observableArrayList(csvReaderInstance.readCSV().keySet());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    final ComboBox accountMenu = new ComboBox(options2);
+    final ComboBox<String> accountMenu = new ComboBox<>(options2);
     accountMenu.setId("categoryMenuButton");
     accountMenu.setPromptText("Select account");
     selectAccountHbox.getChildren().addAll(accountMenu);
@@ -68,8 +63,9 @@ public class BankStatement {
     HBox selectCategoryHbox = new HBox();
     selectCategoryHbox.setAlignment(Pos.CENTER);
 
-    ObservableList<String> options = FXCollections.observableArrayList("Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
-    final ComboBox categoryMenu = new ComboBox(options);
+    ObservableList<String> options = FXCollections.observableArrayList(
+            "Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
+    final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setPromptText("Pick a category");
     categoryMenu.setId("categoryMenuButton");
     selectCategoryHbox.getChildren().addAll(categoryMenu);
@@ -102,38 +98,36 @@ public class BankStatement {
       if (accountMenu.getValue() == null) {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select an account";
-        AlertWindow.showAlert(customMessage);
+        showAlert(customMessage);
       } else if (categoryMenu.getValue() == null) {
         SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
         String customMessage = "Please select a category";
-        AlertWindow.showAlert(customMessage);
+        showAlert(customMessage);
       } else {
-        String account = (String) accountMenu.getValue();
-        String category = (String) categoryMenu.getValue();
+        String account = accountMenu.getValue();
+        String category = categoryMenu.getValue();
         String from = String.valueOf(datePickerFrom.getValue());
         String to = String.valueOf(datePickerTo.getValue());
 
         try {
           ExcelExporter instance = ExcelExporter.getInstance();
-          instance.convertToPdf(instance.createBankStatement(account, category, from, to), "bankstatement");
+          instance.convertToPdf(instance.createBankStatement(
+                  account, category, from, to), "bankstatement");
 
           if (Desktop.isDesktopSupported()) {
-            File myFile = new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "bankstatement.pdf");
+            File myFile = new File(ExcelExporter.getBankStatementPath());
             Desktop.getDesktop().open(myFile);
           }
         } catch (IOException | DocumentException exception) {
-          AlertWindow.showAlert(exception.getMessage());
-          throw new RuntimeException(exception);
+          showAlert(exception.getMessage());
         }
       }
     });
 
 
-
     HBox tableHbox = new HBox();
     tableHbox.setAlignment(Pos.CENTER);
 
-    TableView<Expense> bankStatementTable = new TableView<>();
     TableColumn<Expense, String> rightColumn1 = new TableColumn<>("Name: ");
     rightColumn1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -149,7 +143,9 @@ public class BankStatement {
     TableColumn<Expense, String> rightColumn5 = new TableColumn<>("Account: ");
     rightColumn5.setCellValueFactory(new PropertyValueFactory<>("account"));
 
-    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2, rightColumn3, rightColumn4, rightColumn5);
+    TableView<Expense> bankStatementTable = new TableView<>();
+    bankStatementTable.getColumns().addAll(rightColumn1, rightColumn2,
+            rightColumn3, rightColumn4, rightColumn5);
 
     ExcelExporter instance = ExcelExporter.getInstance();
 
@@ -160,10 +156,10 @@ public class BankStatement {
     tableHbox.getChildren().add(bankStatementTable);
 
 
-
-
-
-    bankStatementVbox.getChildren().addAll(viewBankStatement, selectAccountHbox, selectCategoryHbox, calenderIntervalText, calenderIntervalHbox, export,tableHbox);
+    bankStatementVbox.getChildren().addAll(viewBankStatement,
+            selectAccountHbox, selectCategoryHbox,
+            calenderIntervalText, calenderIntervalHbox,
+            export, tableHbox);
     bankStatementVbox.setAlignment(Pos.TOP_CENTER);
     return bankStatementVbox;
 

@@ -11,19 +11,19 @@ import java.util.Objects;
  * The class is also used for deleting transfers, depending on the type of the transfer.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.0 - 24.04.2023
  */
 public class Transfers {
   /**
    * A list of transfers.
    */
-  public static List<Transfers> transfers;
+  private List<Transfers> transfersList;
   /**
    * The single instance of the class used in the singleton pattern.
    */
   private static final Transfers instance = new Transfers();
   /**
-   * The account name of the account that made/recieved the transfer.
+   * The account name of the account that made/received the transfer.
    */
   private String accountName;
   /**
@@ -35,7 +35,7 @@ public class Transfers {
    */
   private double amount;
   /**
-   * The type of the transfer. A for adding to an account, B for transfering between accounts.
+   * The type of the transfer. A for adding to an account, B for transferring between accounts.
    */
   private char transferType;
   /**
@@ -45,9 +45,11 @@ public class Transfers {
 
   /**
    * Constructor to initialize an object of the transfers arraylist.
+   *
+   * @param type the type
    */
   public Transfers(String type) {
-    transfers = new ArrayList<Transfers>();
+    transfersList = new ArrayList<>();
     this.type = type;
   }
 
@@ -60,10 +62,11 @@ public class Transfers {
   /**
    * Adds a transfer to the list of transfers.
    *
-   * @param accountName  the account name of the account that made/recieved the transfer.
+   * @param accountName  the account name of the account that made/received the transfer.
    * @param amount       the amount of the transfer.
    * @param date         the date of the transfer.
-   * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
+   * @param transferType the type of the transfer. A for adding to an account,
+   *                     B for transferring between accounts.
    */
   public Transfers(String accountName, double amount, String date, char transferType) {
     if (accountName.isBlank()) {
@@ -72,7 +75,6 @@ public class Transfers {
     if (date.isBlank()) {
       throw new NullPointerException("Date cannot be blank");
     }
-
 
 
     this.accountName = accountName;
@@ -96,16 +98,17 @@ public class Transfers {
    * @return the list of transfers.
    */
   public List<Transfers> transfersList() {
-    return transfers;
+    return transfersList;
   }
 
   /**
    * Adds a transfer to the list of transfers.
    *
-   * @param account      the account name of the account that made/recieved the transfer.
+   * @param account      the account name of the account that made/received the transfer.
    * @param amount       the amount of the transfer.
    * @param date         the date of the transfer.
-   * @param transferType the type of the transfer. A for adding to an account, B for transfering between accounts.
+   * @param transferType the type of the transfer. A for adding to an account,
+   *                     B for transferring between accounts.
    */
   public void addTransfer(String account, double amount, String date, char transferType) {
     if (account == null || date == null) {
@@ -119,7 +122,7 @@ public class Transfers {
       throw new IllegalArgumentException("Account cannot be blank");
     }
     Transfers newTransfer = new Transfers(account, amount, date, transferType);
-    transfers.add(newTransfer);
+    transfersList.add(newTransfer);
   }
 
   /**
@@ -146,7 +149,7 @@ public class Transfers {
    * @return the account name.
    */
   public List<Transfers> getTransfers() {
-    return transfers;
+    return transfersList;
   }
 
   /**
@@ -155,7 +158,7 @@ public class Transfers {
    * @param transfers the account name.
    */
   public void setTransfers(List<Transfers> transfers) {
-    Transfers.transfers = transfers;
+    this.transfersList = transfers;
   }
 
   /**
@@ -220,10 +223,18 @@ public class Transfers {
    */
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Transfers transfers = (Transfers) o;
-    return Double.compare(transfers.amount, amount) == 0 && transferType == transfers.transferType && Objects.equals(accountName, transfers.accountName) && Objects.equals(date, transfers.date) && Objects.equals(type, transfers.type);
+    return Double.compare(transfers.amount, amount) == 0
+            && transferType == transfers.transferType
+            && Objects.equals(accountName, transfers.accountName)
+            && Objects.equals(date, transfers.date)
+            && Objects.equals(type, transfers.type);
   }
 
   /**

@@ -1,5 +1,6 @@
 package edu.ntnu.idatt1002.frontend.menu;
 
+import edu.ntnu.idatt1002.backend.budgeting.Accounts;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.backend.budgeting.Expenses;
 import edu.ntnu.idatt1002.frontend.GUI;
@@ -18,15 +19,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static edu.ntnu.idatt1002.backend.budgeting.Accounts.accounts;
-import static edu.ntnu.idatt1002.backend.budgeting.Expenses.*;
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
 
 
@@ -34,9 +32,10 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the add expense view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class AddExpense {
+
   /**
    * A method that creates the add expense view.
    * The method is used by the GUI class.
@@ -44,8 +43,6 @@ public class AddExpense {
    * @return the vertical box
    */
   public static VBox expenseView() {
-
-    System.out.println("open expense window");
     VBox addExpenseVBox = new VBox();
     addExpenseVBox.setAlignment(Pos.CENTER);
     addExpenseVBox.getChildren().add(new Label("This is the addExpense page"));
@@ -54,17 +51,10 @@ public class AddExpense {
     text3.setId("titleText");
     text3.setLineSpacing(10);
 
-    ObservableList<String> options =
-            FXCollections.observableArrayList(
-                    "Rent",
-                    "Food",
-                    "Transportation",
-                    "Clothing",
-                    "Entertainment",
-                    "Other"
-            );
+    ObservableList<String> options = FXCollections.observableArrayList(
+            "Rent", "Food", "Transportation", "Clothing", "Entertainment", "Other");
 
-    final ComboBox categoryMenu = new ComboBox(options);
+    final ComboBox<String> categoryMenu = new ComboBox<>(options);
     categoryMenu.setFocusTraversable(true);
 
     DatePicker datePicker = new DatePicker();
@@ -75,12 +65,12 @@ public class AddExpense {
 
     ObservableList<String> options2 = null;
     try {
-      CSVReader CSVReaderInstance = CSVReader.getInstance();
-      options2 = FXCollections.observableArrayList(CSVReaderInstance.readCSV().keySet());
+      CSVReader csvReaderInstance = CSVReader.getInstance();
+      options2 = FXCollections.observableArrayList(csvReaderInstance.readCSV().keySet());
     } catch (IOException e) {
       showAlert("Error reading CSV file: " + e.getMessage());
     }
-    final ComboBox accountMenu = new ComboBox(options2);
+    final ComboBox<String> accountMenu = new ComboBox<>(options2);
     accountMenu.setPromptText("Pick an account");
     accountMenu.setId("categoryMenuButton");
     accountMenu.setFocusTraversable(true);
@@ -93,7 +83,6 @@ public class AddExpense {
     prices.setId("textField");
     prices.setFocusTraversable(true);
 
-    // Replace the TextField object with an instance of the OutlinedTextField class
     TextField names = new TextField();
     names.setPromptText("Enter name");
     names.setId("textField");
@@ -107,9 +96,9 @@ public class AddExpense {
     confirmExpense.setId("actionButton");
     confirmExpense.setFocusTraversable(true);
 
-    names.setOnKeyPressed(e -> {
+    prices.setOnKeyPressed(e -> {
       if (e.getCode() == KeyCode.ENTER) {
-        confirmExpense.fire(); // Simulate a click event on the logIn button
+        confirmExpense.fire();
       }
     });
 
@@ -118,51 +107,51 @@ public class AddExpense {
         confirmExpense.fire();
       }
     });
+
+    Accounts accountsInstance = Accounts.getInstance();
+    ExcelExporter instance = ExcelExporter.getInstance();
+
     confirmExpense.setOnAction(e -> {
       if (categoryMenu.getValue() == null) {
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        playErrorSound();
         String customMessage = "Please select a category.";
         showAlert(customMessage);
-        System.out.println("No category selected");
       } else if (prices.getText().isEmpty()) {
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        playErrorSound();
         showAlert("Please enter a price.");
       } else if (names.getText().isEmpty()) {
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        playErrorSound();
         showAlert("Please enter a name.");
-      } else if (accounts.get((String) accountMenu.getValue()) - Double.parseDouble(prices.getText()) < 0) {
-        System.out.println("Not enough money in account");
+      } else if (accountsInstance.getAccounts().get(accountMenu.getValue())
+              - Double.parseDouble(prices.getText()) < 0) {
         showAlert("Not enough money in account.");
         categoryMenu.setValue(null);
         categoryMenu.setPromptText(originalPromptText);
         names.setText(null);
         prices.setText(null);
       } else {
-        String selectedOption = (String) categoryMenu.getValue();
+        String selectedOption = categoryMenu.getValue();
         String name = ('|' + names.getText() + '|');
         String tempText = prices.getText();
-        String accountName = (String) accountMenu.getValue();
+        String accountName = accountMenu.getValue();
         LocalDate date = datePicker.getValue();
-        System.out.println("Selected date: " + date);
         double price = Double.parseDouble(tempText);
         Expenses expenseInstance = Expenses.getInstance();
         switch (selectedOption) {
-          case "Entertainment" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 1, datePicker.getValue()), entertainment);
-          case "Food" -> expenseInstance.addToArrayList(new Expense(name, price, 2, datePicker.getValue()), food);
-          case "Transportation" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 3, datePicker.getValue()), transportation);
-          case "Clothing" ->
-                  expenseInstance.addToArrayList(new Expense(name, price, 4, datePicker.getValue()), clothing);
-          case "Other" -> expenseInstance.addToArrayList(new Expense(name, price, 5, datePicker.getValue()), other);
-          case "Rent" -> expenseInstance.addToArrayList(new Expense(name, price, 6, datePicker.getValue()), rent);
-          default -> {
-            showAlert("Error: invalid category selected.");
-            break;
-          }
+          case "Entertainment" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  1, datePicker.getValue()), expenseInstance.getEntertainment());
+          case "Food" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  2, datePicker.getValue()), expenseInstance.getFood());
+          case "Transportation" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  3, datePicker.getValue()), expenseInstance.getTransportation());
+          case "Clothing" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  4, datePicker.getValue()), expenseInstance.getClothing());
+          case "Other" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  5, datePicker.getValue()), expenseInstance.getOther());
+          case "Rent" -> expenseInstance.addToArrayList(new Expense(name, price,
+                  6, datePicker.getValue()), expenseInstance.getRent());
+          default -> showAlert("Error: invalid category selected.");
         }
-        System.out.println("Purchase confirmed");
-        System.out.println("Category: " + selectedOption);
 
         confirmLabel.setVisible(true);
 
@@ -171,13 +160,14 @@ public class AddExpense {
         ft.setToValue(0.0);
 
         try {
-          ExcelExporter instance = ExcelExporter.getInstance();
           instance.exportToExcel();
         } catch (IOException ioException) {
           showAlert("Error exporting to Excel: " + ioException.getMessage());
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File("src/main/resources/userfiles/" + GUI.getCurrentUser() + "/", GUI.getCurrentUser() + ".csv"), true))) {
-          writer.write(selectedOption + "," + name + "," + date + "," + price + "," + accountName + "\n");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
+                ExcelExporter.getOutputDirectory(), GUI.getCurrentUser() + ".csv"), true))) {
+          writer.write(selectedOption + "," + name
+                  + "," + date + "," + price + "," + accountName + "\n");
         } catch (IOException f) {
           showAlert("Error writing to file: " + f.getMessage());
         }
@@ -210,7 +200,14 @@ public class AddExpense {
     dateAndInputAndConfirm.setAlignment(Pos.CENTER);
     dateAndInputAndConfirm.setSpacing(20);
 
-    VBox vbox = new VBox(dateAndInputAndConfirm);
-    return vbox;
+    return new VBox(dateAndInputAndConfirm);
   }
+
+  /**
+   * Plays an error sound.
+   */
+  public static void playErrorSound() {
+    SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+  }
+
 }

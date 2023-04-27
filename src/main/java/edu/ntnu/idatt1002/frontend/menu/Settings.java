@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
@@ -26,10 +27,41 @@ import static edu.ntnu.idatt1002.frontend.utility.AlertWindow.showAlert;
  * A class that creates the settings view.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Settings {
-  private static String currentMode = "Lightmode";
+  /*
+    * Tht constant LIGHTMODE is used to set the CSS style to lightmode.
+   */
+  private static final String LIGHTMODE = "Lightmode";
+  /*
+    * Tht constant TEXTFIELD is used to set the CSS style to textfield.
+   */
+  private static final String TEXTFIELD = "textField";
+  /*
+    * Tht constant ACTIONBUTTON is used to set the CSS style to actionButton.
+   */
+  private static final String ACTIONBUTTON = "actionButton";
+  /*
+    * Tht constant BODYTEXT is used to set the CSS style to bodyText.
+   */
+  private static final String BODYTEXT = "bodyText";
+  /*
+    * Tht constant CONFIRM is used to play the confirmation sound.
+   */
+  private static final String CONFIRM = "16bitconfirm.wav";
+  /*
+    * Tht constant ERROR is used to play the error sound.
+   */
+  private static final String ERROR = "error.wav";
+  /*
+    * Tht constant RADIOBUTTON is used to set the CSS style to radioButton.
+   */
+  private static final String RADIOBUTTON = "radioButton";
+  /*
+    * The current css mode, default is lightmode.
+   */
+  private static String currentMode = LIGHTMODE;
 
   /**
    * A method that creates the settings view.
@@ -45,7 +77,7 @@ public class Settings {
     passwordLabel.setId("smallTitle");
     PasswordField passwordField = new PasswordField();
     passwordField.setPromptText("Enter password");
-    passwordField.setId("textField");
+    passwordField.setId(TEXTFIELD);
     passwordField.setMaxWidth(200);
 
     Button submitButton = new Button("Submit");
@@ -61,7 +93,7 @@ public class Settings {
         submitButton.fire();
       }
     });
-    submitButton.setId("actionButton");
+    submitButton.setId(ACTIONBUTTON);
     vbox.getChildren().addAll(passwordLabel, passwordField, submitButton);
     vbox.setSpacing(20);
     vbox.setPadding(new Insets(20, 20, 20, 20));
@@ -79,10 +111,10 @@ public class Settings {
           Text title = new Text("Settings");
           title.setId("titleText");
           Text currentEmailText = new Text("Current email: ");
-          currentEmailText.setId("bodyText");
+          currentEmailText.setId(BODYTEXT);
           currentEmailText.setTextAlignment(TextAlignment.RIGHT);
           Text currentPasswordText = new Text("Current password: ");
-          currentPasswordText.setId("bodyText");
+          currentPasswordText.setId(BODYTEXT);
           currentPasswordText.setTextAlignment(TextAlignment.RIGHT);
 
           currentStatus.getChildren().addAll(currentEmailText, currentPasswordText);
@@ -90,13 +122,13 @@ public class Settings {
 
           VBox currentPassword = new VBox();
 
-          Text currentEmailLabel = new Text(UserHandling.getEmail()); //eksempel email, legg inn variabel
-          currentEmailLabel.setId("bodyText");
+          Text currentEmailLabel = new Text(UserHandling.getEmail());
+          currentEmailLabel.setId(BODYTEXT);
           currentEmailLabel.setVisible(false);
           currentEmailLabel.setTextAlignment(TextAlignment.LEFT);
-          Text currentPasswordLabel = new Text(UserHandling.getPassword()); //Eksempel passord, legg inn variabel
+          Text currentPasswordLabel = new Text(UserHandling.getPassword());
           currentPasswordLabel.setVisible(false);
-          currentPasswordLabel.setId("bodyText");
+          currentPasswordLabel.setId(BODYTEXT);
 
           ImageView visibilityImage = new ImageView(new Image("icons/visibility.png"));
           visibilityImage.setFitHeight(20);
@@ -115,7 +147,11 @@ public class Settings {
 
           showPrivateInformation.setOnAction(e -> {
             if (currentEmailLabel.isVisible() && currentPasswordLabel.isVisible()) {
-              currentEmailLabel.setText(UserHandling.getEmail());
+              try {
+                currentEmailLabel.setText(UserHandling.getEmail());
+              } catch (IOException ex) {
+                throw new RuntimeException(ex);
+              }
               currentPasswordLabel.setText(UserHandling.getPassword());
               currentEmailLabel.setVisible(false);
               currentPasswordLabel.setVisible(false);
@@ -129,24 +165,24 @@ public class Settings {
 
           currentPassword.getChildren().addAll(currentEmailLabel, currentPasswordLabel);
 
-          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword, showPrivateInformation);
+          currentEmailHbox.getChildren().addAll(currentStatus, currentPassword,
+                  showPrivateInformation);
 
           currentEmailHbox.setSpacing(20);
           currentEmailHbox.setAlignment(Pos.CENTER);
-
 
           HBox emailUpdateHbox = new HBox();
 
           VBox updateEmail = new VBox();
           Text updateEmailText = new Text("Update email: ");
-          updateEmailText.setId("bodyText");
+          updateEmailText.setId(BODYTEXT);
 
           updateEmail.getChildren().addAll(updateEmailText);
           updateEmail.setAlignment(Pos.CENTER);
 
           VBox updatePassword = new VBox();
           TextField updateEmailTextField = new TextField();
-          updateEmailTextField.setId("textField");
+          updateEmailTextField.setId(TEXTFIELD);
           updateEmailTextField.setPromptText("Enter new email");
           updatePassword.getChildren().addAll(updateEmailTextField);
           updatePassword.setAlignment(Pos.CENTER);
@@ -157,21 +193,22 @@ public class Settings {
 
           confirmEmailUpdate.setOnAction(e -> {
             try {
-              if (updateEmailTextField.getText().length() > 8 || updateEmailTextField.getText().length() < 20) {
+              if (updateEmailTextField.getText().length() > 8
+                      || updateEmailTextField.getText().length() < 20) {
                 UserHandling.changeEmail(updateEmailTextField.getText());
                 currentEmailLabel.setText(UserHandling.getEmail());
-                SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+                SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRM));
                 updateEmailTextField.clear();
               } else {
                 throw new IllegalArgumentException("Email must be between 8 and 20 characters");
               }
             } catch (Exception ex) {
-              SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+              SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
               showAlert(ex.getMessage());
             }
           });
 
-          confirmEmailUpdate.setId("actionButton");
+          confirmEmailUpdate.setId(ACTIONBUTTON);
           confirmEmailUpdateVbox.getChildren().addAll(confirmEmailUpdate);
           confirmEmailUpdateVbox.setAlignment(Pos.TOP_CENTER);
 
@@ -179,18 +216,17 @@ public class Settings {
           emailUpdateHbox.setSpacing(20);
           emailUpdateHbox.setAlignment(Pos.CENTER);
 
-
           HBox updatePasswordHbox = new HBox();
 
           VBox currentAndNewPasswordHbox = new VBox();
           Text currentPasswordText2 = new Text("Update password: ");
-          currentPasswordText2.setId("bodyText");
+          currentPasswordText2.setId(BODYTEXT);
           currentAndNewPasswordHbox.getChildren().addAll(currentPasswordText2);
           currentAndNewPasswordHbox.setAlignment(Pos.CENTER);
 
           VBox currentAndNewPasswordInputFields = new VBox();
           TextField newPasswordTextField = new TextField();
-          newPasswordTextField.setId("textField");
+          newPasswordTextField.setId(TEXTFIELD);
           newPasswordTextField.setPromptText("Enter new password");
           currentAndNewPasswordInputFields.getChildren().addAll(newPasswordTextField);
           currentAndNewPasswordInputFields.setAlignment(Pos.CENTER);
@@ -199,25 +235,27 @@ public class Settings {
           Button confirmPasswordUpdate = new Button("Confirm");
           confirmPasswordUpdate.setOnAction(e -> {
             try {
-              if (newPasswordTextField.getText().length() > 8 || newPasswordTextField.getText().length() < 20) {
+              if (newPasswordTextField.getText().length() > 8
+                      || newPasswordTextField.getText().length() < 20) {
                 UserHandling.changePassword(newPasswordTextField.getText());
                 currentPasswordLabel.setText(UserHandling.getPassword());
-                SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+                SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRM));
                 newPasswordTextField.clear();
               } else {
                 throw new IllegalArgumentException("Password must be between 8 and 20 characters");
               }
             } catch (Exception ex) {
-              SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+              SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
               showAlert(ex.getMessage());
             }
           });
-          confirmPasswordUpdate.setId("actionButton");
+          confirmPasswordUpdate.setId(ACTIONBUTTON);
           confirmPasswordUpdateVBox.getChildren().addAll(confirmPasswordUpdate);
           confirmPasswordUpdateVBox.setAlignment(Pos.CENTER);
 
 
-          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox, currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
+          updatePasswordHbox.getChildren().addAll(currentAndNewPasswordHbox,
+                  currentAndNewPasswordInputFields, confirmPasswordUpdateVBox);
           updatePasswordHbox.setAlignment(Pos.CENTER);
           updatePasswordHbox.setSpacing(20);
 
@@ -227,12 +265,12 @@ public class Settings {
 
           HBox viewmodeHbox = new HBox();
 
-          RadioButton lightmode = new RadioButton("Lightmode");
+          RadioButton lightmode = new RadioButton(LIGHTMODE);
           RadioButton darkmode = new RadioButton("Darkmode");
           RadioButton colorblind = new RadioButton("Colorblindmode");
-          lightmode.setId("radioButton");
-          darkmode.setId("radioButton");
-          colorblind.setId("radioButton");
+          lightmode.setId(RADIOBUTTON);
+          darkmode.setId(RADIOBUTTON);
+          colorblind.setId(RADIOBUTTON);
 
           ToggleGroup toggleGroup = new ToggleGroup();
           lightmode.setToggleGroup(toggleGroup);
@@ -244,14 +282,16 @@ public class Settings {
             default -> lightmode.setSelected(true);
           }
 
-          toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+          toggleGroup.selectedToggleProperty().addListener((
+                  observable, oldValue, newValue) -> {
             if (toggleGroup.getSelectedToggle() != null) {
-              if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(), "Lightmode")) {
+              if (!Objects.equals(((RadioButton) toggleGroup.getSelectedToggle()).getText(),
+                      LIGHTMODE)) {
                 String selectedText = ((RadioButton) toggleGroup.getSelectedToggle()).getText();
                 currentMode = selectedText;
                 GUI.setStyle(selectedText);
               } else {
-                currentMode = "Lightmode";
+                currentMode = LIGHTMODE;
                 GUI.setStyle("Styling");
               }
             }
@@ -263,19 +303,21 @@ public class Settings {
 
           VBox contactUS = new VBox();
           Button contactUSButton = new Button("Contact Us");
-          contactUSButton.setId("actionButton");
+          contactUSButton.setId(ACTIONBUTTON);
           contactUSButton.setAlignment(Pos.CENTER);
 
           contactUSButton.setOnAction(e -> {
             ContactUs.sendEmail();
-            SoundPlayer.play(FileUtil.getResourceFilePath("16bitconfirm.wav"));
+            SoundPlayer.play(FileUtil.getResourceFilePath(CONFIRM));
           });
 
           contactUS.getChildren().addAll(contactUSButton);
           contactUS.setAlignment(Pos.CENTER);
 
           vbox.getChildren().clear();
-          vbox.getChildren().addAll(title, currentEmailHbox, emailUpdateHbox, updatePasswordHbox, prefrences, viewmodeHbox, contactUS);
+          vbox.getChildren().addAll(title, currentEmailHbox,
+                  emailUpdateHbox, updatePasswordHbox,
+                  prefrences, viewmodeHbox, contactUS);
           vbox.setSpacing(40);
 
           vbox.setAlignment(Pos.TOP_CENTER);
@@ -283,7 +325,7 @@ public class Settings {
           throw new IllegalArgumentException("Incorrect password");
         }
       } catch (Exception e) {
-        SoundPlayer.play(FileUtil.getResourceFilePath("error.wav"));
+        SoundPlayer.play(FileUtil.getResourceFilePath(ERROR));
         showAlert(e.getMessage());
       }
     });

@@ -3,7 +3,6 @@ package edu.ntnu.idatt1002;
 import edu.ntnu.idatt1002.backend.budgeting.Expenses;
 import edu.ntnu.idatt1002.backend.budgeting.Incomes;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,12 +10,12 @@ import javafx.stage.Stage;
  * A class that starts the GUI.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.2 - 19.04.2023
  */
 public class Main extends Application {
 
   /**
-   * The entry point of the application
+   * The entry point of the application.
    *
    * @param args the input arguments
    */
@@ -37,13 +36,11 @@ public class Main extends Application {
     expenseInstance.createAllExpenses();
     incomeInstance.createAllIncomes();
 
-    String uniqueID = TimeOfDayChecker.getCurrentMonth() + TimeOfDayChecker.getYear();
-
     launch(args);
   }
 
   /**
-   * A method that starts the GUI
+   * A method that starts the GUI.
    *
    * @param stage the primary stage for this application, onto which
    *              the application scene can be set.

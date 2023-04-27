@@ -1,21 +1,14 @@
 package edu.ntnu.idatt1002.backend.budgeting;
 
-import java.util.ArrayList;
-
-
 /**
  * A class that represents an account.
  * An account has a name and a balance.
  * Singleton is used to ensure data encapsulation and integrity.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class Account {
-  /**
-   * An arraylist of expenses.
-   */
-  public static ArrayList<Expense> expenses;
   /**
    * The single instance of the class used in the singleton pattern.
    */
@@ -52,7 +45,6 @@ public class Account {
     }
     this.accountName = accountName;
     this.accountBalance = accountBalance;
-    expenses = new ArrayList<Expense>();
   }
 
   /**

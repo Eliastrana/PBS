@@ -3,20 +3,17 @@ package edu.ntnu.idatt1002.model;
 import edu.ntnu.idatt1002.backend.budgeting.Expense;
 import edu.ntnu.idatt1002.backend.budgeting.Transfers;
 import edu.ntnu.idatt1002.frontend.GUI;
-import edu.ntnu.idatt1002.frontend.utility.TimeOfDayChecker;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * A class that reads a csv file.
  *
  * @author Emil J., Vegard J., Sander S. and Elias T.
- * @version 0.5 - 19.04.2023
+ * @version 1.1 - 26.04.2023
  */
 public class CSVReader {
   /**
@@ -24,22 +21,42 @@ public class CSVReader {
    */
   private static final String CVS_SPLIT_BY = ",";
   /**
-   * The path to the csv file.
+   * The path to the csv file that stores all the information of a user.
    */
-  private static String CSV_FILE_PATH_1;
+  private static final String USERFILES_PATH = "src/main/resources/userfiles/";
+  /**
+   * The name of the csv file that stores all the transfers of a user.
+   */
+  private static final String TRANSFER_CSV = "transfer.csv";
+  /**
+   * The path to the csv file that stores all the transfers of a user.
+   */
+  private String csvTransferFilePath;
   /**
    * The path to the csv file.
    */
-  private static String CSV_FILE_PATH_2;
+  private String csvFilePath;
   /**
    * The path to the output directory.
    */
-  private static String outPutDirectory;
+  private String outPutDirectory;
+
+  /**
+   * The instance of the CSVReader class.
+   */
   private static final CSVReader instance = new CSVReader();
 
+  /**
+   * Instantiates a new Csv reader.
+   */
   private CSVReader() {
   }
 
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
   public static CSVReader getInstance() {
     return instance;
   }
@@ -50,48 +67,49 @@ public class CSVReader {
    * @return a map of expenses
    * @throws IOException the io exception
    */
-  public HashMap<String, Double> readCSV() throws IOException {
+  public Map<String, Double> readCSV() throws IOException {
     HashMap<String, Double> newAccounts = new HashMap<>(); // Create a new instance of hashmap
-    CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
-    CSV_FILE_PATH_2 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + ".csv";
-    outPutDirectory = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/";
-    File csvFile1 = new File(CSV_FILE_PATH_1);
-    File csvFile2 = new File(CSV_FILE_PATH_2);
-    if (!csvFile1.exists() && !csvFile2.exists()) {
+    outPutDirectory = USERFILES_PATH + GUI.getCurrentUser() + "/";
+    csvTransferFilePath = outPutDirectory + GUI.getCurrentUser() + TRANSFER_CSV;
+    csvFilePath = outPutDirectory + GUI.getCurrentUser() + ".csv";
+    File csvTransferFile = new File(csvTransferFilePath);
+    File csvFile = new File(csvFilePath);
+    if (!csvTransferFile.exists() && !csvFile.exists()) {
       try {
         File outPutDirectoryFile = new File(outPutDirectory);
         outPutDirectoryFile.mkdirs();
-        csvFile1.createNewFile();
-        csvFile2.createNewFile();
+        Files.createFile(csvTransferFile.toPath());
+        Files.createFile(csvFile.toPath());
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
-      return newAccounts; // Return empty hashmap since both files are empty
+      return newAccounts;
     }
 
-    if (!csvFile1.exists()) {
+    if (!csvTransferFile.exists()) {
       try {
-        csvFile1.createNewFile();
+        Files.createFile(csvTransferFile.toPath());
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
-      return newAccounts; // Return empty hashmap since both files are empty
+      return newAccounts;
     }
 
-    if (!csvFile2.exists()) {
+    if (!csvFile.exists()) {
       try {
-        csvFile2.createNewFile();
+        Files.createFile(csvFile.toPath());
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
     }
 
-    try (BufferedReader br1 = new BufferedReader(new FileReader(csvFile1));
-         BufferedReader br2 = new BufferedReader(new FileReader(csvFile2))) {
+    try (BufferedReader br1 = new BufferedReader(
+            new FileReader(csvTransferFile));
+         BufferedReader br2 = new BufferedReader(new FileReader(csvFile))) {
       String line;
       while ((line = br1.readLine()) != null) {
         String[] account = line.split(CVS_SPLIT_BY);
-        if (newAccounts.containsKey(account[0])) { // Use the new hashmap instance
+        if (newAccounts.containsKey(account[0])) {
           newAccounts.put(account[0], newAccounts.get(account[0]) + Double.parseDouble(account[1]));
         } else {
           newAccounts.put(account[0], Double.parseDouble(account[1]));
@@ -99,15 +117,17 @@ public class CSVReader {
       }
       while ((line = br2.readLine()) != null) {
         String[] account = line.split(CVS_SPLIT_BY);
-        for (String key : newAccounts.keySet()) {
+        for (Map.Entry<String, Double> entry : newAccounts.entrySet()) {
+          String key = entry.getKey();
+          Double value = entry.getValue();
           if (key.equals(account[4])) {
-            newAccounts.put(key, newAccounts.get(key) - Double.parseDouble(account[3]));
+            entry.setValue(value - Double.parseDouble(account[3]));
           }
         }
       }
       return newAccounts;
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new IllegalArgumentException(e);
     }
   }
 
@@ -118,27 +138,29 @@ public class CSVReader {
    * @throws IOException the io exception
    */
   public List<Transfers> listOfTransfers() throws IOException {
-    CSV_FILE_PATH_1 = "src/main/resources/userfiles/" + GUI.getCurrentUser() + "/" + GUI.getCurrentUser() + "transfer.csv";
+    outPutDirectory = USERFILES_PATH + GUI.getCurrentUser() + "/";
+    csvTransferFilePath = outPutDirectory + GUI.getCurrentUser() + TRANSFER_CSV;
     Transfers transfers = new Transfers("listConstructor");
-    File csvFile1 = new File(CSV_FILE_PATH_1);
-    if (!csvFile1.exists()) {
+    File csvTransferFile = new File(csvTransferFilePath);
+    if (!csvTransferFile.exists()) {
       try {
-        csvFile1.createNewFile();
+        Files.createFile(csvTransferFile.toPath());
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new IllegalArgumentException(e);
       }
     }
-    try (BufferedReader br1 = new BufferedReader(new FileReader(csvFile1))) {
+    try (BufferedReader br1 = new BufferedReader(new FileReader(csvTransferFile))) {
       String line;
       while ((line = br1.readLine()) != null) {
         String[] account = line.split(CVS_SPLIT_BY);
-        if (account.length >= 4) { // Check if array has enough elements
+        if (account.length >= 4) {
           char transferType = account[3].charAt(0);
-          transfers.addTransfer(account[0], Double.parseDouble(account[1]), account[2], transferType);
+          transfers.addTransfer(account[0],
+                  Double.parseDouble(account[1]), account[2], transferType);
         }
       }
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new IllegalArgumentException("Error with CSV file for transfer");
     }
 
     return transfers.transfersList();
@@ -150,9 +172,11 @@ public class CSVReader {
    * @return a list of expenses
    */
   public List<Expense> getExpensesFromCSV() {
+    outPutDirectory = USERFILES_PATH + GUI.getCurrentUser() + "/";
+    csvFilePath = outPutDirectory + GUI.getCurrentUser() + ".csv";
     List<Expense> expensesFromFile = new ArrayList<>();
 
-    try (BufferedReader reader = new BufferedReader(new FileReader(CSV_FILE_PATH_2))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
       String line;
       while ((line = reader.readLine()) != null) {
 
@@ -171,33 +195,31 @@ public class CSVReader {
           }
         }
 
-        columnsList.add(sb.toString()); // Add last column
+        columnsList.add(sb.toString());
 
         String[] columns = columnsList.toArray(new String[0]);
 
         for (int i = 0; i < columns.length; i++) {
           if (columns[i].startsWith("|") && columns[i].endsWith("|")) {
-            // remove the bars from the string
             columns[i] = columns[i].substring(1, columns[i].length() - 1);
           }
-          // remove quotes from the string
           columns[i] = columns[i].replaceAll("^\"|\"$", "");
         }
 
-        String month = TimeOfDayChecker.getSelectedMonth(columns[2]);
         String category = columns[0];
         String name = columns[1];
         String date = columns[2];
         String price = columns[3];
         String accountName = columns[4];
-        Expense expense = new Expense(name, Double.parseDouble(price), LocalDate.parse(date), category, accountName);
+        Expense expense = new Expense(name,
+                Double.parseDouble(price),
+                LocalDate.parse(date),
+                category, accountName);
         expensesFromFile.add(expense);
       }
       return expensesFromFile;
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new IllegalArgumentException(e);
     }
   }
 
@@ -207,20 +229,24 @@ public class CSVReader {
    * @param expensesInTable  the expenses in table
    * @param expensesFromFile the expenses from file
    */
-  public void updateRowsThatAreDifferentInTable(List<Expense> expensesInTable,
-                                                List<Expense> expensesFromFile) {
+  public void updateRowsThatAreDifferentInTable(
+          List<Expense> expensesInTable, List<Expense> expensesFromFile) {
+    outPutDirectory = USERFILES_PATH + GUI.getCurrentUser() + "/";
+    csvFilePath = outPutDirectory + GUI.getCurrentUser() + ".csv";
     List<Expense> expensesToBeUpdated = new ArrayList<>();
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_2))) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvFilePath))) {
       for (Expense expenseFromFile : expensesFromFile) {
-        if (!(expenseFromFile.getDate().getMonthValue() == LocalDate.now().getMonthValue())) {
+        if ((expenseFromFile.getDate().getMonthValue() != LocalDate.now().getMonthValue())) {
           expensesToBeUpdated.add(expenseFromFile);
         }
       }
-      for (Expense expenseInTable : expensesInTable) {
-        expensesToBeUpdated.add(expenseInTable);
-      }
+      expensesToBeUpdated.addAll(expensesInTable);
       for (Expense expenseToUpdatedFile : expensesToBeUpdated) {
-        writer.write(expenseToUpdatedFile.getCategory() + ",|" + expenseToUpdatedFile.getName() + "|," + expenseToUpdatedFile.getDate() + "," + expenseToUpdatedFile.getPrice() + "," + expenseToUpdatedFile.getAccount());
+        writer.write(expenseToUpdatedFile.getCategory()
+                + ",|" + expenseToUpdatedFile.getName()
+                + "|," + expenseToUpdatedFile.getDate()
+                + "," + expenseToUpdatedFile.getPrice()
+                + "," + expenseToUpdatedFile.getAccount());
         writer.newLine();
       }
       writer.flush();
@@ -235,9 +261,14 @@ public class CSVReader {
    * @param transfersListInTable the transfers list in table
    */
   public void removeTransfer(List<Transfers> transfersListInTable) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(CSV_FILE_PATH_1))) {
+    outPutDirectory = USERFILES_PATH + GUI.getCurrentUser() + "/";
+    csvTransferFilePath = outPutDirectory + GUI.getCurrentUser() + TRANSFER_CSV;
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(csvTransferFilePath))) {
       for (Transfers transfer : transfersListInTable) {
-        writer.write(String.format(Locale.US, "%s,%.2f,%s,%c\n", transfer.getAccountName(), transfer.getAmount(), transfer.getDate(), transfer.getTransferType()));
+        writer.write(String.format(Locale.US,
+                "%s,%.2f,%s,%c%n", transfer.getAccountName(),
+                transfer.getAmount(), transfer.getDate(),
+                transfer.getTransferType()));
       }
     } catch (IOException e) {
       e.printStackTrace();
