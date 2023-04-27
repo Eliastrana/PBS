@@ -46,6 +46,7 @@ The reasons for our principles are clear. Our program comes as an addition to th
 
 ## Access 
 If you wish to log in to the program, and there is something wrong with the creation of your own user, you can log in with this:
-Username: Example User
-Password: Password1!
+
+- Username: Example User
+- Password: Password1!
 
